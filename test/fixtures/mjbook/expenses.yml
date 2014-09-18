@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  project_id: 1
+  supplier_id: 1
+  hmrcexpcat_id: 1
+  issue_date: 2014-09-15 23:06:30
+  due_date: 2014-09-15 23:06:30
+  amount: 9.99
+  vat: 9.99
+  receipt: MyString
+  recurrence: 1
+  ref: MyString
+  supplier_ref: MyString
+  status: 1
+
+two:
+  user_id: 1
+  project_id: 1
+  supplier_id: 1
+  hmrcexpcat_id: 1
+  issue_date: 2014-09-15 23:06:30
+  due_date: 2014-09-15 23:06:30
+  amount: 9.99
+  vat: 9.99
+  receipt: MyString
+  recurrence: 1
+  ref: MyString
+  supplier_ref: MyString
+  status: 1

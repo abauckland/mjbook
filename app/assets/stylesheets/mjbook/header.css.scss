@@ -1,0 +1,91 @@
+//core-ui
+@import "core";
+@import "buttons";
+
+//header
+.app_page_header{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  height: 30px;     
+  padding: 8px 8px 8px 8px;
+  @include border-radius(0.5rem);
+  @include shadow-all(0px 0px 5px #aeaeae);
+  @include dark_grey_46_gradient;
+  }  
+  @media screen and (max-width: $medium_menu) {
+    .app_page_header{
+      @include dark_grey_38_gradient;
+      padding: 4px 4px 4px 4px;
+    }  
+  }
+
+
+figure.app_logo{
+  height: 30px;  //defined by size of logo used
+  width: 30px;  //defined by size of logo used
+  margin: 0px 0px 0px 0px;   //required to override default <figure> settings
+  //border: inset 1px #555; //not required with MyHq logo
+  background: image-url('myhq_logo.png') no-repeat;
+  background-size:30px 30px;  //difined by size of logo used
+  }
+
+.app_logout{
+  position: absolute;
+  top: 14px; //how is this set so logo is centered on header?
+  right: 8px;
+  font-family: $heading_font;
+  @include small-button;
+  @include red-button;
+  @include shadow-all(0px 0px 5px #aeaeae);
+  border: 1px solid #000;
+    a{color:#ffffff;
+      &:hover{color: #ffffff;}
+      &:visited{color: #ffffff;}
+    }
+  }
+  @media screen and (max-width: $medium_menu) {
+    .app_logout {
+      top: 9px;
+    }  
+  }
+
+//alert, notice message
+.header_message{
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  right: 10px;
+  padding: 6px 6px 6px 6px;     
+  @include border-radius(0.5rem);
+  border: 1px solid #000;
+  font-size: 1.2rem;
+  min-width:270px
+  }  
+  @media screen and (max-width: $medium_menu) {
+    .header_message{
+      top: 52px;
+      padding: 4px 4px 4px 4px; 
+    }    
+} 
+
+//alert, notice message
+.header_message{
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  right: 10px;
+  padding: 6px 6px 6px 6px;     
+  @include border-radius(0.5rem);
+  border: 1px solid #000;
+  font-size: 1.2rem;
+  min-width:270px
+  }  
+  @media screen and (max-width: $medium_menu) {
+    .header_message{
+      top: 52px;
+      padding: 4px 4px 4px 4px; 
+    }    
+}  
+   

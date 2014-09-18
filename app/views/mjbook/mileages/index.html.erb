@@ -1,0 +1,42 @@
+<div class="page_title">
+    <h1>Mileage Expenses</h1>
+</div>
+
+ <div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+          <th class="mob_cell">Date</th>
+          <th class="tab_cell">Job</th>
+            <th class="mob_cell">Mode</th>
+          <th class="lrg_cell">Start Location</th>
+            <th class="lrg_cell">Destination</th>
+          <th class="lrg_cell">Return</th>
+            <th class="mob_cell">Distance</th>
+            <th width="20px" class="row_button"><%= link_to "", new_mileage_path, class: 'table_new_icon', title: "add new mileage recored" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @mileages.each do |mileage| %>
+              <tr>
+                <td class="mob_cell"><%= mileage.date %></td>
+                <td class="tab_cell"><%= mileage.project.ref_name %></td>
+                <td class="mob_cell"><%= mileage.mileagemethod.mode %></td>
+                <td class="lrg_cell"><%= mileage.start %></td>
+                <td class="lrg_cell"><%= mileage.finish %></td>
+                <td class="lrg_cell"><%= mileage.return %></td>
+                <td class="mob_cell"><%= mileage.distance %></td>
+                <td width="20px" class="row_button"><%= link_to "", edit_mileage_path(mileage), class: 'line_edit_icon', title: "edit mileage record" %></td>
+                <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
+

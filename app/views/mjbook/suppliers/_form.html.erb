@@ -1,0 +1,134 @@
+<div class="content">
+    <div class="column_linked_container">
+           
+        <% if @supplier.errors.any? %>
+            <div class="column_error">
+                <p><%= pluralize(@supplier.errors.count, "error") %> prohibited this supplier from being created</p>
+                <ul>
+                    <% @supplier.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+    
+        <div class="sub_column_linked_1">
+                 <div class="column_content">
+                        <div class="column_form">
+                    <%= form_for(@supplier) do |f| %>
+                        <%= f.hidden_field :user_id, :value => current_user.id %>  
+                        
+                            <div class="column_form_item">
+                                <label class="column_form_label">Company:</label>                        
+                                <div class="column_form_input"><%= f.text_field :company %></div>
+                                <div class="column_help_tooltip" id="supplier_company"></div>
+                                <div class="column_error_note"><%= error_check(@supplier, :company)%></div>   
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">VAT No:</label>                        
+                                <div class="column_form_input"><%= f.text_field :vat_no %></div>
+                                <div class="column_help_tooltip" id="supplier_vat_no"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Title:</label>                        
+                                <div class="column_form_input"><%= f.text_field :title %></div>
+                                <div class="column_help_tooltip" id="supplier_title"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">First Name:</label>                        
+                                <div class="column_form_input"><%= f.text_field :first_name %></div>
+                                <div class="column_help_tooltip" id="supplier_first_name"></div>
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Surname:</label>                        
+                                <div class="column_form_input"><%= f.text_field :surname %></div>
+                                <div class="column_help_tooltip" id="supplier_surname"></div>   
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Position:</label>                        
+                                <div class="column_form_input"><%= f.text_field :position %></div>
+                                <div class="column_help_tooltip" id="supplier_position"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">E-mail:</label>                        
+                                <div class="column_form_input"><%= f.email_field :email %></div>
+                                <div class="column_help_tooltip" id="supplier_email"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Tel:</label>                        
+                                <div class="column_form_input"><%= f.text_field :phone %></div>
+                                <div class="column_help_tooltip" id="supplier_phone"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Alternative Tel::</label>                        
+                                <div class="column_form_input"><%= f.text_field :alt_phone %></div>
+                                <div class="column_help_tooltip" id="supplier_alt_phone"></div>  
+                            </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2">
+            <div class="column_content">
+                <div class="column_form">
+    
+                            <div class="column_form_item">
+                                <label class="column_form_label">Address 1:</label>                        
+                                <div class="column_form_input"><%= f.text_field :address_1 %></div>
+                                <div class="column_help_tooltip" id="supplier_address_1"></div>    
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Address 2:</label>                        
+                                <div class="column_form_input"><%= f.text_field :address_2 %></div>
+                                <div class="column_help_tooltip" id="supplier_address_2"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">City:</label>                        
+                                <div class="column_form_input"><%= f.text_field :city %></div>
+                                <div class="column_help_tooltip" id="supplier_city"></div>   
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">County:</label>                        
+                                <div class="column_form_input"><%= f.text_field :county %></div>
+                                <div class="column_help_tooltip" id="supplier_county"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Country:</label>                        
+                                <div class="column_form_input"><%= f.text_field :country %></div>
+                                <div class="column_help_tooltip" id="supplier_country"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Postcode:</label>                        
+                                <div class="column_form_input"><%= f.text_field :postcode %></div>
+                                <div class="column_help_tooltip" id="supplier_postcode"></div>  
+                            </div>
+    
+                </div>
+            </div>     
+        </div>
+    
+        <div class="sub_column_linked_3">
+            <div class="column_content">
+                <div class="column_form">    
+                    <div class="column_form_item">
+                        <label class="column_form_label">Notes:</label>                        
+                        <div class="column_form_input"><%= f.text_area :notes, :rows => "10"  %></div>
+                        <div class="column_help_tooltip" id="supplier_motes"></div>  
+                    </div>    
+                </div>
+            </div>     
+        </div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_submit"><%= f.submit "save" %></div>
+            <div class="column_cancel"><%= link_to "cancel", suppliers_path %></div>
+            <% end %>
+        </div>
+            
+    </div>
+</div>
+
+
+
+

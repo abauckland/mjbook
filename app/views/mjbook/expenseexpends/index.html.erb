@@ -1,0 +1,27 @@
+<h1>Listing expenseexpends</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Expense</th>
+      <th>Expenditure</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expenseexpends.each do |expenseexpend| %>
+      <tr>
+        <td><%= expenseexpend.expense_id %></td>
+        <td><%= expenseexpend.expenditure_id %></td>
+        <td><%= link_to 'Show', expenseexpend %></td>
+        <td><%= link_to 'Edit', edit_expenseexpend_path(expenseexpend) %></td>
+        <td><%= link_to 'Destroy', expenseexpend, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Expenseexpend', new_expenseexpend_path %>

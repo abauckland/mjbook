@@ -1,0 +1,193 @@
+//core-ui
+@import "core";
+@import "buttons";
+
+/*css for 3 column layout*/
+@mixin column_text{
+  font-family: $standard_font;
+  font-size:1.2rem;
+}
+
+@mixin column_title{
+  font-size:1.4rem;
+  font-weight:bold;
+  font-family: $heading_font;
+}
+
+.content {
+  position: absolute;
+  top:115px;
+  left:10px;
+  right:10px;
+  padding: 0px 0px 0px 0px;
+  }
+  @media screen and (max-width: $medium_menu) {
+    .content {
+      top:95px;
+    }
+  }
+
+.column_1, .column_2, .column_3, .column_1_2 {
+  float: left;
+  border: 2px solid #dddddd;
+  padding: 10px 10px 10px 10px;
+  @include border-radius(4px);
+//  height: 400px;
+  background: #fff;
+  }
+
+//correction so column lines up on right hand side of the screen correctly
+.column_content{
+  position: relative;
+}
+
+
+.column_blank{
+  background: #eee;
+  }
+
+.column_sub_content{
+  position: absolute;
+  top: 0px;
+  bottom: 40px;
+  width: 100%;
+  }
+  
+.column_title {
+  height: 20px;
+  color:#66aa00;
+  padding: 10px 5px 10px 5px;
+  border-bottom: 2px solid #dddddd;
+  }
+  @media screen and (max-width: $small_menu) {
+    .column_title {
+    }
+  }
+
+
+.column_error {
+  @include column_text;
+  padding: 0px 10px 0px 10px;
+  margin: 0px 0px 10px 0px;
+  border: 2px solid $error_text_color;
+  @include border-radius(4px);
+  color: $error_text_color;
+}
+
+.column_confirm {
+  @include column_text;
+  padding: 0px 10px 0px 10px;
+  margin: 0px 0px 10px 0px;
+  border: 2px solid $confirm_text_color;
+  @include border-radius(4px);
+  color: $confirm_text_color;
+}
+
+
+.column_line {
+  height: 2px;
+  padding: 10px 10px 10px 10px;
+  border-top: 2px solid #dddddd;
+  }
+
+.column_form td{
+  @include column_text;
+  padding: 5px 0px 0px 0px;
+  vertical-align: top;
+  text-align: right;
+}
+
+.column_form_item{
+  clear: both;
+  padding: 5px 0px 5px 0px;  
+}
+
+.column_form_label{
+  float: left;
+  width: 100px;
+  font-size: 1.2rem;
+  font-weight: bold; 
+  padding: 5px 0px 5px 0px;
+  color: $bold_text_color;   
+}
+
+.column_form_input {
+ float: left;  
+}
+
+.column_form_input input[type=text]{
+ float: left;
+}
+
+.column_form_input select{
+ float: left;
+}
+
+.column_form_input textarea{
+ float: left;
+}
+
+.column_help_tooltip{
+    float: left;
+    width: 10px;
+    height: 10px;
+    margin: 2px 0px 0px 10px;
+    cursor: pointer;
+    background: asset_url('tooltip_icon.png') no-repeat;
+}
+
+.column_error_note{ 
+  clear: both;
+  padding: 0px 0px 0px 100px;
+  font-size:1.2rem;
+  font-style: italic;
+  color: $error_text_color;    
+}
+
+
+.column_footer {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 10px 5px 0px 5px;
+  }
+  .column_text {
+    @include column_text;
+    padding: 10px 10px 10px 10px
+  }
+
+.column_submit input[type=submit]{
+  position: absolute; 
+  top:20px;
+  border: none;
+  height:20px;
+  padding: 0px 20px 0px 30px;
+  color:#66aa00;
+  @include column_title;
+  text-decoration:none;    
+  @include form_icons(-320px);
+  cursor: pointer;
+  &:hover{
+    text-decoration:underline;
+  }
+}
+
+
+.column_cancel a{
+  position: absolute; 
+  height:20px;
+  right:10px;
+  top:20px;
+  border: none;
+  text-decoration:none;
+  color:red;
+  @include column_title;
+  padding: 0px 0px 0px 28px;
+  @include form_icons(-160px);
+  cursor: pointer;
+  &:hover{
+    text-decoration:underline;    
+  }
+}
+

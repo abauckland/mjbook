@@ -1,0 +1,39 @@
+<div class="page_title">
+    <h1>Project List</h1>
+</div>
+
+ <div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+          <th class="mob_cell">Ref</th>
+          <th class="tab_cell">Title</th>
+          <th class="mob_cell">Customer</th>
+          <th class="lrg_cell">Description</th>
+          <th class="lrg_cell">Invoicemethod</th>
+          <th class="lrg_cell">Customer ref</th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @projects.each do |project| %>
+              <tr>
+                <td class="mob_cell"><%= project.ref %></td>
+                <td class="tab_cell"><%= project.title %></td>
+                <td class="mob_cell"><%= project.customer_id %></td>
+                <td class="lrg_cell"><%= project.description %></td>
+                <td class="lrg_cell"><%= project.invoicemethod_id %></td>
+                <td class="lrg_cell"><%= project.customer_ref %></td>
+                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_edit_icon', title: "edit project" %></td>
+                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_delete_icon', title: "delete project" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
+

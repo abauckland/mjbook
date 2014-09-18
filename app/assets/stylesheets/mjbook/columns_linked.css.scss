@@ -1,0 +1,60 @@
+//core-ui
+@import "core";
+
+/*css for linked column layout*/
+.column_linked_container{
+  padding: 10px 10px 10px 10px;
+  border: 2px solid #dddddd;
+  @include border-radius(4px);  
+}  
+
+.sub_column_linked_1, .sub_column_linked_2{
+  float: left;
+  min-width:260px;
+  bottom: 40px;
+  background: #fff;
+  border-right: 2px solid #dddddd;
+  padding: 5px 5px 0px 10px;
+  }
+
+.sub_column_linked_3{
+  @extend .sub_column_linked_1;
+  border-right: none;
+  }
+
+.column_linked_blank{
+  //background: #eee;
+  }
+
+.column_linked_line {
+  height: 2px;
+  padding: 10px 10px 10px 10px;
+  border-top: 2px solid #dddddd;
+  }
+
+.column_linked_footer {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 10px 5px 0px 5px;
+  }
+  
+.column_linked_sub_title {
+  clear: both;
+  color:#66aa00;
+  font-family: $heading_font;
+  font-size:2.2rem;
+  padding: 0px 0px 5px 0px;
+  border-bottom: 2px solid #dddddd;
+}
+  @media screen and (max-width: $small_menu) {
+    .column_title {
+      font-size:1.8rem;
+      }
+  }
+  
+.column_linked_space{
+  clear: both;
+  padding: 20px 0px 0px 0px;  
+}

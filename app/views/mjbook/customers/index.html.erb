@@ -1,0 +1,51 @@
+<div class="page_title">
+    <h1>Customers</h1>
+</div>
+
+ <div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+            <th class="mob_cell">Name</th>
+            <th class="lrg_cell">Position</th>
+            <th class="tab_cell">Address</th>
+            <th class="mob_cell">Phone</th>
+            <th class="tab_cell">Alt. Phone</th>
+            <th class="tab_cell">Email</th>
+            <th class="lrg_cell">Company</th>
+            <th class="lrg_cell">Notes</th>
+            <th width="20px" class="row_button"><%= link_to "", new_customer_path, class: 'table_new_icon', title: "add new customer" %></th>
+            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @customers.each do |customer| %>
+              <tr>
+                <td class="mob_cell"><%= customer.name %></td>
+                <td class="lrg_cell"><%= customer.position %></td>
+                <td class="tab_cell">
+        			<p><%= customer.address_1 %></p>
+        			<p><%= customer.address_2 %></p>
+        			<p><%= customer.city %></p>
+        			<p><%= customer.county %></p>
+        			<p><%= customer.full_country %></p>
+        			<p><%= customer.postcode %></p>
+                </td>
+                <td class="mob_cell"><%= customer.phone %></td>
+                <td class="tab_cell"><%= customer.alt_phone %></td>
+                <td class="tab_cell"><%= customer.email %></td>
+                <td class="lrg_cell"><%= customer.company %></td>
+                <td class="lrg_cell"><%= customer.notes %></td>
+                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_edit_icon', title: "edit customer" %></td>
+                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_delete_icon', title: "delete customer" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
+

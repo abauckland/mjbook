@@ -1,0 +1,99 @@
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+        
+            <% if @personalexpense.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@personalexpense.errors.count, "error") %> prohibited this personalexpense from being created</p>
+                  <ul>
+                  <% @personalexpense.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@personalexpense) do |f| %>
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    <%= f.hidden_field :status, :value => "submitted" %>    
+                    
+                        <div class="column_form_item">
+                            <label class="column_form_label">Job Ref:*</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:project_id, Mjbook::Projects.all, :id, :name, {:selected => @personalexpense.project_id, :prompt => :true})%></div>
+                            <div class="column_help_tooltip" id="personalexpense_project"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label">Supplier:*</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:supplier_id, Mjbook::Suppliers.all, :id, :name, {:selected => @personalexpense.supplier_id, :prompt => :true})%></div>
+                            <div class="column_help_tooltip" id="personalexpense_supplier"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label">Expense Type:*</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:hmrcexpcat_id, Mjbook::Hmrcexpcat.all, :id, :category, {:selected => @personalexpense.hmrcexpcat_id, :prompt => :true})%></div>
+                            <div class="column_help_tooltip" id="personalexpense_hmrcexpcat"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label">Reference:</label>                        
+                            <div class="column_form_input"><%= f.text_field :ref %></div>
+                            <div class="column_help_tooltip" id="personalexpense_reference"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label">Supplier Ref:</label>                        
+                            <div class="column_form_input"><%= f.text_field :supplier_ref %></div>
+                            <div class="column_help_tooltip" id="personalexpense_supplier_ref"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label">Bill Image:</label>                        
+                            <div class="column_form_input"><%= f.file_field :receipt %></div>
+                            <div class="column_help_tooltip" id="personalexpense_receipt"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label">Total Amount:</label>                        
+                            <div class="column_form_input"><%= f.text_field :amount %></div>
+                            <div class="column_help_tooltip" id="personalexpense_amount"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label">VAT Payable:</label>                        
+                            <div class="column_form_input"><%= f.text_field :vat %></div>
+                            <div class="column_help_tooltip" id="personalexpense_vat"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label">Date Issued:</label>                        
+                            <div class="column_form_input"><%= f.date_select :issue_date %></div>
+                            <div class="column_help_tooltip" id="personalexpense_issue_date"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label">Payment Due:</label>                        
+                            <div class="column_form_input"><%= f.date_select :due_date %></div>
+                            <div class="column_help_tooltip" id="personalexpense_due_date"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label">Recurring Payment:</label>                        
+                            <div class="column_form_input"><div class="column_form_input"><%= f.check_box :recurrence, {}, "No", "Yes" %></div></div>
+                            <div class="column_help_tooltip" id="personalexpense_recurrence"></div>  
+                        </div>
+
+
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", personalexpenses_path %></div>
+                <% end %>
+
+           </div>
+            
+        </div>
+    </div>
+    <div class="column_2 column_blank"></div> 
+    <div class="column_3 column_blank"></div> 
+</div>

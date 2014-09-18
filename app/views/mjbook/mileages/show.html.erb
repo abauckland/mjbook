@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Job:</strong>
+  <%= @mileage.job_id %>
+</p>
+
+<p>
+  <strong>Mileagemode:</strong>
+  <%= @mileage.mileagemode_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @mileage.user_id %>
+</p>
+
+<p>
+  <strong>Hmrcexpcat:</strong>
+  <%= @mileage.hmrcexpcat_id %>
+</p>
+
+<p>
+  <strong>Start:</strong>
+  <%= @mileage.start %>
+</p>
+
+<p>
+  <strong>Finish:</strong>
+  <%= @mileage.finish %>
+</p>
+
+<p>
+  <strong>Return:</strong>
+  <%= @mileage.return %>
+</p>
+
+<p>
+  <strong>Distance:</strong>
+  <%= @mileage.distance %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @mileage.date %>
+</p>
+
+<%= link_to 'Edit', edit_mileage_path(@mileage) %> |
+<%= link_to 'Back', mileages_path %>

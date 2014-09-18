@@ -1,0 +1,54 @@
+<div class="page_title">
+    <h1>suppliers</h1>
+</div>
+
+ <div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+            <th class="mob_cell">Company</th>
+            <th class="lrg_cell">VAT No.</th>
+            <th class="lrg_cell">Name</th>
+            <th class="lrg_cell">Position</th>
+            <th class="tab_cell">Address</th>
+            <th class="mob_cell">Phone</th>
+            <th class="tab_cell">Alt. Phone</th>
+            <th class="tab_cell">Email</th>
+            
+            <th class="lrg_cell">Notes</th>
+            <th width="20px" class="row_button"><%= link_to "", new_supplier_path, class: 'table_new_icon', title: "add new supplier" %></th>
+            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @suppliers.each do |supplier| %>
+              <tr>
+                <td class="mob_cell"><%= supplier.company %></td>
+                <td class="mob_cell"><%= supplier.vat_no %></td>
+                <td class="lrg_cell"><%= supplier.name %></td>
+                <td class="lrg_cell"><%= supplier.position %></td>
+                <td class="tab_cell">
+        			<p><%= supplier.address_1 %></p>
+        			<p><%= supplier.address_2 %></p>
+        			<p><%= supplier.city %></p>
+        			<p><%= supplier.county %></p>
+        			<p><%= supplier.full_country %></p>
+        			<p><%= supplier.postcode %></p>
+                </td>
+                <td class="mob_cell"><%= supplier.phone %></td>
+                <td class="tab_cell"><%= supplier.alt_phone %></td>
+                <td class="tab_cell"><%= supplier.email %></td>
+                <td class="lrg_cell"><%= supplier.notes %></td>
+                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_edit_icon', title: "edit supplier" %></td>
+                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_delete_icon', title: "delete supplier" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,131 @@
+<div class="content">
+    <div class="column_linked_container">
+           
+        <% if @customer.errors.any? %>
+            <div class="column_error">
+                <p><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being created</p>
+                <ul>
+                    <% @customer.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+    
+        <div class="sub_column_linked_1">
+                 <div class="column_content">
+                        <div class="column_form">
+                    <%= form_for(@customer) do |f| %>
+                        <%= f.hidden_field :user_id, :value => current_user.id %>  
+                        
+                            <div class="column_form_item">
+                                <label class="column_form_label">Title:</label>                        
+                                <div class="column_form_input"><%= f.text_field :title %></div>
+                                <div class="column_help_tooltip" id="customer_title"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">First Name:</label>                        
+                                <div class="column_form_input"><%= f.text_field :first_name %></div>
+                                <div class="column_help_tooltip" id="customer_first_name"></div>
+    			                 <div class="column_error_note"> <%= error_check(@customer, :first_name)%></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Surname:</label>                        
+                                <div class="column_form_input"><%= f.text_field :surname %></div>
+                                <div class="column_help_tooltip" id="customer_surname"></div> 
+    			                 <div class="column_error_note"> <%= error_check(@customer, :surname)%></div>   
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Position:</label>                        
+                                <div class="column_form_input"><%= f.text_field :position %></div>
+                                <div class="column_help_tooltip" id="customer_position"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">E-mail:</label>                        
+                                <div class="column_form_input"><%= f.email_field :email %></div>
+                                <div class="column_help_tooltip" id="customer_email"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Tel:</label>                        
+                                <div class="column_form_input"><%= f.text_field :phone %></div>
+                                <div class="column_help_tooltip" id="customer_phone"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Alternative Tel::</label>                        
+                                <div class="column_form_input"><%= f.text_field :alt_phone %></div>
+                                <div class="column_help_tooltip" id="customer_alt_phone"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Company:</label>                        
+                                <div class="column_form_input"><%= f.text_field :company %></div>
+                                <div class="column_help_tooltip" id="customer_company"></div>  
+                            </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2">
+            <div class="column_content">
+                <div class="column_form">
+    
+                            <div class="column_form_item">
+                                <label class="column_form_label">Address 1:</label>                        
+                                <div class="column_form_input"><%= f.text_field :address_1 %></div>
+                                <div class="column_help_tooltip" id="customer_address_1"></div>
+    			                 <div class="column_error_note"> <%= error_check(@customer, :address_1)%></div>     
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Address 2:</label>                        
+                                <div class="column_form_input"><%= f.text_field :address_2 %></div>
+                                <div class="column_help_tooltip" id="customer_address_2"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">City:</label>                        
+                                <div class="column_form_input"><%= f.text_field :city %></div>
+                                <div class="column_help_tooltip" id="customer_city"></div>
+    			                 <div class="column_error_note"> <%= error_check(@customer, :city)%></div>     
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">County:</label>                        
+                                <div class="column_form_input"><%= f.text_field :county %></div>
+                                <div class="column_help_tooltip" id="customer_county"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Country:</label>                        
+                                <div class="column_form_input"><%= f.text_field :country %></div>
+                                <div class="column_help_tooltip" id="customer_country"></div>  
+                            </div>
+                            <div class="column_form_item">
+                                <label class="column_form_label">Postcode:</label>                        
+                                <div class="column_form_input"><%= f.text_field :postcode %></div>
+                                <div class="column_help_tooltip" id="customer_postcode"></div>  
+                            </div>
+    
+                </div>
+            </div>     
+        </div>
+    
+        <div class="sub_column_linked_3">
+            <div class="column_content">
+                <div class="column_form">    
+                    <div class="column_form_item">
+                        <label class="column_form_label">Notes:</label>                        
+                        <div class="column_form_input"><%= f.text_area :notes, :rows => "10"  %></div>
+                        <div class="column_help_tooltip" id="customer_motes"></div>  
+                    </div>    
+                </div>
+            </div>     
+        </div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_submit"><%= f.submit "save" %></div>
+            <div class="column_cancel"><%= link_to "cancel", customers_path %></div>
+            <% end %>
+        </div>
+            
+    </div>
+</div>
+
+
+
+

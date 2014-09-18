@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ref: MyString
+  title: MyString
+  customer_id: 1
+  description: MyText
+  invoicemethod_id: 1
+  customer_ref: MyString
+
+two:
+  ref: MyString
+  title: MyString
+  customer_id: 1
+  description: MyText
+  invoicemethod_id: 1
+  customer_ref: MyString

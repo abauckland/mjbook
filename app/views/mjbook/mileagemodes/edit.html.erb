@@ -1,0 +1,27 @@
+<h1>Payable Mileage Rates</h1>
+
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+                
+            <div class="column_sub_content">
+                <div class="column_table">
+                <table>
+                <% @mileagemodes.each do |mode| %>
+                    <tr>
+                    <%= form_for(mode) do |f| %>
+                        <td><%= mode.mode %></td>
+                        <td><%= mode.hmrc_rate %></td>
+                        <td><%= f.text_field :rate %></td>
+                        <td><%= f.submit %></td>
+                    <% end %>
+                    </tr>
+                <% end %>
+                </table>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div class="column_2 column_blank"></div> 
+    <div class="column_3 column_blank"></div> 
+</div>   

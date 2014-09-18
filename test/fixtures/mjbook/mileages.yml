@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job_id: 1
+  mileagemode_id: 1
+  user_id: 1
+  hmrcexpcat_id: 1
+  start: MyString
+  finish: MyString
+  return: 1
+  distance: 9.99
+  date: 2014-09-15 21:09:26
+
+two:
+  job_id: 1
+  mileagemode_id: 1
+  user_id: 1
+  hmrcexpcat_id: 1
+  start: MyString
+  finish: MyString
+  return: 1
+  distance: 9.99
+  date: 2014-09-15 21:09:26

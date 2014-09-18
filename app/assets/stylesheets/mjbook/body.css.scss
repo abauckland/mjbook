@@ -1,0 +1,36 @@
+//core-ui
+@import "core";
+
+
+body, html {
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+html {
+  font-size: 62.5%; 
+  font-family: $heading_font;
+  //background-color: #fbfbfb;
+  } 
+  
+.body_container{
+ position: relative;
+ height:100%;
+ min-width:320px
+}
+
+ h1{
+  font-family: $heading_font;
+  font-size: 2.6rem;
+  margin: 0px 0px 0px 0px;
+ }
+ @media screen and (max-width: $medium_menu) {h1{font-size: 2rem;}}
+ @media screen and (max-width: $small_menu) {h1{font-size: 1.6rem;}}
+
+ h3{
+  font-family: $heading_font;
+  font-size: 1.4rem;
+  margin: 0px 0px 0px 0px;
+ }
+ @media screen and (max-width: $medium_menu) {h3{font-size: 1.2rem;}}

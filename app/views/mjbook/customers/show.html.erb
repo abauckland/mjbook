@@ -1,0 +1,96 @@
+<div class="content">
+    <div class="column_linked_container">          
+        <% if notice %>
+            <div class="column_notice">
+                <p><%= notice %></p>
+            </div>
+        <% end %>
+    
+        <div class="sub_column_linked_1">
+            <div class="column_content">
+                <div class="column_info">
+                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Name:</label>                        
+                                <div class="column_info_input"><%= @customer.name %></div>
+                            </div>
+
+                            <div class="column_info_item">
+                                <label class="column_info_label">Position:</label>                        
+                                <div class="column_info_input"><%= @customer.position %></div>
+ 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">E-mail:</label>                        
+                                <div class="column_info_input"><%= @customer.email %></div>
+ 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Tel:</label>                        
+                                <div class="column_info_input"><%= @customer.phone %></div>
+ 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Alternative Tel::</label>                        
+                                <div class="column_info_input"><%= @customer.alt_phone %></div>
+  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Company:</label>                        
+                                <div class="column_info_input"><%= @customer.company %></div> 
+                            </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2">
+            <div class="column_content">
+                <div class="column_info">
+    
+                            <div class="column_info_item">
+                                <label class="column_info_label">Address 1:</label>                        
+                                <div class="column_info_input"><%= @customer.address_1 %></div>   
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Address 2:</label>                        
+                                <div class="column_info_input"><%= @customer.address_2 %></div>
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">City:</label>                        
+                                <div class="column_info_input"><%= @customer.city %></div>   
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">County:</label>                        
+                                <div class="column_info_input"><%= @customer.county %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Country:</label>                        
+                                <div class="column_info_input"><%= @customer.country %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Postcode:</label>                        
+                                <div class="column_info_input"><%= @customer.postcode %></div>v>  
+                            </div>
+    
+                </div>
+            </div>     
+        </div>
+    
+        <div class="sub_column_linked_3">
+            <div class="column_content">
+                <div class="column_info">    
+                    <div class="column_info_item">
+                        <label class="column_info_label">Notes:</label>                        
+                        <div class="column_info_input"><%= @customer.notes %></div>
+                    </div>    
+                </div>
+            </div>     
+        </div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_submit"><%= link_to "edit details", edit_customer_path(@customer) %></div>
+            <div class="column_cancel"><%= link_to "back", customers_path %></div>
+        </div>
+            
+    </div>
+</div>

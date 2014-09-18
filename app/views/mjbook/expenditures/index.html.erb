@@ -1,0 +1,44 @@
+<div class="page_title">
+    <h1>Expenditure History</h1>
+</div>
+
+ <div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+          <th class="mob_cell">Date</th>
+          <th class="tab_cell">Job</th>
+          <th class="lrg_cell">Category</th> 
+          <th class="lrg_cell">Reference</th>
+          <th class="mob_cell">Supplier</th>
+          <th class="lrg_cell">Supplier Ref</th>                   
+          <th class="lrg_cell">VAT</th>
+          <th class="mob_cell">Amount</th>
+          <th class="lrg_cell">Method</th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @expenditures.each do |expenditure| %>
+              <tr>
+                <td class="mob_cell"><%= expenditure.date %></td>
+                <td class="tab_cell"><%= expenditure.project.ref %></td>
+                <td class="lrg_cell"><%= expenditure.hmrcexpcat.category %></td>
+                <td class="lrg_cell"><%= expenditure.ref %></td>
+                <td class="mob_cell"><%= expenditure.supplier.name %></td>
+                <td class="lrg_cell"><%= expenditure.supplier_ref %></td>
+                <td class="lrg_cell"><%= expenditure.vat %></td>
+                <td class="mob_cell"><%= expenditure.amount %></td>
+                <td class="lrg_cell"><%= expenditure.method %></td>              
+                <td width="20px" class="row_button"><%= link_to "", edit_expenditure_path(expenditure), class: 'line_edit_icon', title: "edit expenditure record" %></td>
+                <td width="20px" class="row_button"></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>

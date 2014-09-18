@@ -1,0 +1,56 @@
+<div class="page_title">
+    <h1>Business Expenses</h1>
+</div>
+
+ <div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+          <th class="mob_cell">Due Date</th>
+          <th class="tab_cell">Job</th>
+          <th class="lrg_cell">Category</th> 
+          <th class="lrg_cell">Reference</th>
+          <th class="mob_cell">Supplier</th>
+          <th class="lrg_cell">Supplier Ref</th>         
+          <th class="lrg_cell">Issue Date</th>          
+          <th class="lrg_cell">Bill Image</th>
+          <th class="lrg_cell">VAT</th>
+          <th class="mob_cell">Amount</th>
+          <th class="lrg_cell">Status</th>
+          <th class="lrg_cell">Recurring</th>
+          <th width="20px" class="row_button"><%= link_to "", new_businessexpense_path, class: 'table_new_icon', title: "add new bill recored" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @businessexpenses.each do |businessexpense| %>
+              <tr>
+                <td class="mob_cell"><%= businessexpense.due_date %></td>
+                <td class="tab_cell"><%= businessexpense.project.ref %></td>
+                <td class="lrg_cell"><%= businessexpense.hmrcexpcat.category %></td>
+                <td class="lrg_cell"><%= businessexpense.ref %></td>
+                <td class="mob_cell"><%= businessexpense.supplier.name %></td>
+                <td class="lrg_cell"><%= businessexpense.supplier_ref %></td>
+                <td class="lrg_cell"><%= businessexpense.issue_date %></td>
+                <td class="lrg_cell"><%= businessexpense.receipt %></td>
+                <td class="lrg_cell"><%= businessexpense.vat %></td>
+                <td class="mob_cell"><%= businessexpense.amount %></td>
+                <td class="lrg_cell"><%= businessexpense.status %></td>
+                <td class="lrg_cell"><%= businessexpense.recurring %></td>                
+                <% if businessexpense.status == "accepted" %>
+                    <td width="20px" class="row_button"><%= link_to "", reject_expense_businessexpense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>                
+                <% else %>
+                    <td width="20px" class="row_button"><%= link_to "", accept_expense_businessexpense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
+                <% end %>
+                <td width="20px" class="row_button"><%= link_to "", edit_businessexpense_path(businessexpense), class: 'line_edit_icon', title: "edit mileage record" %></td>
+                <td width="20px" class="row_button"><%= link_to "", businessexpense, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>

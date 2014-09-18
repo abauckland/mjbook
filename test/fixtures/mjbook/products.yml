@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  productcategory_id: 1
+  item: MyString
+  quantity: 9.99
+  unit_id: 1
+  cost: 9.99
+  vat: 9.99
+  price: 9.99
+
+two:
+  productcategory_id: 1
+  item: MyString
+  quantity: 9.99
+  unit_id: 1
+  cost: 9.99
+  vat: 9.99
+  price: 9.99

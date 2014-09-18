@@ -1,0 +1,38 @@
+
+
+//scredn sizes for change to header
+//if these are changed also need to change settings in functions contained within jquery files
+$large_menu: 1050px;
+$medium_menu: 800px;
+$small_menu: 400px;
+
+$heading_font: "Trebuchet MS", Trebuchet, "Liberation Sans", sans-serif;
+$standard_font: Arial,Helvetica,sans-serif;
+$guide_text_color: #006699;
+$error_text_color: #ff3300;
+$confirm_text_color: #404040;
+$bold_text_color: #404040; 
+
+
+//background gradient image
+@mixin dark_grey_46_gradient {background: image-url('dark_grey_46.png') repeat-x};
+@mixin dark_grey_38_gradient {background: image-url('dark_grey_38.png') repeat-x};
+
+@mixin light_grey_32_gradient {background: image-url('light_grey_32.png') repeat-x};
+@mixin light_grey_24_gradient {background: image-url('light_grey_24.png') repeat-x};
+
+@mixin red_28_gradient {background: image-url('red_28.png') repeat-x};
+@mixin inverted_red_28_gradient {background: image-url('inverted_red_28.png') repeat-x}; 
+
+@mixin green_28_gradient {background: image-url('green_28.png') repeat-x};
+@mixin inverted_green_28_gradient {background: image-url('inverted_green_28.png') repeat-x};
+
+
+@mixin orange_28_gradient {background: image-url('orange_28.png') repeat-x};
+@mixin inverted_orange_28_gradient {background: image-url('inverted_orange_28.png') repeat-x};
+
+//button sass
+@mixin border-radius($var) {-moz-border-radius:$var; -webkit-border-radius:$var; border-radius:$var;}
+
+@mixin shadow-all($shadows...) {-moz-box-shadow: $shadows; -webkit-box-shadow: $shadows; box-shadow: $shadows;}
+@mixin button-box-shadow($colour) {-moz-box-shadow:inset 0px 1px 0px 0px $colour; -webkit-box-shadow:inset 0px 1px 0px 0px $colour; box-shadow:inset 0px 1px 0px 0px $colour;} 
