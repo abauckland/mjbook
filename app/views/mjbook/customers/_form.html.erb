@@ -11,53 +11,55 @@
                 </ul>
             </div>
         <% end %>
+
+        <%= form_for(@customer) do |f| %>
+        <%= f.hidden_field :company_id, :value => current_user.company_id %>  
     
         <div class="sub_column_linked_1">
                  <div class="column_content">
                         <div class="column_form">
-                    <%= form_for(@customer) do |f| %>
-                        <%= f.hidden_field :user_id, :value => current_user.id %>  
+
                         
                             <div class="column_form_item">
-                                <label class="column_form_label">Title:</label>                        
+                                <label class="column_form_label" style="width:80px">Title:</label>                        
                                 <div class="column_form_input"><%= f.text_field :title %></div>
                                 <div class="column_help_tooltip" id="customer_title"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">First Name:</label>                        
+                                <label class="column_form_label" style="width:80px">First Name:</label>                        
                                 <div class="column_form_input"><%= f.text_field :first_name %></div>
                                 <div class="column_help_tooltip" id="customer_first_name"></div>
     			                 <div class="column_error_note"> <%= error_check(@customer, :first_name)%></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Surname:</label>                        
+                                <label class="column_form_label" style="width:80px">Surname:</label>                        
                                 <div class="column_form_input"><%= f.text_field :surname %></div>
                                 <div class="column_help_tooltip" id="customer_surname"></div> 
     			                 <div class="column_error_note"> <%= error_check(@customer, :surname)%></div>   
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Position:</label>                        
+                                <label class="column_form_label" style="width:80px">Position:</label>                        
                                 <div class="column_form_input"><%= f.text_field :position %></div>
                                 <div class="column_help_tooltip" id="customer_position"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">E-mail:</label>                        
+                                <label class="column_form_label" style="width:80px">E-mail:</label>                        
                                 <div class="column_form_input"><%= f.email_field :email %></div>
                                 <div class="column_help_tooltip" id="customer_email"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Tel:</label>                        
+                                <label class="column_form_label" style="width:80px">Tel:</label>                        
                                 <div class="column_form_input"><%= f.text_field :phone %></div>
                                 <div class="column_help_tooltip" id="customer_phone"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Alternative Tel::</label>                        
+                                <label class="column_form_label" style="width:80px">Alt. Tel:</label>                        
                                 <div class="column_form_input"><%= f.text_field :alt_phone %></div>
                                 <div class="column_help_tooltip" id="customer_alt_phone"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Company:</label>                        
-                                <div class="column_form_input"><%= f.text_field :company %></div>
+                                <label class="column_form_label" style="width:80px">Company:</label>                        
+                                <div class="column_form_input"><%= f.text_field :company_name %></div>
                                 <div class="column_help_tooltip" id="customer_company"></div>  
                             </div>
                 </div>
@@ -68,34 +70,34 @@
                 <div class="column_form">
     
                             <div class="column_form_item">
-                                <label class="column_form_label">Address 1:</label>                        
+                                <label class="column_form_label" style="width:80px">Address 1:</label>                        
                                 <div class="column_form_input"><%= f.text_field :address_1 %></div>
                                 <div class="column_help_tooltip" id="customer_address_1"></div>
     			                 <div class="column_error_note"> <%= error_check(@customer, :address_1)%></div>     
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Address 2:</label>                        
+                                <label class="column_form_label" style="width:80px">Address 2:</label>                        
                                 <div class="column_form_input"><%= f.text_field :address_2 %></div>
                                 <div class="column_help_tooltip" id="customer_address_2"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">City:</label>                        
+                                <label class="column_form_label" style="width:80px">City:</label>                        
                                 <div class="column_form_input"><%= f.text_field :city %></div>
                                 <div class="column_help_tooltip" id="customer_city"></div>
     			                 <div class="column_error_note"> <%= error_check(@customer, :city)%></div>     
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">County:</label>                        
+                                <label class="column_form_label" style="width:80px">County:</label>                        
                                 <div class="column_form_input"><%= f.text_field :county %></div>
                                 <div class="column_help_tooltip" id="customer_county"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Country:</label>                        
+                                <label class="column_form_label" style="width:80px">Country:</label>                        
                                 <div class="column_form_input"><%= f.text_field :country %></div>
                                 <div class="column_help_tooltip" id="customer_country"></div>  
                             </div>
                             <div class="column_form_item">
-                                <label class="column_form_label">Postcode:</label>                        
+                                <label class="column_form_label" style="width:80px">Postcode:</label>                        
                                 <div class="column_form_input"><%= f.text_field :postcode %></div>
                                 <div class="column_help_tooltip" id="customer_postcode"></div>  
                             </div>
@@ -108,7 +110,7 @@
             <div class="column_content">
                 <div class="column_form">    
                     <div class="column_form_item">
-                        <label class="column_form_label">Notes:</label>                        
+                        <label class="column_form_label" style="width:80px">Notes:</label>                        
                         <div class="column_form_input"><%= f.text_area :notes, :rows => "10"  %></div>
                         <div class="column_help_tooltip" id="customer_motes"></div>  
                     </div>    

@@ -1,8 +1,11 @@
 module Mjbook
   class Supplier < ActiveRecord::Base
-    
-    has_many :expenses
+    #relationship with model in main app
     belongs_to :company
+        
+    has_many :expenses
+    
+    validates_presence_of :company_name   
 
     def name
       return title+' '+first_name+' '+surname

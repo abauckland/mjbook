@@ -29,6 +29,11 @@
   }
   @media screen and (max-width: $medium_menu) {
     .table_content_with_title {
+      top:95px;
+    }
+  }
+  @media screen and (max-width: $small_menu) {
+    .table_content_with_title {
       top:85px;
     }
   }

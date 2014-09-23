@@ -56,7 +56,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def customer_params
-        params.require(:customer).permit(:company_id, :title, :first_name, :surname, :position, :address_1, :address_2, :city, :county, :country, :postcode, :phone, :alt_phone, :email, :company, :notes)
+        params.require(:customer).permit(:company_id, :title, :first_name, :surname, :position, :address_1, :address_2, :city, :county, :country, :postcode, :phone, :alt_phone, :email, :company_name, :notes)
       end
   end
 end

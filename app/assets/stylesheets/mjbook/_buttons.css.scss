@@ -32,7 +32,9 @@
 @mixin green-button {border-color: #b0db64; @include green_28_gradient; @include button-box-shadow(#a4e271);
                       &:hover {@include inverted_green_28_gradient; }}
 @mixin orange-button {border-color: #ebc178; @include orange_28_gradient; @include button-box-shadow(#f29c93);
-                      &:hover {@include inverted_orange_28_gradient; }}                      
+                      &:hover {@include inverted_orange_28_gradient; }} 
+@mixin dark-grey-button {border-color: #ddd; @include dark_grey_28_gradient; @include button-box-shadow(#aaa);
+                      &:hover {@include inverted_dark_grey_28_gradient; }}                                           
                       
 //table row icons
 @mixin menu_icons($var) {
@@ -52,16 +54,24 @@
     }
 }
 
-.line_new_icon {@include menu_icons(-0px);}
+.line_new_icon {@include menu_icons(-520px);}
 .line_edit_icon {@include menu_icons(-80px);}
 .line_delete_icon {@include menu_icons(-120px);}
 .line_move_icon {@include menu_icons(-0px);}
 
-.line_up_icon {@include menu_icons(-0px);}
-.line_down_icon {@include menu_icons(-0px);}
+.line_up_icon {@include menu_icons(-680px);}
+.line_down_icon {@include menu_icons(-720px);}
 
-.table_pdf_icon {@include menu_icons(-440px);}
-.table_csv_icon {@include menu_icons(-440px);}
+.line_view_icon {@include menu_icons(-760px);}
+.line_show_icon {@include menu_icons(-800px);}
+
+.line_accept_icon {@include menu_icons(-840px);}
+.line_reject_icon {@include menu_icons(-880px);}
+
+.line_mileage_icon {@include menu_icons(-920px);}
+
+.table_pdf_icon {@include menu_icons(-1000px);}
+.table_csv_icon {@include menu_icons(-960px);}
 
 
 //form action icons

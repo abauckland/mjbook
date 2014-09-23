@@ -1,4 +1,4 @@
 module Mjbook
-  module ExpensesHelper
+  module BusinessexpensesHelper
   end
 end

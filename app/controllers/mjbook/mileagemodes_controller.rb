@@ -6,6 +6,7 @@ module Mjbook
 
     # GET /mileagemodes/1/edit
     def edit
+      @mileagemodes = Mileagemode.where(:company_id => current_user.company_id)
     end
 
     # POST /mileagemodes
@@ -22,7 +23,7 @@ module Mjbook
     # PATCH/PUT /mileagemodes/1
     def update
       if @mileagemode.update(mileagemode_params)
-        redirect_to @mileagemode, notice: 'Mileagemode was successfully updated.'
+        redirect_to edit_mileagemode_path(current_user.company_id), notice: 'Mileagemode was successfully updated.'
       else
         render :edit
       end

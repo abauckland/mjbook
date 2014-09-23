@@ -26,13 +26,18 @@
       top:95px;
     }
   }
+  @media screen and (max-width: $small_menu) {
+    .content {
+      top:85px;
+    }
+  }
+
 
 .column_1, .column_2, .column_3, .column_1_2 {
   float: left;
   border: 2px solid #dddddd;
   padding: 10px 10px 10px 10px;
   @include border-radius(4px);
-//  height: 400px;
   background: #fff;
   }
 
@@ -40,10 +45,21 @@
 .column_content{
   position: relative;
 }
-
-
-.column_blank{
+ 
+.column_2_blank{
+  display: block;
   background: #eee;
+  }  
+   @media screen and (max-width: 640px) {
+    .column_2_blank {display: none;}
+  } 
+
+.column_3_blank{
+  display: block;
+  background: #eee;
+  }  
+   @media screen and (max-width: 960px) {
+    .column_3_blank {display: none;}
   }
 
 .column_sub_content{
@@ -90,11 +106,11 @@
   border-top: 2px solid #dddddd;
   }
 
-.column_form td{
+.column_form{
   @include column_text;
   padding: 5px 0px 0px 0px;
   vertical-align: top;
-  text-align: right;
+  text-align: left;
 }
 
 .column_form_item{
@@ -102,29 +118,55 @@
   padding: 5px 0px 5px 0px;  
 }
 
+.column_form_item_dd-select{
+  clear: both;
+  height: 50px;
+  padding: 5px 0px 5px 0px;   
+}
+
 .column_form_label{
   float: left;
-  width: 100px;
+
   font-size: 1.2rem;
   font-weight: bold; 
   padding: 5px 0px 5px 0px;
   color: $bold_text_color;   
 }
 
+
 .column_form_input {
  float: left;  
+ width: 100px; //width set so that jquery can calculate height of form in column
 }
 
-.column_form_input input[type=text]{
+.column_form_input input{
  float: left;
+ width: 100px; //width set so that jquery can calculate height of form in column
+}
+
+.column_form_input input[type="date"]{
+ float: left;
+ width: 130px; //width set so that jquery can calculate height of form in column
+}
+
+.column_form_input input[type="time"]{
+ float: left;
+ width: 130px; //width set so that jquery can calculate height of form in column
 }
 
 .column_form_input select{
  float: left;
+ width: 100px; //width set so that jquery can calculate height of form in column
 }
 
 .column_form_input textarea{
  float: left;
+ width: 100px; //width set so that jquery can calculate height of form in column
+}
+
+.column_form_image_input{
+  float: left;
+  height: 60px;  
 }
 
 .column_help_tooltip{
@@ -186,8 +228,7 @@
   padding: 0px 0px 0px 28px;
   @include form_icons(-160px);
   cursor: pointer;
-  &:hover{
-    text-decoration:underline;    
-  }
+  &:hover{text-decoration:underline;    }
+  &:visited{color: red;}  
 }
 

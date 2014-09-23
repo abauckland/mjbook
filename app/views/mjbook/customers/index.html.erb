@@ -1,5 +1,8 @@
 <div class="page_title">
     <h1>Customers</h1>
+    
+    <div class="page_title_button"><%= link_to "add new customer", new_customer_path %> </div>
+    
 </div>
 
  <div class="table_content_with_title">
@@ -32,16 +35,16 @@
         			<p><%= customer.address_2 %></p>
         			<p><%= customer.city %></p>
         			<p><%= customer.county %></p>
-        			<p><%= customer.full_country %></p>
+        			<p><%= customer.country %></p>
         			<p><%= customer.postcode %></p>
                 </td>
                 <td class="mob_cell"><%= customer.phone %></td>
                 <td class="tab_cell"><%= customer.alt_phone %></td>
                 <td class="tab_cell"><%= customer.email %></td>
-                <td class="lrg_cell"><%= customer.company %></td>
+                <td class="lrg_cell"><%= customer.company_name %></td>
                 <td class="lrg_cell"><%= customer.notes %></td>
-                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_edit_icon', title: "edit customer" %></td>
-                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_delete_icon', title: "delete customer" %></td>
+                <td width="20px" class="row_button"><%= link_to "", edit_customer_path(customer), class: 'line_edit_icon', title: "edit customer" %></td>
+                <td width="20px" class="row_button"><%= link_to "", customer, method: :delete, class: 'line_delete_icon', title: "delete customer" %></td>
               </tr>
             <% end %>
           </tbody>

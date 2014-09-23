@@ -18,6 +18,10 @@ $bold_text_color: #404040;
 @mixin dark_grey_46_gradient {background: image-url('dark_grey_46.png') repeat-x};
 @mixin dark_grey_38_gradient {background: image-url('dark_grey_38.png') repeat-x};
 
+@mixin dark_grey_28_gradient {background: image-url('dark_grey_28.png') repeat-x};
+@mixin inverted_dark_grey_28_gradient {background: image-url('inverted_dark_grey_28.png') repeat-x};
+
+
 @mixin light_grey_32_gradient {background: image-url('light_grey_32.png') repeat-x};
 @mixin light_grey_24_gradient {background: image-url('light_grey_24.png') repeat-x};
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909192938) do
+ActiveRecord::Schema.define(version: 20140915220637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,8 +59,94 @@ ActiveRecord::Schema.define(version: 20140909192938) do
     t.datetime "updated_at"
   end
 
+  create_table "mjbook_expenditures", force: true do |t|
+    t.decimal  "amount_paid",    precision: 8, scale: 2
+    t.datetime "date"
+    t.string   "ref"
+    t.string   "method"
+    t.integer  "user_id"
+    t.string   "expend_receipt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_expenseexpends", force: true do |t|
+    t.string   "expense_id"
+    t.string   "expenditure_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_expenses", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.integer  "supplier_id"
+    t.integer  "hmrcexpcat_id"
+    t.datetime "issue_date"
+    t.datetime "due_date"
+    t.decimal  "amount",        precision: 8, scale: 2
+    t.decimal  "vat",           precision: 8, scale: 2
+    t.string   "receipt"
+    t.integer  "recurrence"
+    t.string   "ref"
+    t.string   "supplier_ref"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_hmrcexpcats", force: true do |t|
+    t.string   "category"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mjbook_invoicemethods", force: true do |t|
     t.string   "method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_mileagemodes", force: true do |t|
+    t.integer  "company_id"
+    t.string   "mode"
+    t.decimal  "rate",       precision: 8, scale: 2
+    t.decimal  "hmrc_rate",  precision: 8, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_mileages", force: true do |t|
+    t.integer  "project_id"
+    t.integer  "mileagemode_id"
+    t.integer  "user_id"
+    t.integer  "hmrcexpcat_id"
+    t.string   "start"
+    t.string   "finish"
+    t.integer  "return"
+    t.decimal  "distance",       precision: 4, scale: 0
+    t.datetime "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_productcategories", force: true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_products", force: true do |t|
+    t.integer  "company_id"
+    t.integer  "productcategory_id"
+    t.string   "item"
+    t.decimal  "quantity",           precision: 8, scale: 0
+    t.integer  "unit_id"
+    t.decimal  "cost",               precision: 8, scale: 2
+    t.decimal  "vat",                precision: 3, scale: 0
+    t.decimal  "price",              precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -3,14 +3,8 @@
 <nav class="lrg_menu">                    
     <div class='menu_container'>                                                                    
         <ul class="left_menu">                                                  
-                <li class="has_sub"><%= link_to "Home", nil %> </li>
-                <li class="has_sub"><%= link_to "Jobs", nil %> 
-                    <ul class="sub_menu">
-                        <li><%= link_to "Create Job", nil %> </li>
-                        <li><%= link_to "Current Jobs", nil %> </li>
-                        <li><%= link_to "Historic Jobs", nil %> </li>
-                    </ul>                              
-                </li>
+                <li><%= link_to "Dashboard", main_app.dashboards_path %> </li>
+                <li><%= link_to "Summary", summaries_path %> </li>
                 <li class="has_sub"><%= link_to "Quotes", nil %> 
                     <ul class="sub_menu">
                         <li><%= link_to "Create Quote", nil %> </li>
@@ -27,13 +21,13 @@
                 </li>                
                 <li class="has_sub"><%= link_to "Expenses", nil %>
                     <ul class="sub_menu">
-                        <li><%= link_to "Business", businessexpenses_path %> </li>
-                        <li><%= link_to "Employee", personalexpenses_path %> </li>                                        
+                        <li><%= link_to "Business", business_path %> </li>
+                        <li><%= link_to "Employee", personal_path %> </li>                                        
                     </ul>
                 </li> 
                 <li class="has_sub"><%= link_to "Expenditure", nil %>
                     <ul class="sub_menu">
-                        <li><%= link_to "Payments Pending", pending_expenditures_path %> </li>
+                        <li><%= link_to "Payments Pending", pendingexpends_path %> </li>
                         <li><%= link_to "Expenditure Records", expenditures_path %> </li>                                        
                     </ul>
                 </li>     
@@ -45,10 +39,10 @@
                 </li>     
                 <li class="has_sub"><%= link_to "Settings", nil %>
                     <ul class="sub_menu">
-                        <li><%= link_to "Customers", nil %> </li>
-                        <li><%= link_to "Suppliers", nil %> </li>
-                        <li><%= link_to "Employees", nil %> </li>
-                        <li><%= link_to "Mileage Allowances", nil %> </li>                                      
+                        <li><%= link_to "Jobs", projects_path %> </li>
+                        <li><%= link_to "Customers", customers_path %> </li>
+                        <li><%= link_to "Suppliers", suppliers_path %> </li>
+                        <li><%= link_to "Mileage Allowances", edit_mileagemode_path(current_user.company_id) %> </li>                                      
                     </ul>  
                 </li>                                 
         </ul>                       
@@ -61,35 +55,13 @@
 <nav class="lrg_menu_mob">                    
     <div class='menu_container_mob'>                                                                    
         <ul class="left_menu_mob">                                                  
-                <li class="has_sub_mob"><%= link_to "HOME", nil %> </li>
-                <li class="has_sub_mob"><%= link_to "JOBS", nil %> 
-                    <ul class="sub_menu_mob">
-                        <li><%= link_to "Create Job", nil %> </li>
-                        <li><%= link_to "Current Jobs", nil %> </li>
-                        <li><%= link_to "Historic Jobs", nil %> </li>
-                    </ul>                              
-                </li>
-                <li class="has_sub_mob"><%= link_to "QUOTES", nil %> 
-                    <ul class="sub_menu_mob">
-                        <li><%= link_to "Create Quote", nil %> </li>
-                        <li><%= link_to "Current Quotes", nil %> </li>
-                        <li><%= link_to "Historic Quotes", nil %> </li>
-                    </ul>                              
-                </li>
-                <li class="has_sub_mob"><%= link_to "INVOICES", nil %> 
-                    <ul class="sub_menu_mob">
-                        <li><%= link_to "Create Invoice", nil %> </li>
-                        <li><%= link_to "Current Invoices", nil %> </li>
-                        <li><%= link_to "Historic Invoices", nil %> </li>                                       
-                    </ul>                              
-                </li>                
-                <li class="has_sub_mob"><%= link_to "EXPENSES", nil %>
-                    <ul class="sub_menu_mob">
-                        <li><%= link_to "Payments Pending", pending_expenditures_path %> </li>
-                        <li><%= link_to "Expenditure Records", expenditures_path %> </li>                                        
-                    </ul>
-                </li> 
-                <li class="has_sub_mob"><%= link_to "EXPENDITURE", nil %>
+                <li><%= link_to "Dashboard", main_app.dashboards_path %> </li>
+                <li><%= link_to "Summary", nil %> </li>
+                <li><%= link_to "Quotes", nil %></li>
+                <li><%= link_to "Invoices", nil %></li>                
+                <li><%= link_to "Business Expenses", business_path %> </li>
+                <li><%= link_to "Personal Expenses", personal_path %> </li> 
+                <li class="has_sub_mob"><%= link_to "Expenditure", nil %>
                     <ul class="sub_menu_mob">
                         <li><%= link_to "Payments Pending", nil %> </li>
                         <li><%= link_to "Record Payment", nil %> </li>
@@ -101,14 +73,15 @@
                         <li><%= link_to "Record Income", nil %> </li>
                         <li><%= link_to "Income Records", nil %> </li>                                       
                     </ul>
-                </li>     
-                <li class="has_sub_mob"><%= link_to "SETTINGS", nil %>
-                    <ul class="sub_menu_mob">
-                        <li><%= link_to "Customers", nil %> </li>
-                        <li><%= link_to "Suppliers", nil %> </li>
-                        <li><%= link_to "Employees", nil %> </li>                                       
+                </li>                             
+                <li class="has_sub"><%= link_to "Settings", nil %>
+                    <ul class="sub_menu">
+                        <li><%= link_to "Jobs", projects_path %> </li>
+                        <li><%= link_to "Customers", customers_path %> </li>
+                        <li><%= link_to "Suppliers", suppliers_path %> </li>
+                        <li><%= link_to "Mileage Allowances", edit_mileagemode_path(1) %> </li>                                      
                     </ul>  
-                </li>                                
+                </li>
         </ul>                      
     </div>                      
 </nav>

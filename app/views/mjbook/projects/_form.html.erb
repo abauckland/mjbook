@@ -1,13 +1,7 @@
-<ul class='column_tabs'>
-    <li class="tab_1"><a href='#div_1'>div_1</a></li>
-    <li class="tab_2"><a href='#div_2'>div_2</a></li>
-    <li class="tab_3"><a href='#div_3'>div_3</a></li>
-</ul>
-    
-<div class="tabulated_content">           
-    <div class="column_tabulated_1 column_blank" id="div_1">
+<div class="content">
+    <div class="column_1">
         <div class="column_content">
-        
+            
             <% if @project.errors.any? %>
             <div class="column_error">
             <p><%= pluralize(@project.errors.count, "error") %> prohibited this project from being created</p>
@@ -22,33 +16,39 @@
             <div class="column_sub_content">
                 <div class="column_form">
                 <%= form_for(@project) do |f| %>
-                    <%= f.hidden_field :company_id, :value => "" %>    
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>    
                     
                         <div class="column_form_item">
-                            <label class="column_form_label">Reference:*</label>                        
+                            <label class="column_form_label" style="width:100px">Reference:*</label>                        
                             <div class="column_form_input"><%= f.text_field :ref %></div>
                             <div class="column_help_tooltip" id="project_ref"></div>
                             <div class="column_error_note"> <%= error_check(@project, :ref)%></div>   
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Title:*</label>                        
+                            <label class="column_form_label" style="width:100px">Title:*</label>                        
                             <div class="column_form_input"><%= f.text_field :title %></div>
                             <div class="column_help_tooltip" id="project_title"></div>
                             <div class="column_error_note"> <%= error_check(@project, :title)%></div>   
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Customer:</label>                        
-                            <div class="column_form_input"><%= f.select :customer_id, ['test 2','test 1'] %></div>
+                            <label class="column_form_label" style="width:100px">Customer*:</label>                        
+                        <% if @customers %>
+                            <div class="column_form_input"><%= f.collection_select(:customer_id, @customers, :id, :name, {:prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="project_customer"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Description:</label>                        
+                            <label class="column_form_label" style="width:100px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "add new customer", new_customer_path %></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Description:</label>                        
                             <div class="column_form_input"><%= f.text_area :description, :rows => "5" %></div>
                             <div class="column_help_tooltip" id="project_description"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Invoice Method:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:invoicemethod_id, Mjbook::Invoicemethod.all, :id, :method, {:selected => @project.invoicemethod_id, :prompt => :true})%></div>
+                            <label class="column_form_label" style="width:100px">Invoice Method*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:invoicemethod_id, Mjbook::Invoicemethod.all, :id, :method, {:selected => @project.invoicemethod_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="project_invoicemethod"></div>  
                         </div>
                 </div>
@@ -65,6 +65,6 @@
             
         </div>
     </div>
-    <div class="column_tabulated_2 column_blank" id="div_2">col 2</div> 
-    <div class="column_tabulated_3 column_blank" id="div_3">col 3</div>    
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
 </div>

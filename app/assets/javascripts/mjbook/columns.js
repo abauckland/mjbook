@@ -28,49 +28,101 @@ var window_width = $(window).width();
 function columns_height(s_tab, mob, limit, col_1, col_2, col_3, col_1_footer) {
 
 	var sub_column_location = 0;
+	var footerHeight = 40;
 	var window_width = $(window).width();
 
 	if(window_width <= limit) {
-  		var footer_location = col_1-col_1_footer;
+
   		//reset
 		$('.column_1').height((col_1)+'px');
-		$('.column_1').children('.column_content').children('.column_footer').css('top', footer_location+'px');
+		$('.column_2').height((col_2)+'px').css({'margin-top':'10px'});		
+		$('.column_3').height((col_3)+'px').css({'margin-top':'10px'});	
 
-	//	$('.column_2').height((col_2)+'px');
-	//	$('.column_3').height((col_3)+'px');  	
-  		//('.column_content').outerHeight(true);  		
+		if ($('.column_1').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_1').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_1_location = sub_column_location + col_1 - footerHeight;
+		}else{
+			var footer_1_location = sub_column_location + col_1 - footerHeight;								
+		}	
+		
+		if ($('.column_2').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_2').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_2_location = sub_column_location + col_2 - footerHeight;
+		}else{
+			var footer_2_location = sub_column_location + col_2 - footerHeight;								
+		}
+		
+		if ($('.column_3').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_3').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_3_location = sub_column_location + col_3 - footerHeight;
+		}else{
+			var footer_3_location = sub_column_location + col_3 - footerHeight;								
+		}
 					
 	}else if(window_width <= mob && window_width > limit) {
   		//reset				
-		$('.column_3').height((col_3)+'px'); 
+		$('.column_3').height((col_3)+'px').css({'margin-top':'10px'}); 
 		//set height	
 		var highestCol = Math.max(col_1, col_2);
-		$('.column_1, .column_2').height(highestCol+'px');
+		$('.column_1, .column_2').height(highestCol+'px').css({'margin-top':'0px'});
+
+
+
+		if ($('.column_1').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_1').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_1_location = sub_column_location + highestCol - footerHeight;
+		}else{
+			var footer_1_location = sub_column_location + highestCol - footerHeight;								
+		}	
+		
+		if ($('.column_2').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_2').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_2_location = sub_column_location + highestCol - footerHeight;
+		}else{
+			var footer_2_location = sub_column_location + highestCol - footerHeight;								
+		}
+		
+		if ($('.column_3').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_3').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_3_location = sub_column_location + col_3 - footerHeight;
+		}else{
+			var footer_3_location = sub_column_location + col_3 - footerHeight;								
+		}
+
+
 	}else{
   		var highestCol = Math.max(col_1, col_2, col_3);
-  		$('.column_1, .column_2, .column_3').height(highestCol+'px');
+  		$('.column_1, .column_2, .column_3').height(highestCol+'px').css({'margin-top':'0px'});
+
+
+		if ($('.column_1').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_1').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_1_location = sub_column_location + highestCol - footerHeight;
+		}else{
+			var footer_1_location = sub_column_location + highestCol - footerHeight;								
+		}	
+		
+		if ($('.column_2').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_2').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_2_location = sub_column_location + highestCol - footerHeight;
+		}else{
+			var footer_2_location = sub_column_location + highestCol - footerHeight;								
+		}
+		
+		if ($('.column_3').children('.column_content').children('.column_error').length){	
+			var sub_column_location = $('.column_3').children('.column_content').children('.column_error').outerHeight(true) + 10;
+			var footer_3_location = sub_column_location + highestCol - footerHeight;
+		}else{
+			var footer_3_location = sub_column_location + highestCol - footerHeight;								
+		}
+
 	}
-			
-	//if ($('.column_error').length){	
-	//	var sub_column_location = $('.column_error').outerHeight(true) + 10;						
-	//}	
-	//var footer_location = highestCol + sub_column_location+ 10;
-	//var total_height_container = footer_location + 25;
-				
-	//set positions of content, line and footer	
-	//$('.column_line').css('top', footer_location+'px');
-	//$('.column_footer').css('top', footer_location+'px');
+	$('.column_1').children('.column_content').children('.column_footer').css('top', footer_1_location+'px');
+	$('.column_2').children('.column_content').children('.column_footer').css('top', footer_2_location+'px');		
+	$('.column_3').children('.column_content').children('.column_footer').css('top', footer_3_location+'px');
 												
 };
 
-
-function input_width() {
-	var w = $('.column_form_item').width();
-	$('.column_form_input').css({'width': (w-125) + 'px'});
-	$('.column_form_input input[type=text]').css({'width': (w-125) + 'px'});
-	$('.column_form_input select').css({'width': (w-125 + 4) + 'px'});
-	$('.column_form_input textarea').css({'width': (w-125 - 2) + 'px'});
-};
 
 $(document).ready(function(){
 
@@ -83,35 +135,51 @@ $(document).ready(function(){
 //$medium_menu: 800px;
 //$small_menu: 400px;
 
-	if ($('.column_1').find('.column_error').length){
-		var col_1c = $('.column_1').find('.column_error').outerHeight(true);
-	}else{
-		var col_1c = 0;	
-	}
-	var col_1_footer = $('.column_1').find('.column_linked_footer').outerHeight(true);
-	var col_1b = $('.column_1').find('.column_form').outerHeight(true);	
-	var col_1 = col_1b;
-			
-	var col_2a = $('.column_2').find('.column_linked_footer').outerHeight(true);
-	var col_2b = $('.column_2').find('.column_form').outerHeight(true);
-	var col_2c = $('.column_2').find('.column_error').outerHeight(true);
-	var col_2 = col_2a + col_2b + col_2c;
+
+	var select_count = $('.column_1').find('select.full_width').length;
+	var select_height = select_count*32
+
+	var text_field_count = $('.column_1').find('.column_form_input input[type=text]').length;
+	var text_field_height = text_field_count*32
+
+	var url_field_count = $('.column_1').find('.column_form_input input[type=url]').length;
+	var url_field_height = url_field_count*32
+
+	var file_field_count = $('.column_1').find('.column_form_input input[type=file]').length;
+	var file_field_height = file_field_count*40
+
+	var time_field_count = $('.column_1').find('.column_form_input input[type=time]').length;
+	var time_field_height = time_field_count*32
 	
-	var col_3a = $('.column_3').find('.column_linked_footer').outerHeight(true);
-	var col_3b = $('.column_3').find('.column_form').outerHeight(true);
-	var col_3c = $('.column_3').find('.column_error').outerHeight(true);
-	var col_3 = col_3a + col_3b + col_3c;
+	var date_field_count = $('.column_1').find('.column_form_input input[type=date]').length;
+	var date_field_height = date_field_count*32
+
+	var colour_field_count = $('.column_1').find('.column_form_input input[type=color]').length;
+	var colour_field_height = colour_field_count*40
+	
+	var dd_field_count = $('.column_1').find('.column_form_item_dd-select').length;
+	var dd_field_height = dd_field_count*80
+
+
+	var col_1 = 40+ select_height + text_field_height + url_field_height + file_field_height + time_field_height + date_field_height + colour_field_height + dd_field_height//$('.column_1').find('.column_form').outerHeight(true);	
+
+			
+	var col_2 = $('.column_2').find('.column_form').outerHeight(true);
+
+	
+	var col_3 = $('.column_3').find('.column_form').outerHeight(true);
+
 
 //Set size and location of elements depending on screen size	
 
 	column_width(s_tab, mob, limit);//set column width depending on size of window
 	column_width(s_tab, mob, limit);//set column width depending on size of window
-	columns_height(s_tab, mob, limit, col_1, col_2, col_3, col_1_footer);//set column height depending on size of window	
-	input_width();
+	columns_height(s_tab, mob, limit, col_1, col_2, col_3);//set column height depending on size of window	
+
 	$(window).resize(function(){
 		column_width(s_tab, mob, limit);//set column width depending on size of window
-		columns_height(s_tab, mob, limit, col_1, col_2, col_3, col_1_footer);//set column height depending on size of window	
-		input_width();
+		columns_height(s_tab, mob, limit, col_1, col_2, col_3);//set column height depending on size of window	
+
 	});
 
 

@@ -1,5 +1,6 @@
 <div class="page_title">
     <h1>Project List</h1>
+    <div class="page_title_button"><%= link_to "add new project", new_project_path %> </div>
 </div>
 
  <div class="table_content_with_title">
@@ -24,12 +25,12 @@
               <tr>
                 <td class="mob_cell"><%= project.ref %></td>
                 <td class="tab_cell"><%= project.title %></td>
-                <td class="mob_cell"><%= project.customer_id %></td>
+                <td class="mob_cell"><%= project.customer.name %></td>
                 <td class="lrg_cell"><%= project.description %></td>
                 <td class="lrg_cell"><%= project.invoicemethod_id %></td>
                 <td class="lrg_cell"><%= project.customer_ref %></td>
-                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_edit_icon', title: "edit project" %></td>
-                <td width="20px" class="row_button"><%= link_to "", nil, class: 'line_delete_icon', title: "delete project" %></td>
+                <td width="20px" class="row_button"><%= link_to "", edit_project_path(project), class: 'line_edit_icon', title: "edit project" %></td>
+                <td width="20px" class="row_button"><%= link_to "", project, method: :delete, class: 'line_delete_icon', title: "delete project" %></td>
               </tr>
             <% end %>
           </tbody>

@@ -11,8 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery_ujs
 //= require mjbook/nav.js
 //= require mjbook/columns.js
 //= require mjbook/columns_linked.js
-//= require mjbook/columns_tabulated.js
 //= require_tree .

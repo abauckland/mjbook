@@ -1,49 +1,54 @@
-<p id="notice"><%= notice %></p>
+<div class="page_title">
+    <h1>Show Mileage Record</h1>
+</div>
 
-<p>
-  <strong>Job:</strong>
-  <%= @mileage.job_id %>
-</p>
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
 
-<p>
-  <strong>Mileagemode:</strong>
-  <%= @mileage.mileagemode_id %>
-</p>
+            <div class="column_sub_content">
+                <div class="column_form">
+                      
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Job Reference:</label>                        
+                            <div class="column_form_input"><%= @mileage.project_id %></div>
+                        </div>
+                       
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Date:</label>                        
+                            <div class="column_form_input"><%= @mileage.date %></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Mode:</label>                        
+                            <div class="column_form_input"><%= @mileage.mileagemethod_idemode_id %></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Start:</label>                        
+                            <div class="column_form_input"><%= @mileage.start %></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Destination:</label>                        
+                            <div class="column_form_input"><%= @mileage.finish %></div> 
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Total Mileage:</label>                        
+                            <div class="column_form_input"><%= @mileage.distance %></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Single/Return:</label>                        
+                            <div class="column_form_input"><%= @mileage.return %></div> 
+                        </div>
 
-<p>
-  <strong>User:</strong>
-  <%= @mileage.user_id %>
-</p>
-
-<p>
-  <strong>Hmrcexpcat:</strong>
-  <%= @mileage.hmrcexpcat_id %>
-</p>
-
-<p>
-  <strong>Start:</strong>
-  <%= @mileage.start %>
-</p>
-
-<p>
-  <strong>Finish:</strong>
-  <%= @mileage.finish %>
-</p>
-
-<p>
-  <strong>Return:</strong>
-  <%= @mileage.return %>
-</p>
-
-<p>
-  <strong>Distance:</strong>
-  <%= @mileage.distance %>
-</p>
-
-<p>
-  <strong>Date:</strong>
-  <%= @mileage.date %>
-</p>
-
-<%= link_to 'Edit', edit_mileage_path(@mileage) %> |
-<%= link_to 'Back', mileages_path %>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_cancel"><%= link_to "cancel", personalexpenses_path %></div>
+           </div>
+            
+        </div>
+    </div>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

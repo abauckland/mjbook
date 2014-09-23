@@ -1,7 +1,7 @@
 class CreateMjbookMileages < ActiveRecord::Migration
   def change
     create_table :mjbook_mileages do |t|
-      t.integer :job_id
+      t.integer :project_id
       t.integer :mileagemode_id
       t.integer :user_id
       t.integer :hmrcexpcat_id

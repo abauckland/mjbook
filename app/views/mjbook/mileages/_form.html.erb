@@ -16,45 +16,52 @@
             <div class="column_sub_content">
                 <div class="column_form">
                 <%= form_for(@mileage) do |f| %>
-                    <%= f.hidden_field :current_user.id, :value => current_user.id %>
-		<%= f.hidden_field :hmrcexpcat_id, :value => "" %>       
+                    <%= f.hidden_field :current_user_id, :value => current_user.id %>
+		            <%= f.hidden_field :hmrcexpcat_id, :value => "" %>       
                     
                         <div class="column_form_item">
-                            <label class="column_form_label">Job Reference:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:project_id, Mjbook::Project.company, :id, :ref_name, {:selected => @mileage.project_id, :prompt => :true})%></div>
+                            <label class="column_form_label" style="width:100px">Job Reference:</label>                        
+                        <% if @projects %>
+                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @mileage.project_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="mileage_project"></div>
                             <div class="column_error_note"> <%= error_check(@mileage, :project_id)%></div>   
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Mode:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:mileagemethod_id, Mjbook::Mileagemethod.all, :id, :mode, {:selected => @mileage.mileagemethod_id, :prompt => :true})%></div>
+                            <label class="column_form_label" style="width:100px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "create new job", new_project_path %></div>  
+                        </div>
+                        
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Date:</label>                        
+                            <div class="column_form_input"><%= f.date_field :date, :value => Time.now.strftime('%Y-%m-%d') %></div>
+                            <div class="column_help_tooltip" id="mileage_date"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Mode:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:mileagemethod_id, Mjbook::Mileagemode.all, :id, :mode, {:selected => @mileage.mileagemode_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="mileage_mileagemethod"></div>
                             <div class="column_error_note"> <%= error_check(@mileage, :mileagemethod_id)%></div>   
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Start Location:</label>                        
+                            <label class="column_form_label" style="width:100px">Start:</label>                        
                             <div class="column_form_input"><%= f.text_field :start%></div>
                             <div class="column_help_tooltip" id="mileage_start"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Destination Location:</label>                        
+                            <label class="column_form_label" style="width:100px">Destination:</label>                        
                             <div class="column_form_input"><%= f.text_field :finish%></div>
                             <div class="column_help_tooltip" id="mileage_finish"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Distance:</label>                        
+                            <label class="column_form_label" style="width:100px">Total Mileage:</label>                        
                             <div class="column_form_input"><%= f.text_field :distance%></div>
                             <div class="column_help_tooltip" id="mileage_distance"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label">Single/Return:</label>                        
+                            <label class="column_form_label" style="width:100px">Single/Return:</label>                        
                             <div class="column_form_input"><%= f.check_box :return, {}, "single", "return" %></div>
                             <div class="column_help_tooltip" id="mileage_return"></div>  
-                        </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label">Date:</label>                        
-                            <div class="column_form_input"><%= f.date_field :date%></div>
-                            <div class="column_help_tooltip" id="mileage_date"></div>  
                         </div>
                 </div>
            </div>     
@@ -63,13 +70,12 @@
                 <div class="column_line"></div>
 
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", mileages_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", personalexpenses_path %></div>
                 <% end %>
-
            </div>
             
         </div>
     </div>
-    <div class="column_2 column_blank"></div> 
-    <div class="column_3 column_blank"></div> 
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
 </div>

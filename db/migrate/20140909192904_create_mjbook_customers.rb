@@ -15,7 +15,7 @@ class CreateMjbookCustomers < ActiveRecord::Migration
       t.string :phone
       t.string :alt_phone
       t.string :email
-      t.string :company
+      t.string :company_name
       t.text :notes
 
       t.timestamps

@@ -3,6 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class ProjectsController < ApplicationController
     before_action :set_project, only: [:show, :edit, :update, :destroy]
+    before_action :set_customers, only: [:new, :edit]
 
     # GET /projects
     def index
@@ -16,6 +17,7 @@ module Mjbook
     # GET /projects/new
     def new
       @project = Project.new
+
     end
 
     # GET /projects/1/edit
@@ -25,6 +27,7 @@ module Mjbook
     # POST /projects
     def create
       @project = Project.new(project_params)
+
 
       if @project.save
         redirect_to @project, notice: 'Project was successfully created.'
@@ -54,6 +57,10 @@ module Mjbook
         @project = Project.find(params[:id])
       end
 
+      def set_customers      
+        @customers = Customer.where(:company_id => current_user.company_id)
+      end
+      
       # Only allow a trusted parameter "white list" through.
       def project_params
         params.require(:project).permit(:company_id, :ref, :title, :customer_id, :description, :invoicemethod_id, :customer_ref)

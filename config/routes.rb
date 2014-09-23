@@ -1,17 +1,27 @@
 Mjbook::Engine.routes.draw do
 
   
-  resources :dashboards
- 
-  resources :businessexpenses do
-    get :accept_expense, :on => :member
-    get :reject_expense, :on => :member  
+  resources :summaries
+
+  resources :expenses do
+   # get :personal
+    get :edit_personal, :on => :member
+    get :new_personal, :on => :member
+
+    get :accept_personal, :on => :member
+    get :reject_personal, :on => :member  
+
+
+    get :edit_business, :on => :member
+
+    get :accept_business, :on => :member
+    get :reject_business, :on => :member      
   end
-  
-  resources :personalexpenses do
-    get :accept_expense, :on => :member
-    get :reject_expense, :on => :member  
-  end
+
+ get 'business', :to => 'expenses#business'
+ get 'new_business', :to => 'expenses#new_business'
+ get 'personal', :to => 'expenses#personal' 
+ get 'new_personal', :to => 'expenses#new_personal'
 
   resources :processexpenses do
     get :index_personal, :on => :member 
@@ -38,9 +48,7 @@ Mjbook::Engine.routes.draw do
   
   resources :expenseexpends
 
-  resources :expenditures do
-    get :pay_personal_expenses, :on => :member
-    get :pay_business_expenses, :on => :member 
-  end
-
+  resources :expenditures
+  
+  resources :pendingexpends
 end
