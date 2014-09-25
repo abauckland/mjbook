@@ -3,6 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class MileagesController < ApplicationController
     before_action :set_mileage, only: [:show, :edit, :update, :destroy]
+    before_action :set_projects, only: [:new, :edit]
 
     # GET /mileages
     def index
@@ -58,6 +59,11 @@ module Mjbook
       def set_mileage
         @mileage = Mileage.find(params[:id])
       end
+
+      def set_projects     
+        @projects = Project.where(:company_id => current_user.company_id)
+      end
+
 
       # Only allow a trusted parameter "white list" through.
       def mileage_params

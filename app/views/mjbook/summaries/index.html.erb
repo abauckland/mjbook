@@ -1,0 +1,132 @@
+<div class="page_title">
+    <h1>New Business Expenses</h1>
+</div>
+
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">            
+           <div class="column_sub_content">
+               <div class="column_linked_sub_title">Expenses Pending</div> 
+               <div id="expenses_bar_chart" class="column_bar_chart"></div> 
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_add"><%= link_to "add", nil %></div>
+                <div class="column_index"><%= link_to "list", nil %></div>
+           </div>            
+        </div>
+    </div>
+    <div class="column_2">
+        <div class="column_content">
+           
+            
+           <div class="column_sub_content">
+               <div class="column_linked_sub_title">Income Pending</div> 
+               <div id="income_bar_chart" class="column_bar_chart"></div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_add"><%= link_to "add", nil %></div>
+                <div class="column_index"><%= link_to "list", nil %></div>
+           </div>
+            
+        </div>
+    </div> 
+    <div class="column_3">
+        <div class="column_content">
+           
+            
+           <div class="column_sub_content">
+               <div class="column_linked_sub_title">Projected Balance</div> 
+               <div id="balance_bar_chart" class="column_bar_chart"></div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_add"><%= link_to "add", nil %></div>
+                <div class="column_index"><%= link_to "list", nil %></div>
+           </div>
+            
+        </div>
+    </div>  
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var e1 = [200, 600, 700, 1000]; //accepted
+        var e2 = [460, 210, 690, 820]; //accepted
+        var e3 = [260, 440, 320, 200]; //submitted    
+
+        var i1 = [200, 600, 700, 1000]; //accepted
+        var i2 = [460, 210, 690, 820]; //accepted
+        var i3 = [260, 440, 320, 200]; //submitted 
+
+        var b1 = [-200, 600, 700, 1000]; //accepted
+
+        var ticks = ['<30', '30-60', '60-90', '90-120'];
+
+        var render_options = {fillToZero: true, barWidth: 55}
+        var y_axis_settings = {pad: 1.05, tickOptions: {formatString: "£%'d", fontSize: '8pt' }, rendererOptions: {drawBaseline: false}};
+        var x_axis_settings = {renderer: $.jqplot.CategoryAxisRenderer, ticks: ticks, tickOptions: {fontSize: '8pt'}};
+        var grid_settings = {background: '#fff',borderWidth: 0, shadow: false,};
+               
+        var plot1 = $.jqplot('expenses_bar_chart', [e1, e2, e3], {
+            stackSeries: true,        
+            seriesDefaults:{
+                renderer:$.jqplot.BarRenderer,
+                rendererOptions: render_options,
+                pointLabels: {show: true, stackedValue: true}
+            },
+            axes: {xaxis: x_axis_settings, yaxis: y_axis_settings},
+            grid: grid_settings,        
+            seriesColors: [ "#ff5050", "#ff9696", "#ffdcdc"],
+            negativeSeriesColors: [ "#ff5050", "#ff9696", "#ffdcdc"]
+        });
+        
+        var plot2 = $.jqplot('income_bar_chart', [i1, i2, i3], {
+            stackSeries: true,        
+            seriesDefaults:{
+                renderer:$.jqplot.BarRenderer,
+                rendererOptions: render_options,
+                pointLabels: {show: true, stackedValue: true}
+            },
+            axes: {xaxis: x_axis_settings, yaxis: y_axis_settings},
+            grid: grid_settings,        
+            seriesColors: [ "#507d50", "#64c864", "#b4eab9"],
+            negativeSeriesColors: [ "#ff5050", "#ff9696", "#ffdcdc"]
+        });
+        
+        var plot3 = $.jqplot('balance_bar_chart', [b1], {
+            stackSeries: true,        
+            seriesDefaults:{
+                renderer:$.jqplot.BarRenderer,
+                rendererOptions: render_options,
+                pointLabels: {show: true, stackedValue: true}
+            },
+            axes: {xaxis: x_axis_settings, yaxis: y_axis_settings},
+            grid: grid_settings,       
+            seriesColors: [ "#507d50", "#64c864", "#b4eab9"],
+            negativeSeriesColors: [ "#ff5050", "#ff9696", "#ffdcdc"]
+        });
+        
+        $(window).resize(function() {
+            plot1.replot( { resetAxes: {xaxis:true} } );
+            plot2.replot( { resetAxes: {xaxis:true} } );
+            plot3.replot( { resetAxes: {xaxis:true} } );
+        });
+            
+    });        
+</script> 
+    
+<style type="text/css">
+.column_bar_chart .jqplot-point-label {
+  color: #000;
+  font-size: 1.1rem;
+  margin-top: -5px;
+  margin-bottom: -5px;
+}
+</style>
+    

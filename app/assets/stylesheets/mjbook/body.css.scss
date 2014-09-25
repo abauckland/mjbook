@@ -34,3 +34,10 @@ html {
   margin: 0px 0px 0px 0px;
  }
  @media screen and (max-width: $medium_menu) {h3{font-size: 1.2rem;}}
+ 
+
+input[type="date"]{
+  font-family: inherit;
+  margin: 0px 0px 0px 0px;
+  width: 130px;  
+}

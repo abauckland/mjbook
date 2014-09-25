@@ -15,7 +15,7 @@
                         <td><%= mode.mode %></td>
                         <td><%= pounds(mode.hmrc_rate) %></td>
                         <td>£<%= f.text_field :rate, :class => "currency" %></td>
-                        <td><%= f.submit %></td>
+                        <td><%= f.submit "save"%></td>
                     <% end %>
                     </tr>
                 <% end %>

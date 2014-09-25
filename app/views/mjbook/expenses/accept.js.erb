@@ -1,0 +1,4 @@
+$('tr#'+<%= @expense.id %>).css({'color':'green'});
+$('td#'+<%= @expense.id %>+'_status').html('accepted');
+$('td#'+<%= @expense.id %>+'_reject_button').display('show');
+$('td#'+<%= @expense.id %>+'_accept_button').display('hide');

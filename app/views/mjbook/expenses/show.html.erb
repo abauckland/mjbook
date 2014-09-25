@@ -1,0 +1,69 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @expense.user_id %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @expense.project_id %>
+</p>
+
+<p>
+  <strong>Supplier:</strong>
+  <%= @expense.supplier_id %>
+</p>
+
+<p>
+  <strong>Hmrcexpcat:</strong>
+  <%= @expense.hmrcexpcat_id %>
+</p>
+
+<p>
+  <strong>Issue date:</strong>
+  <%= @expense.issue_date %>
+</p>
+
+<p>
+  <strong>Due date:</strong>
+  <%= @expense.due_date %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @expense.amount %>
+</p>
+
+<p>
+  <strong>Vat:</strong>
+  <%= @expense.vat %>
+</p>
+
+<p>
+  <strong>Receipt:</strong>
+  <%= @expense.receipt %>
+</p>
+
+<p>
+  <strong>Recurrence:</strong>
+  <%= @expense.recurrence %>
+</p>
+
+<p>
+  <strong>Ref:</strong>
+  <%= @expense.ref %>
+</p>
+
+<p>
+  <strong>Supplier ref:</strong>
+  <%= @expense.supplier_ref %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @expense.status %>
+</p>
+
+<%= link_to 'Edit', edit_expense_path(@expense) %> |
+<%= link_to 'Back', expenses_path %>

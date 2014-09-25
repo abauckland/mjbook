@@ -15,4 +15,8 @@
 //= require mjbook/nav.js
 //= require mjbook/columns.js
 //= require mjbook/columns_linked.js
+//= require mjbook/jquery.jqplot.min.js
+//= require mjbook/jqplotPlugins/jqplot.barRenderer.js
+//= require mjbook/jqplotPlugins/jqplot.categoryAxisRenderer.js
+//= require mjbook/jqplotPlugins/jqplot.pointLabels.js
 //= require_tree .

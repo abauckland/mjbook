@@ -6,14 +6,21 @@ module Mjbook
     belongs_to :expenseexpend
     belongs_to :supplier
     belongs_to :user      
+    belongs_to :company
       
     mount_uploader :receipt, ReceiptUploader
 
-    validates_presence_of :project_id
-    validates_presence_of :supplier_id
-    validates_presence_of :hmrcexpcat_id
-    validates_presence_of :amount
-    validates_presence_of :issue_date
-    
+    enum exp_type: [:business, :personal]
+    enum status: [:submitted, :accepted, :rejected, :paid]
+
+
+    validates :project_id, presence: true
+    validates :supplier_id, presence: true
+    validates :hmrcexpcat_id, presence: true
+    validates :amount, presence: true, numericality: true
+    validates :vat, presence: true, numericality: true
+    validates :date, presence: true
+  
+   
   end
 end

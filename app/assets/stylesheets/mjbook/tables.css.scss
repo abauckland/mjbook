@@ -38,13 +38,18 @@
     }
   }
 
-.table_content_with_options{
+.table_content_with_filter{
   @extend .table_content_with_title;
-  top:120px;  
+  top: 150px;  
   }
   @media screen and (max-width: $medium_menu) {
-    .table_content_with_options {
-      top:105px;
+    .table_content_with_filter {
+      top:130px;
+    }
+  }
+  @media screen and (max-width: $small_menu) {
+    .table_content_with_filter {
+      top:120px;
     }
   }
   

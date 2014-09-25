@@ -6,22 +6,19 @@ Mjbook::Engine.routes.draw do
   resources :expenses do
    # get :personal
     get :edit_personal, :on => :member
-    get :new_personal, :on => :member
-
-    get :accept_personal, :on => :member
-    get :reject_personal, :on => :member  
-
-
     get :edit_business, :on => :member
 
-    get :accept_business, :on => :member
-    get :reject_business, :on => :member      
+    get :accept, :on => :member
+    get :reject, :on => :member      
   end
 
  get 'business', :to => 'expenses#business'
  get 'new_business', :to => 'expenses#new_business'
  get 'personal', :to => 'expenses#personal' 
  get 'new_personal', :to => 'expenses#new_personal'
+
+ get 'employee', :to => 'expenses#employee'
+
 
   resources :processexpenses do
     get :index_personal, :on => :member 

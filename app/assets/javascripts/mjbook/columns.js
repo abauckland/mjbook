@@ -160,8 +160,16 @@ $(document).ready(function(){
 	var dd_field_count = $('.column_1').find('.column_form_item_dd-select').length;
 	var dd_field_height = dd_field_count*80
 
+	var form_button_count = $('.column_1').find('.column_form_button').length;
+	var form_button_height = form_button_count*32
 
-	var col_1 = 40+ select_height + text_field_height + url_field_height + file_field_height + time_field_height + date_field_height + colour_field_height + dd_field_height//$('.column_1').find('.column_form').outerHeight(true);	
+	var form_textarea_count = $('.column_1').find('textarea').length;
+	var form_textarea_height = form_textarea_count*100
+	
+	var form_chart_count = $('.column_1').find('.column_bar_chart').length;
+	var form_chart_height = form_chart_count*350
+
+	var col_1 = 40+ select_height + text_field_height + url_field_height + file_field_height + time_field_height + date_field_height + colour_field_height + dd_field_height +form_button_height +form_textarea_height + form_chart_height//$('.column_1').find('.column_form').outerHeight(true);	
 
 			
 	var col_2 = $('.column_2').find('.column_form').outerHeight(true);

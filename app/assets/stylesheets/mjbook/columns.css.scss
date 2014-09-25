@@ -169,6 +169,11 @@
   height: 60px;  
 }
 
+.column_bar_chart{
+  height: 300px;
+  margin: 15px 0px 10px 0px;  
+}
+
 .column_help_tooltip{
     float: left;
     width: 10px;
@@ -215,6 +220,21 @@
   }
 }
 
+.column_add a{
+  position: absolute; 
+  top:20px;
+  border: none;
+  height:20px;
+  padding: 0px 20px 0px 30px;
+  color:#66aa00;
+  @include column_title;
+  text-decoration:none;    
+  @include form_icons(-240px);
+  cursor: pointer;
+  &:hover{
+    text-decoration:underline;
+  }
+}
 
 .column_cancel a{
   position: absolute; 
@@ -231,4 +251,28 @@
   &:hover{text-decoration:underline;    }
   &:visited{color: red;}  
 }
+
+.column_index a{
+  position: absolute; 
+  height:20px;
+  right:10px;
+  top:20px;
+  border: none;
+  text-decoration:none;
+  color:#66aa00;
+  @include column_title;
+  padding: 0px 0px 0px 28px;
+  @include form_icons(-40px);
+  cursor: pointer;
+  &:hover{text-decoration:underline;}
+  &:visited{color: #66aa00;}  
+}
+
+
+.column_form_button{
+  float: left;
+  @include small-button;
+  @include dark-grey-button;
+  border: 1px solid #878787;
+  }  
 
