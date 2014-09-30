@@ -1,0 +1,39 @@
+
+<table>
+    <tr>
+        <td class="line_prefix"></td>
+        <td class="line_content">
+            <table>
+                <tr>
+
+
+                    <td class="line_category"><span id='<%= line.id %>' class='quote_line_cat'><%= line.category.name %></span></td>
+                    <td class="line_item"><span id='<%= line.id %>' class='quote_line_item'><%= line.item %></span></td>
+
+                    <td class="line_cat_item"><span id='<%= line.id %>' class='quote_line_cat_item'><%= line.item %></span></td>
+
+                    <td class="line_quantity"><span id='<%= line.id %>' class='quote_line_quantity'><%= line.quanity %></span><%= line.unit %></td>
+                    <td class="line_unit_cost"><span id='<%= line.id %>' class='quote_line_unit_cost'><%= pounds(line.unit_cost) %></span>/<%= line.unit %></td>
+                    
+                    
+                    <td class="line_subtotal"><%= pounds(line.subtotal) %></td>        
+                    <td class="line_vat"><%= pounds(line.vat) %></td>
+                    <td class="line_price"><%= pounds(line.price) %></td>      
+                </tr>
+                <tr>
+                    <td colspan="2" class="line_notes"><span id='<%= line.id %>' class='quote_line_text'><%= line.text %></span></td>
+                    <td colspan="5" class="line_spacer"></td>
+
+
+                </tr>
+            </table>        
+        </td>
+        <td class="mob_menu"></td>
+        <td class="lrg_menu"></td>  
+    </tr>
+    <tr class="mob_menu_popup">
+        <td class='mob_line_menu' colspan=2 ><% specline_suffix_menu_mob_clause(specline) %></td>
+    </tr>
+</table>
+
+

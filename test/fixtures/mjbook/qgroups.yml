@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quote_id: 1
+  ref: MyString
+  text: MyString
+  sub_vat: 9.99
+  sub_price: 9.99
+
+two:
+  quote_id: 1
+  ref: MyString
+  text: MyString
+  sub_vat: 9.99
+  sub_price: 9.99

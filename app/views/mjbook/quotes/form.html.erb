@@ -1,0 +1,80 @@
+
+<!-- quote select -->
+
+<% form @quote do |f|%>
+<%= f.hidden_field :current_user_id, :value => current_user.id %>
+
+
+<!-- SELECT -->
+<!-- how does this return the necessary form information -->
+                        <div class="select_previous_quote">
+                            <%= select_tag "Quote", options_from_collection_for_select(@accepted_quotes, :id, :code_and_title), {:prompt => "Select project to view/edit", :class => 'quote_selectBox', :onchange => "window.location='/invoices/'+this.value+'/edit';"} %>       
+                        </div>
+<!-- OR -->
+<!-- display as blank if no quote has been selected -->
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Job Ref*:</label>                        
+                        <% if @projects %>
+                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @quote.project_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_project"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "create new job", new_project_path %></div>  
+                        </div>
+                        
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Customer*:</label>                        
+                        <% if @customers %>
+                            <div class="column_form_input"><%= f.collection_select(:customer_id, @customers, :id, :company_name, {:selected => @quote.customer_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_supplier"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "add new supplier", new_customer_path %></div>  
+                        </div>
+
+<!-- item list -->
+
+    <div class="line_item_list">
+
+    <% @quote_line_items.each do |item| %>
+        
+        <%= render "quote_line_item_form", :item => item %>
+        
+        <!-- different line format for different item types -->
+    <% end %>  
+        
+    </div>
+
+<!-- add item form -->
+
+    <!-- form toggle show/hide button -- jquery button -->
+    <div class="line_item_form_link"></div>
+    
+    <!-- form  -->
+    <div class="line_item_form">
+        <div class="item_type_select"></div>
+        <div class="type_cat_select"></div> 
+        <div class="cat_item_select"></div>
+        <!-- after select show quanity form for item -->
+        
+        <!-- jquery button -->
+        <div class="add_line_item"></div>         
+    </div>
+    
+
+
+
+<!-- process -->
+            <div class="quote_footer">        
+               <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", business_path %></div>
+                <% end %>        
+            </div>
+    
+

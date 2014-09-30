@@ -1,0 +1,47 @@
+<h1>Listing qlines</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Qgroup</th>
+      <th>Cat</th>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Unit</th>
+      <th>Rate</th>
+      <th>Vat</th>
+      <th>Vat</th>
+      <th>Price</th>
+      <th>Note</th>
+      <th>Linetype</th>
+      <th>Line order</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @qlines.each do |qline| %>
+      <tr>
+        <td><%= qline.qgroup_id %></td>
+        <td><%= qline.cat %></td>
+        <td><%= qline.item %></td>
+        <td><%= qline.quantity %></td>
+        <td><%= qline.unit %></td>
+        <td><%= qline.rate %></td>
+        <td><%= qline.vat_id %></td>
+        <td><%= qline.vat %></td>
+        <td><%= qline.price %></td>
+        <td><%= qline.note %></td>
+        <td><%= qline.linetype %></td>
+        <td><%= qline.line_order %></td>
+        <td><%= link_to 'Show', qline %></td>
+        <td><%= link_to 'Edit', edit_qline_path(qline) %></td>
+        <td><%= link_to 'Destroy', qline, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Qline', new_qline_path %>

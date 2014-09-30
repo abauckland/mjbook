@@ -8,6 +8,11 @@ module Mjbook
     def index
       @productcategories = Productcategory.all
     end
+    
+    def list_categories
+      @productcategories = Productcategory.where(:company_id => current_user.company_id).order(:name)
+      render :json => @productcategories
+    end
 
     # GET /productcategories/1
     def show

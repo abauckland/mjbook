@@ -1,6 +1,20 @@
 Mjbook::Engine.routes.draw do
 
   
+  resources :qlines do
+    put :update_text
+    put :update_vat
+    put :update_rate
+    put :update_unit
+    put :update_quantity
+    put :update_item
+    put :update_cat
+  end
+
+  resources :qgroups
+
+  resources :quotes
+
   resources :summaries
 
   resources :expenses do
@@ -27,9 +41,13 @@ Mjbook::Engine.routes.draw do
   end
 
 
-  resources :products
+  resources :products do
+    get :list_products, :on => :member    
+  end
 
-  resources :productcategories
+  resources :productcategories do
+    get :list_categories, :on => :member
+  end
 
   resources :mileages do
     get :add_to_expenses, :on => :member  

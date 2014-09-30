@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  qgroup_id: 1
+  cat: MyString
+  item: MyString
+  quantity: 9.99
+  unit: MyString
+  rate: 9.99
+  vat_id: 1
+  vat: 9.99
+  price: 9.99
+  note: MyText
+  linetype: 1
+  line_order: 1
+
+two:
+  qgroup_id: 1
+  cat: MyString
+  item: MyString
+  quantity: 9.99
+  unit: MyString
+  rate: 9.99
+  vat_id: 1
+  vat: 9.99
+  price: 9.99
+  note: MyText
+  linetype: 1
+  line_order: 1
