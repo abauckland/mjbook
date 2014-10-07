@@ -12,10 +12,16 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require mjbook/nav.js
-//= require mjbook/columns.js
-//= require mjbook/columns_linked.js
-//= require mjbook/jquery.jqplot.min.js
+//= require mjbook/layouts/nav.js
+//= require mjbook/layouts/columns.js
+//= require mjbook/layouts/columns_linked.js
+//= require mjbook/layouts/editable_tables.js
+//= require mjbook/plugins/autogrow.js
+//= require mjbook/plugins/jquery.jeditable.js
+//= require mjbook/plugins/jeditable_extensions.js
+//= require mjbook/plugins/jquery.jqplot.js
+//= require mjbook/plugins/qtip2.js
+//= require mjbook/plugins/jquery.jqplot.min.js
 //= require mjbook/jqplotPlugins/jqplot.barRenderer.js
 //= require mjbook/jqplotPlugins/jqplot.categoryAxisRenderer.js
 //= require mjbook/jqplotPlugins/jqplot.pointLabels.js

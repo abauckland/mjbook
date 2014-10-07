@@ -1,0 +1,131 @@
+//core-ui
+@import "core";
+
+.line_table{
+  width: 100%;
+  border-spacing: 0px;
+}
+
+.line_row{
+  font-size: 1.2rem;
+  font-family: $standard_font;
+  //font settings inherited by other cells
+}
+
+.line_prefix{
+  width: 60px;
+  }
+  @media screen and (max-width: $medium_menu) {
+    .line_menu{
+      width: 0px;
+    } 
+  } 
+
+.line_content{}
+
+.line_menu{
+  display: table-cell;
+  visibility: hidden; //jquery makes menu visible when mouse over line
+  text-align: right;
+  width:120px;
+  padding: 5px 5px 0px 0px;
+  a{padding: 0px 5px 0px 0px}
+  } 
+  @media screen and (max-width: $medium_menu) {
+    .line_menu{
+      display: none; //not displayed when screen is small
+      visibility:hidden; 
+    } 
+  } 
+
+.line_menu_mob{
+  @extend .line_menu;
+  width:25px;
+}
+
+.mob_mendu_popup{
+  display: none; //juery displays menu on mouse click of link
+  width: 100%;
+  border-spacing: 0px;   
+}
+
+.mob_menu a{
+  float:right;
+  margin-left: 10px 
+}
+
+
+
+.line_data_table{
+  width: 100%;
+  border-spacing: 0px;  
+}
+
+.line_data{}
+
+.line_data_prefix{
+  width: 10px;
+  padding-top: 5px;
+  vertical-align: top  
+}
+
+.line_cat{
+  width: 100px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  vertical-align: top;
+}
+
+.line_cat_new{
+  @extend .line_cat
+}
+
+.line_item{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  vertical-align: top;
+}
+
+.line_item_new{
+  @extend .line_item
+}
+
+.line_quantity{
+  width: 40px; //width set to allow 6 digit quantities and values
+  padding-top: 5px; 
+  padding-bottom: 5px;
+  vertical-align: top;    
+}
+
+.line_rate{@extend .line_quantity}
+.line_unit{@extend .line_quantity}
+.line_vat_rate{@extend .line_quantity}
+.line_vat{@extend .line_quantity}
+.line_price{@extend .line_quantity}
+
+.line_spacer{
+  width: 240px; //width of all quantity, unit and price cells in row: 6*40 
+}
+
+.line_sub_text{
+  width: 100px; //width of fixed text 'subtotal'  
+}
+
+.line_subtotal_spacer{} //width = 100% less other cells in row
+
+
+.line_note{
+  width: 100%;
+  border-spacing: 0px; 
+}
+
+.line_note_text{}
+
+
+.item_prefix{
+  width: 60px;
+}
+
+.item_text{}
+
+

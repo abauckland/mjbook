@@ -1,6 +1,10 @@
 Mjbook::Engine.routes.draw do
 
   
+  resources :units
+
+  resources :vats
+
   resources :qlines do
     put :update_text
     put :update_vat

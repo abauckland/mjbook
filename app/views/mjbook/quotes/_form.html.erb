@@ -1,41 +1,70 @@
-<%= form_for(@quote) do |f| %>
-  <% if @quote.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@quote.errors.count, "error") %> prohibited this quote from being saved:</h2>
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @quote.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@quote.errors.count, "error") %> prohibited this project from being created</p>
+                  <ul>
+                  <% @quote.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@quote) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <%= f.hidden_field :status, :value => "submitted" %> 
+                    
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Job Ref*:</label>                        
+                        <% if @projects %>
+                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @quote.project_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="quote_project"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "create new job", new_project_path %></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Title:*</label>                        
+                            <div class="column_form_input"><%= f.text_field :ref %></div>
+                            <div class="column_help_tooltip" id="quote_ref"></div>
+                            <div class="column_error_note"> <%= error_check(@project, :title)%></div>   
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Date:</label>                        
+                            <div class="column_form_input"><%= f.date_field :date %></div>
+                            <div class="column_help_tooltip" id="quote_date"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">VAT:</label>                        
+                            <div class="column_form_input"><%= f.text_field :total_vat, :placeholder => "0.00"  %></div>
+                            <div class="column_help_tooltip" id="quote_vat"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Price:</label>                        
+                            <div class="column_form_input"><%= f.text_field :total_price, :placeholder => "0.00"  %></div>
+                            <div class="column_help_tooltip" id="quote_price"></div>  
+                        </div>
 
-      <ul>
-      <% @quote.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", business_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :project_id %><br>
-    <%= f.number_field :project_id %>
-  </div>
-  <div class="field">
-    <%= f.label :ref %><br>
-    <%= f.number_field :ref %>
-  </div>
-  <div class="field">
-    <%= f.label :date %><br>
-    <%= f.datetime_select :date %>
-  </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.number_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :total_vat %><br>
-    <%= f.text_field :total_vat %>
-  </div>
-  <div class="field">
-    <%= f.label :total_price %><br>
-    <%= f.text_field :total_price %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

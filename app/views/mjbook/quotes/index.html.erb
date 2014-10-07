@@ -1,35 +1,74 @@
-<h1>Listing quotes</h1>
+<div class="page_title">
+    <h1>Quotes</h1>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>Ref</th>
-      <th>Date</th>
-      <th>Status</th>
-      <th>Total vat</th>
-      <th>Total price</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @quotes.each do |quote| %>
-      <tr>
-        <td><%= quote.project_id %></td>
-        <td><%= quote.ref %></td>
-        <td><%= quote.date %></td>
-        <td><%= quote.status %></td>
-        <td><%= quote.total_vat %></td>
-        <td><%= quote.total_price %></td>
-        <td><%= link_to 'Show', quote %></td>
-        <td><%= link_to 'Edit', edit_quote_path(quote) %></td>
-        <td><%= link_to 'Destroy', quote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="filter_band_single">
+    <%= form_tag quotes_path, method: :get do %>
+    <div class="filter_search">
+        <div class="filter_project_label">Job:</div>
+        <div class="filter_project_input">
+            <%= select_tag 'project_id', options_from_collection_for_select(@customers, :id, :name, @customer, :prompt => 'all jobs'%>    
+        </div>
+        <div class="filter_date_1_label">From:</div>
+        <div class="filter_date_1_input">
+            <%= date_field_tag 'date_from', value = @date_from %>    
+        </div>
+        <div class="filter_date_2_label">To:</div>
+        <div class="filter_date_2_input">
+            <%= date_field_tag 'date_to', value = @date_to  %>      
+        </div>
+        <div class="filter_submit">
+            <%= submit_tag 'Filter', :class => "filter_submit_button"%>    
+        </div>        
+    </div>
     <% end %>
-  </tbody>
-</table>
+    <div class="option_band_button"><%= link_to "add expense", new_business_path %> </div>
+</div>  
 
-<br>
 
-<%= link_to 'New Quote', new_quote_path %>
+ <div class="table_content_with_filter">
+    <table>
+      <thead>
+        <tr>
+          <th class="mob_cell">Job</th>
+          <th class="lrg_cell">Ref</th> 
+          <th class="mob_cell">Date</th>
+          <th class="lrg_cell">Vat Rate</th>         
+          <th class="mob_cell">Price</th>          
+          <th class="lrg_cell">Status</th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"><%= link_to "", new_quote_path, class: 'table_new_icon', title: "create new quote" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+          <% if @quotes %>
+            
+            <% @quotes.each do |quote| %>
+              <tr>
+                <td class="mob_cell"><%= quote.project.ref %></th>
+                <td class="lrg_cell"><%= quote.ref %></th> 
+                <td class="mob_cell"><%= quote.date.strftime("%d/%m/%y") %></th>
+                <td class="lrg_cell"><%= quote.vat.rate %></th>         
+                <td class="mob_cell"><%= pounds(quote.price) %></th>          
+                <td class="lrg_cell"><%= quote.status %></th>              
+                <% if quote.status == "accepted" %>
+                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(quote), class: 'line_reject_icon', title: "mark as rejected" %></td>                
+                <% else %>
+                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(quote), class: 'line_accept_icon', title: "mark as accepted" %></td>
+                <% end %>
+                <td width="20px" class="row_button"><%= link_to "", print_quote_path(quote), class: 'line_pdf_icon', title: "download pdf of quote" %></td>
+                <td width="20px" class="row_button"><%= link_to "", edit_quote_path(quote), class: 'line_edit_icon', title: "edit quote" %></td>
+                <td width="20px" class="row_button"><%= link_to "", quote, method: :delete, class: 'line_delete_icon', title: "delete quote" %></td>
+              </tr>
+            <% end %>  
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>

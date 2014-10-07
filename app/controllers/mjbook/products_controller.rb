@@ -2,20 +2,17 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class ProductsController < ApplicationController
+    before_action :set_products, only: [:index]
     before_action :set_product, only: [:show, :edit, :update, :destroy]
 
     # GET /products
     def index
-      @products = Product.all
     end
     
     def list_products
-      @products = Product.where(:company_id => current_user.company_id).order(:name)
+#need to add category filter
+      @products = Product.where(:company_id => current_user.company_id).order(:item)
       render :json => @products      
-    end
-
-    # GET /products/1
-    def show
     end
 
     # GET /products/new
@@ -30,6 +27,9 @@ module Mjbook
     # POST /products
     def create
       @product = Product.new(product_params)
+      #calculate cost field for product
+      vat = Mjbook::VAT.where(:id => product_params[:vat_id]).first      
+      @product.cost = product_params[:price]*(1/vat.rate)
 
       if @product.save
         redirect_to @product, notice: 'Product was successfully created.'
@@ -39,8 +39,14 @@ module Mjbook
     end
 
     # PATCH/PUT /products/1
-    def update
+    def update      
       if @product.update(product_params)
+
+        #calculate cost field for product and update
+        vat = Mjbook::VAT.where(:id => product_params[:vat_id]).first      
+        cost = product_params[:price]*(1/vat.rate)
+        @product.update(:cost => cost)        
+        
         redirect_to @product, notice: 'Product was successfully updated.'
       else
         render :edit
@@ -55,6 +61,10 @@ module Mjbook
 
     private
       # Use callbacks to share common setup or constraints between actions.
+      def set_products
+        @products = Product.where(:company_id => current_user.company_id).order(:item)
+      end
+
       def set_product
         @product = Product.find(params[:id])
       end

@@ -1,21 +1,40 @@
-<%= form_for(@productcategory) do |f| %>
-  <% if @productcategory.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@productcategory.errors.count, "error") %> prohibited this productcategory from being saved:</h2>
-
-      <ul>
-      <% @productcategory.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @productcategory.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@productcategory.errors.count, "error") %> prohibited this detail from being saved:</p>
+                  <ul>
+                  <% @productcategory.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@productcategory) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>    
+                    
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Name:</label>                        
+                            <div class="column_form_input"><%= f.text_field :tile_name %></div>
+                            <div class="column_help_tooltip" id="productcategory_name"></div> 
+                        </div>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", @productcategorys_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

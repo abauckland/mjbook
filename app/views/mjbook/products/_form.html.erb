@@ -1,45 +1,74 @@
-<%= form_for(@product) do |f| %>
-  <% if @product.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
-
-      <ul>
-      <% @product.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @product.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@product.errors.count, "error") %> prohibited this detail from being saved:</p>
+                  <ul>
+                  <% @product.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@product) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>    
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Category:</label>                        
+                        <% if @productcategorys %>
+                            <div class="column_form_input"><%= f.collection_select(:productcategory_id, @productcategorys, :id, :name, {:prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="product_productcategory"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "add new category", new_productcategory_path %></div>  
+                        </div>                    
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Name:</label>                        
+                            <div class="column_form_input"><%= f.text_field :item %></div>
+                            <div class="column_help_tooltip" id="product_name"></div> 
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Quantity:</label>                        
+                            <div class="column_form_input"><%= f.text_field :quantity %></div>
+                            <div class="column_help_tooltip" id="product_name"></div> 
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Units:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:unit_id, Mjbook::Unit.all, :id, :text, {:prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="producty_unit_id"></div> 
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">VAT:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:vat_id, Mjbook::Vat.all, :id, :cat, {:prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="product_vat"></div> 
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Price:</label>                        
+                            <div class="column_form_input"><%= f.text_field :price %></div>
+                            <div class="column_help_tooltip" id="product_price"></div> 
+                        </div>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", @products_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
     </div>
-  <% end %>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>
 
-  <div class="field">
-    <%= f.label :productcategory_id %><br>
-    <%= f.number_field :productcategory_id %>
-  </div>
-  <div class="field">
-    <%= f.label :item %><br>
-    <%= f.text_field :item %>
-  </div>
-  <div class="field">
-    <%= f.label :quantity %><br>
-    <%= f.text_field :quantity %>
-  </div>
-  <div class="field">
-    <%= f.label :unit_id %><br>
-    <%= f.number_field :unit_id %>
-  </div>
-  <div class="field">
-    <%= f.label :cost %><br>
-    <%= f.text_field :cost %>
-  </div>
-  <div class="field">
-    <%= f.label :vat %><br>
-    <%= f.text_field :vat %>
-  </div>
-  <div class="field">
-    <%= f.label :price %><br>
-    <%= f.text_field :price %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+
+
+

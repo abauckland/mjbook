@@ -2,21 +2,17 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class ProductcategoriesController < ApplicationController
+    before_action :set_productcategories, only: [:index, :list_categories]
     before_action :set_productcategory, only: [:show, :edit, :update, :destroy]
 
     # GET /productcategories
     def index
-      @productcategories = Productcategory.all
     end
     
     def list_categories
-      @productcategories = Productcategory.where(:company_id => current_user.company_id).order(:name)
       render :json => @productcategories
     end
 
-    # GET /productcategories/1
-    def show
-    end
 
     # GET /productcategories/new
     def new
@@ -55,6 +51,10 @@ module Mjbook
 
     private
       # Use callbacks to share common setup or constraints between actions.
+      def set_productcategories
+        @productcategories = Productcategory.where(:company_id => current_user.company_id).order(:name)
+      end
+      
       def set_productcategory
         @productcategory = Productcategory.find(params[:id])
       end

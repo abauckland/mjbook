@@ -1,0 +1,14 @@
+<div class="page_title">
+    <h1>Quote Build Up</h1>
+</div>
+
+<div class="table_content_with_title">
+    <% @qgroups.each do |group| %>    
+        <%= render :partial => 'group_row', locals: { group: group } %>    
+        <% @group.qlines.each do |line| %>
+            <%= render :partial => 'line_row', locals: { line: line } %>    
+        <% end %>        
+        <%= render :partial => 'group_total', locals: { group: group } %>
+    <% end %>
+    <%= render :partial => 'quote_total', locals: { qgroups: @qgroups } %>
+</div>
