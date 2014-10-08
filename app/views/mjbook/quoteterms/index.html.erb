@@ -1,0 +1,27 @@
+<h1>Listing quoteterms</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Terms</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @quoteterms.each do |quoteterm| %>
+      <tr>
+        <td><%= quoteterm.company_id %></td>
+        <td><%= quoteterm.terms %></td>
+        <td><%= link_to 'Show', quoteterm %></td>
+        <td><%= link_to 'Edit', edit_quoteterm_path(quoteterm) %></td>
+        <td><%= link_to 'Destroy', quoteterm, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Quoteterm', new_quoteterm_path %>

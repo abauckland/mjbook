@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quoteterms: MyString
+  company_id: 1
+  terms: MyText
+
+two:
+  quoteterms: MyString
+  company_id: 1
+  terms: MyText

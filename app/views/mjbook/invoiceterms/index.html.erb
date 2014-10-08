@@ -1,0 +1,27 @@
+<h1>Listing invoiceterms</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Terms</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @invoiceterms.each do |invoiceterm| %>
+      <tr>
+        <td><%= invoiceterm.company_id %></td>
+        <td><%= invoiceterm.terms %></td>
+        <td><%= link_to 'Show', invoiceterm %></td>
+        <td><%= link_to 'Edit', edit_invoiceterm_path(invoiceterm) %></td>
+        <td><%= link_to 'Destroy', invoiceterm, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Invoiceterm', new_invoiceterm_path %>

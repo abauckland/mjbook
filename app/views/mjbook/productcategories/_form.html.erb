@@ -20,7 +20,7 @@
                     
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:80px">Name:</label>                        
-                            <div class="column_form_input"><%= f.text_field :tile_name %></div>
+                            <div class="column_form_input"><%= f.text_field :name %></div>
                             <div class="column_help_tooltip" id="productcategory_name"></div> 
                         </div>
                 </div>
@@ -29,7 +29,7 @@
            <div class="column_footer">
                 <div class="column_line"></div>
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", @productcategorys_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", @new_product_path %></div>
                 <% end %>
            </div>
             

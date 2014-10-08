@@ -35,7 +35,7 @@ module Mjbook
       end
       
       #list expenses where status is not 'paid'
-      if filter_hash.empty
+      if filter_hash.empty?
         @businessexpenses = Expense.where(:company_id => current_user.company_id, :exp_type => 0).where.not(:status => 3).order(:date)
       else      
         @businessexpenses = Expense.where(filter_hash, :company_id => current_user.company_id, :exp_type => 0).where.not(:status => 3).order(:date)

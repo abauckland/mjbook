@@ -15,8 +15,6 @@ class PaymentMailer < ActionMailer::Base
     
     
     
-    
-    
   end
   
 end

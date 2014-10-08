@@ -71,7 +71,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def product_params
-        params.require(:product).permit(:company_id, :productcategory_id, :item, :quantity, :unit_id, :cost, :vat, :price)
+        params.require(:product).permit(:company_id, :productcategory_id, :item, :quantity, :unit_id, :cost, :vat_id, :vat, :price)
       end
   end
 end

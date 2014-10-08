@@ -6,10 +6,10 @@ class CreateMjbookQlines < ActiveRecord::Migration
       t.string :item
       t.decimal :quantity
       t.string :unit
-      t.decimal :rate
+      t.decimal :rate, :precision => 8, :scale => 2
       t.integer :vat_id
-      t.decimal :vat
-      t.decimal :price
+      t.decimal :vat, :precision => 8, :scale => 2
+      t.decimal :price, :precision => 8, :scale => 2
       t.text :note
       t.integer :linetype
       t.integer :line_order

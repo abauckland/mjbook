@@ -4,8 +4,8 @@ class CreateMjbookQgroups < ActiveRecord::Migration
       t.integer :quote_id
       t.string :ref
       t.string :text
-      t.decimal :sub_vat
-      t.decimal :sub_price
+      t.decimal :sub_vat, :precision => 8, :scale => 2
+      t.decimal :sub_price, :precision => 8, :scale => 2
 
       t.timestamps
     end

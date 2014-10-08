@@ -1,0 +1,28 @@
+<div class="page_title">
+    <h1>Listing misccategories</h1>
+</div>
+
+<div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+          <th class="mob_cell">Category Name</th>
+          <th width="20px" class="row_button"><%= link_to "", new_misccategory_path, class: 'line_new_icon', title: "create new category" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @misccategories.each do |misccategory| %>
+              <tr>
+                <td class="mob_cell"><%= misccategory.name %></td>
+                <% if !misccategory.miscs.any? %>
+                    <td width="20px" class="row_button"><%= link_to '', misccategory, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete category" %></td>
+                <% end %>                 
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>

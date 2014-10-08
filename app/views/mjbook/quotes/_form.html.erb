@@ -20,38 +20,39 @@
                     <%= f.hidden_field :status, :value => "submitted" %> 
                     
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">Job Ref*:</label>                        
+                            <label class="column_form_label" style="width:60px">Job Ref*:</label>                        
                         <% if @projects %>
                             <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @quote.project_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="quote_project"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px"></label>                        
+                            <label class="column_form_label" style="width:60px"></label>                        
                         <% end %>
                             <div class="column_form_button"><%= link_to "create new job", new_project_path %></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Title:*</label>                        
+                            <label class="column_form_label" style="width:60px">Title:*</label>                        
                             <div class="column_form_input"><%= f.text_field :ref %></div>
                             <div class="column_help_tooltip" id="quote_ref"></div>
-                            <div class="column_error_note"> <%= error_check(@project, :title)%></div>   
+                            <div class="column_error_note"> <%= error_check(@quote, :title)%></div>   
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">Date:</label>                        
+                            <label class="column_form_label" style="width:60px">Date:</label>                        
                             <div class="column_form_input"><%= f.date_field :date %></div>
                             <div class="column_help_tooltip" id="quote_date"></div>  
                         </div>
+<!--
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">VAT:</label>                        
+                            <label class="column_form_label" style="width:60px">VAT:</label>                        
                             <div class="column_form_input"><%= f.text_field :total_vat, :placeholder => "0.00"  %></div>
                             <div class="column_help_tooltip" id="quote_vat"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">Price:</label>                        
+                            <label class="column_form_label" style="width:60px">Price:</label>                        
                             <div class="column_form_input"><%= f.text_field :total_price, :placeholder => "0.00"  %></div>
                             <div class="column_help_tooltip" id="quote_price"></div>  
                         </div>
-
+-->
                 </div>
            </div>     
                 
@@ -59,7 +60,7 @@
                 <div class="column_line"></div>
 
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", business_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", quotes_path %></div>
                 <% end %>
            </div>
             

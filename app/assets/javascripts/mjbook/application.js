@@ -19,7 +19,6 @@
 //= require mjbook/plugins/autogrow.js
 //= require mjbook/plugins/jquery.jeditable.js
 //= require mjbook/plugins/jeditable_extensions.js
-//= require mjbook/plugins/jquery.jqplot.js
 //= require mjbook/plugins/qtip2.js
 //= require mjbook/plugins/jquery.jqplot.min.js
 //= require mjbook/jqplotPlugins/jqplot.barRenderer.js

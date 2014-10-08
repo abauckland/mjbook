@@ -7,6 +7,8 @@ module Mjbook
     has_many :mileages
     has_many :invoicemethods
     has_many :expenses
+    
+    has_many :quotes
 
     belongs_to :customer
 

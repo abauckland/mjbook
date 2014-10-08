@@ -16,6 +16,7 @@ module Mjbook
     # GET /quotes/new
     def new
       @quote = Quote.new
+      @projects = Project.where(:company_id => current_user.company_id)
     end
 
     # GET /quotes/1/edit
@@ -55,6 +56,7 @@ module Mjbook
       def set_quote
         @quote = Quote.find(params[:id])
       end
+
 
       # Only allow a trusted parameter "white list" through.
       def quote_params

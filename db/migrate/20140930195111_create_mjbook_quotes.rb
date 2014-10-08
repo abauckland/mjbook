@@ -5,8 +5,8 @@ class CreateMjbookQuotes < ActiveRecord::Migration
       t.integer :ref
       t.timestamp :date
       t.integer :status
-      t.decimal :total_vat
-      t.decimal :total_price
+      t.decimal :total_vat, :precision => 8, :scale => 2
+      t.decimal :total_price, :precision => 8, :scale => 2
 
       t.timestamps
     end

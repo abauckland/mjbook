@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @quoteterm.company_id %>
+</p>
+
+<p>
+  <strong>Terms:</strong>
+  <%= @quoteterm.terms %>
+</p>
+
+<%= link_to 'Edit', edit_quoteterm_path(@quoteterm) %> |
+<%= link_to 'Back', quoteterms_path %>

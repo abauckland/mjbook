@@ -23,8 +23,9 @@
           text-decoration: none; 
           padding: 0px 9px 0px 9px;
           color: #fff;
-          &:hover {text-decoration: underline;}   
+          &:hover {text-decoration: underline;}             
         }
+        a.left_menu_blue{color: #85C2FF} 
         ul.sub_menu{
           visibility: hidden;
           position: absolute;
@@ -47,8 +48,10 @@
               &:hover {
                 text-decoration: underline;
                 color: #fff;
-              }             
+              }
+            
             }
+            
           }
         }
       }  

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @hmrcexpcat.company_id %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @hmrcexpcat.category %>
+</p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @hmrcexpcat.group %>
+</p>
+
+<%= link_to 'Edit', edit_hmrcexpcat_path(@hmrcexpcat) %> |
+<%= link_to 'Back', hmrcexpcats_path %>

@@ -1,6 +1,14 @@
 Mjbook::Engine.routes.draw do
 
   
+  resources :invoiceterms
+
+  resources :quoteterms
+
+  resources :terms
+
+  resources :hmrcexpcats
+
   resources :units
 
   resources :vats
@@ -17,7 +25,9 @@ Mjbook::Engine.routes.draw do
 
   resources :qgroups
 
-  resources :quotes
+  resources :quotes do
+    get :print, :on => :member
+  end
 
   resources :summaries
 
@@ -38,20 +48,27 @@ Mjbook::Engine.routes.draw do
  get 'employee', :to => 'expenses#employee'
 
 
-  resources :processexpenses do
-    get :index_personal, :on => :member 
-    get :accept_expense, :on => :member
-    get :reject_expense, :on => :member   
+  resources :payments do
+    get :business_paid, :on => :member 
+    get :personal_paid, :on => :member
+    get :salary_paid, :on => :member   
   end
 
+ get 'pay_business', :to => 'payments#pay_business'
+ get 'pay_personal', :to => 'payments#pay_personal'
+ get 'pay_salary', :to => 'payments#pay_salary' 
+ 
+  resources :products
+  resources :productcategories
 
-  resources :products do
-    get :list_products, :on => :member    
-  end
+  resources :services
+  resources :servicecategories
 
-  resources :productcategories do
-    get :list_categories, :on => :member
-  end
+  resources :rates
+  resources :ratecategories
+
+  resources :miscs
+  resources :misccategories
 
   resources :mileages do
     get :add_to_expenses, :on => :member  
@@ -66,8 +83,6 @@ Mjbook::Engine.routes.draw do
   resources :projects
   
   resources :expenseexpends
-
-  resources :expenditures
   
   resources :pendingexpends
 end

@@ -1,0 +1,29 @@
+<div class="page_title">
+    <h1>Listing Misc Services/Items</h1>
+</div>
+
+<div class="table_content_with_title">
+    <table>
+      <thead>
+        <tr>
+          <th class="tab_cell">Category</th>
+          <th class="mob_cell">Item</th>                                      
+          <th width="20px" class="row_button"><%= link_to "", new_misc_path, class: 'line_new_icon', title: "create new misc" %></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+            <% @miscs.each do |misc| %>
+              <tr>
+                <td class="tab_cell"><%= misccategory.name %></td>
+                <td class="mob_cell"><%= misc.item %></td>             
+                <td width="20px" class="row_button"><%= link_to '', edit_misc_path(misc), class: 'line_edit_icon', title: "edit misc" %></td>
+                <td width="20px" class="row_button"><%= link_to '', misc, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete misc" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
