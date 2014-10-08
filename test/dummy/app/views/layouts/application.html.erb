@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Dummy</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+    <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyHQ</title>
+  
+        <%= stylesheet_link_tag    'application', media: 'all'%>
+        <%= javascript_include_tag 'application'%>
+        <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+        <%= csrf_meta_tags %>
+    </head>
+    
+    <body>
+        
+        <div class="body_container">
+        
+            <header class="app_page_header">        
+                <figure class="app_logo"></figure>
+                <%= render :partial => "admin_menu" %>                                                     
+                <%= render :partial => "user_menu" %>        
+                <nav class="app_logout"><%= link_to "logout", main_app.destroy_user_session_path, method: :delete %></nav>                
+            </header>
+    
+       <!--     <div  class="header_message">Success or Error Message Here</div> -->
 
-<%= yield %>
-
-</body>
+     
+            <%= yield %>
+    
+        </div> 
+    </body>
 </html>
