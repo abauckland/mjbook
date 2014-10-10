@@ -1,0 +1,9 @@
+<table id='<%=h qgroups.first.quote_id %>' class='quote_total_table' width='100%'>
+    <tr class='line_row'>
+        <td class='line_sub_text'>Total</td>
+        <td class='line_subtotal_spacer'></td>
+        <td class='total_vat'><%= quote_vat(qgroups) %></td>  
+        <td class='total_price'><%= quote_price(qgroups) %></td>          
+        <td class='line_menu_mob'></td><td class='line_menu'></td>
+     </tr>
+</table>

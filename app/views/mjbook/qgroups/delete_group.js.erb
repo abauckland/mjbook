@@ -1,0 +1,11 @@
+
+$('table#group_<%= @group.id %>').hide();
+
+$('table#group_sub_<%= @group.id %>').hide();
+
+
+var substr = <%=@line_ids%>;
+var i;
+for (i = 0; i < substr.length; ++i){
+$("table#" + substr[i]).hide();
+};

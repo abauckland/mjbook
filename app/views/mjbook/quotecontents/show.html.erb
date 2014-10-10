@@ -1,0 +1,43 @@
+<div class="page_title">
+    <h1>Quote Build Up</h1>
+    <div class="page_title_button"><%= link_to "List of Quotes", quotes_path %> </div>    
+</div>
+
+<div class="info_band_single">
+    <div class="project_info">
+        <div class="project_info_label">Quote Ref:</div>
+        <div class="project_info_text"><%=h @quote.ref %></div>
+        
+        <div class="project_info_label">Job Ref:</div>
+        <div class="project_info_text"><%=h @quote.project.ref %></div>
+        
+    </div>
+    <div class="option_band_button"><%= link_to "edit details", edit_quote_path(@quote) %> </div>
+</div> 
+
+
+<div class="table_content_with_info">
+    <table class="table_header_with_info">
+    <tr class='line_row'>
+        <td class='line_prefix tab_cell'></td>
+        <td class='line_prefix tab_cell'></td>
+        <td class='line_category lrg_cell'>Category</td>
+        <td class='line_item mob_cell'>Item</td>
+        <td class='line_quantity mob_cell'>Quantity</td>
+        <td class='line_unit lrg_cell'>Unit</td>
+        <td class='line_rate lrg_cell'>Unit Price</td> 
+        <td class='line_vat_rate tab_cell'>VAT %</td> 
+        <td class='line_vat lrg_cell'>VAT</td>  
+        <td class='line_price mob_cell'>Price</td>
+        <td class='line_menu_mob'></td><td class='line_menu'></td> 
+     </tr>
+    </table>
+    <% @qgroups.each do |group| %>    
+        <%= render :partial => 'group_row', locals: { group: group } %>    
+        <% group.qlines.each do |line| %>
+            <%= render :partial => 'line_row', locals: { line: line } %>    
+        <% end %>        
+        <%= render :partial => 'group_total', locals: { group: group } %>
+    <% end %>
+    <%= render :partial => 'quote_total', locals: { qgroups: @qgroups } %>
+</div>

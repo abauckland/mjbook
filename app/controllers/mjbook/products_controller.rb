@@ -9,10 +9,19 @@ module Mjbook
     def index
     end
     
-    def list_products
-#need to add category filter
-      @products = Product.where(:company_id => current_user.company_id).order(:item)
-      render :json => @products      
+    def item_options
+      @products = Product.where(:company_id => current_user.company_id)
+  
+      #create hash of options
+      @product_options = {}
+      
+      @products.each do |p|
+        key = p.id
+        value = p.item
+        @product_options[key] = value
+      end
+      #render as json for jeditable
+      render :json => @product_options
     end
 
     # GET /products/new

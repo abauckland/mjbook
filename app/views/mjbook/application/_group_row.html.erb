@@ -1,0 +1,11 @@
+<table id='group_<%=h group.id %>' class='line_table' width='100%'>
+    <tr class='line_row'>
+        <td class='item_prefix'>
+            <%= group.group_order %>
+        </td>
+        <td class='item_text'>
+          <span id='<%=h group.id %>' class='qgroup_text'><%= group.text %></td>  
+        </td>
+        <%= suffix_group_menu(group) %>
+     </tr>
+</table>

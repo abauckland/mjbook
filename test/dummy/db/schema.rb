@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141001082117) do
+ActiveRecord::Schema.define(version: 20141008221822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,13 @@ ActiveRecord::Schema.define(version: 20141001082117) do
 
   add_index "companies", ["name"], name: "index_companies_on_name", unique: true, using: :btree
   add_index "companies", ["subdomain"], name: "index_companies_on_subdomain", unique: true, using: :btree
+
+  create_table "mjbook_companyaccounts", force: true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "mjbook_customers", force: true do |t|
     t.string   "title"
@@ -111,6 +118,13 @@ ActiveRecord::Schema.define(version: 20141001082117) do
     t.datetime "updated_at"
   end
 
+  create_table "mjbook_invoiceterms", force: true do |t|
+    t.integer  "company_id"
+    t.text     "terms"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mjbook_mileagemodes", force: true do |t|
     t.integer  "company_id"
     t.string   "mode"
@@ -134,6 +148,26 @@ ActiveRecord::Schema.define(version: 20141001082117) do
     t.datetime "updated_at"
   end
 
+  create_table "mjbook_misccategories", force: true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_miscs", force: true do |t|
+    t.integer  "misccategory_id"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_paymethods", force: true do |t|
+    t.string   "method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mjbook_productcategories", force: true do |t|
     t.integer  "company_id"
     t.string   "name"
@@ -152,6 +186,7 @@ ActiveRecord::Schema.define(version: 20141001082117) do
     t.decimal  "price",              precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "vat_id"
   end
 
   create_table "mjbook_projects", force: true do |t|
@@ -200,6 +235,55 @@ ActiveRecord::Schema.define(version: 20141001082117) do
     t.integer  "status"
     t.decimal  "total_vat"
     t.decimal  "total_price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_quoteterms", force: true do |t|
+    t.integer  "company_id"
+    t.text     "terms"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_ratecategories", force: true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_rates", force: true do |t|
+    t.integer  "company_id"
+    t.integer  "ratecategory_id"
+    t.string   "item"
+    t.decimal  "quantity",        precision: 8, scale: 0
+    t.integer  "unit_id"
+    t.decimal  "cost",            precision: 8, scale: 2
+    t.integer  "vat_id"
+    t.decimal  "vat",             precision: 3, scale: 0
+    t.decimal  "price",           precision: 8, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_servicecategories", force: true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_services", force: true do |t|
+    t.integer  "company_id"
+    t.integer  "servicecategory_id"
+    t.string   "item"
+    t.decimal  "quantity",           precision: 8, scale: 0
+    t.integer  "unit_id"
+    t.decimal  "cost",               precision: 8, scale: 2
+    t.integer  "vat_id"
+    t.decimal  "vat",                precision: 3, scale: 0
+    t.decimal  "price",              precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

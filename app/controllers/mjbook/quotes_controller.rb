@@ -28,7 +28,7 @@ module Mjbook
       @quote = Quote.new(quote_params)
 
       if @quote.save
-        redirect_to @quote, notice: 'Quote was successfully created.'
+        redirect_to quotecontent_path(@quote.id), notice: 'Quote was successfully created.'
       else
         render :new
       end
@@ -60,7 +60,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def quote_params
-        params.require(:quote).permit(:project_id, :ref, :date, :status, :total_vat, :total_price)
+        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :status, :total_vat, :total_price)
       end
 
       

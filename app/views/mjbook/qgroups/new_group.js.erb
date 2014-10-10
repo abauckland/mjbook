@@ -1,0 +1,25 @@
+$('table#group_sub_<%= @group.id %>').after('<%= escape_javascript(render :partial => 'new_group', locals: { group: @new_group }) %>');
+
+// show/hide menu and mob menu link
+    $('table.line_table').on({
+        mouseenter:function(){ 
+            $(this).css('background-color', '#efefef');
+            $(this).find('td.line_menu').css('visibility', 'visible');
+            $(this).find('td.line_menu_mob').css('visibility', 'visible');
+    },
+        mouseleave:function(){ 
+            $(this).css('background-color', '#fff');
+            $(this).find('td.line_menu').css('visibility', 'hidden');
+            $(this).find('td.line_menu_mob').css('visibility', 'hidden')
+        }
+    });
+
+    
+// show/hide mob menu
+    $('.line_menu_mob').click(function (){
+        $(this).closest('table').find('.mob_menu_popup').toggle();
+    });
+ 
+    $('tr.mob_menu_popup').mouseleave(function (){
+        $(this).hide();
+    });

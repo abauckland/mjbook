@@ -10,12 +10,21 @@ module Mjbook
 
     enum status: [:submitted, :accepted, :rejected, :invoiced]
 
+    validates :project_id, presence: true
+    validates :ref, presence: true    
+
     private
     
     def create_nested_records
- #     self.qgroups.build
- #     qgroups.qlines.build
+      group = Mjbook::Qgroup.create(:quote_id => self.id)
+      Mjbook::Qline.create(:qgroup_id => group.id)
     end
+
+
+#    def create_nested_records
+#      self.qgroups.build
+#      qgroups.qlines.build
+#    end
     
   end
 end

@@ -35,6 +35,8 @@
         <tr>
           <th class="mob_cell">Job</th>
           <th class="lrg_cell">Ref</th> 
+          <th class="mob_cell">Title</th>
+          <th class="mob_cell">Cust. Ref</th>          
           <th class="mob_cell">Date</th>
           <th class="lrg_cell">Vat</th>         
           <th class="mob_cell">Price</th>          
@@ -53,19 +55,21 @@
             
             <% @quotes.each do |quote| %>
               <tr>
-                <td class="mob_cell"><%= quote.project.ref %></th>
-                <td class="lrg_cell"><%= quote.ref %></th> 
-                <td class="mob_cell"><%= quote.date.strftime("%d/%m/%y") %></th>
-                <td class="lrg_cell"><%= pounds(quote.total_vat) %></th>         
-                <td class="mob_cell"><%= pounds(quote.total_price) %></th>          
-                <td class="lrg_cell"><%= quote.status %></th>              
+                <td class="mob_cell"><%= quote.project.ref %></td>
+                <td class="lrg_cell"><%= quote.ref %></td> 
+                <td class="lrg_cell"><%= quote.title %></td> 
+                <td class="lrg_cell"><%= quote.customer_ref %></td> 
+                <td class="mob_cell"><%= quote.date.strftime("%d/%m/%y") %></td>
+                <td class="lrg_cell"><%= pounds(quote.total_vat) %></td>         
+                <td class="mob_cell"><%= pounds(quote.total_price) %></td>          
+                <td class="lrg_cell"><%= quote.status %></td>              
                 <% if quote.accepted? %>
                     <td width="20px" class="row_button"><%= link_to "", reject_expense_path(quote), class: 'line_reject_icon', title: "mark as rejected" %></td>                
                 <% else %>
                     <td width="20px" class="row_button"><%= link_to "", accept_expense_path(quote), class: 'line_accept_icon', title: "mark as accepted" %></td>
                 <% end %>
                 <td width="20px" class="row_button"><%= link_to "", print_quote_path(quote), class: 'line_pdf_icon', title: "download pdf of quote" %></td>
-                <td width="20px" class="row_button"><%= link_to "", edit_quote_path(quote), class: 'line_edit_icon', title: "edit quote" %></td>
+                <td width="20px" class="row_button"><%= link_to "", quotecontent_path(quote), class: 'line_edit_icon', title: "edit quote" %></td>
                 <td width="20px" class="row_button"><%= link_to "", quote, method: :delete, class: 'line_delete_icon', title: "delete quote" %></td>
               </tr>
             <% end %>  

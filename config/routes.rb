@@ -9,25 +9,44 @@ Mjbook::Engine.routes.draw do
 
   resources :hmrcexpcats
 
-  resources :units
-
-  resources :vats
-
-  resources :qlines do
-    put :update_text
-    put :update_vat
-    put :update_rate
-    put :update_unit
-    put :update_quantity
-    put :update_item
-    put :update_cat
+  resources :units do
+    get :unit_options, :on => :member
   end
 
-  resources :qgroups
+  resources :vats do
+    get :vat_options, :on => :member
+  end
+
+  resources :qlines do
+    get :new_line, :on => :member
+    get :edit_line, :on => :member
+    get :delete_line, :on => :member
+    member do
+      put :update_text
+      put :update_price
+      put :update_vat
+      put :update_vat_rate
+      put :update_rate
+      put :update_unit
+      put :update_quantity
+      put :update_item
+      put :update_cat
+    end
+  end
+
+  resources :qgroups do
+    get :new_group, :on => :member
+    get :delete_group, :on => :member
+    member do
+      put :update_text
+    end
+  end  
 
   resources :quotes do
     get :print, :on => :member
   end
+
+  resources :quotecontents, :only => [:show]
 
   resources :summaries
 
@@ -58,8 +77,12 @@ Mjbook::Engine.routes.draw do
  get 'pay_personal', :to => 'payments#pay_personal'
  get 'pay_salary', :to => 'payments#pay_salary' 
  
-  resources :products
-  resources :productcategories
+  resources :products do 
+    get :item_options, :on => :member 
+  end
+  resources :productcategories do
+    get :cat_options, :on => :member 
+  end
 
   resources :services
   resources :servicecategories
@@ -82,7 +105,4 @@ Mjbook::Engine.routes.draw do
 
   resources :projects
   
-  resources :expenseexpends
-  
-  resources :pendingexpends
 end

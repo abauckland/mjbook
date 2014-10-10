@@ -27,4 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency  'tzinfo-data'
   s.add_development_dependency  'jquery-rails'
   s.add_development_dependency 'pg'
+  s.add_development_dependency 'mysql2'
+  s.add_development_dependency 'rails_best_practices'
+  s.add_development_dependency 'bullet'   
 end

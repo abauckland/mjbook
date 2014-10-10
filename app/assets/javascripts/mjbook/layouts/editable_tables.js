@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-//show/hide menu and mob menu link
+// show/hide menu and mob menu link
 	$('table.line_table').on({
     	mouseenter:function(){ 
 			$(this).css('background-color', '#efefef');
@@ -13,8 +13,9 @@ $(document).ready(function(){
 			$(this).find('td.line_menu_mob').css('visibility', 'hidden')
     	}
 	});
+
   	
-//show/hide mob menu
+// show/hide mob menu
 	$('.line_menu_mob').click(function (){
 		$(this).closest('table').find('.mob_menu_popup').toggle();
 	});
@@ -23,5 +24,11 @@ $(document).ready(function(){
 		$(this).hide();
 	});
 
+
+// specline linetype edit
+	$(document).on('click','.submittable2', function() {
+	 $(this).parents('form:first').submit();
+	   return false;
+	});
 
 });

@@ -1,0 +1,8 @@
+<%= render :partial => 'group_row', locals: { group: group } %>    
+<% group.qlines.each do |line| %>
+    <%= render :partial => 'line_row', locals: { line: line } %>    
+<% end %>        
+<%= render :partial => 'group_total', locals: { group: group } %>
+
+
+

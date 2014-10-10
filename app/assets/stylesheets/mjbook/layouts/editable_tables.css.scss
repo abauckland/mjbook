@@ -1,6 +1,46 @@
 //core-ui
 @import "core";
 
+
+.table_content_with_info {
+  position: absolute;
+  top:150px;    
+  left:10px;
+  right:10px;
+  bottom: 10px;
+  padding: 5px 5px 5px 5px;
+  border: 2px solid #dddddd;
+  @include border-radius(4px);
+  overflow: auto;
+  table{
+      width: 100%;
+      border-spacing: 0;
+      border-collapse:collapse;
+      border: 0px;
+      font-size: 1.2rem;
+      text-align: left;
+      thead{
+      font-weight: bold;
+      tr{
+        border-bottom: 1px solid #000;
+        th{padding: 2px 5px 2px 5px;}
+      }        
+      }
+  }
+  }
+  @media screen and (max-width: $medium_menu) {
+    .table_content_with_info {
+      top:130px;
+    }
+  }
+  @media screen and (max-width: $small_menu) {
+    .table_content_with_info {
+      top:120px;
+    }
+  }
+
+
+
 .line_table{
   width: 100%;
   border-spacing: 0px;
@@ -13,7 +53,7 @@
 }
 
 .line_prefix{
-  width: 60px;
+  width: 10px;
   }
   @media screen and (max-width: $medium_menu) {
     .line_menu{
@@ -27,9 +67,9 @@
   display: table-cell;
   visibility: hidden; //jquery makes menu visible when mouse over line
   text-align: right;
-  width:120px;
-  padding: 5px 5px 0px 0px;
-  a{padding: 0px 5px 0px 0px}
+  width:80px;
+  padding: 5px 0px 0px 5px;
+  a{padding: 0px 0px 0px 5px}
   } 
   @media screen and (max-width: $medium_menu) {
     .line_menu{
@@ -40,10 +80,17 @@
 
 .line_menu_mob{
   @extend .line_menu;
+  display: none;
   width:25px;
 }
+  @media screen and (max-width: $medium_menu) {
+    .line_menu_mob{
+      display: table-cell; //not displayed when screen is small
+      visibility:hidden; 
+    } 
+  } 
 
-.mob_mendu_popup{
+.mob_menu_popup{
   display: none; //juery displays menu on mouse click of link
   width: 100%;
   border-spacing: 0px;   
@@ -54,7 +101,10 @@
   margin-left: 10px 
 }
 
-
+.mob_menu_popup a{
+  float:right;
+  margin: 0px 10px 3px 0px; 
+}
 
 .line_data_table{
   width: 100%;
@@ -69,14 +119,15 @@
   vertical-align: top  
 }
 
-.line_cat{
-  width: 100px;
+td.line_category{
+  width: 120px;
   padding-top: 5px;
   padding-bottom: 5px;
   vertical-align: top;
+  text-align: left;
 }
 
-.line_cat_new{
+.line_category_new{
   @extend .line_cat
 }
 
@@ -84,6 +135,7 @@
   padding-top: 5px;
   padding-bottom: 5px;
   vertical-align: top;
+  text-align: left;
 }
 
 .line_item_new{
@@ -91,17 +143,33 @@
 }
 
 .line_quantity{
-  width: 40px; //width set to allow 6 digit quantities and values
+  width: 60px; //width set to allow 6 digit quantities and values
   padding-top: 5px; 
   padding-bottom: 5px;
-  vertical-align: top;    
+  vertical-align: top;
+  text-align: right;    
 }
 
-.line_rate{@extend .line_quantity}
-.line_unit{@extend .line_quantity}
+.line_rate{
+  @extend .line_quantity;
+  width: 90px;
+  }
+.line_unit{
+  @extend .line_quantity;
+}
 .line_vat_rate{@extend .line_quantity}
-.line_vat{@extend .line_quantity}
-.line_price{@extend .line_quantity}
+.line_vat{@extend .line_quantity; width: 65px;}
+.line_price{@extend .line_quantity; width: 75px;}
+
+.total_vat{
+  @extend .line_quantity;
+  font-weight: bold;
+}
+
+.total_price{
+  @extend .line_quantity;
+  font-weight: bold;
+}
 
 .line_spacer{
   width: 240px; //width of all quantity, unit and price cells in row: 6*40 
@@ -109,6 +177,7 @@
 
 .line_sub_text{
   width: 100px; //width of fixed text 'subtotal'  
+  font-weight: bold;
 }
 
 .line_subtotal_spacer{} //width = 100% less other cells in row
@@ -123,9 +192,76 @@
 
 
 .item_prefix{
-  width: 60px;
+  width: 10px;
+  font-weight: bold;
 }
 
-.item_text{}
+.item_text{
+  font-weight: bold;
+}
+
+table.group_sub_table{
+  width: 100%;
+  border-top: 1px solid #bbb;  
+}
+
+table.quote_total_table{
+  @extend .line_table;
+  width: 100%;
+  border-top: 4px solid #bbb;
+  border-style: double;
+}
+
+table.table_header_with_info{
+  @extend .line_table;
+  width: 100%;
+  border-bottom: 4px solid #bbb;
+  border-style: double;
+  font-weight: bold;  
+}
 
 
+////////////////////////////////////////
+//line formatt popup
+.linetype_menu{
+  font-family: $standard_font;
+  font-size: 1.2rem;
+  position: absolute;
+  right: 40px;
+  width: 210px;
+  background: #000;
+  color: #fff;
+  padding: 4px 5px 10px 10px;
+  @include shadow-all(0px 0px 5px #aeaeae);
+}
+  @media screen and (max-width: $small_menu) {
+    .linetype_menu{right: 100px;}  
+  }
+
+.linetype_menu_header{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 210px;
+  color: #fff;
+  padding: 9px 10px 9px 5px;
+  border-bottom: 1pt solid #fff;
+  font-weight: bold;
+}
+
+.linetype_menu_linetype_id{
+  padding: 35px 0px 0px 0px;
+}
+
+.linetype_menu_button {
+  height: 15px;
+  padding: 5px 0px 5px 0px;
+  font-weight: normal;
+}
+
+.linetype_menu_button_label{
+  padding: 2px 0px 3px 5px;
+  cursor: pointer;
+}
+
+  

@@ -1,2 +1,15 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+$(document).ready(function(){
+
+	$('.qgroup_text').mouseover(function(){
+	var line_id = $(this).attr('id');
+		$(this).editable('http://localhost:3000/mjbook/qgroups/'+line_id+'/update_text', {
+			id: line_id, width: ($(this).width() +10)+'px',
+			type: 'text',
+			onblur: 'submit',
+			method: 'PUT',
+			indicator: 'Saving..',
+			submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+		}); 	
+	});
+
+});

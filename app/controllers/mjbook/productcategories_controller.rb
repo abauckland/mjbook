@@ -9,8 +9,19 @@ module Mjbook
     def index
     end
     
-    def list_categories
-      render :json => @productcategories
+    def cat_options
+      @productcats = Productcategory.where(:company_id => current_user.company_id)
+  
+      #create hash of options
+      @productcat_options = {}
+      
+      @productcats.each do |p|
+        key = p.id
+        value = p.name
+        @productcat_options[key] = value
+      end
+      #render as json for jeditable
+      render :json => @productcat_options
     end
 
 

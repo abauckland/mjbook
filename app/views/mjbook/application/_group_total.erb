@@ -1,0 +1,16 @@
+<table id='group_sub_<%=h group.id %>'  class='line_table' width='100%'>
+    <tr class='line_row'>
+        <td class='line_prefix'></td>
+        <td class='line_content'>
+            <table class='group_sub_table'>
+                <tr class='line_data'>            
+                    <td class='line_sub_text group_total'>Subtotal</td>
+                    <td class='line_subtotal_spacer'></td>
+                    <td class='line_vat'><%= group_vat(group) %></td>  
+                    <td class='line_price'><%= group_price(group) %></td>
+                </tr>
+            </table>                 
+        </td>
+        <td class='line_menu_mob'></td><td class='line_menu'></td>
+    </tr>
+</table>
