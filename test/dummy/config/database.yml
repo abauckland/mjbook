@@ -5,11 +5,11 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: postgresql
+  adapter: mysql2
   encoding: utf8
   pool: 5
-  username: manager
-  password: 144bubble
+  username: root
+  password: specright1707
   host: localhost
 
 development:

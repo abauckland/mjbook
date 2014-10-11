@@ -1,5 +1,10 @@
-$('table#<%=@line.id%>').replaceWith('<%= escape_javascript(render :partial => 'line_row', locals: { line: @new_line }) %>');
+$('table#<%= @old_line_id %>').replaceWith('<%= escape_javascript(render :partial => 'line_row', locals: { line: @line }) %>');
 
+$('table#group_sub_<%= @line.qgroup_id %>').find('.line_vat').html('<%= pounds(@qgroup.sub_vat) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.line_price').html('<%= pounds(@qgroup.sub_price) %>');
+  
+$('table#total_<%= @line.qgroup.quote_id %>').find('.total_vat').html('<%= pounds(@quote.total_vat) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.total_price').html('<%= pounds(@quote.total_price) %>');
 
 
 // show/hide menu and mob menu link
@@ -31,4 +36,118 @@ $('table#<%=@line.id%>').replaceWith('<%= escape_javascript(render :partial => '
     $(document).on('click','.submittable2', function() {
      $(this).parents('form:first').submit();
        return false;
+    });
+
+// update category
+    $('.qline_cat').mouseover(function(){
+    var line_id = $(this).attr('id');   
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_cat', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            loadurl : 'http://localhost:3000/mjbook/productcategories/'+line_id+'/cat_options',
+            type: 'comboselect',
+            ajaxoptions: {dataType: 'script'},
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        });         
+    });
+
+// update item  
+    $('.qline_item').mouseover(function(){
+    var line_id = $(this).attr('id');
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_item', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            loadurl : 'http://localhost:3000/mjbook/products/'+line_id+'/item_options',
+            type: 'comboselect',
+            ajaxoptions: {dataType: 'script'},
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        }); 
+    });
+
+// update quantity  
+    $('.qline_quantity').mouseover(function(){
+    var line_id = $(this).attr('id');   
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_quantity', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            type: 'text',
+            ajaxoptions: {dataType: 'script'},
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        }); 
+    });
+
+// update unit  
+    $('.qline_unit').mouseover(function(){
+    var line_id = $(this).attr('id');
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_unit', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            loadurl :'http://localhost:3000/mjbook/units/'+line_id+'/unit_options',
+            type: 'select',
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        });     
+    });
+
+// update rate  
+    $('.qline_rate').mouseover(function(){
+    var line_id = $(this).attr('id');
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_rate', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            type: 'text',
+            ajaxoptions: {dataType: 'script'},
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        });     
+    });
+
+// update vat rate  
+    $('.qline_vat_rate').mouseover(function(){
+    var line_id = $(this).attr('id');
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_vat_rate', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            loadurl :'http://localhost:3000/mjbook/vats/'+line_id+'/vat_options',
+            type: 'select',
+            ajaxoptions: {dataType: 'script'},
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        });     
+    });
+
+// update vat due   
+    $('.qline_vat_due').mouseover(function(){
+    var line_id = $(this).attr('id');
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_vat_due', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            type: 'text',
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        });     
+    });
+
+
+// update text  
+    $('.qline_text').mouseover(function(){
+    var line_id = $(this).attr('id');
+        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_text', {
+            id: line_id, width: ($(this).width() +10)+'px',
+            type: 'autogrow',
+            onblur: 'submit',
+            method: 'PUT',
+            indicator: 'Saving..',
+            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+        });     
     });

@@ -17,7 +17,7 @@ module Mjbook
       
       @productcats.each do |p|
         key = p.id
-        value = p.name
+        value = p.text
         @productcat_options[key] = value
       end
       #render as json for jeditable
@@ -72,7 +72,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def productcategory_params
-        params.require(:productcategory).permit(:company_id, :name)
+        params.require(:productcategory).permit(:company_id, :text)
       end
   end
 end

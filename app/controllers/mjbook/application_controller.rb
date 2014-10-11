@@ -30,7 +30,7 @@ module Mjbook
         while [".", ",", ";", "!", "?"].include?(value.last)
           @value.chop!
         end                
-        @value.to_d
+        @value = @value.to_d
       end
 
 

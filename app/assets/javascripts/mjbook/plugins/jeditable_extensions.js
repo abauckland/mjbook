@@ -42,7 +42,7 @@ $.editable.addInputType('comboselect', {
                         var option = $('<option />').val(key).append(json[key]);
                         $('select', this).append(option);    
                     }
-                    $('select', this).prepend('<option>{NEW ELEMENT}</option>');                    
+                    $('select', this).prepend('<option style="color:blue;">Add new...</option>');                    
                     /* Loop option again to set selected. IE needed this... */ 
                     $('select', this).children().each(function() {
                         if ($(this).val() == json['selected'] || 

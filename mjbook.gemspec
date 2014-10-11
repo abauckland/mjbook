@@ -29,5 +29,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pg'
   s.add_development_dependency 'mysql2'
   s.add_development_dependency 'rails_best_practices'
-  s.add_development_dependency 'bullet'   
+  s.add_development_dependency 'bullet'
+  s.add_development_dependency 'sprig', '~> 0.1'   
 end

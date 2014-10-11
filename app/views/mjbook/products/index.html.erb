@@ -10,7 +10,7 @@
           <th class="mob_cell">Item</th>
           <th class="tab_cell">Quantity</th>
           <th class="tab_cell">Unit</th>
-          <th class="lrg_cell">Cost/Unit</th>
+          <th class="lrg_cell">Rate/Unit</th>
           <th class="tab_cell">Vat Rate</th>
           <th class="mob_cell">Price/Unit</th>                                        
           <th width="20px" class="row_button"><%= link_to "", new_product_path, class: 'line_new_icon', title: "create new product" %></th>
@@ -26,7 +26,7 @@
                 <td class="mob_cell"><%= product.item %></td>
                 <td class="tab_cell"><%= product.quantity %></td>
                 <td class="tab_cell"><%= product.unit.text %></td>
-                <td class="lrg_cell"><%= pounds(product.cost) %></td>
+                <td class="lrg_cell"><%= pounds(product.rate) %></td>
                 <td class="tab_cell"><%= product.vat.cat %></td>
                 <td class="mob_cell"><%= pounds(product.price) %></td>                
                 <td width="20px" class="row_button"><%= link_to '', edit_product_path(product), class: 'line_edit_icon', title: "edit product" %></td>

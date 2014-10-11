@@ -1,4 +1,8 @@
-$('table#<%=@deleted_line_id%>').hide();
+
+
+$('table#<%= @line.id %>').find('.line_vat_rate').children('span').html('<%= @line.vat.cat %>'); 
+$('table#<%= @line.id %>').find('.line_vat').children('span').html('<%= pounds(@line.vat_due) %>');    
+$('table#<%= @line.id %>').find('.line_price').children('span').html('<%= pounds(@line.price) %>');
 
 $('table#group_sub_<%= @line.qgroup_id %>').find('.line_vat').html('<%= pounds(@qgroup.sub_vat) %>');
 $('table#group_sub_<%= @line.qgroup_id %>').find('.line_price').html('<%= pounds(@qgroup.sub_price) %>');

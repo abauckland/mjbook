@@ -16,8 +16,7 @@ module Mjbook
     private
     
     def create_nested_records
-      group = Mjbook::Qgroup.create(:quote_id => self.id)
-      Mjbook::Qline.create(:qgroup_id => group.id)
+      Mjbook::Qgroup.create(:quote_id => self.id)
     end
 
 

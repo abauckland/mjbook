@@ -1,0 +1,1 @@
+$('table#<%= @old_line_id %>').replaceWith('<%= escape_javascript(render :partial => 'line_row', locals: { line: @line }) %>');

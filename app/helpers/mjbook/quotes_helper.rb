@@ -1,25 +1,25 @@
 module Mjbook
   module QuotesHelper
   
-  def quote_vat(group)
-    vat = 0
-    return "#{ pounds(vat) }".html_safe 
+  def quote_vat(groups)
+    vat_due = Qline.where(:qgroup_id => groups.ids).sum(:vat_due)
+    return "#{ pounds(vat_due) }".html_safe 
   end
   
-  def quote_price(group)
-    price = 0
+  def quote_price(groups)
+    price = Qline.where(:qgroup_id => groups.ids).sum(:price)
     return "#{ pounds(price) }".html_safe 
   end
   
   
   
   def group_vat(group)
-    vat = 0
-    return "#{ pounds(vat) }".html_safe 
+    vat_due = Qline.where(:qgroup_id => group.id).sum(:vat_due)
+    return "#{ pounds(vat_due) }".html_safe 
   end
   
   def group_price(group)
-    price = 0
+    price = Qline.where(:qgroup_id => group.id).sum(:price)
     return "#{ pounds(price) }".html_safe 
   end
   ##specline table formatting
@@ -82,7 +82,7 @@ module Mjbook
     end
     
     def line_price(line)  
-        "#{ pounds(line.price) }".html_safe      
+        "<span id='#{ line.id }' class='qline_price'>#{ pounds(line.price) }".html_safe      
     end
     
     def line_note(line)  

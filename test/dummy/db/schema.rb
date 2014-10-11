@@ -11,14 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008221822) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20141011101854) do
 
   create_table "companies", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "subdomain"
+    t.string   "name",                   null: false
+    t.string   "subdomain",              null: false
+    t.string   "domain",                 null: false
     t.string   "logo"
     t.string   "address_1"
     t.string   "address_2"
@@ -28,16 +26,23 @@ ActiveRecord::Schema.define(version: 20141008221822) do
     t.string   "latitude"
     t.string   "longitude"
     t.string   "tel"
+    t.string   "alt_tel"
     t.string   "email"
     t.string   "reg_no"
     t.string   "vat_no"
-    t.integer  "plan"
+    t.integer  "plan",       default: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "companies", ["name"], name: "index_companies_on_name", unique: true, using: :btree
-  add_index "companies", ["subdomain"], name: "index_companies_on_subdomain", unique: true, using: :btree
+
+  create_table "helps", force: true do |t|
+    t.string   "item",       default: "Help text to be added"
+    t.string   "text",       default: "Help text to be added"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "mjbook_companyaccounts", force: true do |t|
     t.integer  "company_id"
@@ -47,6 +52,7 @@ ActiveRecord::Schema.define(version: 20141008221822) do
   end
 
   create_table "mjbook_customers", force: true do |t|
+    t.integer  "company_id"
     t.string   "title"
     t.string   "first_name"
     t.string   "surname"
@@ -64,7 +70,6 @@ ActiveRecord::Schema.define(version: 20141008221822) do
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "company_id"
   end
 
   create_table "mjbook_expenditures", force: true do |t|
@@ -86,7 +91,9 @@ ActiveRecord::Schema.define(version: 20141008221822) do
   end
 
   create_table "mjbook_expenses", force: true do |t|
+    t.integer  "company_id"
     t.integer  "user_id"
+    t.integer  "exp_type"
     t.integer  "project_id"
     t.integer  "supplier_id"
     t.integer  "hmrcexpcat_id"
@@ -101,11 +108,10 @@ ActiveRecord::Schema.define(version: 20141008221822) do
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "company_id"
-    t.integer  "exp_type"
   end
 
   create_table "mjbook_hmrcexpcats", force: true do |t|
+    t.integer  "company_id"
     t.string   "category"
     t.string   "group"
     t.datetime "created_at"
@@ -182,14 +188,15 @@ ActiveRecord::Schema.define(version: 20141008221822) do
     t.decimal  "quantity",           precision: 8, scale: 0
     t.integer  "unit_id"
     t.decimal  "cost",               precision: 8, scale: 2
-    t.decimal  "vat",                precision: 3, scale: 0
+    t.integer  "vat_id"
+    t.decimal  "vat_due",            precision: 3, scale: 0
     t.decimal  "price",              precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "vat_id"
   end
 
   create_table "mjbook_projects", force: true do |t|
+    t.integer  "company_id"
     t.string   "ref"
     t.string   "title"
     t.integer  "customer_id"
@@ -198,43 +205,45 @@ ActiveRecord::Schema.define(version: 20141008221822) do
     t.string   "customer_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "company_id"
   end
 
   create_table "mjbook_qgroups", force: true do |t|
     t.integer  "quote_id"
-    t.string   "ref"
-    t.string   "text"
-    t.decimal  "sub_vat"
-    t.decimal  "sub_price"
+    t.integer  "ref",                                 default: 1
+    t.integer  "group_order",                         default: 1
+    t.string   "text",                                default: "Please add brief description of work"
+    t.decimal  "sub_vat",     precision: 8, scale: 2, default: 0.0
+    t.decimal  "sub_price",   precision: 8, scale: 2, default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "mjbook_qlines", force: true do |t|
     t.integer  "qgroup_id"
-    t.string   "cat"
-    t.string   "item"
-    t.decimal  "quantity"
-    t.string   "unit"
-    t.decimal  "rate"
-    t.integer  "vat_id"
-    t.decimal  "vat"
-    t.decimal  "price"
+    t.string   "cat",                                default: "#Please select category"
+    t.string   "item",                               default: "Please select item"
+    t.decimal  "quantity",   precision: 8, scale: 0, default: 0
+    t.integer  "unit_id",                            default: 1
+    t.decimal  "rate",       precision: 8, scale: 2, default: 0.0
+    t.integer  "vat_id",                             default: 1
+    t.decimal  "vat",        precision: 8, scale: 2, default: 0.0
+    t.decimal  "price",      precision: 8, scale: 2, default: 0.0
     t.text     "note"
-    t.integer  "linetype"
-    t.integer  "line_order"
+    t.integer  "linetype",                           default: 1
+    t.integer  "line_order",                         default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "mjbook_quotes", force: true do |t|
     t.integer  "project_id"
-    t.integer  "ref"
+    t.string   "ref"
+    t.string   "title"
+    t.string   "customer_ref"
     t.datetime "date"
     t.integer  "status"
-    t.decimal  "total_vat"
-    t.decimal  "total_price"
+    t.decimal  "total_vat",    precision: 8, scale: 2, default: 0.0
+    t.decimal  "total_price",  precision: 8, scale: 2, default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -289,6 +298,7 @@ ActiveRecord::Schema.define(version: 20141008221822) do
   end
 
   create_table "mjbook_suppliers", force: true do |t|
+    t.integer  "company_id"
     t.string   "title"
     t.string   "first_name"
     t.string   "surname"
@@ -304,10 +314,9 @@ ActiveRecord::Schema.define(version: 20141008221822) do
     t.string   "email"
     t.string   "company_name"
     t.text     "notes"
+    t.string   "vat_no"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "vat_no",       limit: nil
-    t.integer  "company_id"
   end
 
   create_table "mjbook_units", force: true do |t|
@@ -318,210 +327,7 @@ ActiveRecord::Schema.define(version: 20141008221822) do
 
   create_table "mjbook_vats", force: true do |t|
     t.string   "cat"
-    t.decimal  "rate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_abouts", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "link_text",  array: true
-    t.string   "link_url",   array: true
-  end
-
-  create_table "mjweb_backgrounds", force: true do |t|
-    t.string   "name"
-    t.string   "background"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_banks", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.string   "link_url"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_books", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.string   "link_url"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_contents", force: true do |t|
-    t.integer  "company_id"
-    t.integer  "tile_id"
-    t.string   "display",    default: "All devices"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "tile_ref"
-  end
-
-  create_table "mjweb_designs", force: true do |t|
-    t.integer  "company_id"
-    t.string   "tile_colour",   default: "#572c73"
-    t.string   "background_id", default: "1"
-    t.string   "font_id",       default: "1"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_details", force: true do |t|
-    t.integer  "company_id"
-    t.string   "tagline"
-    t.integer  "ecommerce"
-    t.string   "facebook"
-    t.string   "twitter"
-    t.string   "googleplus"
-    t.string   "linkedin"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_events", force: true do |t|
-    t.integer  "company_id"
-    t.string   "topic"
-    t.datetime "start"
-    t.datetime "finish"
-    t.string   "venue"
-    t.string   "address"
-    t.string   "postcode"
-    t.string   "link"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "date"
-  end
-
-  create_table "mjweb_fonts", force: true do |t|
-    t.string   "name"
-    t.string   "style"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "font",       limit: nil
-  end
-
-  create_table "mjweb_helps", force: true do |t|
-    t.string   "text",       default: "Help text to be added"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_hours", force: true do |t|
-    t.integer  "company_id"
-    t.string   "monday_status",    default: "Open"
-    t.datetime "monday_open",      default: '2000-01-01 09:30:00'
-    t.datetime "monday_close",     default: '2000-01-01 17:30:00'
-    t.string   "tuesday_status",   default: "Open"
-    t.datetime "tuesday_open",     default: '2000-01-01 09:30:00'
-    t.datetime "tuesday_close",    default: '2000-01-01 17:30:00'
-    t.string   "wednesday_status", default: "Open"
-    t.datetime "wednesday_open",   default: '2000-01-01 09:30:00'
-    t.datetime "wednesday_close",  default: '2000-01-01 17:30:00'
-    t.string   "thursday_status",  default: "Open"
-    t.datetime "thursday_open",    default: '2000-01-01 09:30:00'
-    t.datetime "thursday_close",   default: '2000-01-01 17:30:00'
-    t.string   "friday_status",    default: "Open"
-    t.datetime "friday_open",      default: '2000-01-01 09:30:00'
-    t.datetime "friday_close",     default: '2000-01-01 17:30:00'
-    t.string   "saturday_status",  default: "Open"
-    t.datetime "saturday_open",    default: '2000-01-01 09:30:00'
-    t.datetime "saturday_close",   default: '2000-01-01 17:30:00'
-    t.string   "sunday_status",    default: "Open"
-    t.datetime "sunday_open",      default: '2000-01-01 11:00:00'
-    t.datetime "sunday_close",     default: '2000-01-01 16:30:00'
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_images", force: true do |t|
-    t.integer  "company_id"
-    t.string   "name"
-    t.string   "image"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_imagesettings", force: true do |t|
-    t.integer  "image_id"
-    t.integer  "content_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_networkings", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.string   "link_url"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_products", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.string   "link_url"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_services", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "link_url",   array: true
-  end
-
-  create_table "mjweb_tiles", force: true do |t|
-    t.string   "name"
-    t.string   "partial_name"
-    t.integer  "group"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_trainings", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.string   "link_url"
-    t.integer  "image_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjweb_webpages", force: true do |t|
-    t.integer  "company_id"
-    t.string   "title"
-    t.text     "text"
-    t.string   "link_text"
-    t.string   "link_url"
-    t.integer  "image_id"
+    t.decimal  "rate",       precision: 2, scale: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
