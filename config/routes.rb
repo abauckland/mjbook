@@ -43,6 +43,8 @@ Mjbook::Engine.routes.draw do
   end  
 
   resources :quotes do
+    get :accept, :on => :member
+    get :reject, :on => :member 
     get :print, :on => :member
   end
 

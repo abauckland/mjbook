@@ -2,8 +2,8 @@ class CreateMjbookQlines < ActiveRecord::Migration
   def change
     create_table :mjbook_qlines do |t|
       t.integer :qgroup_id
-      t.string :cat, default: "Please select category"
-      t.string :item, default: "Please select item"
+      t.string :cat, default: "Select category"
+      t.string :item, default: "Select item"
       t.decimal :quantity, :precision => 8, :scale => 0, default: 0
       t.integer :unit_id, default: 1
       t.decimal :rate, :precision => 8, :scale => 2, default: 0.00

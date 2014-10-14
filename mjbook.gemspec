@@ -21,6 +21,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency  'pundit'
   s.add_dependency  'carrierwave'
+  
+  s.add_dependency  'prawn'
+  s.add_dependency  'prawn-table'
+  
   #s.add_dependency  'gruff'  
   s.add_development_dependency  'sass-rails', '~> 4.0.3'
   s.add_development_dependency  'coffee-rails', '~> 4.0.0'

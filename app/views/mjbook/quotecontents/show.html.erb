@@ -33,7 +33,7 @@
      </tr>
     </table>
     <% @qgroups.each do |group| %>    
-        <%= render :partial => 'group_row', locals: { group: group } %>    
+        <%= render :partial => 'group_row', locals: { group: group } %>  
         <% group.qlines.each do |line| %>
             <%= render :partial => 'line_row', locals: { line: line } %>    
         <% end %>        

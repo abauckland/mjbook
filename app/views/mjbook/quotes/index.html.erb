@@ -1,17 +1,16 @@
 <div class="page_title">
     <h1>Quotes</h1>
+    <div class="page_title_button"><%= link_to "create new quote", new_quote_path %> </div>
 </div>
 
 
 <div class="filter_band_single">
-    <%= form_tag quotes_path, method: :get do %>
+    <%= form_tag quotes_path, method: :get, :id=>'filter_form' do %>
     <div class="filter_search">
-        <% if @customers %>
         <div class="filter_project_label">Job:</div>
         <div class="filter_project_input">
-            <%= select_tag 'project_id', options_from_collection_for_select(@customers, :id, :name, @customer), :prompt => 'all jobs'%>    
+            <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), :prompt => 'all customers'%>    
         </div>
-        <% end %>
         <div class="filter_date_1_label">From:</div>
         <div class="filter_date_1_input">
             <%= date_field_tag 'date_from', value = @date_from %>    
@@ -24,8 +23,9 @@
             <%= submit_tag 'Filter', :class => "filter_submit_button"%>    
         </div>        
     </div>
+
+    <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>    
     <% end %>
-    <div class="option_band_button"><%= link_to "new quote", new_quote_path %> </div>
 </div>  
 
 
@@ -42,9 +42,9 @@
           <th class="mob_cell">Price</th>          
           <th class="lrg_cell">Status</th>
           <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"><%= link_to "", new_quote_path, class: 'table_new_icon', title: "create new quote" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf of table" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv of table" %></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -54,7 +54,7 @@
           <% if @quotes %>
             
             <% @quotes.each do |quote| %>
-              <tr>
+              <tr id ="<%= quote.id %>">
                 <td class="mob_cell"><%= quote.project.ref %></td>
                 <td class="lrg_cell"><%= quote.ref %></td> 
                 <td class="lrg_cell"><%= quote.title %></td> 
@@ -62,11 +62,11 @@
                 <td class="mob_cell"><%= quote.date.strftime("%d/%m/%y") %></td>
                 <td class="lrg_cell"><%= pounds(quote.total_vat) %></td>         
                 <td class="mob_cell"><%= pounds(quote.total_price) %></td>          
-                <td class="lrg_cell"><%= quote.status %></td>              
+                <td id="<%= quote.id %>_status"class="lrg_cell"><%= quote.status %></td>              
                 <% if quote.accepted? %>
-                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(quote), class: 'line_reject_icon', title: "mark as rejected" %></td>                
+                    <td width="20px" class="row_button"><%= link_to "", reject_quote_path(quote), :method => :get,  :remote => true, class: 'line_reject_icon', title: "mark as rejected" %></td>                
                 <% else %>
-                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(quote), class: 'line_accept_icon', title: "mark as accepted" %></td>
+                    <td width="20px" class="row_button"><%= link_to "", accept_quote_path(quote), :method => :get,  :remote => true, class: 'line_accept_icon', title: "mark as accepted" %></td>
                 <% end %>
                 <td width="20px" class="row_button"><%= link_to "", print_quote_path(quote), class: 'line_pdf_icon', title: "download pdf of quote" %></td>
                 <td width="20px" class="row_button"><%= link_to "", quotecontent_path(quote), class: 'line_edit_icon', title: "edit quote" %></td>

@@ -6,6 +6,9 @@ module Mjbook
     accepts_nested_attributes_for :qlines
 
     after_create :create_nested_records    
+
+
+    default_scope { order('group_order ASC') }
     
     private
     

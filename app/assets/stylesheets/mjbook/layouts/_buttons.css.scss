@@ -47,6 +47,17 @@
     }
 }
 
+input[type="submit"].options_pdf_icon{
+  @include menu_icons(-1000px);
+  border: 0px;
+  padding: 0px 0px 0px 0px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 0px;  
+}
+
+
 @mixin form_icons($var) {
     background: asset_url('line_menu_icons.png') 0px $var no-repeat;;
     &:hover{

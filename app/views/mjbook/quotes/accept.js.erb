@@ -1,0 +1,3 @@
+$('td#'+<%= @quote.id %>+'_status').html('accepted');
+
+$('tr#<%= @quote_id %>').children('a.line_accept_icon').replaceWith('<%= escape_javascript(link_to "", accept_quote_path(@quote), :method => :get,  :remote => true, class: 'line_accept_icon', title: "mark as accepted") %>');

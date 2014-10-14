@@ -6,12 +6,12 @@ module Mjbook
 
 
     def new_line
+
+      update_line_order(@line, 'new')  
  
       @new_line = @line.dup
       @new_line.line_order = @line.line_order + 1
       @new_line.save
-
-      update_line_order(@line, 'new')  
 
       update_totals(@new_line.qgroup_id)
 
@@ -267,7 +267,7 @@ module Mjbook
       end      
      
       def update_line_order(selected_line, action) 
-        subsequent_lines = Qline.where('qgroup_id = ? AND line_order > ?', selected_line.qgroup_id, selected_line.line_order).order('line_order')
+        subsequent_lines = Qline.where('qgroup_id = ? AND line_order > ?', selected_line.qgroup_id, selected_line.line_order)
         
         subsequent_lines.each_with_index do |line, i|
           if action == 'new'

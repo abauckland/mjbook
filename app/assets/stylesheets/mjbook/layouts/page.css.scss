@@ -112,7 +112,11 @@
   @include green-button;
   border: 1px solid #878787;
   }
-  
+
+.option_band_submit{
+  float: right;
+  padding: 2px 5px 0px 0px;
+  }  
   
 /*project index page - options css*/  
 .filter_band_single {

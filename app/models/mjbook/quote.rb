@@ -14,6 +14,8 @@ module Mjbook
     validates :ref, presence: true    
 
     private
+
+    default_scope { order('date DESC') }
     
     def create_nested_records
       Mjbook::Qgroup.create(:quote_id => self.id)
