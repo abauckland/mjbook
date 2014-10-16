@@ -6,8 +6,8 @@
     <table>
       <thead>
         <tr>
-          <th class="tab_cell">Category</th>
-          <th class="mob_cell">Group</th>                                      
+          <th class="hmrc_category">Category</th>
+          <th class="hmrc_group">Group</th>                                      
           <th width="20px" class="row_button"><%= link_to "", new_hmrcexpcat_path, class: 'line_new_icon', title: "create new misc" %></th>
         </tr>
       </thead>
@@ -17,8 +17,8 @@
           <tbody>
             <% @hmrcexpcats.each do |hmrcexpcat| %>
               <tr>
-                <td class="tab_cell"><%= hmrcexpcat.name %></td>
-                <td class="mob_cell"><%= hmrcexpcat.item %></td>             
+                <td class="hmrc_category"><%= hmrcexpcat.name %></td>
+                <td class="hmrc_group"><%= hmrcexpcat.item %></td>             
                 <td width="20px" class="row_button"><%= link_to '', edit_hmrcexpcat_path(hmrcexpcat), class: 'line_edit_icon', title: "edit misc" %></td>
                 <td width="20px" class="row_button"><%= link_to '', hmrcexpcat, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete misc" %></td>
               </tr>

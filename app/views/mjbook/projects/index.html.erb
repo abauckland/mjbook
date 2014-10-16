@@ -7,12 +7,12 @@
     <table>
       <thead>
         <tr>
-          <th class="mob_cell">Ref</th>
-          <th class="tab_cell">Title</th>
-          <th class="mob_cell">Customer</th>
-          <th class="lrg_cell">Description</th>
-          <th class="lrg_cell">Invoicemethod</th>
-          <th class="lrg_cell">Customer ref</th>
+          <th class="project_ref">Ref</th>
+          <th class="project_title">Title</th>
+          <th class="project_customer">Customer</th>
+          <th class="project_customer_ref">Customer ref</th>
+          <th class="project_description">Description</th>
+          <th class="project_invoicemethod">Invoicemethod</th>
           <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
           <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
         </tr>
@@ -23,12 +23,12 @@
           <tbody>
             <% @projects.each do |project| %>
               <tr>
-                <td class="mob_cell"><%= project.ref %></td>
-                <td class="tab_cell"><%= project.title %></td>
-                <td class="mob_cell"><%= project.customer.name %></td>
-                <td class="lrg_cell"><%= project.description %></td>
-                <td class="lrg_cell"><%= project.invoicemethod_id %></td>
-                <td class="lrg_cell"><%= project.customer_ref %></td>
+                <td class="project_ref"><%= project.ref %></td>
+                <td class="project_title"><%= project.title %></td>
+                <td class="project_customer"><%= project.customer.name %></td>
+                <td class="project_customer_ref"><%= project.customer_ref %></td>
+                <td class="project_description"><%= project.description %></td>
+                <td class="project_invoicemethod"><%= project.invoicemethod_id %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_project_path(project), class: 'line_edit_icon', title: "edit project" %></td>
                 <td width="20px" class="row_button"><%= link_to "", project, method: :delete, class: 'line_delete_icon', title: "delete project" %></td>
               </tr>

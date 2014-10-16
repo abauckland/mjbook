@@ -1,0 +1,41 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+//index table 
+.employee_due_data{display: table-cell; width: 60px}
+.employee_job{display: table-cell; width: 55px}
+.employee_category{display: table-cell; width: 55px}
+.employee_ref{display: table-cell; width: 55px}
+.employee_supplier{display: table-cell; }
+.employee_supplier_ref{display: table-cell; width: 55px}         
+.employee_issue_date{display: table-cell; width: 60px}  
+.employee_distance{display: table-cell; width: 60px}    
+.employee_price{display: table-cell; width: 70px; text-align: right;}
+.employee_vat_due{display: table-cell; width: 70px; text-align: right;}
+.employee_total{display: table-cell; width: 70px; text-align: right;}
+.employee_status{display: table-cell; width: 60px; text-align: right;}
+
+@media screen and (max-width: $lrg_menu) {
+
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+
+}
+
+@media screen and (max-width: $mob_menu) {
+
+}
+
+.vat_note{font-size: 0.8rem; font-weight: normal;}
+

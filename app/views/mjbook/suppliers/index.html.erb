@@ -7,16 +7,15 @@
     <table>
       <thead>
         <tr>
-            <th class="mob_cell">Company</th>
-            <th class="lrg_cell">VAT No.</th>
-            <th class="lrg_cell">Name</th>
-            <th class="lrg_cell">Position</th>
-            <th class="tab_cell">Address</th>
-            <th class="mob_cell">Phone</th>
-            <th class="tab_cell">Alt. Phone</th>
-            <th class="tab_cell">Email</th>
-            
-            <th class="lrg_cell">Notes</th>
+            <th class="supplier_company">Company</th>
+            <th class="supplier_vat">VAT No.</th>
+            <th class="supplier_name">Name</th>
+            <th class="supplier_position">Position</th>
+            <th class="supplier_address">Address</th>
+            <th class="supplier_phone">Phone</th>
+            <th class="supplier_alt_phone">Alt. Phone</th>
+            <th class="supplier_email">Email</th>            
+            <th class="supplier_note">Notes</th>
             <th width="20px" class="row_button"><%= link_to "", new_supplier_path, class: 'table_new_icon', title: "add new supplier" %></th>
             <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
             <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
@@ -28,11 +27,11 @@
           <tbody>
             <% @suppliers.each do |supplier| %>
               <tr>
-                <td class="mob_cell"><%= supplier.company_name %></td>
-                <td class="mob_cell"><%= supplier.vat_no %></td>
-                <td class="lrg_cell"><%= supplier.name %></td>
-                <td class="lrg_cell"><%= supplier.position %></td>
-                <td class="tab_cell">
+                <td class="supplier_company"><%= supplier.company_name %></td>
+                <td class="supplier_vat"><%= supplier.vat_no %></td>
+                <td class="supplier_name"><%= supplier.name %></td>
+                <td class="supplier_position"><%= supplier.position %></td>
+                <td class="supplier_address">
         			<p><%= supplier.address_1 %></p>
         			<p><%= supplier.address_2 %></p>
         			<p><%= supplier.city %></p>
@@ -40,10 +39,10 @@
         			<p><%= supplier.country %></p>
         			<p><%= supplier.postcode %></p>
                 </td>
-                <td class="mob_cell"><%= supplier.phone %></td>
-                <td class="tab_cell"><%= supplier.alt_phone %></td>
-                <td class="tab_cell"><%= supplier.email %></td>
-                <td class="lrg_cell"><%= supplier.notes %></td>
+                <td class="supplier_phone"><%= supplier.phone %></td>
+                <td class="supplier_alt_phone"><%= supplier.alt_phone %></td>
+                <td class="supplier_email"><%= supplier.email %></td>
+                <td class="supplier_note"><%= supplier.notes %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_supplier_path(supplier), class: 'line_edit_icon', title: "edit supplier" %></td>
                 <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete supplier" %></td>
               </tr>

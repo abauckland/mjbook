@@ -6,14 +6,14 @@
     <table>
       <thead>
         <tr>
-          <th class="mob_cell">Date</th>
-          <th class="tab_cell">Job</th>
-            <th class="mob_cell">Mode</th>
-          <th class="lrg_cell">Start Location</th>
-            <th class="lrg_cell">Destination</th>
-          <th class="lrg_cell">Return</th>
-            <th class="mob_cell">Distance</th>
-            <th width="20px" class="row_button"><%= link_to "", new_mileage_path, class: 'table_new_icon', title: "add new mileage recored" %></th>
+          <th class="mileage_date">Date</th>
+          <th class="mileage_job">Job</th>
+          <th class="mileage_mode">Mode</th>
+          <th class="mileage_start">Start Location</th>
+          <th class="mileage_destination">Destination</th>
+          <th class="mileage_return">Return</th>
+          <th class="mileage_distance">Distance</th>
+          <th width="20px" class="row_button"><%= link_to "", new_mileage_path, class: 'table_new_icon', title: "add new mileage recored" %></th>
           <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
           <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
         </tr>
@@ -24,13 +24,13 @@
           <tbody>
             <% @mileages.each do |mileage| %>
               <tr>
-                <td class="mob_cell"><%= mileage.date %></td>
-                <td class="tab_cell"><%= mileage.project.ref_name %></td>
-                <td class="mob_cell"><%= mileage.mileagemethod.mode %></td>
-                <td class="lrg_cell"><%= mileage.start %></td>
-                <td class="lrg_cell"><%= mileage.finish %></td>
-                <td class="lrg_cell"><%= mileage.return %></td>
-                <td class="mob_cell"><%= mileage.distance %></td>
+                <td class="mileage_date"><%= mileage.date %></td>
+                <td class="mileage_job"><%= mileage.project.ref_name %></td>
+                <td class="mileage_mode"><%= mileage.mileagemethod.mode %></td>
+                <td class="mileage_start"><%= mileage.start %></td>
+                <td class="mileage_destination"><%= mileage.finish %></td>
+                <td class="mileage_return"><%= mileage.return %></td>
+                <td class="mileage_distance"><%= mileage.distance %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_mileage_path(mileage), class: 'line_edit_icon', title: "edit mileage record" %></td>
                 <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
               </tr>

@@ -1,21 +1,29 @@
 Mjbook::Engine.routes.draw do
 
   
-  resources :salaries
+  resources :salaries do
+    get :print, :on => :member
+  end
 
-  resources :payments
+  resources :payments do
+    get :print, :on => :member
+  end
 
   resources :inlines
 
   resources :ingroups
 
-  resources :invoices
+  resources :invoices do
+    get :print, :on => :member
+  end
 
-  resources :invoicetypes
+  resources :invoiceterms do
+    get :print, :on => :member
+  end
 
-  resources :invoiceterms
-
-  resources :quoteterms
+  resources :quoteterms do
+    get :print, :on => :member
+  end
 
   resources :terms
 
@@ -70,7 +78,11 @@ Mjbook::Engine.routes.draw do
     get :edit_business, :on => :member
 
     get :accept, :on => :member
-    get :reject, :on => :member      
+    get :reject, :on => :member 
+    
+    get :print_business, :on => :member
+    get :print_personal, :on => :member
+    get :print_employee, :on => :member     
   end
 
  get 'business', :to => 'expenses#business'
@@ -94,6 +106,7 @@ Mjbook::Engine.routes.draw do
   resources :products do 
     get :item_options, :on => :member 
     get :cat_item_options, :on => :member 
+    get :print, :on => :member
   end
   resources :productcategories do
     get :cat_options, :on => :member 
@@ -110,14 +123,21 @@ Mjbook::Engine.routes.draw do
 
   resources :mileages do
     get :add_to_expenses, :on => :member  
+    get :print, :on => :member
   end
 
   resources :mileagemodes, :only => [:edit, :update, :create]
 
-  resources :suppliers
+  resources :suppliers do
+    get :print, :on => :member
+  end
 
-  resources :customers
+  resources :customers do
+    get :print, :on => :member
+  end
 
-  resources :projects
+  resources :projects do
+    get :print, :on => :member
+  end
   
 end

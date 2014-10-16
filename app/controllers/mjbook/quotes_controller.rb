@@ -176,11 +176,10 @@ module Mjbook
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
-          :margin => [10.mm, 10.mm, 5.mm, 10.mm],
-          :info => {:title => ""}
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
       
-            table_indexes(quotes, 'quotes', customer_name, date_from, date_to, filename, pdf)
+            table_indexes(quotes, 'quote', customer_name, date_from, date_to, filename, pdf)
       
           end
 

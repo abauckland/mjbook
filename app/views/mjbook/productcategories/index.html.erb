@@ -6,7 +6,7 @@
     <table>
       <thead>
         <tr>
-          <th class="mob_cell">Category Name</th>
+          <th class="product_category_name">Category Name</th>
           <th width="20px" class="row_button"><%= link_to "", new_productcategory_path, class: 'line_new_icon', title: "create new category" %></th>
         </tr>
       </thead>
@@ -16,7 +16,7 @@
           <tbody>
             <% @productcategories.each do |productcategory| %>
               <tr>
-                <td class="mob_cell"><%= productcategory.name %></td>
+                <td class="product_category_name"><%= productcategory.name %></td>
                 <% if !productcategory.products.any? %>
                     <td width="20px" class="row_button"><%= link_to '', productcategory, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete category" %></td>
                 <% end %>                 

@@ -6,14 +6,14 @@
     <table>
       <thead>
         <tr>
-          <th class="tab_cell">Category</th>
-          <th class="mob_cell">Item</th>
-          <th class="tab_cell">Quantity</th>
-          <th class="tab_cell">Unit</th>
-          <th class="lrg_cell">Rate/Unit</th>
-          <th class="mob_cell">Price</th>
-          <th class="tab_cell">Vat Rate</th>
-          <th class="mob_cell">Total</th>                                        
+          <th class="product_catetory_name">Category</th>
+          <th class="product_item">Item</th>
+          <th class="product_quantity">Quantity</th>
+          <th class="product_unit">Unit</th>
+          <th class="product_rate">Rate/Unit</th>
+          <th class="product_price">Price</th>
+          <th class="product_vat_due">Vat Rate</th>
+          <th class="product_total">Total</th>                                        
           <th width="20px" class="row_button"><%= link_to "", new_product_path, class: 'line_new_icon', title: "create new product" %></th>
         </tr>
       </thead>
@@ -23,14 +23,14 @@
           <tbody>
             <% @products.each do |product| %>
               <tr>
-                <td class="tab_cell"><%= productcategory.name %></td>
-                <td class="mob_cell"><%= product.item %></td>
-                <td class="tab_cell"><%= product.quantity %></td>
-                <td class="tab_cell"><%= product.unit.text %></td>
-                <td class="mob_cell"><%= pounds(product.rate) %></td>
-                <td class="mob_cell"><%= pounds(product.price) %></td>                
-                <td class="tab_cell"><%= product.vat.cat %></td>
-                <td class="mob_cell"><%= pounds(product.total) %></td>                
+                <td class="product_catetory_name"><%= product.productcategory.name %></td>
+                <td class="product_item"><%= product.item %></td>
+                <td class="product_quantity"><%= product.quantity %></td>
+                <td class="product_unit"><%= product.unit.text %></td>
+                <td class="product_rate"><%= pounds(product.rate) %></td>
+                <td class="product_price"><%= pounds(product.price) %></td>                
+                <td class="product_vat_due"><%= product.vat.cat %></td>
+                <td class="product_total"><%= pounds(product.total) %></td>                
                 <td width="20px" class="row_button"><%= link_to '', edit_product_path(product), class: 'line_edit_icon', title: "edit product" %></td>
                 <td width="20px" class="row_button"><%= link_to '', product, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete product" %></td>
               </tr>

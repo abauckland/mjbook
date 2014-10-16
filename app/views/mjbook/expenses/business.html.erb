@@ -31,17 +31,18 @@
     <table>
       <thead>
         <tr>
-          <th class="mob_cell">Due Date</th>
-          <th class="tab_cell">Job</th>
-          <th class="lrg_cell">Category</th> 
-          <th class="lrg_cell">Reference</th>
-          <th class="mob_cell">Supplier</th>
-          <th class="lrg_cell">Supplier Ref</th>         
-          <th class="lrg_cell">Issue Date</th>          
+          <th class="business_due_data">Due Date</th>
+          <th class="business_job">Job</th>
+          <th class="business_category">Category</th> 
+          <th class="business_ref">Reference</th>
+          <th class="business_supplier">Supplier</th>
+          <th class="business_supplier_ref">Supplier Ref</th>         
+          <th class="business_issue_date">Issue Date</th>          
           <th width="20px" class="row_button">Bill Image</th>
-          <th class="lrg_cell">VAT</th>
-          <th class="mob_cell">Amount</th>
-          <th class="lrg_cell">Status</th>
+          <th class="business_price">Price</br><span class="vat_note">(ex VAT)</span></th>
+          <th class="business_vat_due">Vat</th>
+          <th class="business_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
+          <th class="business_status">Status</th>
           <th width="20px" class="row_button"><%= link_to "", new_business_path, class: 'table_new_icon', title: "add new bill recored" %></th>
           <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
           <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
@@ -55,21 +56,22 @@
             
             <% @businessexpenses.each do |businessexpense| %>
               <tr>
-                <td class="mob_cell"><%= businessexpense.due_date %></td>
-                <td class="tab_cell"><%= businessexpense.project.ref %></td>
-                <td class="lrg_cell"><%= businessexpense.hmrcexpcat.category %></td>
-                <td class="lrg_cell"><%= businessexpense.ref %></td>
-                <td class="mob_cell"><%= businessexpense.supplier.name %></td>
-                <td class="lrg_cell"><%= businessexpense.supplier_ref %></td>
-                <td class="lrg_cell"><%= businessexpense.date.strftime("%d/%m/%y") %></td>
+                <td class="business_due_data"><%= businessexpense.due_date.strftime("%d/%m/%y") %></td>
+                <td class="business_job"><%= businessexpense.project.ref %></td>
+                <td class="business_category"><%= businessexpense.hmrcexpcat.category %></td>
+                <td class="business_ref"><%= businessexpense.ref %></td>
+                <td class="business_supplier"><%= businessexpense.supplier.company_name %></td>
+                <td class="business_supplier_ref"><%= businessexpense.supplier_ref %></td>
+                <td class="business_issue_date"><%= businessexpense.date.strftime("%d/%m/%y") %></td>
                 <td width="20px">
                     <% if businessexpense.receipt? %>
                         <%= link_to "", expense_path(businessexpense.id), class: 'line_view_icon', title: "view receipt" %>
                     <% end %>
                 </td>
-                <td class="lrg_cell"><%= pounds(businessexpense.vat) %></td>
-                <td class="mob_cell"><%= pounds(businessexpense.amount) %></td>
-                <td class="lrg_cell"><%= businessexpense.status %></td>               
+                <td class="business_price"><%= pounds(businessexpense.price) %></td>
+                <td class="business_vat_due"><%= pounds(businessexpense.vat) %></td>
+                <td class="business_total"><%= pounds(businessexpense.total) %></td>
+                <td class="business_status"><%= businessexpense.status %></td>               
                 <% if businessexpense.status == "accepted" %>
                     <td width="20px" class="row_button"><%= link_to "", reject_expense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>                
                 <% else %>

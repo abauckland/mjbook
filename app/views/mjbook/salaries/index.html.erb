@@ -32,9 +32,9 @@
     <table>
       <thead>
         <tr>
-          <th class="quote_title">Employee</th>
-          <th class="quote_project_ref">Paid</th>
-          <th class="quote_customer_ref">Date</th>          
+          <th class="salary_employee">Employee</th>
+          <th class="salary_paid">Paid</th>
+          <th class="salary_date">Date</th>          
           <th width="20px" class="row_button"></th>
         </tr>
       </thead>
@@ -45,9 +45,9 @@
           <% if @salaries %>            
             <% @salaries.each do |salary| %>
               <tr id ="<%= salary.id %>">
-                <td class="quote_ref"><%= salary.user.name %></td> 
-                <td class="quote_title"><%= pounds(salary.paid) %></td> 
-                <td class="quote_project_ref"><%= salary.date.strftime("%d/%m/%y") %></td>
+                <td class="salary_employee"><%= salary.user.name %></td> 
+                <td class="salary_paid"><%= pounds(salary.paid) %></td> 
+                <td class="salary_date"><%= salary.date.strftime("%d/%m/%y") %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_salary_path(salary), class: 'line_edit_icon', title: "edit payment details" %></td>
               </tr>
             <% end %>  
