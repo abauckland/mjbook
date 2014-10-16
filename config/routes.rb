@@ -1,6 +1,18 @@
 Mjbook::Engine.routes.draw do
 
   
+  resources :salaries
+
+  resources :payments
+
+  resources :inlines
+
+  resources :ingroups
+
+  resources :invoices
+
+  resources :invoicetypes
+
   resources :invoiceterms
 
   resources :quoteterms
@@ -81,6 +93,7 @@ Mjbook::Engine.routes.draw do
  
   resources :products do 
     get :item_options, :on => :member 
+    get :cat_item_options, :on => :member 
   end
   resources :productcategories do
     get :cat_options, :on => :member 

@@ -28,19 +28,21 @@
     <% end %>
 </div>  
 
-
  <div class="table_content_with_filter">
     <table>
       <thead>
         <tr>
-          <th class="mob_cell">Job</th>
-          <th class="lrg_cell">Ref</th> 
-          <th class="mob_cell">Title</th>
-          <th class="mob_cell">Cust. Ref</th>          
-          <th class="mob_cell">Date</th>
-          <th class="lrg_cell">Vat</th>         
-          <th class="mob_cell">Price</th>          
-          <th class="lrg_cell">Status</th>
+          <th class="quote_ref">Ref</th> 
+          <th class="quote_title">Title</th>
+          <th class="quote_project_ref">Job Ref</th>
+          <th class="quote_customer_ref">Cust. Ref</th>          
+          <th class="quote_customer">Cust. Name</th> 
+          <th class="quote_company_name">Cust. Company</th> 
+          <th class="quote_date">Date</th>
+          <th class="quote_price">Price</br><span class="vat_note">(ex VAT)</span></th>          
+          <th class="quote_vat_due">Vat</th>         
+          <th class="quote_total">Total</br><span class="vat_note">(Inc VAT)</span></th>          
+          <th class="quote_status">Status</th>
           <th width="20px" class="row_button"></th>
           <th width="20px" class="row_button"></th>
           <th width="20px" class="row_button"></th>
@@ -55,14 +57,17 @@
             
             <% @quotes.each do |quote| %>
               <tr id ="<%= quote.id %>">
-                <td class="mob_cell"><%= quote.project.ref %></td>
-                <td class="lrg_cell"><%= quote.ref %></td> 
-                <td class="lrg_cell"><%= quote.title %></td> 
-                <td class="lrg_cell"><%= quote.customer_ref %></td> 
-                <td class="mob_cell"><%= quote.date.strftime("%d/%m/%y") %></td>
-                <td class="lrg_cell"><%= pounds(quote.total_vat) %></td>         
-                <td class="mob_cell"><%= pounds(quote.total_price) %></td>          
-                <td id="<%= quote.id %>_status"class="lrg_cell"><%= quote.status %></td>              
+                <td class="quote_ref"><%= quote.ref %></td> 
+                <td class="quote_title"><%= quote.title %></td> 
+                <td class="quote_project_ref"><%= quote.project.ref %></td>
+                <td class="quote_customer_ref"><%= quote.customer_ref %></td> 
+                <td class="quote_customer"><%= quote.project.customer.name %></td>
+                <td class="quote_company_name"><%= quote.project.customer.company_name %></td>
+                <td class="quote_date"><%= quote.date.strftime("%d/%m/%y") %></td>
+                <td class="quote_price"><%= pounds(quote.price) %></td> 
+                <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>         
+                <td class="quote_total"><%= pounds(quote.total) %></td>          
+                <td id="<%= quote.id %>_status"class="quote_status"><%= quote.status %></td>              
                 <% if quote.accepted? %>
                     <td width="20px" class="row_button"><%= link_to "", reject_quote_path(quote), :method => :get,  :remote => true, class: 'line_reject_icon', title: "mark as rejected" %></td>                
                 <% else %>

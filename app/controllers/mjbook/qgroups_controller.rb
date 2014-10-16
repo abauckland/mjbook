@@ -26,7 +26,7 @@ module Mjbook
       
       @group.destroy      
 
-# TODO update_totals(qgroup_id)
+      update_totals(qgroup_id)
       
       respond_to do |format|
         format.js {render :delete_group, :layout => false }  
@@ -52,7 +52,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def qgroup_params
-        params.require(:qgroup).permit(:quote_id, :ref, :text, :sub_vat, :sub_price, :group_order)
+        params.require(:qgroup).permit(:quote_id, :ref, :text, :price, :vat_due, :total, :group_order)
       end
 
 

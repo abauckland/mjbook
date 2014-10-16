@@ -1,26 +1,35 @@
 module Mjbook
   module QuotesHelper
+
+  def quote_price(groups)
+    price = Qline.where(:qgroup_id => groups.ids).sum(:price)
+    return "#{ pounds(price) }".html_safe 
+  end
   
   def quote_vat(groups)
     vat_due = Qline.where(:qgroup_id => groups.ids).sum(:vat_due)
     return "#{ pounds(vat_due) }".html_safe 
   end
   
-  def quote_price(groups)
-    price = Qline.where(:qgroup_id => groups.ids).sum(:price)
-    return "#{ pounds(price) }".html_safe 
+  def quote_total(groups)
+   total = Qline.where(:qgroup_id => groups.ids).sum(:total)
+    return "#{ pounds(total) }".html_safe 
   end
   
   
+  def group_price(group)
+    price = Qline.where(:qgroup_id => group.id).sum(:price)
+    return "#{ pounds(price) }".html_safe 
+  end
   
   def group_vat(group)
     vat_due = Qline.where(:qgroup_id => group.id).sum(:vat_due)
     return "#{ pounds(vat_due) }".html_safe 
   end
   
-  def group_price(group)
-    price = Qline.where(:qgroup_id => group.id).sum(:price)
-    return "#{ pounds(price) }".html_safe 
+  def group_total(group)
+    total = Qline.where(:qgroup_id => group.id).sum(:total)
+    return "#{ pounds(total) }".html_safe 
   end
   ##specline table formatting
   
@@ -72,6 +81,10 @@ module Mjbook
     def line_unit(line)  
         "<span id='#{ line.id }' class='qline_unit'>#{ line.unit.text }</span>".html_safe
     end
+
+    def line_price(line)  
+        "<span id='#{ line.id }' class='qline_price'>#{ pounds(line.price) }".html_safe      
+    end
     
     def line_vat_rate(line)
         "<span id='#{ line.id }' class='qline_vat_rate'>#{ line.vat.rate }%</span>".html_safe
@@ -81,8 +94,8 @@ module Mjbook
         "<span id='#{ line.id }' class='qline_vat'>#{ pounds(line.vat_due) }</span>".html_safe
     end
     
-    def line_price(line)  
-        "<span id='#{ line.id }' class='qline_price'>#{ pounds(line.price) }".html_safe      
+    def line_total(line)  
+        "<span id='#{ line.id }' class='qline_total'>#{ pounds(line.total) }".html_safe      
     end
     
     def line_note(line)  

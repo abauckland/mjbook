@@ -1,0 +1,60 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+//index table 
+.invoice_ref {display: table-cell; width: 35px; text-align: left;}
+.invoice_title {display: table-cell; width: 160px}
+.invoice_project_ref{display: table-cell; width: 50px; text-align: left;}
+.invoice_customer_ref{display: table-cell; width: 55px}
+.invoice_customer{display: table-cell; width: 160px}
+.invoice_company_name{display: table-cell; }
+.invoice_date{display: table-cell; width: 60px}
+.invoice_price{display: table-cell; width: 70px; text-align: right;}
+.invoice_vat_due{display: table-cell; width: 70px; text-align: right;}
+.invoice_total{display: table-cell; width: 70px; text-align: right;}
+.invoice_status{display: table-cell; width: 60px; text-align: right;}
+
+
+@media screen and (max-width: $lrg_menu) {
+  .invoice_title {display: none}
+  .invoice_customer{display: none}
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .invoice_price {display: none}
+  .invoice_customer_ref {display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .invoice_project_ref{display: none}
+  .invoice_date{display: none}
+  .invoice_vat_due{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .invoice_status{display: none}
+}
+
+.vat_note{font-size: 0.8rem; font-weight: normal;}
+
+
+//invoice content form
+.invoice_line_prefix{}
+.invoice_line_prefix{}
+.invoice_line_category{}
+.invoice_line_cat_item{}
+.invoice_line_item{}
+.invoice_line_quantity{}
+.invoice_line_unit{}
+.invoice_line_rate{}
+.invoice_line_price{}
+.invoice_line_vat_rate{}
+.invoice_line_vat{}
+.invoice_line_total{}
+.invoice_line_menu_mob{}

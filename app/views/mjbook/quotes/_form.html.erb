@@ -51,18 +51,11 @@
                             <div class="column_form_input"><%= f.date_field :date %></div>
                             <div class="column_help_tooltip" id="quote_date"></div>  
                         </div>
-<!--
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">VAT:</label>                        
-                            <div class="column_form_input"><%= f.text_field :total_vat, :placeholder => "0.00"  %></div>
-                            <div class="column_help_tooltip" id="quote_vat"></div>  
+                            <label class="column_form_label" style="width:90px">Terms*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:quoteterm_id, @quoteterms, :id, :category, {:selected => @quote.quoteterm_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
                         </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">Price:</label>                        
-                            <div class="column_form_input"><%= f.text_field :total_price, :placeholder => "0.00"  %></div>
-                            <div class="column_help_tooltip" id="quote_price"></div>  
-                        </div>
--->
                 </div>
            </div>     
                 

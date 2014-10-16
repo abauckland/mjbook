@@ -1,0 +1,55 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ingroup_id: 1
+  cat: MyString
+  string: MyString
+  item: MyString
+  string: MyString
+  quantity: MyString
+  decimal: MyString
+  unit_id: MyString
+  integer: MyString
+  rate: MyString
+  decimal: MyString
+  price: MyString
+  decimal: MyString
+  vat_id: MyString
+  integer: MyString
+  vat_due: MyString
+  decimal: MyString
+  total: MyString
+  decimal: MyString
+  note: MyString
+  text: MyString
+  line_order: MyString
+  integer: MyString
+  linetype: MyString
+  integer: MyString
+
+two:
+  ingroup_id: 1
+  cat: MyString
+  string: MyString
+  item: MyString
+  string: MyString
+  quantity: MyString
+  decimal: MyString
+  unit_id: MyString
+  integer: MyString
+  rate: MyString
+  decimal: MyString
+  price: MyString
+  decimal: MyString
+  vat_id: MyString
+  integer: MyString
+  vat_due: MyString
+  decimal: MyString
+  total: MyString
+  decimal: MyString
+  note: MyString
+  text: MyString
+  line_order: MyString
+  integer: MyString
+  linetype: MyString
+  integer: MyString

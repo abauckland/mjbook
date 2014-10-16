@@ -1,0 +1,52 @@
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @salary.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@salary.errors.count, "error") %> prohibited this project from being created</p>
+                  <ul>
+                  <% @salary.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@salary) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Job Ref*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:user_id, @users, :id, :name, {:selected => @salary.user_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="salary_user"></div>  
+                        </div>
+                       <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Amount:*</label>                        
+                            <div class="column_form_input"><%= f.text_field :paid %></div>
+                            <div class="column_help_tooltip" id="quote_ref"></div> 
+                            <div class="column_error_note"> <%= error_check(@salary, :paid)%></div> 
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Date:</label>                        
+                            <div class="column_form_input"><%= f.date_field :date %></div>
+                            <div class="column_help_tooltip" id="quote_date"></div>  
+                        </div>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", salaries_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
+    </div>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

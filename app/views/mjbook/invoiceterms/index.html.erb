@@ -1,27 +1,39 @@
-<h1>Listing invoiceterms</h1>
+<div class="page_title">
+    <h1>Inovice Terms</h1>
+    <div class="page_title_button"><%= link_to 'New Terms', new_invoiceterm_path %> </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Company</th>
-      <th>Terms</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="table_content_with_filter">
+    <table>
+      <thead>
+        <tr>
+          <th class="terms_period">Period</th>
+          <th class="terms_terms">Terms</th>         
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+          <% if @invoiceterms %>            
+            <% @invoiceterms.each do |invoiceterm| %>
+              <tr id ="<%= salary.id %>">
+                <td class="terms_period"><%= invoiceterm.period %></td> 
+                <td class="terms_terms"><%= invoiceterm.terms %></td> 
+                <% if @invoiceterm_used %>
+                    <td width="20px" class="row_button"><%= link_to "", edit_salary_path(salary), class: 'line_edit_icon', title: "edit terms" %></td>
+                    <td width="20px" class="row_button"><%= link_to "", invoiceterm, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_edit_icon', title: "delete terms" %></td>
+                <% else %>
+                    <td width="20px" class="row_button"></th>
+                    <td width="20px" class="row_button"></th>                
+                <% end %>             
+              </tr>
+            <% end %>  
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
 
-  <tbody>
-    <% @invoiceterms.each do |invoiceterm| %>
-      <tr>
-        <td><%= invoiceterm.company_id %></td>
-        <td><%= invoiceterm.terms %></td>
-        <td><%= link_to 'Show', invoiceterm %></td>
-        <td><%= link_to 'Edit', edit_invoiceterm_path(invoiceterm) %></td>
-        <td><%= link_to 'Destroy', invoiceterm, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Invoiceterm', new_invoiceterm_path %>

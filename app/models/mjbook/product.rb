@@ -8,7 +8,7 @@ module Mjbook
     validates :quantity, presence: true, numericality: true
     validates :unit_id, presence: true
     validates :vat_id, presence: true
-    validates :price, presence: true, numericality: true
+    validates :rate, presence: true, numericality: true
 
   end
 end

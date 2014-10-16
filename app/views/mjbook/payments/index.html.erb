@@ -1,43 +1,70 @@
 <div class="page_title">
-    <h1>Expenditure History</h1>
+    <h1>Payments Recieved</h1>
+    <div class="page_title_button"><%= link_to "new payment record", new_payment_path %> </div>
 </div>
 
- <div class="table_content_with_title">
+<div class="filter_band_single">
+    <%= form_tag payments_path, method: :get, :id=>'filter_form' do %>
+    <div class="filter_search">
+        <div class="filter_project_label">Job:</div>
+        <div class="filter_project_input">
+            <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), :prompt => 'all customers'%>    
+        </div>
+        <div class="filter_date_1_label">From:</div>
+        <div class="filter_date_1_input">
+            <%= date_field_tag 'date_from', value = @date_from %>
+        </div>
+        <div class="filter_date_2_label">To:</div>
+        <div class="filter_date_2_input">
+            <%= date_field_tag 'date_to', value = @date_to %>
+        </div>
+        <div class="filter_submit">
+            <%= submit_tag 'Filter', :class => "filter_submit_button"%>
+        </div>
+    </div>
+
+    <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+    <% end %>
+</div>
+
+<div class="table_content_with_filter">
     <table>
       <thead>
         <tr>
-          <th class="mob_cell">Date</th>
-          <th class="tab_cell">Job</th>
-          <th class="lrg_cell">Category</th> 
-          <th class="lrg_cell">Reference</th>
-          <th class="mob_cell">Supplier</th>
-          <th class="lrg_cell">Supplier Ref</th>                   
-          <th class="lrg_cell">VAT</th>
-          <th class="mob_cell">Amount</th>
-          <th class="lrg_cell">Method</th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+          <th class="payment_ref">Ref</th>
+          <th class="payment_invoice">Invoice Ref</th>
+          <th class="payment_method">Payment Method</th>
+          <th class="payment_account">Account</th>     
+          <th class="payment_date">Date</th>
+          <th class="payment_price">Price</br><span class="vat_note">(ex VAT)</span></th>
+          <th class="payment_vat_due">Vat</th>
+          <th class="payment_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
+          <th class="payment_note">Note</th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
         </tr>
       </thead>
     </table>
     <div class="table_container">
         <table>
           <tbody>
-            <% @expenditures.each do |expenditure| %>
-              <tr>
-                <td class="mob_cell"><%= expenditure.date %></td>
-                <td class="tab_cell"><%= expenditure.project.ref %></td>
-                <td class="lrg_cell"><%= expenditure.hmrcexpcat.category %></td>
-                <td class="lrg_cell"><%= expenditure.ref %></td>
-                <td class="mob_cell"><%= expenditure.supplier.name %></td>
-                <td class="lrg_cell"><%= expenditure.supplier_ref %></td>
-                <td class="lrg_cell"><%= expenditure.vat %></td>
-                <td class="mob_cell"><%= expenditure.amount %></td>
-                <td class="lrg_cell"><%= expenditure.method %></td>              
-                <td width="20px" class="row_button"><%= link_to "", edit_expenditure_path(expenditure), class: 'line_edit_icon', title: "edit expenditure record" %></td>
-                <td width="20px" class="row_button"></td>
+          <% if @payments %>            
+            <% @payments.each do |payment| %>
+              <tr id ="<%= payment.id %>">
+                <td class="payment_ref"><%= payment.ref %></td>
+                <td class="payment_invoice"><%= payment.invoice.ref %></td>
+                <td class="payment_method"><%= payment.paymethod.text %></td>
+                <td class="payment_account"><%= payment.companyaccount.name %></td>
+                <td class="payment_date"><%= payment.date.strftime("%d/%m/%y") %></td>
+                <td class="payment_price"><%= pounds(payment.price) %></td>
+                <td class="payment_vat_due"><%= pounds(payment.vat_due) %></td>
+                <td class="payment_total"><%= pounds(payment.total) %></td>                      
+                <td class="payment_note"><%= payment.note %></td> 
+                <td width="20px" class="row_button"><%= link_to "", edit_payment_path(payment), class: 'line_edit_icon', title: "edit payment details" %></td>
+                <td width="20px" class="row_button"><%= link_to "", payment, method: :delete, class: 'line_delete_icon', title: "delete payment" %></td>
               </tr>
             <% end %>
+          <% end %>
           </tbody>
         </table>
     </div>

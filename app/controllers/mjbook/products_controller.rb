@@ -14,7 +14,7 @@ module Mjbook
 # HACK unclear why nessting does not work here!     
       @line = Qline.find(params[:id])
       productcat = Productcategory.where(:text => @line.cat).first
-      @products = Product.where(:productcategory_id => productcat.id) 
+      @products = Product.where(:productcategory_id => productcat.id)
   
       #create hash of options
       @product_options = {}
@@ -28,6 +28,22 @@ module Mjbook
       render :json => @product_options
     end
 
+    def cat_item_options
+
+# HACK unclear why nessting does not work here!     
+      @products = Product.where(:company_id => current_user.company_id) 
+  
+      #create hash of options
+      @product_options = {}
+      
+      @products.each do |p|
+        key = p.id
+        value = p.item
+        @product_options[key] = value
+      end
+      #render as json for jeditable
+      render :json => @product_options
+    end
 
 
     # GET /products/new
@@ -86,7 +102,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def product_params
-        params.require(:product).permit(:company_id, :productcategory_id, :item, :quantity, :unit_id, :rate, :vat_id, :vat, :price)
+        params.require(:product).permit(:company_id, :productcategory_id, :item, :quantity, :unit_id, :rate, :vat_id, :vat, :price, :total)
       end
   end
 end

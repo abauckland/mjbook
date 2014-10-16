@@ -2,88 +2,61 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class PaymentsController < ApplicationController
-    before_action :set_expenditure, only: [:show, :edit, :update, :destroy]
+    before_action :set_payment, only: [:show, :edit, :update, :destroy]
 
-    # GET /expenditures
+    # GET /payments
     def index
       @payments = Payment.all
     end
 
-    def paid_personal
-      #batch accepted expenses together
-      
-    end
-    
-    def paid_business
-      
-    end 
-
-    def paid_salary
-      
-    end 
-
-    # GET /expenditures/1
+    # GET /payments/1
     def show
     end
 
-    # GET /expenditures/new
+    # GET /payments/new
     def new
       @payment = Payment.new
     end
 
-    # GET /expenditures/1/edit
+    # GET /payments/1/edit
     def edit
     end
 
-    # POST /expenditures
+    # POST /payments
     def create
-      @payment = Payment.new(expenditure_params)
+      @payment = Payment.new(payment_params)
 
       if @payment.save
-        redirect_to @payment, notice: 'Expenditure was successfully created.'
+        redirect_to @payment, notice: 'Payment was successfully created.'
       else
         render :new
       end
     end
 
-    # PATCH/PUT /expenditures/1
+    # PATCH/PUT /payments/1
     def update
-      if @payment.update(expenditure_params)
-        redirect_to @payment, notice: 'Expenditure was successfully updated.'
+      if @payment.update(payment_params)
+        redirect_to @payment, notice: 'Payment was successfully updated.'
       else
         render :edit
       end
     end
 
-    # DELETE /expenditures/1
+    # DELETE /payments/1
     def destroy
       @payment.destroy
-      redirect_to expenditures_url, notice: 'Expenditure was successfully destroyed.'
+      redirect_to payments_url, notice: 'Payment was successfully destroyed.'
     end
-
-    
-    def pay_personal
-      #batch accepted expenses together
-      
-    end
-    
-    def pay_business
-      
-    end 
-
-    def pay_salary
-      
-    end 
 
     private
       # Use callbacks to share common setup or constraints between actions.
-      def set_expenditure
+      def set_payment
         @payment = Payment.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
-      def expenditure_params
-        params.require(:payment).permit(:amount, :date, :ref, :method, :user_id)
+      def payment_params
+        params.require(:payment).permit(:user_id, :invoice_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :note)
       end
   end
 end

@@ -135,9 +135,10 @@ module Mjbook
                              :quantity => item.quantity,
                              :unit_id => item.unit_id,
                              :rate => item.rate,
+                             :price => item.price, 
                              :vat_id => item.vat_id,
                              :vat_due => item.vat_due,
-                             :price => item.price,     
+                             :total=> item.price,     
                              :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
                              :linetype => old_line.linetype)        
@@ -157,11 +158,12 @@ module Mjbook
     def update_quantity
 
       clean_number(params[:value])
-            
+
+      price = (@line.rate*@value)             
       vat_due = (@line.rate*@value*(@line.vat.rate/100))
-      price = (@line.rate*@value)+(@line.rate*@value*(@line.vat.rate/100))
+      total = (@line.rate*@value)+(@line.rate*@value*(@line.vat.rate/100))
     
-      @line.update(:quantity => @value, :vat_due => vat_due, :price => price)            
+      @line.update(:quantity => @value, :price => price, :vat_due => vat_due, :total => total)            
 
       update_totals(@line.qgroup_id)
       
@@ -174,11 +176,12 @@ module Mjbook
     def update_rate
 
       clean_number(params[:value])
-            
+
+      price = (@line.quantity*@value)            
       vat_due = (@line.quantity*@value*(@line.vat.rate/100))
-      price = (@line.quantity*@value*(@line.vat.rate/100))+(@line.quantity*@value)  
+      total = (@line.quantity*@value*(@line.vat.rate/100))+(@line.quantity*@value)   
       
-      @line.update(:rate => @value, :vat_due => vat_due, :price => price)            
+      @line.update(:rate => @value, :price => price, :vat_due => vat_due, :total => total)            
       
       update_totals(@line.qgroup_id)
       
@@ -193,9 +196,9 @@ module Mjbook
       vat = Vat.where(:id => params[:value]).first 
       
       vat_due = (@line.rate*(vat.rate/100))
-      price = (@line.rate + vat_due)*@line.quantity   
+      total = (@line.rate + vat_due)*@line.quantity   
       #update line, group and quote totals
-      @line.update(:price =>price, :vat_id => params[:value], :vat_due => vat_due)            
+      @line.update(:total =>total, :vat_id => params[:value], :vat_due => vat_due)            
       
       update_totals(@line.qgroup_id)
     
@@ -204,15 +207,29 @@ module Mjbook
       end
     end
 
-
     def update_price
+ 
+#      clean_number(params[:value])
+            
+#      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
+#      rate = @value-vat_due
+#      #update line, group and quote totals      
+#      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)            
+      
+#      update_totals(@line.qgroup_id)
+    
+#      render :update_qline, :layout => false 
+    end
+
+    def update_total
  
       clean_number(params[:value])
             
       vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
-      rate = @value-vat_due
+      rate = (@value-vat_due)/@line.quantity
+      price = @value-vat_due
       #update line, group and quote totals      
-      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)            
+      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)            
       
       update_totals(@line.qgroup_id)
     
@@ -245,7 +262,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def qline_params
-        params.require(:qline).permit(:qgroup_id, :cat, :item, :quantity, :unit, :rate, :vat_id, :vat_due, :price, :note, :linetype, :line_order)
+        params.require(:qline).permit(:qgroup_id, :cat, :item, :quantity, :unit, :rate, :price, :vat_id, :vat_due, :total, :note, :linetype, :line_order)
       end
 
       def update_totals(qgroup_id)

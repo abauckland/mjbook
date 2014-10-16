@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @inovice.project_id %>
+</p>
+
+<p>
+  <strong>Ref:</strong>
+  <%= @inovice.ref %>
+</p>
+
+<p>
+  <strong>Customer ref:</strong>
+  <%= @inovice.customer_ref %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @inovice.price %>
+</p>
+
+<p>
+  <strong>Vat due:</strong>
+  <%= @inovice.vat_due %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @inovice.total %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @inovice.status %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @inovice.date %>
+</p>
+
+<p>
+  <strong>Invoiceterms:</strong>
+  <%= @inovice.invoiceterms_id %>
+</p>
+
+<p>
+  <strong>Invoicetype:</strong>
+  <%= @inovice.invoicetype_id %>
+</p>
+
+<%= link_to 'Edit', edit_inovice_path(@inovice) %> |
+<%= link_to 'Back', inovices_path %>

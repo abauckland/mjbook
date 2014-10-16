@@ -1,19 +1,49 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Amount:</strong>
-  <%= @expenditure.amount %>
+  <strong>User:</strong>
+  <%= @payment.user_id %>
+</p>
+
+<p>
+  <strong>Invoice:</strong>
+  <%= @payment.invoice_id %>
+</p>
+
+<p>
+  <strong>Paymethod:</strong>
+  <%= @payment.paymethod_id %>
+</p>
+
+<p>
+  <strong>Companyaccount:</strong>
+  <%= @payment.companyaccount_id %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @payment.price %>
+</p>
+
+<p>
+  <strong>Vat:</strong>
+  <%= @payment.vat %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @payment.total %>
 </p>
 
 <p>
   <strong>Date:</strong>
-  <%= @expenditure.date %>
+  <%= @payment.date %>
 </p>
 
 <p>
-  <strong>Ref:</strong>
-  <%= @expenditure.ref %>
+  <strong>Note:</strong>
+  <%= @payment.note %>
 </p>
 
-<%= link_to 'Edit', edit_expenditure_path(@expenditure) %> |
-<%= link_to 'Back', expenditures_path %>
+<%= link_to 'Edit', edit_payment_path(@payment) %> |
+<%= link_to 'Back', payments_path %>

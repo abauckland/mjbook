@@ -3,6 +3,7 @@ module Mjbook
     has_many :qgroups, :dependent => :destroy
 
     belongs_to :project
+    belongs_to :quoteterm    
     
     accepts_nested_attributes_for :qgroups
     

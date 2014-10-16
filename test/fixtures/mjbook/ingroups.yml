@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  invoice_id: 1
+  ref: MyString
+  text: MyString
+  price: 9.99
+  vat_due: 9.99
+  total: 9.99
+  group_order: 1
+
+two:
+  invoice_id: 1
+  ref: MyString
+  text: MyString
+  price: 9.99
+  vat_due: 9.99
+  total: 9.99
+  group_order: 1

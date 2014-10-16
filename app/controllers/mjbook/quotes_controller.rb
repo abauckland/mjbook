@@ -2,11 +2,12 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class QuotesController < ApplicationController
-    
-    
+        
     before_action :set_quote, only: [:show, :edit, :update, :destroy, :print]
-    
+    before_action :set_quoteterms, only: [:new, :edit]
+        
     include PrintIndexes
+    include PrintQuote
 
     # GET /quotes
     def index      
@@ -147,10 +148,14 @@ module Mjbook
       def set_quote
         @quote = Quote.find(params[:id])
       end
+      
+      def set_quoteterms
+        @quoteterms = Quoteterm.where(:comany_id => current_user.company_id)        
+      end
 
       # Only allow a trusted parameter "white list" through.
       def quote_params
-        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :status, :total_vat, :total_price)
+        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :status, :price, :vat_due, :total)
       end
       
       def pdf_quote_index(quotes, customer_id, date_from, date_to)

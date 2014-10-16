@@ -12,7 +12,7 @@ $(document).ready(function(){
 			method: 'PUT',
 			indicator: 'Saving..',
 			submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-		}); 		
+		}); 		 
 	});
 
 // update item	
@@ -29,6 +29,22 @@ $(document).ready(function(){
 			submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
 		});	
 	});
+
+// update item	
+	$('.qline_cat_item').mouseover(function(){
+	var line_id = $(this).attr('id');
+		$(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_cat_item', {
+			id: line_id, width: ($(this).width() +10)+'px',
+			loadurl : 'http://localhost:3000/mjbook/products/'+line_id+'/item_options',
+			type: 'comboselect',
+			ajaxoptions: {dataType: 'script'},
+			onblur: 'submit',
+			method: 'PUT',
+			indicator: 'Saving..',
+			submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
+		});	
+	});
+
 
 // update quantity	
 	$('.qline_quantity').mouseover(function(){

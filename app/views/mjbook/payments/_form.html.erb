@@ -1,29 +1,78 @@
-<%= form_for(@expenditure) do |f| %>
-  <% if @expenditure.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@expenditure.errors.count, "error") %> prohibited this expenditure from being saved:</h2>
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @payment.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@payment.errors.count, "error") %> prohibited this record from being created</p>
+                  <ul>
+                  <% @payment.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@payment) do |f| %>
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Invoice Ref*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:invoice_id, @invoices, :id, :ref, {:selected => @payment.invoice_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
+                        </div>                                                
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Payment Method*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:paymethod_id, Mjbook::Paymethod.all, :id, :method, {:selected => @payment.paymethod_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
+                        </div> 
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Account Paid Into*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:companyaccount_id, @companyaccouts, :id, :name, {:selected => @payment.companyaccount_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
+                        </div> 
 
-      <ul>
-      <% @expenditure.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Price (ex VAT):</label>                        
+                            <div class="column_form_input"><%= f.text_field :price, :placeholder => "0.00"   %></div>
+                            <div class="column_help_tooltip" id="product_price"></div> 
+                        </div>  
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">VAT due:</label>                        
+                            <div class="column_form_input"><%= f.text_field :vat, :placeholder => "0.00"   %></div>
+                            <div class="column_help_tooltip" id="product_price"></div> 
+                        </div> 
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:80px">Total Paid:</label>                        
+                            <div class="column_form_input"><%= f.text_field :total, :placeholder => "0.00"   %></div>
+                            <div class="column_help_tooltip" id="product_price"></div> 
+                        </div> 
+                        
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Date:</label>                        
+                            <div class="column_form_input"><%= f.date_field :date %></div>
+                            <div class="column_help_tooltip" id="quote_date"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Notes:</label>                        
+                            <div class="column_form_input"><%= f.text_area :note %></div>
+                            <div class="column_help_tooltip" id="quote_date"></div>  
+                        </div>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", quotes_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :amount %><br>
-    <%= f.text_field :amount %>
-  </div>
-  <div class="field">
-    <%= f.label :date %><br>
-    <%= f.datetime_select :date %>
-  </div>
-  <div class="field">
-    <%= f.label :ref %><br>
-    <%= f.text_field :ref %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

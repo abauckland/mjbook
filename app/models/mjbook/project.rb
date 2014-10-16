@@ -9,6 +9,7 @@ module Mjbook
     has_many :expenses
     
     has_many :quotes
+    has_many :invoices
 
     belongs_to :customer
 

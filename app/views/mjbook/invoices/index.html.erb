@@ -1,0 +1,83 @@
+<div class="page_title">
+    <h1>Invoices</h1>
+    <div class="page_title_button"><%= link_to "create new invoice", new_invoice_path %> </div>
+</div>
+
+
+<div class="filter_band_single">
+    <%= form_tag invoices_path, method: :get, :id=>'filter_form' do %>
+    <div class="filter_search">
+        <div class="filter_project_label">Job:</div>
+        <div class="filter_project_input">
+            <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), :prompt => 'all customers'%>    
+        </div>
+        <div class="filter_date_1_label">From:</div>
+        <div class="filter_date_1_input">
+            <%= date_field_tag 'date_from', value = @date_from %>
+        </div>
+        <div class="filter_date_2_label">To:</div>
+        <div class="filter_date_2_input">
+            <%= date_field_tag 'date_to', value = @date_to %>
+        </div>
+        <div class="filter_submit">
+            <%= submit_tag 'Filter', :class => "filter_submit_button"%>
+        </div>
+    </div>
+    <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+    <% end %>
+</div>
+
+ <div class="table_content_with_filter">
+    <table>
+      <thead>
+        <tr>
+          <th class="invoice_ref">Ref</th>
+          <th class="invoice_title">Type</th>
+          <th class="invoice_project_ref">Job Ref</th>
+          <th class="invoice_customer_ref">Cust. Ref</th>     
+          <th class="invoice_customer">Cust. Name</th>
+          <th class="invoice_company_name">Cust. Company</th>
+          <th class="invoice_date">Date</th>
+          <th class="invoice_price">Price</br><span class="vat_note">(ex VAT)</span></th>
+          <th class="invoice_vat_due">Vat</th>
+          <th class="invoice_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
+          <th class="invoice_status">Status</th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+          <% if @invoices %>            
+            <% @invoices.each do |invoice| %>
+              <tr id ="<%= invoice.id %>">
+                <td class="invoice_ref"><%= invoice.ref %></td>
+                <td class="invoice_title"><%= invoice.invoicetype.text %></td>
+                <td class="invoice_project_ref"><%= invoice.project.ref %></td>
+                <td class="invoice_customer_ref"><%= invoice.customer_ref %></td>
+                <td class="invoice_customer"><%= invoice.project.customer.name %></td>
+                <td class="invoice_company_name"><%= invoice.project.customer.company_name %></td>
+                <td class="invoice_date"><%= invoice.date.strftime("%d/%m/%y") %></td>
+                <td class="invoice_price"><%= pounds(invoice.price) %></td>
+                <td class="invoice_vat_due"><%= pounds(invoice.vat_due) %></td> 
+                <td class="invoice_total"><%= pounds(invoice.total) %></td>
+                <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.status %></td>
+                <% if invoice.accepted? %>
+                    <td width="20px" class="row_button"><%= link_to "", reject_invoice_path(invoice), :method => :get,  :remote => true, class: 'line_reject_icon', title: "mark as rejected" %></td>            
+                <% else %>
+                    <td width="20px" class="row_button"><%= link_to "", accept_invoice_path(invoice), :method => :get,  :remote => true, class: 'line_accept_icon', title: "mark as accepted" %></td>
+                <% end %>
+                <td width="20px" class="row_button"><%= link_to "", print_invoice_path(invoice), class: 'line_pdf_icon', title: "download pdf of invoice" %></td>
+                <td width="20px" class="row_button"><%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon', title: "edit invoice" %></td>
+                <td width="20px" class="row_button"><%= link_to "", invoice, method: :delete, class: 'line_delete_icon', title: "delete invoice" %></td>
+              </tr>
+            <% end %>
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>

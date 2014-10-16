@@ -1,0 +1,59 @@
+<div class="page_title">
+    <h1>Salary Payments</h1>
+    <div class="page_title_button"><%= link_to 'New Payment', new_salary_path %> </div>
+</div>
+
+
+<div class="filter_band_single">
+    <%= form_tag salaries_path, method: :get, :id=>'filter_form' do %>
+    <div class="filter_search">
+        <div class="filter_project_label">Job:</div>
+        <div class="filter_project_input">
+            <%= select_tag 'customer_id', options_from_collection_for_select(@users, :id, :name, @user), :prompt => 'all employees'%>    
+        </div>
+        <div class="filter_date_1_label">From:</div>
+        <div class="filter_date_1_input">
+            <%= date_field_tag 'date_from', value = @date_from %>    
+        </div>
+        <div class="filter_date_2_label">To:</div>
+        <div class="filter_date_2_input">
+            <%= date_field_tag 'date_to', value = @date_to %>      
+        </div>
+        <div class="filter_submit">
+            <%= submit_tag 'Filter', :class => "filter_submit_button"%>    
+        </div>        
+    </div>
+
+    <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>    
+    <% end %>
+</div> 
+
+ <div class="table_content_with_filter">
+    <table>
+      <thead>
+        <tr>
+          <th class="quote_title">Employee</th>
+          <th class="quote_project_ref">Paid</th>
+          <th class="quote_customer_ref">Date</th>          
+          <th width="20px" class="row_button"></th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table_container">
+        <table>
+          <tbody>
+          <% if @salaries %>            
+            <% @salaries.each do |salary| %>
+              <tr id ="<%= salary.id %>">
+                <td class="quote_ref"><%= salary.user.name %></td> 
+                <td class="quote_title"><%= pounds(salary.paid) %></td> 
+                <td class="quote_project_ref"><%= salary.date.strftime("%d/%m/%y") %></td>
+                <td width="20px" class="row_button"><%= link_to "", edit_salary_path(salary), class: 'line_edit_icon', title: "edit payment details" %></td>
+              </tr>
+            <% end %>  
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+</div>
+

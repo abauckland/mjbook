@@ -120,7 +120,7 @@
 }
 
 td.line_category{
-  width: 120px;
+  width: 110px;
   padding-top: 5px;
   padding-bottom: 5px;
   vertical-align: top;
@@ -143,7 +143,7 @@ td.line_category{
 }
 
 .line_quantity{
-  width: 60px; //width set to allow 6 digit quantities and values
+  width: 50px; //width set to allow 6 digit quantities and values
   padding-top: 5px; 
   padding-bottom: 5px;
   vertical-align: top;
@@ -152,14 +152,15 @@ td.line_category{
 
 .line_rate{
   @extend .line_quantity;
-  width: 90px;
+  width: 70px;
   }
 .line_unit{
   @extend .line_quantity;
 }
 .line_vat_rate{@extend .line_quantity}
-.line_vat{@extend .line_quantity; width: 65px;}
-.line_price{@extend .line_quantity; width: 75px;}
+.line_vat{@extend .line_quantity; width: 60px;}
+.line_price{@extend .line_quantity; width: 70px;}
+.line_total{@extend .line_quantity; width: 70px;}
 
 .total_vat{
   @extend .line_quantity;
@@ -167,6 +168,11 @@ td.line_category{
 }
 
 .total_price{
+  @extend .line_quantity;
+  font-weight: bold;
+}
+
+.total_total{
   @extend .line_quantity;
   font-weight: bold;
 }

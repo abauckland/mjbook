@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_id: 1
+  ref: MyString
+  customer_ref: MyString
+  price: 9.99
+  vat_due: 9.99
+  total: 9.99
+  status: 1
+  date: 
+  invoiceterms_id: 1
+  invoicetype_id: 1
+
+two:
+  project_id: 1
+  ref: MyString
+  customer_ref: MyString
+  price: 9.99
+  vat_due: 9.99
+  total: 9.99
+  status: 1
+  date: 
+  invoiceterms_id: 1
+  invoicetype_id: 1

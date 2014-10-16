@@ -1,0 +1,117 @@
+<%= form_for(@inline) do |f| %>
+  <% if @inline.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@inline.errors.count, "error") %> prohibited this inline from being saved:</h2>
+
+      <ul>
+      <% @inline.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ingroup_id %><br>
+    <%= f.number_field :ingroup_id %>
+  </div>
+  <div class="field">
+    <%= f.label :cat %><br>
+    <%= f.text_field :cat %>
+  </div>
+  <div class="field">
+    <%= f.label :string %><br>
+    <%= f.text_field :string %>
+  </div>
+  <div class="field">
+    <%= f.label :item %><br>
+    <%= f.text_field :item %>
+  </div>
+  <div class="field">
+    <%= f.label :string %><br>
+    <%= f.text_field :string %>
+  </div>
+  <div class="field">
+    <%= f.label :quantity %><br>
+    <%= f.text_field :quantity %>
+  </div>
+  <div class="field">
+    <%= f.label :decimal %><br>
+    <%= f.text_field :decimal %>
+  </div>
+  <div class="field">
+    <%= f.label :unit_id %><br>
+    <%= f.text_field :unit_id %>
+  </div>
+  <div class="field">
+    <%= f.label :integer %><br>
+    <%= f.text_field :integer %>
+  </div>
+  <div class="field">
+    <%= f.label :rate %><br>
+    <%= f.text_field :rate %>
+  </div>
+  <div class="field">
+    <%= f.label :decimal %><br>
+    <%= f.text_field :decimal %>
+  </div>
+  <div class="field">
+    <%= f.label :price %><br>
+    <%= f.text_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :decimal %><br>
+    <%= f.text_field :decimal %>
+  </div>
+  <div class="field">
+    <%= f.label :vat_id %><br>
+    <%= f.text_field :vat_id %>
+  </div>
+  <div class="field">
+    <%= f.label :integer %><br>
+    <%= f.text_field :integer %>
+  </div>
+  <div class="field">
+    <%= f.label :vat_due %><br>
+    <%= f.text_field :vat_due %>
+  </div>
+  <div class="field">
+    <%= f.label :decimal %><br>
+    <%= f.text_field :decimal %>
+  </div>
+  <div class="field">
+    <%= f.label :total %><br>
+    <%= f.text_field :total %>
+  </div>
+  <div class="field">
+    <%= f.label :decimal %><br>
+    <%= f.text_field :decimal %>
+  </div>
+  <div class="field">
+    <%= f.label :note %><br>
+    <%= f.text_field :note %>
+  </div>
+  <div class="field">
+    <%= f.label :text %><br>
+    <%= f.text_field :text %>
+  </div>
+  <div class="field">
+    <%= f.label :line_order %><br>
+    <%= f.text_field :line_order %>
+  </div>
+  <div class="field">
+    <%= f.label :integer %><br>
+    <%= f.text_field :integer %>
+  </div>
+  <div class="field">
+    <%= f.label :linetype %><br>
+    <%= f.text_field :linetype %>
+  </div>
+  <div class="field">
+    <%= f.label :integer %><br>
+    <%= f.text_field :integer %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
