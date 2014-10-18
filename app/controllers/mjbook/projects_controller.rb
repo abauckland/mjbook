@@ -5,6 +5,8 @@ module Mjbook
     before_action :set_project, only: [:show, :edit, :update, :destroy]
     before_action :set_customers, only: [:new, :edit]
 
+    include PrintIndexes
+    
     # GET /projects
     def index
       @projects = Project.all
@@ -51,6 +53,23 @@ module Mjbook
       redirect_to projects_url, notice: 'Project was successfully destroyed.'
     end
 
+    def print
+        
+      projects = Project.where(:company_id => current_user.company_id)
+         
+      filename = "Projects.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(projects, 'project', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
+    end
+    
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_project

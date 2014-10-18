@@ -14,11 +14,10 @@
             <th class="supplier_address">Address</th>
             <th class="supplier_phone">Phone</th>
             <th class="supplier_alt_phone">Alt. Phone</th>
-            <th class="supplier_email">Email</th>            
+            <th class="supplier_email">Email</th>
             <th class="supplier_note">Notes</th>
-            <th width="20px" class="row_button"><%= link_to "", new_supplier_path, class: 'table_new_icon', title: "add new supplier" %></th>
+            <th width="20px" class="row_button"></th>
             <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
-            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
         </tr>
       </thead>
     </table>
@@ -44,7 +43,11 @@
                 <td class="supplier_email"><%= supplier.email %></td>
                 <td class="supplier_note"><%= supplier.notes %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_supplier_path(supplier), class: 'line_edit_icon', title: "edit supplier" %></td>
-                <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete supplier" %></td>
+                <% if supplier_in_use(supplier) %>
+                    <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete supplier" %></td>
+                <% else %>
+                    <td width="20px" class="row_button"></td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>

@@ -5,6 +5,8 @@ module Mjbook
     before_action :set_products, only: [:index]
     before_action :set_product, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+    
     # GET /products
     def index
     end
@@ -89,6 +91,24 @@ module Mjbook
       @product.destroy
       redirect_to products_url, notice: 'Product was successfully destroyed.'
     end
+
+    def print
+        
+      products = Product.where(:company_id => current_user.company_id)
+         
+      filename = "Products.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(products, 'product', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
+    end
+
 
     private
       # Use callbacks to share common setup or constraints between actions.

@@ -1,6 +1,10 @@
 Mjbook::Engine.routes.draw do
-
   
+  resources :expends do
+    get :reconcile, :on => :member  
+    get :print, :on => :member
+  end
+
   resources :salaries do
     get :print, :on => :member
   end
@@ -10,7 +14,6 @@ Mjbook::Engine.routes.draw do
   end
 
   resources :inlines
-
   resources :ingroups
 
   resources :invoices do

@@ -7,7 +7,7 @@
     <div class="filter_search">
         <div class="filter_project_label">Employee:</div>
         <div class="filter_project_input">
-            <%= select_tag 'employee_id', options_from_collection_for_select(@employees, :id, :name, @employee), :prompt => 'all employees'%>    
+            <%= select_tag 'user_id', options_from_collection_for_select(@users, :id, :name, @user), :prompt => 'all employees'%>    
         </div>
         <div class="filter_date_1_label">From:</div>
         <div class="filter_date_1_input">
@@ -22,6 +22,7 @@
         </div>        
     </div>
     <% end %>
+    <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div> 
 </div>  
 
 
@@ -66,10 +67,10 @@
                     <td class="employee_vat_due"><%= pounds(employeeexpense.vat) %></td>
                     <td class="employee_total"><%= pounds(employeeexpense.total) %></td>
                     <td id="<%= employeeexpense.id %>_status" class="employee_status"><%= employeeexpense.status %></td>
-                    <% if !employeeexpense.rejected? %>
+                    <% unless employeeexpense.rejected? %>
                         <td width="20px" class="row_button"><%= link_to "", reject_employee_expense_path(employeeexpense), class: 'line_reject_icon', title: "mark as rejected" %></td>                
                     <% end %>
-                    <% if !employeeexpense.accepted? %>
+                    <% unless employeeexpense.accepted? %>
                         <td width="20px" class="row_button"><%= link_to "", accept_employee_expense_path(employeeexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
                     <% end %>
                     <td width="20px" class="row_button"><%= link_to "", show_employee_expense_path(employeeexpense), class: 'line_edit_icon', title: "edit expenses record" %></td>
@@ -86,10 +87,10 @@
                     <td class="employee_vat_due"><%= pounds(employeeexpense.vat) %></td>
                     <td class="employee_total"><%= pounds(employeeexpense.total) %></td>
                     <td  id="<%= employeeexpense.id %>_status" class="employee_status"><%= employeeexpense.status %></td>
-                    <% if !employeeexpense.rejected? %>
+                    <% unless employeeexpense.rejected? %>
                         <td width="20px" class="row_button"><%= link_to "", reject_expense_path(employeeexpense), {remote: true, class: 'line_reject_icon', title: "mark as rejected"} %></td>                
                     <% end %>
-                    <% if !employeeexpense.accepted? %>
+                    <% unless employeeexpense.accepted? %>
                         <td width="20px" class="row_button"><%= link_to "", accept_expense_path(employeeexpense), {remote: true, class: 'line_accept_icon', title: "mark for payment"} %></td>
                     <% end %>
                     <td width="20px" class="row_button"><%= link_to "", expense_path(employeeexpense), class: 'line_show_icon', title: "show expense details" %></td>

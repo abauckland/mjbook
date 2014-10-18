@@ -4,6 +4,8 @@ module Mjbook
   class HmrcexpcatsController < ApplicationController
     before_action :set_hmrcexpcat, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+    
     # GET /hmrcexpcats
     def index
       @hmrcexpcats = Hmrcexpcat.all

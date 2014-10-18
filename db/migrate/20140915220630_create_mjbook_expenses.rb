@@ -7,6 +7,7 @@ class CreateMjbookExpenses < ActiveRecord::Migration
       t.integer :project_id
       t.integer :supplier_id
       t.integer :hmrcexpcat_id
+      t.integer :mileage_id
       t.timestamp :date
       t.timestamp :due_date
       t.decimal :amount, :precision => 8, :scale => 2

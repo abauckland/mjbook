@@ -9,28 +9,29 @@ $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table 
-.customer_name{display: table-cell; width: 35px}
-.customer_position{display: table-cell; width: 35px}
-.customer_address{display: table-cell; width: 35px}
-.customer_phone{display: table-cell; width: 35px}
-.customer_alt_phone{display: table-cell; width: 35px}
-.customer_email{display: table-cell; width: 35px}
-.customer_company{display: table-cell; width: 35px}
-.customer_note{display: table-cell; width: 35px}
+.customer_name{display: table-cell; width: 200px}
+.customer_position{display: table-cell; width: 100px}
+.customer_address{display: table-cell; width: 200px}
+.customer_phone{display: table-cell; width: 100px}
+.customer_alt_phone{display: table-cell; width: 100px}
+.customer_email{display: table-cell; width: 200px}
+.customer_company{display: table-cell}
+.customer_note{display: table-cell; width: 200px}
 
 
 @media screen and (max-width: $lrg_menu) {
-
+  .customer_position{display: none}
+  .customer_note{display: none}
 }
 
 @media screen and (max-width: $tab_lrg_menu) {
-
+  .customer_email{display: none}
 }
   
 @media screen and (max-width: $tab_sml_menu) {
-
+  .customer_address{display: none}
 }
 
 @media screen and (max-width: $mob_menu) {
-
+  .customer_alt_phone{display: none}
 }

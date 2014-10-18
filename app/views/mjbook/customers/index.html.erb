@@ -1,8 +1,6 @@
 <div class="page_title">
-    <h1>Customers</h1>
-    
-    <div class="page_title_button"><%= link_to "add new customer", new_customer_path %> </div>
-    
+    <h1>Customers</h1>    
+    <div class="page_title_button"><%= link_to "add new customer", new_customer_path %> </div>    
 </div>
 
  <div class="table_content_with_title">
@@ -17,9 +15,8 @@
             <th class="customer_email">Email</th>
             <th class="customer_company">Company</th>
             <th class="customer_note">Notes</th>
-            <th width="20px" class="row_button"><%= link_to "", new_customer_path, class: 'table_new_icon', title: "add new customer" %></th>
-            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
-            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+            <th width="20px" class="row_button"></th>
+            <th width="20px" class="row_button"><%= link_to "", print_customers_path, class: 'table_pdf_icon', title: "download pdf" %></th>
         </tr>
       </thead>
     </table>
@@ -44,7 +41,11 @@
                 <td class="customer_company"><%= customer.company_name %></td>
                 <td class="customer_note"><%= customer.notes %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_customer_path(customer), class: 'line_edit_icon', title: "edit customer" %></td>
-                <td width="20px" class="row_button"><%= link_to "", customer, method: :delete, class: 'line_delete_icon', title: "delete customer" %></td>
+                <% if supplier_in_use(supplier) %>
+                    <td width="20px" class="row_button"><%= link_to "", customer, method: :delete, class: 'line_delete_icon', title: "delete customer" %></td>
+                <% else %>
+                    <td width="20px" class="row_button"></td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>

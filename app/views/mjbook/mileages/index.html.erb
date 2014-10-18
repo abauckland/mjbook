@@ -1,5 +1,6 @@
 <div class="page_title">
     <h1>Mileage Expenses</h1>
+    <div class="page_title_button"><%= link_to "add mileage", new_mileage_path %> </div>    
 </div>
 
  <div class="table_content_with_title">
@@ -13,9 +14,8 @@
           <th class="mileage_destination">Destination</th>
           <th class="mileage_return">Return</th>
           <th class="mileage_distance">Distance</th>
-          <th width="20px" class="row_button"><%= link_to "", new_mileage_path, class: 'table_new_icon', title: "add new mileage recored" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"><%= link_to "", print_mileages_path, class: 'table_pdf_icon', title: "download pdf" %></th>
         </tr>
       </thead>
     </table>
@@ -32,7 +32,11 @@
                 <td class="mileage_return"><%= mileage.return %></td>
                 <td class="mileage_distance"><%= mileage.distance %></td>
                 <td width="20px" class="row_button"><%= link_to "", edit_mileage_path(mileage), class: 'line_edit_icon', title: "edit mileage record" %></td>
-                <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
+                <% if mileage_in_use(mileage) %>
+                    <td width="20px" class="row_button"><%= link_to "", mileage, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
+                <% else %>
+                    <td width="20px" class="row_button"></td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>

@@ -1,5 +1,5 @@
 module Mjbook
   class Invoicemethod < ActiveRecord::Base
-        belongs_to :project
+        has_many :project
   end
 end

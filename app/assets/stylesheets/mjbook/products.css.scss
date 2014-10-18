@@ -26,11 +26,11 @@ $mob_menu: 520px;
 }
   
 @media screen and (max-width: $tab_sml_menu) {
-
+  .product_catetory_name{display: none}
 }
 
 @media screen and (max-width: $mob_menu) {
-
+  .product_price{display: none}
 }
 
 .vat_note{font-size: 0.8rem; font-weight: normal;}

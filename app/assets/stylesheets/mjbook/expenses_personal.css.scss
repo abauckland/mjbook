@@ -26,15 +26,20 @@ $mob_menu: 520px;
 }
 
 @media screen and (max-width: $tab_lrg_menu) {
-
+  .personal_issue_date{display: none}
 }
   
 @media screen and (max-width: $tab_sml_menu) {
-
+  .personal_supplier_ref{display: none}
+  .personal_distance{display: none}
+  .personal_price{display: none}
+  .personal_vat_due{display: none}
 }
 
 @media screen and (max-width: $mob_menu) {
-
+  .personal_job{display: none}
+  .personal_category{display: none}
+  .personal_ref{display: none}
 }
 
 .vat_note{font-size: 0.8rem; font-weight: normal;}

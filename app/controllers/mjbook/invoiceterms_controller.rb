@@ -4,6 +4,8 @@ module Mjbook
   class InvoicetermsController < ApplicationController
     before_action :set_invoiceterm, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+    
     # GET /invoiceterms
     def index
       @invoiceterms = Invoiceterm.all
@@ -46,6 +48,23 @@ module Mjbook
     def destroy
       @invoiceterm.destroy
       redirect_to invoiceterms_url, notice: 'Invoiceterm was successfully destroyed.'
+    end
+
+    def print
+        
+      invoiceterms = Invoiceterm.where(:company_id => current_user.company_id)
+         
+      filename = "Inovice Terms.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(invoiceterms, 'terms', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
     end
 
     private

@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @expend.company_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @expend.user_id %>
+</p>
+
+<p>
+  <strong>Expense:</strong>
+  <%= @expend.expense_id %>
+</p>
+
+<p>
+  <strong>Paymethod:</strong>
+  <%= @expend.paymethod_id %>
+</p>
+
+<p>
+  <strong>Companyaccount:</strong>
+  <%= @expend.companyaccount_id %>
+</p>
+
+<p>
+  <strong>Expend receipt:</strong>
+  <%= @expend.expend_receipt %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @expend.date %>
+</p>
+
+<p>
+  <strong>Ref:</strong>
+  <%= @expend.ref %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @expend.price %>
+</p>
+
+<p>
+  <strong>Vat:</strong>
+  <%= @expend.vat %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @expend.total %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @expend.note %>
+</p>
+
+<%= link_to 'Edit', edit_expend_path(@expend) %> |
+<%= link_to 'Back', expends_path %>

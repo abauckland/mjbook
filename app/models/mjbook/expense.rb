@@ -7,6 +7,7 @@ module Mjbook
     belongs_to :supplier
     belongs_to :user      
     belongs_to :company
+    has_one :mileage
       
     mount_uploader :receipt, ReceiptUploader
 
@@ -21,6 +22,7 @@ module Mjbook
     validates :vat, presence: true, numericality: true
     validates :date, presence: true
   
+    scope :business, ->() { where(:exp_type => :business).uniq }
    
   end
 end

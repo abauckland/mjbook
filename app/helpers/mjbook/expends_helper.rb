@@ -1,4 +1,4 @@
 module Mjbook
-  module PaymentsHelper
+  module ExpendsHelper
   end
 end

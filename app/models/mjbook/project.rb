@@ -5,11 +5,13 @@ module Mjbook
         
    
     has_many :mileages
-    has_many :invoicemethods
+    belongs_to :invoicemethods
     has_many :expenses
+    
     
     has_many :quotes
     has_many :invoices
+    has_many :payments
 
     belongs_to :customer
 

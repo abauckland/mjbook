@@ -10,7 +10,7 @@
           <th class="terms_period">Period</th>
           <th class="terms_terms">Terms</th>         
           <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"><%= link_to "", print_quoteterms_path, class: 'table_pdf_icon', title: "download pdf" %></th>
         </tr>
       </thead>
     </table>
@@ -22,8 +22,8 @@
               <tr id ="<%= salary.id %>">
                 <td class="terms_period"><%= quoteterm.period %></td> 
                 <td class="terms_terms"><%= quoteterm.terms %></td> 
-                <% if @quoteterm_used %>
-                    <td width="20px" class="row_button"><%= link_to "", edit_salary_path(salary), class: 'line_edit_icon', title: "edit terms" %></td>
+                <% if quoteterm_used(quoteterm) %>
+                    <td width="20px" class="row_button"><%= link_to "", edit_quoteterm_path(quoteterm), class: 'line_edit_icon', title: "edit terms" %></td>
                     <td width="20px" class="row_button"><%= link_to "", quoteterm, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_edit_icon', title: "delete terms" %></td>
                 <% else %>
                     <td width="20px" class="row_button"></th>

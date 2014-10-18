@@ -5,6 +5,8 @@ module Mjbook
     before_action :set_mileage, only: [:show, :edit, :update, :destroy]
     before_action :set_projects, only: [:new, :edit]
 
+    include PrintIndexes
+    
     # GET /mileages
     def index
       @mileages = Mileage.all
@@ -45,6 +47,23 @@ module Mjbook
       end
     end
 
+    def print
+        
+      mileages = Mileage.where(:user_id => current_user.user_id)
+         
+      filename = "Mileage_expenses.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(mileages, 'mileage', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
+    end
+
     # DELETE /mileages/1
     def destroy
       @mileage.destroy
@@ -67,7 +86,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def mileage_params
-        params.require(:mileage).permit(:job_id, :mileagemode_id, :user_id, :hmrcexpcat_id, :start, :finish, :return, :distance, :date)
+        params.require(:mileage).permit(:project_id, :mileagemode_id, :user_id, :hmrcexpcat_id, :start, :finish, :return, :distance, :date)
       end
 
       def add_to_expenses(mileage)

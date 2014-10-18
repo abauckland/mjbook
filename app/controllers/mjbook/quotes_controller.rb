@@ -12,7 +12,6 @@ module Mjbook
     # GET /quotes
     def index      
     if params[:customer_id]
-
   
         if params[:customer_id] != ""
           if params[:date_from] != ""
@@ -45,10 +44,7 @@ module Mjbook
         if params[:commit] == 'pdf'          
           pdf_quote_index(@quotes, params[:customer_id], params[:date_from], params[:date_to])      
         end
-#       if params[:commit] == 'Pdf'
-#         redirect_to         
-#       end     
-          
+            
      else
        @quotes = Quote.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
      end          
@@ -162,16 +158,12 @@ module Mjbook
          customer = Customer.where(:id => customer_id).first if customer_id
 
          if customer
-           customer_name = customer.name
+           filter_group = customer.name
          else
-           customer_name = "All Customers"
+           filter_group = "All Customers"
          end
          
-         filename = "Quotes"
-         filename << "_#{ customer_name }"
-         filename << "_#{ date_from }"
-         filename << "_#{ date_to }"
-         filename << ".pdf"
+         filename = "Quotes_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
                  
          document = Prawn::Document.new(
           :page_size => "A4",
@@ -179,7 +171,7 @@ module Mjbook
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
       
-            table_indexes(quotes, 'quote', customer_name, date_from, date_to, filename, pdf)
+            table_indexes(quotes, 'quote', filter_group, date_from, date_to, filename, pdf)
       
           end
 

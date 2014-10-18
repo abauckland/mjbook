@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 1
+  user_id: 1
+  expense_id: 1
+  paymethod_id: 1
+  companyaccount_id: 1
+  expend_receipt: MyString
+  date: 2014-10-18 11:01:24
+  ref: MyString
+  price: 9.99
+  vat: 9.99
+  total: 9.99
+  note: MyText
+
+two:
+  company_id: 1
+  user_id: 1
+  expense_id: 1
+  paymethod_id: 1
+  companyaccount_id: 1
+  expend_receipt: MyString
+  date: 2014-10-18 11:01:24
+  ref: MyString
+  price: 9.99
+  vat: 9.99
+  total: 9.99
+  note: MyText

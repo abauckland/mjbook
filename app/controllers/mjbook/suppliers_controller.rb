@@ -4,6 +4,8 @@ module Mjbook
   class SuppliersController < ApplicationController
     before_action :set_supplier, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+    
     # GET /suppliers
     def index
       @suppliers = Supplier.all
@@ -46,6 +48,23 @@ module Mjbook
     def destroy
       @supplier.destroy
       redirect_to suppliers_url, notice: 'Supplier was successfully destroyed.'
+    end
+
+    def print
+        
+      suppliers = Supplier.where(:company_id => current_user.company_id)
+         
+      filename = "Suppliers.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(suppliers, 'supplier', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
     end
 
     private

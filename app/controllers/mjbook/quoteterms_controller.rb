@@ -4,6 +4,8 @@ module Mjbook
   class QuotetermsController < ApplicationController
     before_action :set_quoteterm, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+    
     # GET /quoteterms
     def index
       @quoteterms = Quoteterm.all
@@ -46,6 +48,23 @@ module Mjbook
     def destroy
       @quoteterm.destroy
       redirect_to quoteterms_url, notice: 'Quoteterm was successfully destroyed.'
+    end
+
+    def print
+        
+      quoteterms = Quoteterm.where(:company_id => current_user.company_id)
+         
+      filename = "Quote Terms.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(quoteterms, 'terms', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
     end
 
     private

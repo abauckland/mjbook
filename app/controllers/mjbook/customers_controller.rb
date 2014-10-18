@@ -4,6 +4,8 @@ module Mjbook
   class CustomersController < ApplicationController
     before_action :set_customer, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+    
     # GET /customers
     def index
       @customers = Customer.all
@@ -48,6 +50,25 @@ module Mjbook
       redirect_to customers_url, notice: 'Customer was successfully destroyed.'
     end
 
+
+    def print
+        
+      customers = Customer.where(:company_id => current_user.company_id)
+         
+      filename = "Customers.pdf"
+                 
+      document = Prawn::Document.new(
+        :page_size => "A4",
+        :page_layout => :landscape,
+        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+      ) do |pdf|      
+        table_indexes(customers, 'customer', nil, nil, nil, filename, pdf)      
+      end
+
+      send_data document.render, filename: filename, :type => "application/pdf"        
+    end
+
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_customer
@@ -58,5 +79,6 @@ module Mjbook
       def customer_params
         params.require(:customer).permit(:company_id, :title, :first_name, :surname, :position, :address_1, :address_2, :city, :county, :country, :postcode, :phone, :alt_phone, :email, :company_name, :notes)
       end
+
   end
 end

@@ -1,51 +1,53 @@
 <div class="page_title">
     <h1>Business Expenses</h1>
+    <div class="page_title_button"><%= link_to "add new expense", new_business_path %> </div>
 </div>
 
 
 <div class="filter_band_single">
     <%= form_tag business_path, method: :get do %>
     <div class="filter_search">
-        <div class="filter_project_label">Job:</div>
+        <div class="filter_project_label">Supplier:</div>
         <div class="filter_project_input">
-            <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), :prompt => 'all jobs'%>    
+            <%= select_tag 'project_id', options_from_collection_for_select(@suppliers, :id, :company_name, @supplier), :prompt => 'all jobs'%>    
         </div>
         <div class="filter_date_1_label">From:</div>
         <div class="filter_date_1_input">
-            <%= date_field_tag 'date_from', value = @date_from %>    
+            <%= date_field_tag 'date_from', value = @date_from %>
         </div>
         <div class="filter_date_2_label">To:</div>
         <div class="filter_date_2_input">
-            <%= date_field_tag 'date_to', value = @date_to  %>      
+            <%= date_field_tag 'date_to', value = @date_to  %>
         </div>
         <div class="filter_submit">
-            <%= submit_tag 'Filter', :class => "filter_submit_button"%>    
-        </div>        
+            <%= submit_tag 'Filter', :class => "filter_submit_button"%>
+        </div>
     </div>
     <% end %>
-    <div class="option_band_button"><%= link_to "add expense", new_business_path %> </div>
-</div>  
+    <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div> 
+</div>
 
 
- <div class="table_content_with_filter">
+<div class="table_content_with_filter">
     <table>
       <thead>
         <tr>
           <th class="business_due_data">Due Date</th>
           <th class="business_job">Job</th>
-          <th class="business_category">Category</th> 
+          <th class="business_category">Category</th>
           <th class="business_ref">Reference</th>
           <th class="business_supplier">Supplier</th>
-          <th class="business_supplier_ref">Supplier Ref</th>         
-          <th class="business_issue_date">Issue Date</th>          
+          <th class="business_supplier_ref">Supplier Ref</th>
+          <th class="business_issue_date">Issue Date</th>
           <th width="20px" class="row_button">Bill Image</th>
           <th class="business_price">Price</br><span class="vat_note">(ex VAT)</span></th>
           <th class="business_vat_due">Vat</th>
           <th class="business_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
           <th class="business_status">Status</th>
-          <th width="20px" class="row_button"><%= link_to "", new_business_path, class: 'table_new_icon', title: "add new bill recored" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
-          <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_csv_icon', title: "download csv" %></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>
+          <th width="20px" class="row_button"></th>          
         </tr>
       </thead>
     </table>
@@ -71,15 +73,28 @@
                 <td class="business_price"><%= pounds(businessexpense.price) %></td>
                 <td class="business_vat_due"><%= pounds(businessexpense.vat) %></td>
                 <td class="business_total"><%= pounds(businessexpense.total) %></td>
-                <td class="business_status"><%= businessexpense.status %></td>               
-                <% if businessexpense.status == "accepted" %>
-                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>                
-                <% else %>
+                <td class="business_status"><%= businessexpense.status %></td>
+                <% if businessexpense.submitted? %>
                     <td width="20px" class="row_button"><%= link_to "", accept_expense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
+                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>            
+                <% elsif businessexpense.accepted? %>
+                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
+                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>            
+                <% elsif businessexpense.rejected? %>
+                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
+                    <td width="20px" class="row_button"><%= link_to "", new_expend_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>            
+                <% else %>
+                    <td width="20px" class="row_button"><%= link_to "", new_expense_path(:expense_id => businessexpense.id), class: 'line_paid_icon', title: "mark for payment" %></td>
+                    <td width="20px" class="row_button"></td>
                 <% end %>
                 <td width="20px" class="row_button"><%= link_to "", edit_business_expense_path(businessexpense), class: 'line_edit_icon', title: "edit mileage record" %></td>
-                <td width="20px" class="row_button"><%= link_to "", businessexpense, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
+                <% if businessexpense.paid? %>
+                    <td width="20px" class="row_button"></td>
+                <% else %>
+                    <td width="20px" class="row_button"><%= link_to "", businessexpense, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
+                <% end %>
               </tr>
+              
             <% end %>  
           <% end %>
           </tbody>

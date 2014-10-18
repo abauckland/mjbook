@@ -1,5 +1,6 @@
 <div class="page_title">
     <h1>Listing products</h1>
+    <div class="page_title_button"><%= link_to "add product", new_product_path %> </div>
 </div>
 
 <div class="table_content_with_title">
@@ -13,8 +14,10 @@
           <th class="product_rate">Rate/Unit</th>
           <th class="product_price">Price</th>
           <th class="product_vat_due">Vat Rate</th>
-          <th class="product_total">Total</th>                                        
-          <th width="20px" class="row_button"><%= link_to "", new_product_path, class: 'line_new_icon', title: "create new product" %></th>
+          <th class="product_total">T otal</th>                                        
+          <th width="20px" class="row_button"></th>
+            <th width="20px" class="row_button"><%= link_to "", print_products_path, class: 'table_pdf_icon', title: "download pdf" %></th>
+
         </tr>
       </thead>
     </table>
@@ -32,7 +35,8 @@
                 <td class="product_vat_due"><%= product.vat.cat %></td>
                 <td class="product_total"><%= pounds(product.total) %></td>                
                 <td width="20px" class="row_button"><%= link_to '', edit_product_path(product), class: 'line_edit_icon', title: "edit product" %></td>
-                <td width="20px" class="row_button"><%= link_to '', product, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete product" %></td>
+                <td width="20px" class="row_button"><%= link_to "", edit_customer_path(customer), class: 'line_edit_icon', title: "edit customer" %></td>              
+                <td width="20px" class="row_button"><%= link_to '', product, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete product" %></td>        
               </tr>
             <% end %>
           </tbody>

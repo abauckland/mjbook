@@ -6,113 +6,158 @@ module Mjbook
     before_action :set_business, only: [:show_business, :create_business, :edit_business, :update_business, :destroy]
     before_action :set_personal, only: [:show_personal, :create_personal, :edit_personal, :update_personal, :destroy]
     before_action :set_suppliers, only: [:new_business, :new_personal, :edit_busines, :edit_personal]
-    before_action :set_projects, only: [:business, :personal, :new_business, :new_personal, :edit_busines, :edit_personal]
+    before_action :set_projects, only: [:personal, :new_business, :new_personal, :edit_busines, :edit_personal]
     before_action :set_hmrcexpcats, only: [:new_business, :new_personal, :edit_busines, :edit_personal]
     before_action :set_employees, only: [:employee]
 
+    include PrintIndexes
+    
          
     # GET /business
     def business
 
-      filter_hash = {}      
-      
-      if params[:project_id] #check if filter form is submitted
-        if params[:project_id] != ""
-          filter_hash['project_id'] = params[:project_id]
-        end
-
-        if params[:date_from] != ""
-          if params[:date_to] != ""
-            filter_hash['date'] = [params[:date_from]..params[:date_to]]           
-          else
-            filter_hash['date'] = params[:date_from]   
-          end  
-        else  
-          if params[:date_to] != ""
-            filter_hash['date'] = params[:date_to]             
+    if params[:supplier_id]
+  
+        if params[:supplier_id] != ""
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @businessexpenses = Expense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).business
+            else
+              @businessexpenses = Expense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).business
+            end  
+          else  
+            if params[:date_to] != ""
+              @businessexpenses = Expense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).business
+            end
+          end   
+        else
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @businessexpenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id).business
+            else
+              @businessexpenses = Expense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id).business
+            end  
+          else  
+            if params[:date_to] != ""
+              @businessexpenses = Expense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id).business
+            else
+              @businessexpenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+            end     
           end
+        end   
+     
+        if params[:commit] == 'pdf'          
+          pdf_business_index(@businessexpenses, params[:supplier_id], params[:date_from], params[:date_to])      
         end
-      end
-      
-      #list expenses where status is not 'paid'
-      if filter_hash.empty?
-        @businessexpenses = Expense.where(:company_id => current_user.company_id, :exp_type => 0).where.not(:status => 3).order(:date)
-      else      
-        @businessexpenses = Expense.where(filter_hash, :company_id => current_user.company_id, :exp_type => 0).where.not(:status => 3).order(:date)
-      end
-      
-      #selected parameters for filter form
-      @project = params[:project_id]
-      @date_from = params[:date_from]
-      @date_to = params[:date_to]
+            
+     else
+       @businessexpenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+     end          
+
+     #selected parameters for filter form     
+     @suppliers = Supplier.joins(:expenses => :project).where('mjbook_projects.company_id' => current_user.company_id)
+     @supplier = params[:supplier_id]
+     @date_from = params[:date_from]
+     @date_to = params[:date_to]
 
     end
 
     # GET /personal
     def personal
-      
-      filter_hash = {}      
-      
-      if params[:date_from] #check if filter form is submitted
-        if params[:date_from] != ""
-          if params[:date_to] != ""
-            filter_hash['date'] = [params[:date_from]..params[:date_to]]           
-          else
-            filter_hash['date'] = params[:date_from]   
-          end  
-        else  
-          if params[:date_to] != ""
-            filter_hash['date'] = params[:date_to]             
+
+    if params[:project_id]
+  
+        if params[:project_id] != ""
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @personalexpenses = Expense.where(:date => params[:date_from]..params[:date_to], :project_id => params[:project_id])          
+            else
+              @personalexpenses = Expense.where('date > ? AND project_id =?', params[:date_from], params[:project_id]) 
+            end  
+          else  
+            if params[:date_to] != ""
+              @personalexpenses = Expense.where('date < ? AND project_id = ?', params[:date_to], params[:project_id])            
+            end
+          end   
+        else
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @personalexpenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+            else
+              @personalexpenses = Expense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+            end  
+          else  
+            if params[:date_to] != ""
+              @personalexpenses = Expense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+            else
+              @personalexpenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+            end     
           end
+        end   
+     
+        if params[:commit] == 'pdf'          
+          pdf_personal_index(@personalexpenses, params[:project_id], params[:date_from], params[:date_to])      
         end
-      end      
-      
-      if filter_hash.empty?
-        @personalexpenses = Expense.where(:user_id => current_user.id, :exp_type => 1).where.not(:status => 3).order(:date)
-      else
-        @personalexpenses = Expense.where(filter_hash, :user_id => current_user.id, :exp_type => 1).where.not(:status => 3).order(:date)  
-      end
-      
-      #selected parameters for filter form
-      @date_from = params[:date_from]
-      @date_to = params[:date_to]
-      
+            
+     else
+       @personalexpenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id, :user_id => current_user.id)       
+     end          
+
+     #selected parameters for filter form     
+     @projects = Project.joins(:company).where('companys.user_id' => current_user.id)
+     @project = params[:project_id]
+     @date_from = params[:date_from]
+     @date_to = params[:date_to] 
+
     end
 
     # GET /personal
     def employee
       
-      filter_hash = {}      
-      
-      if params[:user_id] #check if filter form is submitted
+    if params[:user_id]
+  
         if params[:user_id] != ""
-          filter_hash['user_id'] = params[:user_id]
-        end
-
-        if params[:date_from] != ""
-          if params[:date_to] != ""
-            filter_hash['date'] = [params[:date_from]..params[:date_to]]           
-          else
-            filter_hash['date'] = params[:date_from]   
-          end  
-        else  
-          if params[:date_to] != ""
-            filter_hash['date'] = params[:date_to]             
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @employeeexpenses = Expense.where(:date => params[:date_from]..params[:date_to], :user_id => params[:user_id])          
+            else
+              @employeeexpenses = Expense.where('date > ? AND user_id =?', params[:date_from], params[:user_id]) 
+            end  
+          else  
+            if params[:date_to] != ""
+              @employeeexpenses = Expense.where('date < ? AND user_id = ?', params[:date_to], params[:user_id])            
+            end
+          end   
+        else
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @employeeexpenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+            else
+              @employeeexpenses = Expense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+            end  
+          else  
+            if params[:date_to] != ""
+              @employeeexpenses = Expense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+            else
+              @employeeexpenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+            end     
           end
+        end   
+     
+        if params[:commit] == 'pdf'          
+          pdf_employee_index(@employeeexpenses, params[:user_id], params[:date_from], params[:date_to])      
         end
-      end     
-      
-      if filter_hash.empty?
-        @employeeexpenses = Expense.where(:company_id => current_user.company_id, :exp_type => 1).where.not(:status => 3).order(:date)
-      else
-        @employeeexpenses = Expense.where(filter_hash, :company_id => current_user.company_id, :exp_type => 1).where.not(:status => 3).order(:date)  
-      end
-      
-      #selected parameters for filter form
-      @user = params[:user_id]
-      @date_from = params[:date_from]
-      @date_to = params[:date_to]
-      
+            
+     else
+       @employeeexpenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
+     end          
+
+     #selected parameters for filter form     
+     @users = User.where(:company_id => current_user.company_id)
+     @user = params[:user_id]
+     @date_from = params[:date_from]
+     @date_to = params[:date_to]   
+            
     end
 
 
@@ -214,7 +259,74 @@ module Mjbook
       
       # Only allow a trusted parameter "white list" through.
       def expense_params
-        params.require(:expense).permit(:company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :date, :due_date, :amount, :vat, :receipt, :recurrence, :ref, :supplier_ref)
+        params.require(:expense).permit(:company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :amount, :vat, :receipt, :recurrence, :ref, :supplier_ref)
       end
+      
+      def pdf_business_index(businessexpenses, supplier_id, date_from, date_to)
+         supplier = Supplier.where(:id => supplier_id).first if supplier_id
+
+         if supplier
+           filter_group = supplier.company_name
+         else
+           filter_group = "All Suppliers"
+         end
+         
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+                 
+         document = Prawn::Document.new(
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|      
+            table_indexes(businessexpenses, 'business', filter_group, date_from, date_to, filename, pdf)      
+          end
+
+          send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+      def pdf_personal_index(personalexpenses, project_id, date_from, date_to)
+         project = User.where(:id => user_id).first if user_id
+
+         if project
+           filter_group = project.name
+         else
+           filter_group = "All Employees"
+         end
+         
+         filename = "Personal_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+                 
+         document = Prawn::Document.new(
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|      
+            table_indexes(personalexpenses, 'personal', filter_group, date_from, date_to, filename, pdf)      
+          end
+
+          send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+      def pdf_employee_index(employeeexpenses, user_id, date_from, date_to)
+         user = User.where(:id => user_id).first if user_id
+
+         if user
+           filter_group =user.name
+         else
+           filter_group = "All Employees"
+         end
+         
+         filename = "Employee_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+                 
+         document = Prawn::Document.new(
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|      
+            table_indexes(employeeexpenses, 'employee', filter_group, date_from, date_to, filename, pdf)      
+          end
+
+          send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+      
   end
 end

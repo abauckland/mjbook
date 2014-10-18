@@ -10,7 +10,7 @@ $mob_menu: 520px;
 //index table 
 .business_due_data{display: table-cell; width: 60px}
 .business_job{display: table-cell; width: 55px}
-.business_category{display: table-cell; width: 55px}
+.business_category{display: table-cell; width: 100px}
 .business_ref{display: table-cell; width: 55px}
 .business_supplier{display: table-cell; }
 .business_supplier_ref{display: table-cell; width: 55px}         
@@ -25,15 +25,19 @@ $mob_menu: 520px;
 }
 
 @media screen and (max-width: $tab_lrg_menu) {
-
+  .business_issue_date{display: none}
 }
   
 @media screen and (max-width: $tab_sml_menu) {
-
+  .business_supplier_ref{display: none}
+  .business_price{display: none}
+  .business_vat_due{display: none}
 }
 
 @media screen and (max-width: $mob_menu) {
-
+  .business_job{display: none}
+  .business_category{display: none}
+  .business_ref{display: none}
 }
 
 .vat_note{font-size: 0.8rem; font-weight: normal;}
