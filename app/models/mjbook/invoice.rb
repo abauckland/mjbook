@@ -1,6 +1,5 @@
 module Mjbook
   class Invoice < ActiveRecord::Base
-
     has_many :ingroups, :dependent => :destroy
 
     belongs_to :project

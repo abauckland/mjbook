@@ -1,8 +1,7 @@
 module Mjbook
   class Ingroup < ActiveRecord::Base
-
     belongs_to :invoice
-    has_many :Inlines, :dependent => :destroy
+    has_many :inlines, :dependent => :destroy
 
     accepts_nested_attributes_for :Inlines
 

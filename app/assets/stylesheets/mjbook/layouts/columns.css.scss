@@ -169,6 +169,44 @@
   height: 60px;  
 }
 
+.column_info_item{
+@extend .column_form_item;
+}
+
+.column_info_label{
+  @extend .column_form_label;
+}
+
+.column_info_text{
+  @extend .column_form_input;
+}
+
+.column_info_textarea_5{
+  @extend .column_form_input;
+  height: 100px;  
+}
+
+.column_info_textarea_10{
+  @extend .column_form_input;
+  height: 200px;
+}
+
+.column_info_textarea_15{
+  @extend .column_form_input;
+  height: 300px;
+}
+
+.column_info_textarea_20{
+  @extend .column_form_input;
+  height: 400px;
+}
+
+.column_info_image{
+  @extend .column_form_input;
+  height: 60px;
+}
+
+
 .column_bar_chart{
   height: 300px;
   margin: 15px 0px 10px 0px;  

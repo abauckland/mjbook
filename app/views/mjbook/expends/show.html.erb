@@ -1,64 +1,81 @@
-<p id="notice"><%= notice %></p>
+<div class="page_title">
+    <h1>Expenditure Item</h1>
+</div>
 
-<p>
-  <strong>Company:</strong>
-  <%= @expend.company_id %>
-</p>
+<div class="content">
+    <div class="column_linked_container">          
+    
+        <div class="sub_column_linked_1">
+            <div class="column_content">
+                <div class="column_info">                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Reference:</label>                        
+                                <div class="column_info_text"><%= @expend.ref %></div>
+                            </div>
+                            <% if @expend.user_id %>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Employee:</label>                        
+                                <div class="column_info_text"><%= @expend.user.name %></div> 
+                            </div>
+                            <% end %>
+                            <% if @expend.expense_id %>                                                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Expense Ref:</label>                        
+                                <div class="column_info_text"><%= @expend.expense.ref %></div> 
+                            </div>
+                            <% end %>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Payment Method:</label>                        
+                                <div class="column_info_text"><%= @expend.paymethod.method %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Account:</label>                        
+                                <div class="column_info_text"><%= @expend.companyaccount.name %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label"R>Receipt:</label>                        
+                                <div class="column_info_text"><%= image_tag(@expend.receipt_image) %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Date:</label>                        
+                                <div class="column_info_text"><%= @expend.date.strftime("%d/%m/%y") %></div>   
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Price:</label>                        
+                                <div class="column_info_text"><%= pounds(@expend.price) %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">VAT:</label>                        
+                                <div class="column_info_text"><%= pounds(@expend.vat) %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Total:</label>                        
+                                <div class="column_info_text"><%= pounds(@expend.total) %></div>v>  
+                            </div>  
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2">
+            <div class="column_content">
+                <div class="column_info">
+                    <div class="column_info_item">
+                        <label class="column_info_label">Notes:</label>                        
+                        <div class="column_info_textarea_20"><%= @expend.note %></div>
+                    </div>    
+                </div>
+            </div>     
+        </div>    
+        <div class="sub_column_linked_3 column_linked_blank"></div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_submit"><%= link_to "edit details", edit_expend_path(@expend) %></div>
+            <div class="column_cancel"><%= link_to "back", expends_path %></div>
+        </div>
+            
+    </div>
+</div>
 
-<p>
-  <strong>User:</strong>
-  <%= @expend.user_id %>
-</p>
 
-<p>
-  <strong>Expense:</strong>
-  <%= @expend.expense_id %>
-</p>
 
-<p>
-  <strong>Paymethod:</strong>
-  <%= @expend.paymethod_id %>
-</p>
 
-<p>
-  <strong>Companyaccount:</strong>
-  <%= @expend.companyaccount_id %>
-</p>
-
-<p>
-  <strong>Expend receipt:</strong>
-  <%= @expend.expend_receipt %>
-</p>
-
-<p>
-  <strong>Date:</strong>
-  <%= @expend.date %>
-</p>
-
-<p>
-  <strong>Ref:</strong>
-  <%= @expend.ref %>
-</p>
-
-<p>
-  <strong>Price:</strong>
-  <%= @expend.price %>
-</p>
-
-<p>
-  <strong>Vat:</strong>
-  <%= @expend.vat %>
-</p>
-
-<p>
-  <strong>Total:</strong>
-  <%= @expend.total %>
-</p>
-
-<p>
-  <strong>Note:</strong>
-  <%= @expend.note %>
-</p>
-
-<%= link_to 'Edit', edit_expend_path(@expend) %> |
-<%= link_to 'Back', expends_path %>

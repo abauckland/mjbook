@@ -95,7 +95,15 @@ module Mjbook
       redirect_to salaries_url, notice: 'Salary was successfully destroyed.'
     end
 
-
+    def reconcile
+      #mark expense as rejected
+      @salary = Salary.where(:id => params[:id]).first
+      if @salary.update(:status => "reconciled")
+        respond_to do |format|
+          format.js   { render :reconcile, :layout => false }
+        end 
+      end 
+    end
 
     private
       # Use callbacks to share common setup or constraints between actions.

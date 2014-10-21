@@ -67,7 +67,7 @@ module Mjbook
     end
     
     def line_cat_item(line)  
-        "<td class='line_cat_item'><span id='#{ line.id }' class='qline_cat_item'>#{ line.item }</span>".html_safe
+        "<span id='#{ line.id }' class='qline_cat_item'>#{ line.item }</span>".html_safe
     end
     
     def line_quantity(line)  

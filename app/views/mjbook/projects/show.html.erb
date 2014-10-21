@@ -1,34 +1,61 @@
-<p id="notice"><%= notice %></p>
+<div class="page_title">
+    <h1>Project Details</h1>
+</div>
 
-<p>
-  <strong>Ref:</strong>
-  <%= @project.ref %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @project.title %>
-</p>
-
-<p>
-  <strong>Customer:</strong>
-  <%= @project.customer_id %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @project.description %>
-</p>
-
-<p>
-  <strong>Invoicemethod:</strong>
-  <%= @project.invoicemethod_id %>
-</p>
-
-<p>
-  <strong>Customer ref:</strong>
-  <%= @project.customer_ref %>
-</p>
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<div class="content">
+    <div class="column_linked_container">          
+    
+        <div class="sub_column_linked_1">
+            <div class="column_content">
+                <div class="column_info">                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Payment Method:</label>                        
+                                <div class="column_info_text"><%= @expend.paymethod.method %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Account:</label>                        
+                                <div class="column_info_text"><%= @expend.companyaccount.name %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Ref:</label>                        
+                                <div class="column_info_text"><%= @project.ref %></div>
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Title:</label>                        
+                                <div class="column_info_text"><%= @project.title %></div>
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Customer Ref:</label>                        
+                                <div class="column_info_text"><%= @project.customer_ref %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Customer:</label>                        
+                                <div class="column_info_text"><%= @project.customer.company_name %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Inovice Method:</label>                        
+                                <div class="column_info_text"><%= @project.invoicemethod.method %></div> 
+                            </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2">
+            <div class="column_content">
+                <div class="column_info">                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Description:</label>                        
+                                <div class="column_info_textarea_20"><%= @project.description %></div>   
+                            </div>
+                </div>
+            </div>
+        </div> 
+        <div class="sub_column_linked_3 column_linked_blank"></div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_submit"><%= link_to "edit details", edit_project_path(@project) %></div>
+            <div class="column_cancel"><%= link_to "back", projects_path %></div>
+        </div>
+            
+    </div>
+</div>

@@ -1,3 +1,8 @@
 $('td#'+<%= @quote.id %>+'_status').html('accepted');
 
-$('tr#<%= @quote_id %>').children('a.line_accept_icon').replaceWith('<%= escape_javascript(link_to "", reject_quote_path(@quote), :method => :get,  :remote => true, class: 'line_reject_icon', title: "mark as rejected") %>');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_accept_icon_show').attr('class', 'line_accept_icon_hidden');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_edit_icon_show').attr('class', 'line_edit_icon_hidden');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_delete_icon_show').attr('class', 'line_delete_icon_hidden');
+
+$('td#'+<%= @quote.id %>+'_links').children('a.line_reject_icon_hidden').attr('class', 'line_reject_icon_show');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_invoice_icon_hidden').attr('class', 'line_invoice_icon_show');

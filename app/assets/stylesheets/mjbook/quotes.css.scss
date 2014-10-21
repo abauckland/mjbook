@@ -45,18 +45,40 @@ $mob_menu: 520px;
 
 
 //quote content form
-.quote_line_prefix{}
-.quote_line_category{}
-.quote_line_cat_item{}
-.quote_line_item{}
-.quote_line_quantity{}
-.quote_line_unit{}
-.quote_line_rate{}
-.quote_line_price{}
-.quote_line_vat_rate{}
-.quote_line_vat{}
-.quote_line_total{}
+.quote_line_prefix{display: table-cell; width: 10px; text-align: right;}
+.quote_line_category{display: table-cell; width: 160px}
+.quote_line_cat_item{display: none}
+.quote_line_item{display: table-cell;}
+.quote_line_quantity{display: table-cell; width: 60px; text-align: right;}
+.quote_line_unit{display: table-cell; width: 50px; text-align: right;}
+.quote_line_rate{display: table-cell; width: 80px; text-align: right;}
+.quote_line_price{display: table-cell; width: 80px; text-align: right;}
+.quote_line_vat_rate{display: table-cell; width: 50px; text-align: right;}
+.quote_line_vat{display: table-cell; width: 80px; text-align: right;}
+.quote_line_total{display: table-cell; width: 80px; text-align: right;}
 .quote_line_menu_mob{}
+
+
+@media screen and (max-width: $lrg_menu) {
+  .quote_line_price{display: none}
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .quote_line_category{display: none}
+  .quote_line_cat_item{display: table-cell}
+  .quote_line_item{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .quote_line_prefix{display: none}
+  .quote_line_vat_rate{display: none}
+  .quote_line_rate{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .quote_line_unit{display: none}
+  .quote_line_vat{display: none}
+}
 
 
 

@@ -34,7 +34,8 @@
           <th class="salary_employee">Employee</th>
           <th class="salary_paid">Paid</th>
           <th class="salary_date">Date</th>          
-          <th width="20px" class="row_button"></th>
+          <th class="salary_status">Status</th>
+          <th width="75px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -43,11 +44,22 @@
           <tbody>
           <% if @salaries %>            
             <% @salaries.each do |salary| %>
-              <tr id ="<%= salary.id %>">
+              <tr>
                 <td class="salary_employee"><%= salary.user.name %></td> 
                 <td class="salary_paid"><%= pounds(salary.paid) %></td> 
                 <td class="salary_date"><%= salary.date.strftime("%d/%m/%y") %></td>
-                <td width="20px" class="row_button"><%= link_to "", edit_salary_path(salary), class: 'line_edit_icon', title: "edit payment details" %></td>
+                <td class="salary_status"><%= salary.status %></td>
+                <td id="<%= salary.id %>_links" width="75px" class="row_button">
+                <% if salary.reconciled? %>
+                    <%= row_delete_link(salary, 'hidden') %>
+                    <%= row_edit_link(salary, 'hidden') %>
+                    <%= row_reconcile_link(salary, 'hidden') %> 
+                <% else %>
+                    <%= row_delete_link(salary, 'show') %>
+                    <%= row_edit_link(salary, 'show') %>
+                    <%= row_reconcile_link(salary, 'show')  %> 
+                <% end %> 
+                </td>
               </tr>
             <% end %>  
           <% end %>

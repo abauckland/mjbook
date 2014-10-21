@@ -95,6 +95,17 @@ module Mjbook
       redirect_to payments_url, notice: 'Payment was successfully destroyed.'
     end
 
+    def reconcile
+      #mark expense as rejected
+      @payment = Payment.where(:id => params[:id]).first
+      if @payment.update(:status => "reconciled")
+        respond_to do |format|
+          format.js   { render :reconcile, :layout => false }
+        end 
+      end 
+    end
+
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_payment

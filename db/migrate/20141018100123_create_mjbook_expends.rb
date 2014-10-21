@@ -13,7 +13,8 @@ class CreateMjbookExpends < ActiveRecord::Migration
       t.decimal :vat, :precision => 8, :scale => 2, default: 0.00
       t.decimal :total, :precision => 8, :scale => 2, default: 0.00
       t.text :note
-
+      t.string :status
+      
       t.timestamps
     end
   end

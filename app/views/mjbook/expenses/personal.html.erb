@@ -44,9 +44,7 @@
           <th class="personal_vat_due">Vat</th>
           <th class="personal_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
           <th class="personal_status">Status</th>
-          <th width="40px" colspan="2" class="row_button">Status</th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
+          <th width="50px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -69,8 +67,15 @@
                     <td class="personal_vat_due"></td>
                     <td class="personal_total"><%= personalexpense.total %></td>
                     <td class="personal_status"><%= personalexpense.status %></td>
-                    <td width="20px" class="row_button"><%= link_to "", edit_mileage_path(personalexpense), class: 'line_edit_icon', title: "edit mileage expense record" %></td>
-                    <td width="20px" class="row_button"><%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon', title: "delete mileage expense record" %></td>
+                    <td id="<%= businessexpense.id %>_links" width="50px" class="row_button">
+                    <% if personalexpense.paid? || personalexpense.accepted? %>
+                        <%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon_hidden', title: "delete" %>                        
+                        <%= link_to "", edit_mileage_path(personalexpense), class: 'line_edit_icon_hidden', title: "edit" %>
+                    <% else %>
+                        <%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon_show', title: "delete" %>                        
+                        <%= link_to "", edit_mileage_path(personalexpense), class: 'line_edit_icon_show', title: "edit" %>
+                    <% end %>
+                    </td>
                 <% else %>
                     <td class="personal_supplier"><%= personalexpense.supplier.name %></td>
                     <td class="personal_supplier_ref"><%= personalexpense.supplier_ref %></td>
@@ -85,12 +90,15 @@
                     <td class="personal_vat_due"><%= pounds(personalexpense.vat) %></td>
                     <td class="personal_total"><%= pounds(personalexpense.total) %></td>
                     <td class="personal_status"><%= personalexpense.status %></td>
-                    <td width="20px" class="row_button"><%= link_to "", edit_personal_expense_path(personalexpense), class: 'line_edit_icon', title: "edit expenses record" %></td>
-                <% if personalexpense.paid? %>
-                    <td width="20px" class="row_button"></td>
-                <% else %>
-                    <td width="20px" class="row_button"><%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon', title: "delete expenses record" %></td>
-                <% end %>
+                    <td id="<%= businessexpense.id %>_links" width="50px" class="row_button">
+                    <% if personalexpense.paid? || personalexpense.accepted? %>
+                        <%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon_hidden', title: "delete" %>                        
+                        <%= link_to "", edit_personal_expense_path(personalexpense), class: 'line_edit_icon_hidden', title: "edit" %>
+                    <% else %>
+                        <%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon_show', title: "delete" %>                        
+                        <%= link_to "", edit_personal_expense_path(personalexpense), class: 'line_edit_icon_show', title: "edit" %>
+                    <% end %>
+                    </td>                
               </tr>
             <% end %>
           </tbody>

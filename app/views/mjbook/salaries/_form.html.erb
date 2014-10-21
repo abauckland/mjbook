@@ -17,6 +17,7 @@
                 <div class="column_form">
                 <%= form_for(@salary) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <%= f.hidden_field :status, :value => "paid" %>
                     
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:60px">Job Ref*:</label>                        

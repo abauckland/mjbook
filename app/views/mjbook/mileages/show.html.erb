@@ -7,38 +7,35 @@
         <div class="column_content">
 
             <div class="column_sub_content">
-                <div class="column_form">
-                      
+                <div class="column_form">                      
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Job Reference:</label>                        
-                            <div class="column_form_input"><%= @mileage.project_id %></div>
-                        </div>
-                       
+                            <div class="column_form_text"><%= @mileage.project_id %></div>
+                        </div>                       
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Date:</label>                        
-                            <div class="column_form_input"><%= @mileage.date %></div>  
+                            <div class="column_form_text"><%= @mileage.date %></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Mode:</label>                        
-                            <div class="column_form_input"><%= @mileage.mileagemethod_idemode_id %></div>  
+                            <div class="column_form_text"><%= @mileage.mileagemethod.mode %></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Start:</label>                        
-                            <div class="column_form_input"><%= @mileage.start %></div>  
+                            <div class="column_form_text"><%= @mileage.start %></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Destination:</label>                        
-                            <div class="column_form_input"><%= @mileage.finish %></div> 
+                            <div class="column_form_text"><%= @mileage.finish %></div> 
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Total Mileage:</label>                        
-                            <div class="column_form_input"><%= @mileage.distance %></div>  
+                            <div class="column_form_text"><%= @mileage.distance %></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Single/Return:</label>                        
-                            <div class="column_form_input"><%= @mileage.return %></div> 
+                            <div class="column_form_text"><%= @mileage.return %></div> 
                         </div>
-
                 </div>
            </div>     
                 

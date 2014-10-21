@@ -3,7 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class QuotesController < ApplicationController
         
-    before_action :set_quote, only: [:show, :edit, :update, :destroy, :print]
+    before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept]
     before_action :set_quoteterms, only: [:new, :edit]
         
     include PrintIndexes
@@ -92,8 +92,6 @@ module Mjbook
       end
     end
 
-
-
     # DELETE /quotes/1
     def destroy
       @quote.destroy
@@ -119,14 +117,13 @@ module Mjbook
         end 
       end    
     end
-
     
     def print
 
        document = Prawn::Document.new(
-        :page_size => "A4",
-        :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-        :info => {:title => @quote.project.title}
+          :page_size => "A4",
+          :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+          :info => {:title => @quote.project.title}
         ) do |pdf|    
 
           print_quote(@quote, pdf)
@@ -137,7 +134,6 @@ module Mjbook
 
         send_data document.render, filename: filename, :type => "application/pdf"      
     end
-    
 
     private
       # Use callbacks to share common setup or constraints between actions.
@@ -146,7 +142,7 @@ module Mjbook
       end
       
       def set_quoteterms
-        @quoteterms = Quoteterm.where(:comany_id => current_user.company_id)        
+        @quoteterms = Quoteterm.where(:company_id => current_user.company_id)        
       end
 
       # Only allow a trusted parameter "white list" through.
@@ -166,9 +162,9 @@ module Mjbook
          filename = "Quotes_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
                  
          document = Prawn::Document.new(
-          :page_size => "A4",
-          :page_layout => :landscape,
-          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+            :page_size => "A4",
+            :page_layout => :landscape,
+            :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
       
             table_indexes(quotes, 'quote', filter_group, date_from, date_to, filename, pdf)

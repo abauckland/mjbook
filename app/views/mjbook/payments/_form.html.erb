@@ -17,7 +17,8 @@
                 <div class="column_form">
                 <%= form_for(@payment) do |f| %>
                     <%= f.hidden_field :user_id, :value => current_user.id %>
-                    
+                    <%= f.hidden_field :status, :value => "paid" %>
+                                        
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Invoice Ref*:</label>                        
                             <div class="column_form_input"><%= f.collection_select(:invoice_id, @invoices, :id, :ref, {:selected => @payment.invoice_id, :prompt => :true}, :class => "full_width")%></div>

@@ -15,8 +15,9 @@
             <th class="customer_email">Email</th>
             <th class="customer_company">Company</th>
             <th class="customer_note">Notes</th>
-            <th width="20px" class="row_button"></th>
-            <th width="20px" class="row_button"><%= link_to "", print_customers_path, class: 'table_pdf_icon', title: "download pdf" %></th>
+            <th width="50px" class="row_button">
+                <%= link_to "", print_customers_path, class: 'table_pdf_icon', title: "download pdf" %>                
+            </th>
         </tr>
       </thead>
     </table>
@@ -40,12 +41,14 @@
                 <td class="customer_email"><%= customer.email %></td>
                 <td class="customer_company"><%= customer.company_name %></td>
                 <td class="customer_note"><%= customer.notes %></td>
-                <td width="20px" class="row_button"><%= link_to "", edit_customer_path(customer), class: 'line_edit_icon', title: "edit customer" %></td>
-                <% if supplier_in_use(supplier) %>
-                    <td width="20px" class="row_button"><%= link_to "", customer, method: :delete, class: 'line_delete_icon', title: "delete customer" %></td>
-                <% else %>
-                    <td width="20px" class="row_button"></td>
-                <% end %>
+                <td width="50px" class="row_button">
+                    <%= row_edit_link(customer, 'show') %>
+                    <% if customer_in_use(customer) %>
+                        <%= row_delete_link(customer, 'hidden') %>
+                    <% else %>
+                        <%= row_delete_link(customer, 'show') %>>
+                    <% end %>
+                </td>    
               </tr>
             <% end %>
           </tbody>

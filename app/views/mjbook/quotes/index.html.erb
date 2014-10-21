@@ -43,10 +43,7 @@
           <th class="quote_vat_due">Vat</th>         
           <th class="quote_total">Total</br><span class="vat_note">(Inc VAT)</span></th>          
           <th class="quote_status">Status</th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
+          <th width="125px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -56,7 +53,7 @@
           <% if @quotes %>
             
             <% @quotes.each do |quote| %>
-              <tr id ="<%= quote.id %>">
+              <tr>
                 <td class="quote_ref"><%= quote.ref %></td> 
                 <td class="quote_title"><%= quote.title %></td> 
                 <td class="quote_project_ref"><%= quote.project.ref %></td>
@@ -67,15 +64,38 @@
                 <td class="quote_price"><%= pounds(quote.price) %></td> 
                 <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>         
                 <td class="quote_total"><%= pounds(quote.total) %></td>          
-                <td id="<%= quote.id %>_status"class="quote_status"><%= quote.status %></td>              
-                <% if quote.accepted? %>
-                    <td width="20px" class="row_button"><%= link_to "", reject_quote_path(quote), :method => :get,  :remote => true, class: 'line_reject_icon', title: "mark as rejected" %></td>                
-                <% else %>
-                    <td width="20px" class="row_button"><%= link_to "", accept_quote_path(quote), :method => :get,  :remote => true, class: 'line_accept_icon', title: "mark as accepted" %></td>
-                <% end %>
-                <td width="20px" class="row_button"><%= link_to "", print_quote_path(quote), class: 'line_pdf_icon', title: "download pdf of quote" %></td>
-                <td width="20px" class="row_button"><%= link_to "", quotecontent_path(quote), class: 'line_edit_icon', title: "edit quote" %></td>
-                <td width="20px" class="row_button"><%= link_to "", quote, method: :delete, class: 'line_delete_icon', title: "delete quote" %></td>
+                <td id="<%= quote.id %>_status" class="quote_status"><%= quote.status %></td>              
+                <td id="<%= quote.id %>_links" width="125x" class="row_button">
+                
+                    <% if quote.submitted? || quote.rejected? %>                
+                        <%= row_delete_link(quote, 'show') %>
+                        <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
+                    <% else %>    
+                        <%= row_delete_link(quote, 'hidden') %>
+                        <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_hidden', title: "edit" %>                        
+                    <% end %>
+                    
+                        <%= row_print_link(quote, 'show') %>
+                    
+                    <% if quote.accepted? %>                
+                        <%= link_to "", nil, class: 'line_invoice_icon_show', title: "create invoice from quote" %>
+                    <% else %>    
+                        <%= link_to "", nil, class: 'line_invoice_icon_hidden', title: "create invoice from quote" %>
+                    <% end %>
+                    
+                    <% if quote.submitted? || quote.accepted? %>
+                        <%= row_reject_link(quote, 'show') %>               
+                    <% else %> 
+                        <%= row_reject_link(quote, 'hidden') %>
+                    <% end %>
+                    
+                    <% if quote.submitted? || quote.rejected?  %>
+                        <%= row_accept_link(quote, 'show') %>
+                    <% else %>    
+                        <%= row_accept_link(quote, 'hidden') %>
+                    <% end %>                
+
+                </td>
               </tr>
             <% end %>  
           <% end %>

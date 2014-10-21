@@ -131,7 +131,13 @@ module Mjbook
     end
     
     def reconcile
-      #update status setting
+      #mark expense as rejected
+      @expend = Expend.where(:id => params[:id]).first
+      if @expend.update(:status => "reconciled")
+        respond_to do |format|
+          format.js   { render :reconcile, :layout => false }
+        end 
+      end 
     end
 
     private

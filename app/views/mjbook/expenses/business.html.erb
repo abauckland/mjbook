@@ -44,10 +44,7 @@
           <th class="business_vat_due">Vat</th>
           <th class="business_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
           <th class="business_status">Status</th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>          
+          <th width="100px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -74,25 +71,35 @@
                 <td class="business_vat_due"><%= pounds(businessexpense.vat) %></td>
                 <td class="business_total"><%= pounds(businessexpense.total) %></td>
                 <td class="business_status"><%= businessexpense.status %></td>
-                <% if businessexpense.submitted? %>
-                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
-                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>            
-                <% elsif businessexpense.accepted? %>
-                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
-                    <td width="20px" class="row_button"><%= link_to "", reject_expense_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>            
-                <% elsif businessexpense.rejected? %>
-                    <td width="20px" class="row_button"><%= link_to "", accept_expense_path(businessexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
-                    <td width="20px" class="row_button"><%= link_to "", new_expend_path(businessexpense), class: 'line_reject_icon', title: "mark not for payment" %></td>            
-                <% else %>
-                    <td width="20px" class="row_button"><%= link_to "", new_expense_path(:expense_id => businessexpense.id), class: 'line_paid_icon', title: "mark for payment" %></td>
-                    <td width="20px" class="row_button"></td>
-                <% end %>
-                <td width="20px" class="row_button"><%= link_to "", edit_business_expense_path(businessexpense), class: 'line_edit_icon', title: "edit mileage record" %></td>
-                <% if businessexpense.paid? %>
-                    <td width="20px" class="row_button"></td>
-                <% else %>
-                    <td width="20px" class="row_button"><%= link_to "", businessexpense, method: :delete, class: 'line_delete_icon', title: "delete mileage record" %></td>
-                <% end %>
+                
+                <td id="<%= businessexpense.id %>_links" width="100px" class="row_button">
+                    
+                    <% if businessexpense.submitted? || businessexpense.rejected? %>
+                        <%= row_delete_link(businessexpense, 'show') %>                 
+                        <%= link_to "", edit_business_expense_path(businessexpense), class: 'line_edit_icon_show', title: "edit" %>
+                        <%= row_accept_link(businessexpense, 'show') %>
+                    <% else %>
+                        <%= row_delete_link(businessexpense, 'hidden') %>                
+                        <%= link_to "", edit_business_expense_path(businessexpense), class: 'line_edit_icon_hidden', title: "edit" %>
+                        <%= row_accept_link(businessexpense, 'hidden') %> 
+                    <% end %>                                
+     
+                    <% if businessexpense.submitted? || businessexpense.accepted? %>
+                        <%= row_reject_link(businessexpense, 'show') %>                 
+                    <% else %>
+                        <%= row_reject_link(businessexpense, 'hidden') %>                 
+                    <% end %> 
+                
+                    <% if businessexpense.accepted? %>
+                        <%= link_to "", new_expend_path(:expense_id => employeeexpense.id), class: 'line_payment_icon_show', title: "record payment" %>                
+                    <% else %>
+                        <%= link_to "", new_expend_path(:expense_id => employeeexpense.id), class: 'line_payment_icon_hidden', title: "record payment" %>                 
+                    <% end %> 
+    
+    
+                    <%= row_show_link(businessexpense, 'show') %> 
+
+                </td>
               </tr>
               
             <% end %>  

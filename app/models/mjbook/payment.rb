@@ -3,5 +3,7 @@ module Mjbook
 
     belongs_to :invoice
 
+    enum status: [:paid, :reconciled]
+
   end
 end

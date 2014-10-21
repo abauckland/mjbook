@@ -10,6 +10,8 @@
                 <div class="column_form">
                 <%= form_for(@expend) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>                       
+                    <%= f.hidden_field :status, :value => "paid" %>
+                    
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Customer*:</label>                        
                             <div class="column_form_input"><%= f.collection_select(:user_id, @users, :id, :name, {:selected => @user_id, :prompt => :true}, :class => "full_width")%></div>

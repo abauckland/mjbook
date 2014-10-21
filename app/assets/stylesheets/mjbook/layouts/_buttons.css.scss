@@ -67,9 +67,12 @@ input[type="submit"].options_pdf_icon{
 
 .line_insert_icon {@include menu_icons(-560px);}
 .line_new_icon {@include menu_icons(-520px);}
-.line_edit_icon {@include menu_icons(-80px);}
-.line_delete_icon {@include menu_icons(-120px);}
+.line_edit_icon {@include menu_icons(-80px); float: right; padding: 0px 5px 0px 0px;}
+.line_delete_icon {@include menu_icons(-120px); float: right; padding: 0px 5px 0px 0px;}
 .line_move_icon {@include menu_icons(-0px);}
+
+
+.line_mileage_icon {@include menu_icons(-920px);}
 
 .line_up_icon {@include menu_icons(-680px);}
 .line_down_icon {@include menu_icons(-720px);}
@@ -77,12 +80,35 @@ input[type="submit"].options_pdf_icon{
 .line_view_icon {@include menu_icons(-760px);}
 .line_show_icon {@include menu_icons(-800px);}
 
-.line_accept_icon {@include menu_icons(-840px);}
-.line_reject_icon {@include menu_icons(-880px);}
 
-.line_mileage_icon {@include menu_icons(-920px);}
+.line_show_icon_show {@include menu_icons(-800px); float: right; padding: 0px 5px 0px 0px;}
+.line_show_icon_hidden {@include menu_icons(-800px); display: none; float: right; padding: 0px 5px 0px 0px;}
 
-.line_pdf_icon {@include menu_icons(-1000px);}
+.line_edit_icon_show {@include menu_icons(-80px); float: right; padding: 0px 5px 0px 0px;}
+.line_edit_icon_hidden {@include menu_icons(-80px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_delete_icon_show {@include menu_icons(-120px); float: right; padding: 0px 5px 0px 0px;}
+.line_delete_icon_hidden {@include menu_icons(-120px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_accept_icon_show {@include menu_icons(-840px); float: right; padding: 0px 5px 0px 0px;}
+.line_accept_icon_hidden {@include menu_icons(-840px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_reject_icon_show {@include menu_icons(-880px); float: right; padding: 0px 5px 0px 0px;}
+.line_reject_icon_hidden {@include menu_icons(-880px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_invoice_icon_show {@include menu_icons(-1080px); float: right; padding: 0px 5px 0px 0px;}
+.line_invoice_icon_hidden {@include menu_icons(-1080px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_payment_icon_show {@include menu_icons(-1080px); float: right; padding: 0px 5px 0px 0px;}
+.line_payment_icon_hidden {@include menu_icons(-1080px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_reconcile_icon_show {@include menu_icons(-1040px); float: right; padding: 0px 5px 0px 0px;}
+.line_reconcile_icon_hidden {@include menu_icons(-1040px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_pdf_icon {@include menu_icons(-1000px); float: right; padding: 0px 5px 0px 0px;}
+.line_pdf_icon_show {@include menu_icons(-1000px); float: right; padding: 0px 5px 0px 0px;}
+.line_pdf_icon_hidden {@include menu_icons(-1000px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
 
 .line_menu_icon {@include menu_icons(-40px);}
 

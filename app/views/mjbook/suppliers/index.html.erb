@@ -16,8 +16,9 @@
             <th class="supplier_alt_phone">Alt. Phone</th>
             <th class="supplier_email">Email</th>
             <th class="supplier_note">Notes</th>
-            <th width="20px" class="row_button"></th>
-            <th width="20px" class="row_button"><%= link_to "", nil, class: 'table_pdf_icon', title: "download pdf" %></th>
+            <th width="50px" class="row_button">
+                <%= link_to "", print_suppliers_path, class: 'table_pdf_icon', title: "download pdf" %>                
+            </th>
         </tr>
       </thead>
     </table>
@@ -42,12 +43,14 @@
                 <td class="supplier_alt_phone"><%= supplier.alt_phone %></td>
                 <td class="supplier_email"><%= supplier.email %></td>
                 <td class="supplier_note"><%= supplier.notes %></td>
-                <td width="20px" class="row_button"><%= link_to "", edit_supplier_path(supplier), class: 'line_edit_icon', title: "edit supplier" %></td>
-                <% if supplier_in_use(supplier) %>
-                    <td width="20px" class="row_button"><%= link_to "", supplier, method: :delete, class: 'line_delete_icon', title: "delete supplier" %></td>
-                <% else %>
-                    <td width="20px" class="row_button"></td>
-                <% end %>
+                <td width="50px" class="row_button">
+                    <%= row_edit_link(supplier, 'show') %>
+                    <% if supplier_in_use(supplier) %>
+                        <%= row_delete_link(supplier, 'hidden') %>
+                    <% else %>
+                        <%= row_delete_link(supplier, 'show') %>
+                    <% end %>
+                </td> 
               </tr>
             <% end %>
           </tbody>

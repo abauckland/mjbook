@@ -30,6 +30,7 @@
     <table>
       <thead>
         <tr>
+          <th class="employee_name">Employee</th>
           <th class="employee_due_date">Due Date</th>
           <th class="employee_job">Job</th>
           <th class="employee_category">Category</th> 
@@ -43,8 +44,7 @@
           <th class="employee_vat_due">Vat</th>
           <th class="employee_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
           <th class="employee_status">Status</th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
+          <th width="100px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -53,6 +53,7 @@
           <tbody>
             <% @employeeexpenses.each do |employeeexpense| %>
               <tr id="<%= employeeexpense.id %>">
+                <td class="employee_employee"><%= employeeexpense.user.name %></td>
                 <td class="employee_due_date"><%= employeeexpense.due_date.strftime("%d/%m/%y") %></td>
                 <td class="employee_job"><%= employeeexpense.project.ref %></td>
                 <td class="employee_category"><%= employeeexpense.hmrcexpcat.category %></td>
@@ -62,18 +63,7 @@
                     <td class="employee_supplier_ref"></td>
                     <td class="employee_issue_date"><%= employeeexpense.date.strftime("%d/%m/%y") %></td>
                     <td width="20px" class="row_button"></td>
-                    <td class="employee_distance"><%= employeeexpense.mileage.distance %></td>
-                    <td class="employee_price"><%= pounds(employeeexpense.price) %></td>
-                    <td class="employee_vat_due"><%= pounds(employeeexpense.vat) %></td>
-                    <td class="employee_total"><%= pounds(employeeexpense.total) %></td>
-                    <td id="<%= employeeexpense.id %>_status" class="employee_status"><%= employeeexpense.status %></td>
-                    <% unless employeeexpense.rejected? %>
-                        <td width="20px" class="row_button"><%= link_to "", reject_employee_expense_path(employeeexpense), class: 'line_reject_icon', title: "mark as rejected" %></td>                
-                    <% end %>
-                    <% unless employeeexpense.accepted? %>
-                        <td width="20px" class="row_button"><%= link_to "", accept_employee_expense_path(employeeexpense), class: 'line_accept_icon', title: "mark for payment" %></td>
-                    <% end %>
-                    <td width="20px" class="row_button"><%= link_to "", show_employee_expense_path(employeeexpense), class: 'line_edit_icon', title: "edit expenses record" %></td>
+                    <td class="employee_distance"><%= employeeexpense.mileage.distance %></td>                
                  <% else %>
                     <td class="employee_ref"><%= employeeexpense.ref %></td>
                     <td class="employee_supplier"><%= employeeexpense.supplier.name %></td>
@@ -83,18 +73,34 @@
                         <%= "Yes".html_safe if employeeexpense.receipt? %>
                     </td>
                     <td class="employee_distance"></td>
+                 <% end %>    
                     <td class="employee_price"><%= pounds(employeeexpense.price) %></td>
                     <td class="employee_vat_due"><%= pounds(employeeexpense.vat) %></td>
                     <td class="employee_total"><%= pounds(employeeexpense.total) %></td>
                     <td  id="<%= employeeexpense.id %>_status" class="employee_status"><%= employeeexpense.status %></td>
-                    <% unless employeeexpense.rejected? %>
-                        <td width="20px" class="row_button"><%= link_to "", reject_expense_path(employeeexpense), {remote: true, class: 'line_reject_icon', title: "mark as rejected"} %></td>                
-                    <% end %>
-                    <% unless employeeexpense.accepted? %>
-                        <td width="20px" class="row_button"><%= link_to "", accept_expense_path(employeeexpense), {remote: true, class: 'line_accept_icon', title: "mark for payment"} %></td>
-                    <% end %>
-                    <td width="20px" class="row_button"><%= link_to "", expense_path(employeeexpense), class: 'line_show_icon', title: "show expense details" %></td>
-                <% end %>              
+                    <td id="<%= employeeexpense.id %>_links"  width="100px" class="row_button">
+                        
+                        <% if employeeexpense.submitted? || employeeexpense.rejected? %>
+                            <%= row_accept_link(employeeexpense, 'show') %>
+                        <% else %>
+                            <%= row_accept_link(employeeexpense, 'hidden') %> 
+                        <% end %>                                
+         
+                        <% if employeeexpense.submitted? || employeeexpense.accepted? %>
+                            <%= row_reject_link(employeeexpense, 'show') %>                 
+                        <% else %>
+                            <%= row_reject_link(employeeexpense, 'hidden') %>                 
+                        <% end %> 
+                    
+                        <% if employeeexpense.accepted? %>
+                            <%= link_to "", new_personal_expend_path(:expense_id => employeeexpense.id), class: 'line_payment_icon_show', title: "record payment" %>                
+                        <% else %>
+                            <%= link_to "", new_personal_expend_path(:expense_id => employeeexpense.id), class: 'line_payment_icon_hidden', title: "record payment" %>                 
+                        <% end %>        
+        
+                        <%= row_show_link(employeeexpense, 'show') %> 
+    
+                    </td>                             
               </tr>
             <% end %>
           </tbody>

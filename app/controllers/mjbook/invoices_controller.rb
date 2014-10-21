@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class InvoicesController < ApplicationController
-    before_action :set_invoice, only: [:show, :edit, :update, :destroy]
+    before_action :set_invoice, only: [:show, :edit, :update, :destroy, :reject, :accept]
     before_action :set_invoiceterms, only: [:new, :edit]
 
     include PrintIndexes
@@ -94,6 +94,42 @@ module Mjbook
       redirect_to invoice_url, notice: 'Invoice was successfully destroyed.'
     end
 
+    def accept
+      #mark expense ready for payment
+      if @invoice.update(:status => "accepted")        
+        respond_to do |format|
+          format.js   { render :accept, :layout => false }
+        end  
+      end      
+    end 
+
+    def reject
+      #mark expense as rejected
+      if @invoice.update(:status => "rejected")
+        respond_to do |format|
+          format.js   { render :reject, :layout => false }
+        end 
+      end    
+    end
+
+    def print
+
+       document = Prawn::Document.new(
+        :page_size => "A4",
+        :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+        :info => {:title => @invoice.project.title}
+        ) do |pdf|    
+
+          print_invoice(@invoice, pdf)
+       
+        end         
+
+        filename = "#{@invoice.project.ref}.pdf"   
+
+        send_data document.render, filename: filename, :type => "application/pdf"      
+    end
+
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_invoice
@@ -109,7 +145,7 @@ module Mjbook
         params.require(:invoice).permit(:project_id, :ref, :customer_ref, :price, :vat_due, :total, :status, :date, :invoiceterms_id, :invoicetype_id)
       end
 
-      def pdf_quote_index(invoices, customer_id, date_from, date_to)
+      def pdf_invoice_index(invoices, customer_id, date_from, date_to)
          customer = Customer.where(:id => customer_id).first if customer_id
 
          if customer
@@ -121,12 +157,12 @@ module Mjbook
          filename = "Invoices_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
                  
          document = Prawn::Document.new(
-          :page_size => "A4",
-          :page_layout => :landscape,
-          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+            :page_size => "A4",
+            :page_layout => :landscape,
+            :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
       
-            table_indexes(quotes, 'invoice', filter_group, date_from, date_to, filename, pdf)
+            table_indexes(invoices, 'invoice', filter_group, date_from, date_to, filename, pdf)
       
           end
 

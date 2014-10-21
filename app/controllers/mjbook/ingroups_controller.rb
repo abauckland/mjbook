@@ -2,61 +2,71 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class IngroupsController < ApplicationController
-    before_action :set_ingroup, only: [:show, :edit, :update, :destroy]
+    before_action :set_ingroup
 
-    # GET /ingroups
-    def index
-      @ingroups = Ingroup.all
+    def new_group
+      
+      update_group_order(@group, 'new')
+  
+      @new_group = @group.dup
+      @new_group.group_order = @group.group_order + 1
+      @new_group.save
+
+      respond_to do |format|
+        format.js {render :new_group, :layout => false }  
+      end 
     end
 
-    # GET /ingroups/1
-    def show
+
+    def delete_group
+
+      @line_ids = Inline.where(:ingroup_id => @group.id).pluck(:id)
+
+      update_group_order(@group, 'delete')
+      
+      @group.destroy      
+
+      update_totals(ingroup_id)
+      
+      respond_to do |format|
+        format.js {render :delete_group, :layout => false }  
+      end       
+    end
+    
+    
+    def update_text
+      #removes white space and punctuation from end of text
+      clean_text(params[:value])         
+      #save changes
+      @group.update(:text => @value)     
+      #render text only      
+      render :text=> params[:value]          
     end
 
-    # GET /ingroups/new
-    def new
-      @ingroup = Ingroup.new
-    end
-
-    # GET /ingroups/1/edit
-    def edit
-    end
-
-    # POST /ingroups
-    def create
-      @ingroup = Ingroup.new(ingroup_params)
-
-      if @ingroup.save
-        redirect_to @ingroup, notice: 'Ingroup was successfully created.'
-      else
-        render :new
-      end
-    end
-
-    # PATCH/PUT /ingroups/1
-    def update
-      if @ingroup.update(ingroup_params)
-        redirect_to @ingroup, notice: 'Ingroup was successfully updated.'
-      else
-        render :edit
-      end
-    end
-
-    # DELETE /ingroups/1
-    def destroy
-      @ingroup.destroy
-      redirect_to ingroups_url, notice: 'Ingroup was successfully destroyed.'
-    end
 
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_ingroup
-        @ingroup = Ingroup.find(params[:id])
+        @group = Ingroup.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
       def ingroup_params
         params.require(:ingroup).permit(:invoice_id, :ref, :text, :price, :vat_due, :total, :group_order)
+      end
+
+
+      def update_group_order(selected_group, action) 
+        subsequent_groups = Ingroup.where('invoice_id = ? AND group_order > ?', selected_group.invoice_id, selected_group.group_order).order('group_order')
+        
+        subsequent_groups.each_with_index do |group, i|
+          if action == 'new'
+            group.update(:group_order => selected_group.group_order + 2 + i)
+          end
+          if action == 'delete'
+            group.update(:group_order => selected_group.group_order + i)
+          end
+        end       
       end
   end
 end

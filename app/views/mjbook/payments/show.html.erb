@@ -1,49 +1,71 @@
-<p id="notice"><%= notice %></p>
+<div class="page_title">
+    <h1>Project Details</h1>
+</div>
 
-<p>
-  <strong>User:</strong>
-  <%= @payment.user_id %>
-</p>
+<div class="content">
+    <div class="column_linked_container">          
+    
+        <div class="sub_column_linked_1">
+            <div class="column_content">
+                <div class="column_info">                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Ref:</label>                        
+                                <div class="column_info_text"><%= @payment.ref %></div>
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Inovice:</label>                        
+                                <div class="column_info_text"><%= @payment.invoice.ref %></div>
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Payment Method:</label>                        
+                                <div class="column_info_text"><%= @expend.paymethod.method %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Account:</label>                        
+                                <div class="column_info_text"><%= @expend.companyaccount.name %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Date:</label>                        
+                                <div class="column_info_text"><%= @expend.date.strftime("%d/%m/%y") %></div>   
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Price:</label>                        
+                                <div class="column_info_text"><%= pounds(@expend.price) %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">VAT:</label>                        
+                                <div class="column_info_text"><%= pounds(@expend.vat) %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label">Total:</label>                        
+                                <div class="column_info_text"><%= pounds(@expend.total) %></div>v>  
+                            </div>  
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2">
+            <div class="column_content">
+                <div class="column_info">                        
+                            <div class="column_info_item">
+                                <label class="column_info_label">Notes:</label>                        
+                                <div class="column_info_textarea_20"><%= @payment.note %></div>   
+                            </div>
+                </div>
+            </div>
+        </div> 
+        <div class="sub_column_linked_3 column_linked_blank"></div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_submit"><%= link_to "edit details", edit_payment_path(@payment) %></div>
+            <div class="column_cancel"><%= link_to "back", payments_path %></div>
+        </div>
+            
+    </div>
+</div>
 
-<p>
-  <strong>Invoice:</strong>
-  <%= @payment.invoice_id %>
-</p>
 
-<p>
-  <strong>Paymethod:</strong>
-  <%= @payment.paymethod_id %>
-</p>
 
-<p>
-  <strong>Companyaccount:</strong>
-  <%= @payment.companyaccount_id %>
-</p>
 
-<p>
-  <strong>Price:</strong>
-  <%= @payment.price %>
-</p>
 
-<p>
-  <strong>Vat:</strong>
-  <%= @payment.vat %>
-</p>
 
-<p>
-  <strong>Total:</strong>
-  <%= @payment.total %>
-</p>
-
-<p>
-  <strong>Date:</strong>
-  <%= @payment.date %>
-</p>
-
-<p>
-  <strong>Note:</strong>
-  <%= @payment.note %>
-</p>
-
-<%= link_to 'Edit', edit_payment_path(@payment) %> |
-<%= link_to 'Back', payments_path %>

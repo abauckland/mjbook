@@ -1,24 +1,54 @@
 Mjbook::Engine.routes.draw do
   
   resources :expends do
+    get :new_personal, :on => :member
+    get :edit_personal, :on => :member
     get :reconcile, :on => :member  
-    get :print, :on => :member
+    get :print, :on => :member 
   end
 
   resources :salaries do
+    get :reconcile, :on => :member
     get :print, :on => :member
   end
 
   resources :payments do
+    get :reconcile, :on => :member
     get :print, :on => :member
   end
 
-  resources :inlines
-  resources :ingroups
+  resources :inlines do
+    get :new_line, :on => :member
+    get :edit_line, :on => :member
+    get :delete_line, :on => :member
+    member do
+      put :update_text
+      put :update_price
+      put :update_vat
+      put :update_vat_rate
+      put :update_rate
+      put :update_unit
+      put :update_quantity
+      put :update_item
+      put :update_cat
+    end
+  end
+  
+  resources :ingroups do
+    get :new_group, :on => :member
+    get :delete_group, :on => :member
+    member do
+      put :update_text
+    end
+  end 
 
   resources :invoices do
+    get :accept, :on => :member
+    get :reject, :on => :member 
     get :print, :on => :member
   end
+
+  resources :invoicecontents, :only => [:show]
 
   resources :invoiceterms do
     get :print, :on => :member

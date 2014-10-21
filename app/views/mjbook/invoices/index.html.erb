@@ -41,11 +41,7 @@
           <th class="invoice_price">Price</br><span class="vat_note">(ex VAT)</span></th>
           <th class="invoice_vat_due">Vat</th>
           <th class="invoice_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
-          <th class="invoice_status">Status</th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"></th>
+          <th class="125px" class="row_button"></th>
         </tr>
       </thead>
     </table>
@@ -66,18 +62,37 @@
                 <td class="invoice_vat_due"><%= pounds(invoice.vat_due) %></td> 
                 <td class="invoice_total"><%= pounds(invoice.total) %></td>
                 <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.status %></td>
-                <% if invoice.accepted? %>
-                    <td width="20px" class="row_button"><%= link_to "", reject_invoice_path(invoice), :method => :get,  :remote => true, class: 'line_reject_icon', title: "mark as rejected" %></td>            
-                <% else %>
-                    <td width="20px" class="row_button"><%= link_to "", accept_invoice_path(invoice), :method => :get,  :remote => true, class: 'line_accept_icon', title: "mark as accepted" %></td>
-                <% end %>
-                <td width="20px" class="row_button"><%= link_to "", print_invoice_path(invoice), class: 'line_pdf_icon', title: "download pdf of invoice" %></td>
-                <td width="20px" class="row_button"><%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon', title: "edit invoice" %></td>
-                <% if invoice.paid? %> 
-                    <td width="20px" class="row_button"><%= link_to "", invoice, method: :delete, class: 'line_delete_icon', title: "delete invoice" %></td>
-                <% else %>
-                    <td width="20px" class="row_button"></td>
-                <% end %>  
+                <td id="<%= invoice.id %>_links" width="125px" class="row_button">
+             
+                    <% if invoice.submitted? || invoice.rejected? %>                
+                        <%= row_delete_link(invoice, 'show') %>
+                        <%= row_edit_link(invoice, 'show') %>
+                    <% else %>    
+                        <%= row_delete_link(invoice, 'hidden') %>
+                        <%= row_edit_link(invoice, 'hidden')%>                        
+                    <% end %>
+                    
+                        <%= row_print_link(invoice, 'show') %>
+                    
+                    <% if invoice.accepted? %>                
+                        <%= link_to "", nil, class: 'line_payment_icon_show', title: "record payment" %>
+                    <% else %>    
+                        <%= link_to "", nil, class: 'line_payment_icon_hidden', title: "record payment" %>
+                    <% end %>
+                    
+                    <% if invoice.submitted? || invoice.accepted?  %>
+                        <%= row_reject_link(invoice, 'show') %>               
+                    <% else %> 
+                        <%= row_reject_link(invoice, 'hidden') %>
+                    <% end %>
+                    
+                    <% if invoice.submitted? || invoice.rejected?  %>
+                        <%= row_accept_link(invoice, 'show') %>
+                    <% else %>    
+                        <%= row_accept_link(invoice, 'hidden') %>
+                    <% end %>                
+
+                </td>
               </tr>
             <% end %>
           <% end %>

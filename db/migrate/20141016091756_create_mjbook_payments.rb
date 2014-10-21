@@ -10,7 +10,8 @@ class CreateMjbookPayments < ActiveRecord::Migration
       t.decimal :total, :precision => 8, :scale => 2, default: 0.00
       t.datestamp :date
       t.text :note
-
+      t.string :status
+      
       t.timestamps
     end
   end

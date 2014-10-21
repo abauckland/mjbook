@@ -22,6 +22,7 @@
                 <%= form_for(@expend) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
                     <%= f.hidden_field :expense_id, :value => @expend.expense_id %>     
+                    <%= f.hidden_field :status, :value => "paid" %>
                     
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Reference:*</label>                        
