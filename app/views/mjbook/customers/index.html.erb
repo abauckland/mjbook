@@ -7,16 +7,16 @@
     <table>
       <thead>
         <tr>
+            <th class="customer_company">Company</th>
             <th class="customer_name">Name</th>
             <th class="customer_position">Position</th>
-            <th class="customer_address">Address</th>
             <th class="customer_phone">Phone</th>
             <th class="customer_alt_phone">Alt. Phone</th>
             <th class="customer_email">Email</th>
-            <th class="customer_company">Company</th>
+            <th class="customer_address">Address</th>
             <th class="customer_note">Notes</th>
-            <th width="50px" class="row_button">
-                <%= link_to "", print_customers_path, class: 'table_pdf_icon', title: "download pdf" %>                
+            <th width="75px" class="row_button">
+                <%= link_to "", print_customer_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>                
             </th>
         </tr>
       </thead>
@@ -26,28 +26,27 @@
           <tbody>
             <% @customers.each do |customer| %>
               <tr>
+                <td class="customer_company"><%= customer.company_name %></td>
                 <td class="customer_name"><%= customer.name %></td>
                 <td class="customer_position"><%= customer.position %></td>
-                <td class="customer_address">
-        			<p><%= customer.address_1 %></p>
-        			<p><%= customer.address_2 %></p>
-        			<p><%= customer.city %></p>
-        			<p><%= customer.county %></p>
-        			<p><%= customer.country %></p>
-        			<p><%= customer.postcode %></p>
-                </td>
                 <td class="customer_phone"><%= customer.phone %></td>
                 <td class="customer_alt_phone"><%= customer.alt_phone %></td>
                 <td class="customer_email"><%= customer.email %></td>
-                <td class="customer_company"><%= customer.company_name %></td>
+                <td class="customer_address">
+                    <p class="table_address"><%= customer.address_1 %></p>
+                    <p class="table_address"><%= customer.address_2 %></p>
+                    <p class="table_address"><%= customer.city %></p>
+                    <p class="table_address"><%= customer.county %></p>
+                    <p class="table_address"><%= customer.country %></p>
+                    <p class="table_address"><%= customer.postcode %></p>
+                </td>
                 <td class="customer_note"><%= customer.notes %></td>
-                <td width="50px" class="row_button">
-                    <%= row_edit_link(customer, 'show') %>
-                    <% if customer_in_use(customer) %>
-                        <%= row_delete_link(customer, 'hidden') %>
-                    <% else %>
-                        <%= row_delete_link(customer, 'show') %>>
+                <td width="75px" class="row_button">
+                    <% unless customer_in_use(customer) %>
+                        <%= row_delete_link(customer, 'show') %>
                     <% end %>
+                    <%= row_edit_link(customer, 'show') %>
+                    <%= row_show_link(customer, 'show') %>
                 </td>    
               </tr>
             <% end %>

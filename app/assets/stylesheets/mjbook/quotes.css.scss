@@ -81,5 +81,41 @@ $mob_menu: 520px;
 }
 
 
+//quote subtotal
+.quote_sub_text{display: table-cell; text-align: right; padding: 8px 0px 8px 0px;}
+.quote_sub_price{display: table-cell; width: 80px; text-align: right; padding: 8px 0px 8px 0px;}
+.quote_sub_vat_rate{display: table-cell; width: 50px; text-align: right; padding: 8px 0px 8px 0px;}
+.quote_sub_vat{display: table-cell; width: 80px; text-align: right; padding: 8px 0px 8px 0px;}
+.quote_sub_total{display: table-cell; width: 80px; text-align: right; padding: 8px 0px 8px 0px;}
+
+@media screen and (max-width: $lrg_menu) {
+  .quote_sub_price{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .quote_sub_vat_rate{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .quote_sub_vat{display: none}
+}
 
 
+//quote total
+.quote_total_text{display: table-cell; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.quote_total_price{display: table-cell; width: 80px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.quote_total_vat_rate{display: table-cell; width: 50px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.quote_total_vat{display: table-cell; width: 80px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.quote_total_total{display: table-cell; width: 80px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+
+@media screen and (max-width: $lrg_menu) {
+  .quote_total_price{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .quote_total_vat_rate{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .quote_sub_vat{display: none}
+}

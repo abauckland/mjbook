@@ -1,0 +1,28 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+.accounts_name {display: table-cell; width: 120px; text-align: left;}
+.accounts_provider{display: table-cell; width: 200px; text-align: left;}
+.accounts_code {display: table-cell; width: 60px; text-align: left;}
+.accounts_ref {display: table-cell}
+
+@media screen and (max-width: $lrg_menu) {
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .accounts_name {display: table-cell; width: 80px; text-align: left;}
+  .accounts_provider {display: table-cell; width: 150px; text-align: left;}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .accounts_provider{display: none}
+}

@@ -22,21 +22,27 @@ module Mjbook
             end  
           else  
             if params[:date_to] != ""
-              @quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])            
+              @quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])                      
             end
           end   
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @quotes = Quote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+              #@quotes = Quote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+              @quotes = policy_scope(Quote).where(:date => params[:date_from]..params[:date_to])          
+
             else
-              @quotes = Quote.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+              #@quotes = Quote.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+              @quotes = policy_scope(Quote).where('date > ?', params[:date_from])  
+
             end  
           else  
             if params[:date_to] != ""
-              @quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+              #@quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+              @quotes = policy_scope(Quote).where('date < ?', params[:date_to])            
+ 
             else
-              @quotes = Quote.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+              @quotes = policy_scope(Quote)
             end     
           end
         end   
@@ -46,11 +52,11 @@ module Mjbook
         end
             
      else
-       @quotes = Quote.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
+       @quotes = policy_scope(Quote)     
      end          
 
      #selected parameters for filter form
-     all_quotes = Quote.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
+     all_quotes = policy_scope(Quote)     
      @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_quotes.ids)
      @customer = params[:customer_id]
      @date_from = params[:date_from]
@@ -77,7 +83,7 @@ module Mjbook
       @quote = Quote.new(quote_params)
 
       if @quote.save
-        redirect_to quotecontent_path(@quote.id), notice: 'Quote was successfully created.'
+        redirect_to quoteterms_path, notice: 'Quote was successfully created.'
       else
         render :new
       end
@@ -86,7 +92,7 @@ module Mjbook
     # PATCH/PUT /quotes/1
     def update
       if @quote.update(quote_params)
-        redirect_to @quote, notice: 'Quote was successfully updated.'
+        redirect_to quoteterms_path, notice: 'Quote was successfully updated.'
       else
         render :edit
       end
@@ -100,7 +106,6 @@ module Mjbook
     
     def accept
       #mark expense ready for payment
-      @quote = Quote.where(:id => params[:id]).first 
       if @quote.update(:status => "accepted")        
         respond_to do |format|
           format.js   { render :accept, :layout => false }
@@ -110,7 +115,6 @@ module Mjbook
 
     def reject
       #mark expense as rejected
-      @quote = Quote.where(:id => params[:id]).first
       if @quote.update(:status => "rejected")
         respond_to do |format|
           format.js   { render :reject, :layout => false }
@@ -142,12 +146,12 @@ module Mjbook
       end
       
       def set_quoteterms
-        @quoteterms = Quoteterm.where(:company_id => current_user.company_id)        
+        @quoteterms = policy_scope(Quoteterm)      
       end
 
       # Only allow a trusted parameter "white list" through.
       def quote_params
-        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :status, :price, :vat_due, :total)
+        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :status, :price, :vat_due, :total, :quoteterm_id)
       end
       
       def pdf_quote_index(quotes, customer_id, date_from, date_to)

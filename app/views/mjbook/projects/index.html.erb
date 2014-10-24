@@ -12,9 +12,9 @@
           <th class="project_customer">Customer</th>
           <th class="project_customer_ref">Customer ref</th>
           <th class="project_description">Description</th>
-          <th class="project_invoicemethod">Invoicemethod</th>
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"><%= link_to "", print_projects_path, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="75px" class="row_button">
+            <%= link_to "", print_project_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+          </th>
         </tr>
       </thead>
     </table>
@@ -25,16 +25,16 @@
               <tr>
                 <td class="project_ref"><%= project.ref %></td>
                 <td class="project_title"><%= project.title %></td>
-                <td class="project_customer"><%= project.customer.name %></td>
+                <td class="project_customer"><%= project.customer.company_name %></td>
                 <td class="project_customer_ref"><%= project.customer_ref %></td>
                 <td class="project_description"><%= project.description %></td>
-                <td class="project_invoicemethod"><%= project.invoicemethod.method %></td>
-                <td width="20px" class="row_button"><%= link_to "", edit_project_path(project), class: 'line_edit_icon', title: "edit project" %></td>
-                <% if project_in_use(project) %>                
-                <td width="20px" class="row_button"><%= link_to "", project, method: :delete, class: 'line_delete_icon', title: "delete project" %></td>
-                <% else %>
-                    <td width="20px" class="row_button"></td>
-                <% end %>              
+                <td width="75px" class="row_button">
+                    <% unless project_in_use(project) %>                
+                        <%= row_delete_link(project, 'show') %>
+                    <% end %>   
+                    <%= row_edit_link(project, 'show') %>          
+                    <%= row_show_link(project, 'show') %>
+                </td>
               </tr>
             <% end %>
           </tbody>

@@ -2,17 +2,13 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class InvoicetermsController < ApplicationController
-    before_action :set_invoiceterm, only: [:show, :edit, :update, :destroy]
+    before_action :set_invoiceterm, only: [:edit, :update, :destroy]
 
     include PrintIndexes
     
     # GET /invoiceterms
     def index
-      @invoiceterms = Invoiceterm.all
-    end
-
-    # GET /invoiceterms/1
-    def show
+      @invoiceterms = policy_scope(Invoiceterm)
     end
 
     # GET /invoiceterms/new
@@ -22,14 +18,15 @@ module Mjbook
 
     # GET /invoiceterms/1/edit
     def edit
+      authorize @invoiceterm
     end
 
     # POST /invoiceterms
     def create
       @invoiceterm = Invoiceterm.new(invoiceterm_params)
-
+      authorize @invoiceterm
       if @invoiceterm.save
-        redirect_to @invoiceterm, notice: 'Invoiceterm was successfully created.'
+        redirect_to invoiceterms_path, notice: 'Invoiceterm was successfully created.'
       else
         render :new
       end
@@ -37,8 +34,9 @@ module Mjbook
 
     # PATCH/PUT /invoiceterms/1
     def update
+      authorize @invoiceterm
       if @invoiceterm.update(invoiceterm_params)
-        redirect_to @invoiceterm, notice: 'Invoiceterm was successfully updated.'
+        redirect_to invoiceterms_path, notice: 'Invoiceterm was successfully updated.'
       else
         render :edit
       end
@@ -46,13 +44,15 @@ module Mjbook
 
     # DELETE /invoiceterms/1
     def destroy
+      authorize @invoiceterm
       @invoiceterm.destroy
       redirect_to invoiceterms_url, notice: 'Invoiceterm was successfully destroyed.'
     end
 
     def print
-        
-      invoiceterms = Invoiceterm.where(:company_id => current_user.company_id)
+      @invoiceterm = Invoiceterm.where(:company_id => params[:id]).first
+      authorize @invoiceterm        
+      invoiceterms = Invoiceterm.where(:company_id => params[:id])
          
       filename = "Inovice Terms.pdf"
                  
@@ -61,7 +61,7 @@ module Mjbook
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
       ) do |pdf|      
-        table_indexes(invoiceterms, 'terms', nil, nil, nil, filename, pdf)      
+        table_indexes(invoiceterms, 'term', nil, nil, nil, filename, pdf)      
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -75,7 +75,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def invoiceterm_params
-        params.require(:invoiceterm).permit(:company_id, :terms)
+        params.require(:invoiceterm).permit(:company_id, :ref, :period, :terms)
       end
   end
 end

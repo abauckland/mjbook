@@ -9,7 +9,7 @@ module Mjbook
     
     # GET /mileages
     def index
-      @mileages = Mileage.all
+      @mileages = policy_scope(Mileage)
     end
 
     # GET /mileages/1
@@ -18,7 +18,7 @@ module Mjbook
 
     # GET /mileages/new
     def new
-      @mileage = Mileage.new
+      @mileage = Mileage.new 
     end
 
     # GET /mileages/1/edit
@@ -28,7 +28,7 @@ module Mjbook
     # POST /mileages
     def create
       @mileage = Mileage.new(mileage_params)
-
+            
       if @mileage.save
         add_to_expenses(@mileage)
 
@@ -80,7 +80,7 @@ module Mjbook
       end
 
       def set_projects     
-        @projects = Project.where(:company_id => current_user.company_id)
+        @projects = policy_scope(Project)
       end
 
 
@@ -91,19 +91,28 @@ module Mjbook
 
       def add_to_expenses(mileage)
         
-       distance = mileage.distance 
-       mileage_rate = mileage.mode.rate
-       amount = distance*mileage_rate 
+    #   distance = mileage.distance 
+    #   mileage_rate = mileage.mileagemode.rate
+     #  amount = distance*mileage_rate 
+
+        distance = mileage.distance.to_d        
+        mode = Mjbook::Mileagemode.where(:id => mileage.mileagemode_id, :company_id => current_user.company_id).first
+        rate= mode.rate.to_d
         
-       expense = Expense.new(:user_id => mileage.user_id,
-                   :project_id => mileage.project_id,
-                   :hmrcexpcat_id => 1, #id
-                   :issue_date => Time.now,
-                   :due_date => Time.now.utc.end_of_month,
-                   :amount =>  amount,
-                   :status => "submitted"
-                   )
-       expense.save 
+        expense = Mjbook::Expense.new(
+                    :company_id => current_user.company_id,
+                    :user_id => current_user.id,
+                    :mileage_id => mileage.id,    
+                    :project_id => mileage.project_id,
+                    :hmrcexpcat_id => mileage.hmrcexpcat_id,
+                    :date => Time.now,
+                    :due_date => Time.now.utc.end_of_month,
+                    :exp_type => "personal",
+                    :price =>  distance*rate,
+                    :vat =>  0,
+                    :total => distance*rate,
+                     )
+        expense.save 
                      
       end
 

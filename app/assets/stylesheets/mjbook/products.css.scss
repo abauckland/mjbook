@@ -2,35 +2,39 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
-$lrg_menu: 1300px;
-$tab_lrg_menu: 940px;
-$tab_sml_menu: 780px;
-$mob_menu: 520px;
+$lrg_menu: 860px;
+$tab_lrg_menu: 720px;
+$tab_sml_menu: 540px;
+$mob_menu: 430px;
 
 //index table 
 .product_catetory_name{display: table-cell; width: 120px}
 .product_item{display: table-cell}
-.product_quantity{display: table-cell; width: 70px; text-align: right;}
-.product_unit{display: table-cell; width: 70px; text-align: right;}
-.product_rate{display: table-cell; width: 70px; text-align: right;}
-.product_price{display: table-cell; width: 70px; text-align: right;}
-.product_vat_due{display: table-cell; width: 70px; text-align: right;}
-.product_total{display: table-cell; width: 70px; text-align: right;}
+.product_quantity{display: table-cell; width: 65px; text-align: right;}
+.product_unit{display: table-cell; width:50px; text-align: right;} 
+.product_rate{display: table-cell; width: 65px; text-align: right;}
+.product_price{display: table-cell; width: 65px; text-align: right;}
+.product_vat{display: table-cell; width: 65px; text-align: right;}
+.product_vat_due{display: table-cell; width: 65px; text-align: right;}
+.product_total{display: table-cell; width: 65px; text-align: right;}
 
 @media screen and (max-width: $lrg_menu) {
-
+  .product_price{display: none}
+  .product_catetory_name{display: none}
+  .product_vat_due{display: none}
 }
 
 @media screen and (max-width: $tab_lrg_menu) {
-
+  .product_rate{display: none}
+  .product_unit{display: none}
 }
   
 @media screen and (max-width: $tab_sml_menu) {
-  .product_catetory_name{display: none}
+  .product_quantity{display: none}
 }
 
 @media screen and (max-width: $mob_menu) {
-  .product_price{display: none}
+  .product_vat{display: none}
 }
 
 .vat_note{font-size: 0.8rem; font-weight: normal;}

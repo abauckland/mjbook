@@ -4,8 +4,7 @@ class CreateMjbookSalaries < ActiveRecord::Migration
       t.integer :company_id
       t.integer :user_id
       t.decimal :total, :precision => 8, :scale => 2, default: 0.00
-      t.string :status
-      t.datestamp :date
+      t.timestamp :date
 
       t.timestamps
     end

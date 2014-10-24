@@ -2,15 +2,13 @@ module Mjbook
   module ProjectsHelper
     
     def project_in_use(project)      
-      project_expense = Expense.where(:project_id => product.id).first      
-      project_mileage = Mileage.where(:project_id => product.id).first
-      project_expend = Expend.where(:project_id => product.id).first      
-      project_invoice = Invoice.where(:project_id => product.id).first      
-      project_quote = Quote.where(:project_id => product.id).first      
-      project_payment = Payment.where(:project_id => product.id).first      
+      expense = Expense.where(:project_id => project.id).first      
+      mileage = Mileage.where(:project_id => project.id).first     
+      invoice = Invoice.where(:project_id => project.id).first      
+      quote = Quote.where(:project_id => project.id).first    
       
-      if product_expense.blank? && project_mileage.blank? && project_expend.blank? && project_invoice.blank? && project_quote.blank? && project_payment.blank?
-        true
+      if expense.blank? && mileage.blank? && invoice.blank? && quote.blank?
+        false
       end  
     end
       

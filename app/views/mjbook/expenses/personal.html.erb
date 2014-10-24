@@ -1,7 +1,7 @@
 <div class="page_title">
-    <h1>Personal Expenses</h1>
-    <div class="page_title_button"><%= link_to "add expense", new_personal_path %> </div>
-    <div class="page_title_button"><%= link_to "add mileage", new_mileage_path %> </div>
+    <h1><%= current_user.first_name.capitalize %>'s Expenses</h1>
+    <div class="page_title_button"><%= link_to "+ expense", new_personal_path %> </div>
+    <div class="page_title_button" style="right:80px"><%= link_to "+ mileage", new_mileage_path %> </div>
 </div>
 
 <div class="filter_band_single">
@@ -9,7 +9,7 @@
     <div class="filter_search">
         <div class="filter_project_label">Project:</div>
         <div class="filter_project_input">
-            <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :company_name, @project), :prompt => 'all jobs'%>    
+            <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), :prompt => 'all jobs'%>    
         </div>
         <div class="filter_date_1_label">From:</div>
         <div class="filter_date_1_input">
@@ -57,7 +57,7 @@
                 <td class="personal_job"><%= personalexpense.project.ref %></td>
                 <td class="personal_category"><%= personalexpense.hmrcexpcat.category %></td>
                 <td class="personal_ref"><%= personalexpense.ref %></td>
-                <% if personalexpense.hmrcexpcat.category == "mileage" %>
+                <% if personalexpense.hmrcexpcat_id == 1 %>
                     <td class="personal_supplier"></td>
                     <td class="personal_supplier_ref"></td>
                     <td class="personal_issue_date"><%= personalexpense.date.strftime("%d/%m/%y") %></td>
@@ -67,7 +67,7 @@
                     <td class="personal_vat_due"></td>
                     <td class="personal_total"><%= personalexpense.total %></td>
                     <td class="personal_status"><%= personalexpense.status %></td>
-                    <td id="<%= businessexpense.id %>_links" width="50px" class="row_button">
+                    <td id="<%= personalexpense.id %>_links" width="50px" class="row_button">
                     <% if personalexpense.paid? || personalexpense.accepted? %>
                         <%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon_hidden', title: "delete" %>                        
                         <%= link_to "", edit_mileage_path(personalexpense), class: 'line_edit_icon_hidden', title: "edit" %>
@@ -90,7 +90,7 @@
                     <td class="personal_vat_due"><%= pounds(personalexpense.vat) %></td>
                     <td class="personal_total"><%= pounds(personalexpense.total) %></td>
                     <td class="personal_status"><%= personalexpense.status %></td>
-                    <td id="<%= businessexpense.id %>_links" width="50px" class="row_button">
+                    <td id="<%= personalexpense.id %>_links" width="50px" class="row_button">
                     <% if personalexpense.paid? || personalexpense.accepted? %>
                         <%= link_to "", personalexpense, method: :delete, class: 'line_delete_icon_hidden', title: "delete" %>                        
                         <%= link_to "", edit_personal_expense_path(personalexpense), class: 'line_edit_icon_hidden', title: "edit" %>
@@ -99,6 +99,7 @@
                         <%= link_to "", edit_personal_expense_path(personalexpense), class: 'line_edit_icon_show', title: "edit" %>
                     <% end %>
                     </td>                
+                <% end %>
               </tr>
             <% end %>
           </tbody>

@@ -1,5 +1,6 @@
 <div class="page_title">
-    <h1>Listing productcategories</h1>
+    <h1>Listing Product Categories</h1>
+    <div class="page_title_button"><%= link_to "add product category", new_productcategory_path %> </div>
 </div>
 
 <div class="table_content_with_title">
@@ -7,7 +8,8 @@
       <thead>
         <tr>
           <th class="product_category_name">Category Name</th>
-          <th width="20px" class="row_button"><%= link_to "", new_productcategory_path, class: 'line_new_icon', title: "create new category" %></th>
+          <th width="25px" class="row_button">
+          </th>
         </tr>
       </thead>
     </table>
@@ -16,10 +18,12 @@
           <tbody>
             <% @productcategories.each do |productcategory| %>
               <tr>
-                <td class="product_category_name"><%= productcategory.name %></td>
+                <td class="product_category_name"><%= productcategory.text %></td>
+                <td width="25px" class="row_button">
                 <% if !productcategory.products.any? %>
-                    <td width="20px" class="row_button"><%= link_to '', productcategory, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete category" %></td>
-                <% end %>                 
+                    <%= row_delete_link(productcategory, 'show') %>
+                <% end %>
+                </td>                                 
               </tr>
             <% end %>
           </tbody>

@@ -7,7 +7,8 @@ module Mjbook
     before_action :set_personal, only: [:show_personal, :create_personal, :edit_personal, :update_personal, :destroy]
     before_action :set_suppliers, only: [:new_business, :new_personal, :edit_busines, :edit_personal]
     before_action :set_projects, only: [:personal, :new_business, :new_personal, :edit_busines, :edit_personal]
-    before_action :set_hmrcexpcats, only: [:new_business, :new_personal, :edit_busines, :edit_personal]
+    before_action :set_hmrcexpcats_business, only: [:new_business, :edit_busines]
+    before_action :set_hmrcexpcats_personal, only: [:new_personal, :edit_personal]
     before_action :set_employees, only: [:employee]
 
     include PrintIndexes
@@ -104,7 +105,6 @@ module Mjbook
      end          
 
      #selected parameters for filter form     
-     @projects = Project.joins(:company).where('companys.user_id' => current_user.id)
      @project = params[:project_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to] 
@@ -183,7 +183,7 @@ module Mjbook
     # POST /expenses
     def create
       @expense = Expense.new(expense_params)
-
+      @expense.due_date = Time.now.utc.end_of_month
       if @expense.save
         if @expense.exp_type == "business"
           redirect_to business_path, notice: 'Expense was successfully created.'
@@ -242,16 +242,21 @@ module Mjbook
       end
 
       def set_projects     
-        @projects = Project.where(:company_id => current_user.company_id)
+        @projects = policy_scope(Project)
       end
       
       def set_suppliers     
         @suppliers = Supplier.where(:company_id => current_user.company_id)
       end
 
-      def set_hmrcexpcats      
-        @hmrcexpcats = Hmrcexpcat.where(:group => "business")
+      def set_hmrcexpcats_business      
+        @hmrcexpcats = policy_scope(Hmrcexpcat).where(:hmrcgroup_id => 1) #business
       end
+
+      def set_hmrcexpcats_personal      
+        @hmrcexpcats = policy_scope(Hmrcexpcat).where(:hmrcgroup_id => 2) #pesonal
+      end
+
 
       def set_employees     
         @employees = User.where(:company_id => current_user.company_id)
@@ -259,7 +264,7 @@ module Mjbook
       
       # Only allow a trusted parameter "white list" through.
       def expense_params
-        params.require(:expense).permit(:company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :amount, :vat, :receipt, :recurrence, :ref, :supplier_ref)
+        params.require(:expense).permit(:company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :price, :vat, :total, :receipt, :recurrence, :ref, :supplier_ref)
       end
       
       def pdf_business_index(businessexpenses, supplier_id, date_from, date_to)

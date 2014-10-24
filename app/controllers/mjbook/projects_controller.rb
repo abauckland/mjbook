@@ -3,13 +3,13 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class ProjectsController < ApplicationController
     before_action :set_project, only: [:show, :edit, :update, :destroy]
+    before_action :set_projects, only: [:index, :print]    
     before_action :set_customers, only: [:new, :edit]
 
     include PrintIndexes
     
     # GET /projects
     def index
-      @projects = Project.all
     end
 
     # GET /projects/1
@@ -19,7 +19,6 @@ module Mjbook
     # GET /projects/new
     def new
       @project = Project.new
-
     end
 
     # GET /projects/1/edit
@@ -32,7 +31,7 @@ module Mjbook
 
 
       if @project.save
-        redirect_to @project, notice: 'Project was successfully created.'
+        redirect_to projects_path, notice: 'Project was successfully created.'
       else
         render :new
       end
@@ -41,7 +40,7 @@ module Mjbook
     # PATCH/PUT /projects/1
     def update
       if @project.update(project_params)
-        redirect_to @project, notice: 'Project was successfully updated.'
+        redirect_to projects_path, notice: 'Project was successfully updated.'
       else
         render :edit
       end
@@ -50,13 +49,11 @@ module Mjbook
     # DELETE /projects/1
     def destroy
       @project.destroy
-      redirect_to projects_url, notice: 'Project was successfully destroyed.'
+      redirect_to projects_path, notice: 'Project was successfully destroyed.'
     end
 
     def print
-        
-      projects = Project.where(:company_id => current_user.company_id)
-         
+
       filename = "Projects.pdf"
                  
       document = Prawn::Document.new(
@@ -64,7 +61,7 @@ module Mjbook
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
       ) do |pdf|      
-        table_indexes(projects, 'project', nil, nil, nil, filename, pdf)      
+        table_indexes(@projects, 'project', nil, nil, nil, filename, pdf)      
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -76,8 +73,12 @@ module Mjbook
         @project = Project.find(params[:id])
       end
 
+      def set_projects
+        @projects = policy_scope(Project)
+      end
+
       def set_customers      
-        @customers = Customer.where(:company_id => current_user.company_id)
+        @customers = policy_scope(Customer)
       end
       
       # Only allow a trusted parameter "white list" through.

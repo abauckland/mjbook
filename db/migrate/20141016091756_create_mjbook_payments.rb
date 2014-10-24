@@ -8,7 +8,7 @@ class CreateMjbookPayments < ActiveRecord::Migration
       t.decimal :price, :precision => 8, :scale => 2, default: 0.00
       t.decimal :vat_due, :precision => 8, :scale => 2, default: 0.00
       t.decimal :total, :precision => 8, :scale => 2, default: 0.00
-      t.datestamp :date
+      t.timestamp :date
       t.text :note
       t.string :status
       

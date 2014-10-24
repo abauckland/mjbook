@@ -112,8 +112,8 @@ input[type="submit"].options_pdf_icon{
 
 .line_menu_icon {@include menu_icons(-40px);}
 
-.table_pdf_icon {@include menu_icons(-1000px);}
-.table_csv_icon {@include menu_icons(-960px);}
+.table_pdf_icon {@include menu_icons(-1000px); float: right; padding: 0px 5px 0px 0px;}
+.table_csv_icon {@include menu_icons(-960px); float: right; padding: 0px 5px 0px 0px;}
 
 
 //form action icons

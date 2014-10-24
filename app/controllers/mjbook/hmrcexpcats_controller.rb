@@ -8,11 +8,13 @@ module Mjbook
     
     # GET /hmrcexpcats
     def index
-      @hmrcexpcats = Hmrcexpcat.all
+      @hmrcexpcats = policy_scope(Hmrcexpcat)
+      authorize @hmrcexpcats
     end
 
     # GET /hmrcexpcats/1
     def show
+      authorize @hmrcexpcat
     end
 
     # GET /hmrcexpcats/new
@@ -22,14 +24,15 @@ module Mjbook
 
     # GET /hmrcexpcats/1/edit
     def edit
+      authorize @hmrcexpcat
     end
 
     # POST /hmrcexpcats
     def create
       @hmrcexpcat = Hmrcexpcat.new(hmrcexpcat_params)
-
+      authorize @hmrcexpcat
       if @hmrcexpcat.save
-        redirect_to @hmrcexpcat, notice: 'Hmrcexpcat was successfully created.'
+        redirect_to hmrcexpcats_path, notice: 'Hmrcexpcat was successfully created.'
       else
         render :new
       end
@@ -37,8 +40,9 @@ module Mjbook
 
     # PATCH/PUT /hmrcexpcats/1
     def update
+      authorize @hmrcexpcat
       if @hmrcexpcat.update(hmrcexpcat_params)
-        redirect_to @hmrcexpcat, notice: 'Hmrcexpcat was successfully updated.'
+        redirect_to hmrcexpcats_path, notice: 'Hmrcexpcat was successfully updated.'
       else
         render :edit
       end
@@ -46,8 +50,9 @@ module Mjbook
 
     # DELETE /hmrcexpcats/1
     def destroy
+      authorize @hmrcexpcat
       @hmrcexpcat.destroy
-      redirect_to hmrcexpcats_url, notice: 'Hmrcexpcat was successfully destroyed.'
+      redirect_to hmrcexpcats_path, notice: 'Hmrcexpcat was successfully destroyed.'
     end
 
     private
@@ -58,7 +63,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def hmrcexpcat_params
-        params.require(:hmrcexpcat).permit(:company_id, :category, :group)
+        params.require(:hmrcexpcat).permit(:company_id, :category, :hmrcgroup_id)
       end
   end
 end

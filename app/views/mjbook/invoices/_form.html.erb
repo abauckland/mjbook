@@ -58,7 +58,7 @@
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Terms*:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:invoiceterm_id, @invoiceterms, :id, :category, {:selected => @invoice.invoiceterm_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_form_input"><%= f.collection_select(:invoiceterm_id, @invoiceterms, :id, :period, {:selected => @invoice.invoiceterm_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
                         </div>
                 </div>

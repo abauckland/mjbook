@@ -2,17 +2,13 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class QuotetermsController < ApplicationController
-    before_action :set_quoteterm, only: [:show, :edit, :update, :destroy]
+    before_action :set_quoteterm, only: [:edit, :update, :destroy]
 
     include PrintIndexes
     
     # GET /quoteterms
     def index
-      @quoteterms = Quoteterm.all
-    end
-
-    # GET /quoteterms/1
-    def show
+      @quoteterms = policy_scope(Quoteterm)
     end
 
     # GET /quoteterms/new
@@ -22,14 +18,15 @@ module Mjbook
 
     # GET /quoteterms/1/edit
     def edit
+      authorize @quoteterm
     end
 
     # POST /quoteterms
     def create
       @quoteterm = Quoteterm.new(quoteterm_params)
-
+      authorize @quoteterm
       if @quoteterm.save
-        redirect_to @quoteterm, notice: 'Quoteterm was successfully created.'
+        redirect_to quoteterms_path, notice: 'Quoteterm was successfully created.'
       else
         render :new
       end
@@ -37,8 +34,9 @@ module Mjbook
 
     # PATCH/PUT /quoteterms/1
     def update
+      authorize @quoteterm
       if @quoteterm.update(quoteterm_params)
-        redirect_to @quoteterm, notice: 'Quoteterm was successfully updated.'
+        redirect_to quoteterms_path, notice: 'Quoteterm was successfully updated.'
       else
         render :edit
       end
@@ -46,13 +44,15 @@ module Mjbook
 
     # DELETE /quoteterms/1
     def destroy
+      authorize @quoteterm
       @quoteterm.destroy
-      redirect_to quoteterms_url, notice: 'Quoteterm was successfully destroyed.'
+      redirect_to quoteterms_path, notice: 'Quoteterm was successfully destroyed.'
     end
 
     def print
-        
-      quoteterms = Quoteterm.where(:company_id => current_user.company_id)
+      @quoteterm = Quoteterm.where(:company_id => params[:id]).first
+      authorize @quoteterm 
+      quoteterms = Quoteterm.where(:company_id => params[:id])
          
       filename = "Quote Terms.pdf"
                  
@@ -61,7 +61,7 @@ module Mjbook
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
       ) do |pdf|      
-        table_indexes(quoteterms, 'terms', nil, nil, nil, filename, pdf)      
+        table_indexes(quoteterms, 'term', nil, nil, nil, filename, pdf)      
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -75,7 +75,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def quoteterm_params
-        params.require(:quoteterm).permit(:company_id, :terms)
+        params.require(:quoteterm).permit(:company_id, :ref, :period, :terms)
       end
   end
 end

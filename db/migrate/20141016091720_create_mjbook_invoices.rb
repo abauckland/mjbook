@@ -8,8 +8,8 @@ class CreateMjbookInvoices < ActiveRecord::Migration
       t.decimal :vat_due, :precision => 8, :scale => 2, default: 0.00
       t.decimal :total, :precision => 8, :scale => 2, default: 0.00
       t.integer :status
-      t.datestamp :date
-      t.integer :invoiceterms_id
+      t.timestamp :date
+      t.integer :invoiceterm_id
       t.integer :invoicetype_id
 
       t.timestamps

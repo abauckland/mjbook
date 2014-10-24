@@ -9,16 +9,27 @@
             <div class="column_sub_content">
                 <div class="column_table">
                 <table>
+                <thead>
+                    <tr>
+                        <th class="column_line_form_label" style="width:60px">Mode</th>                        
+                        <th class="column_line_form_label" style="width:95px">HMRC Rate (£)</th> 
+                        <th class="column_line_form_label" style="width:95px">Rate Used (£)</th>
+                        <th class="column_line_form_label" style="width:20px"></th> 
+                    </tr>
+                </thead>
                 <% @mileagemodes.each do |mode| %>
+
+                <tbody>
                     <tr>
                     <%= form_for(mode) do |f| %>
-                        <td><%= mode.mode %></td>
-                        <td><%= pounds(mode.hmrc_rate) %></td>
-                        <td>£<%= f.text_field :rate, :class => "currency" %></td>
-                        <td><%= f.submit "save"%></td>
+                        <td class="column_line_form"><%= mode.mode %>:</td>
+                        <td class="column_line_form"><%= pounds(mode.hmrc_rate) %></td>
+                        <td class="column_line_form"><%= f.text_field :rate, :class => "currency" %></td>
+                        <td class="column_line_form"><%= f.submit ""%></td>
                     <% end %>
                     </tr>
                 <% end %>
+                </tbody>
                 </table>
                 </div>
             </div>            

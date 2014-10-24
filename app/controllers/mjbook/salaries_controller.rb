@@ -2,8 +2,8 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class SalariesController < ApplicationController
-    before_action :set_salary, only: [:show, :edit, :update, :destroy]
-    before_action :set_users, only: [:new, :edit]
+    before_action :set_salary, only: [:show, :edit, :update, :destroy, :reconcile]
+    before_action :set_users, only: [:index, :new, :edit]
 
     include PrintIndexes
     
@@ -27,15 +27,18 @@ module Mjbook
           else
             if params[:date_from] != ""
               if params[:date_to] != ""
-                @salaries = Salary.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+               # @salaries = Salary.joins(:user).where(:date => params[:date_from]..params[:date_to], 'users.company_id' => current_user.company_id)          
+                @salaries = policy_scope(Salary).where(:date => params[:date_from]..params[:date_to])          
               else
-                @salaries = Salary.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+                #@salaries = Salary.joins(:user).where('date > ? AND users.company_id = ?', params[:date_from], current_user.company_id)  
+                @salaries = policy_scope(Salary).where('date > ?', params[:date_from])
               end  
             else  
               if params[:date_to] != ""
-                @salaries = Salary.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+                #@salaries = Salary.joins(:user).where('date < ? AND users.company_id = ?', params[:date_to], current_user.company_id)
+                @salaries = policy_scope(Salary).where('date < ?', params[:date_to])            
               else
-                @salaries = Salary.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+                @salaries = policy_scope(Salary)#Salary.joins(:user).where('users.company_id' => current_user.company_id)
               end     
             end
           end   
@@ -45,11 +48,11 @@ module Mjbook
           end
               
        else
-         @salaries = Salary.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
+         @salaries = policy_scope(Salary)#Salary.joins(:user).where('users.company_id' => current_user.company_id)       
        end          
+       
 
        #selected parameters for filter form     
-       @users = User.where(:company_id => current_user.company_id)
        @user = params[:user_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]   
@@ -58,6 +61,7 @@ module Mjbook
 
     # GET /salaries/1
     def show
+       authorize @salary
     end
 
     # GET /salaries/new
@@ -67,12 +71,13 @@ module Mjbook
 
     # GET /salaries/1/edit
     def edit
+       authorize @salary
     end
 
     # POST /salaries
     def create
       @salary = Salary.new(salary_params)
-
+      authorize @salary
       if @salary.save
         redirect_to @salary, notice: 'Salary was successfully created.'
       else
@@ -82,6 +87,7 @@ module Mjbook
 
     # PATCH/PUT /salaries/1
     def update
+      authorize @salary
       if @salary.update(salary_params)
         redirect_to @salary, notice: 'Salary was successfully updated.'
       else
@@ -91,13 +97,14 @@ module Mjbook
 
     # DELETE /salaries/1
     def destroy
+      authorize @salary
       @salary.destroy
       redirect_to salaries_url, notice: 'Salary was successfully destroyed.'
     end
 
     def reconcile
       #mark expense as rejected
-      @salary = Salary.where(:id => params[:id]).first
+      authorize @salary
       if @salary.update(:status => "reconciled")
         respond_to do |format|
           format.js   { render :reconcile, :layout => false }
@@ -112,12 +119,12 @@ module Mjbook
       end
       
       def set_users
-        @users = User.where(:cpmpany_id => current_user.company_id).order('surname')
+        @users = policy_scope(User)
       end
 
       # Only allow a trusted parameter "white list" through.
       def salary_params
-        params.require(:salary).permit(:company_id, :user_id, :paid, :date)
+        params.require(:salary).permit(:company_id, :user_id, :total, :date)
       end
       
       def pdf_employee_index(salaries, user_id, date_from, date_to)

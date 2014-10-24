@@ -9,31 +9,31 @@
             <div class="column_content">
                 <div class="column_info">
                             <div class="column_info_item">
-                                <label class="column_info_label">Company:</label>
+                                <label class="column_info_label" style="width:80px">Company:</label>
                                 <div class="column_info_text"><%= @supplier.company_name %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">VAT No:</label>
+                                <label class="column_info_label" style="width:80px">VAT No:</label>
                                 <div class="column_info_text"><%= @supplier.vat_no %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Name:</label>
+                                <label class="column_info_label" style="width:80px">Name:</label>
                                 <div class="column_info_text"><%= @supplier.name %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Position:</label>
+                                <label class="column_info_label" style="width:80px">Position:</label>
                                 <div class="column_info_text"><%= @supplier.position %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">E-mail:</label>
+                                <label class="column_info_label" style="width:80px">E-mail:</label>
                                 <div class="column_info_text"><%= @supplier.email %></div> 
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Tel:</label>
+                                <label class="column_info_label" style="width:80px">Tel:</label>
                                 <div class="column_info_text"><%= @supplier.phone %></div> 
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Alt. Tel::</label>
+                                <label class="column_info_label" style="width:80px">Alt. Tel::</label>
                                 <div class="column_info_text"><%= @supplier.alt_phone %></div> 
                             </div>
                 </div>
@@ -43,27 +43,27 @@
             <div class="column_content">
                 <div class="column_info">    
                             <div class="column_info_item">
-                                <label class="column_info_label">Address 1:</label>
+                                <label class="column_info_label" style="width:80px">Address 1:</label>
                                 <div class="column_info_text"><%= @supplier.address_1 %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Address 2:</label>
+                                <label class="column_info_label" style="width:80px">Address 2:</label>
                                 <div class="column_info_text"><%= @supplier.address_2 %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">City:</label>
+                                <label class="column_info_label" style="width:80px">City:</label>
                                 <div class="column_info_text"><%= @supplier.city %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">County:</label>
+                                <label class="column_info_label" style="width:80px">County:</label>
                                 <div class="column_info_text"><%= @supplier.county %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Country:</label>
+                                <label class="column_info_label" style="width:80px">Country:</label>
                                 <div class="column_info_text"><%= @supplier.country %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Postcode:</label>
+                                <label class="column_info_label" style="width:80px">Postcode:</label>
                                 <div class="column_info_text"><%= @supplier.postcode %></div>
                             </div>
                 </div>
@@ -73,7 +73,7 @@
             <div class="column_content">
                 <div class="column_info">
                     <div class="column_info_item">
-                        <label class="column_info_label">Notes:</label>
+                        <label class="column_info_label" style="width:80px">Notes:</label>
                         <div class="column_info_textarea_20"><%= @supplier.notes %></div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                    
         <div class="column_linked_footer">
             <div class="column_line"></div>
-            <div class="column_submit"><%= link_to "edit details", edit_supplier_path(@supplier) %></div>
+            <div class="column_edit"><%= link_to "edit details", edit_supplier_path(@supplier) %></div>
             <div class="column_cancel"><%= link_to "back", suppliers_path %></div>
         </div>
             

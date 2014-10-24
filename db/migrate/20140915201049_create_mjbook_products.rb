@@ -11,6 +11,7 @@ class CreateMjbookProducts < ActiveRecord::Migration
       t.integer :vat_id
       t.decimal :vat_due, :precision => 8, :scale => 2
       t.decimal :total, :precision => 8, :scale => 2
+      t.integer :linetype
 
       t.timestamps
     end

@@ -9,39 +9,35 @@
             <div class="column_sub_content">
                 <div class="column_form">                      
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Job Reference:</label>                        
-                            <div class="column_form_text"><%= @mileage.project_id %></div>
+                            <label class="column_info_label" style="width:100px">Job Reference:</label>                        
+                            <div class="column_info_text"><%= @mileage.project.name %></div>
                         </div>                       
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Date:</label>                        
-                            <div class="column_form_text"><%= @mileage.date %></div>  
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:100px">Date:</label>                        
+                            <div class="column_info_text"><%= @mileage.date %></div>  
                         </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Mode:</label>                        
-                            <div class="column_form_text"><%= @mileage.mileagemethod.mode %></div>  
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:100px">Mode:</label>                        
+                            <div class="column_info_text"><%= @mileage.mileagemode.mode %></div>  
                         </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Start:</label>                        
-                            <div class="column_form_text"><%= @mileage.start %></div>  
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:100px">Start:</label>                        
+                            <div class="column_info_text"><%= @mileage.start %></div>  
                         </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Destination:</label>                        
-                            <div class="column_form_text"><%= @mileage.finish %></div> 
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:100px">Destination:</label>                        
+                            <div class="column_info_text"><%= @mileage.finish %></div> 
                         </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Total Mileage:</label>                        
-                            <div class="column_form_text"><%= @mileage.distance %></div>  
-                        </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Single/Return:</label>                        
-                            <div class="column_form_text"><%= @mileage.return %></div> 
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:100px">Total Mileage:</label>                        
+                            <div class="column_info_text"><%= @mileage.distance %></div>  
                         </div>
                 </div>
            </div>     
                 
            <div class="column_footer">
                 <div class="column_line"></div>
-                <div class="column_cancel"><%= link_to "cancel", personalexpenses_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", personal_path %></div>
            </div>
             
         </div>

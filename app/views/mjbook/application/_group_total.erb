@@ -3,12 +3,12 @@
         <td class='line_prefix'></td>
         <td class='line_content'>
             <table class='group_sub_table'>
-                <tr class='line_data'>            
-                    <td class='line_sub_text group_total'>Subtotal</td>
-                    <td class='line_subtotal_spacer'></td>
-                    <td class='line_vat'><%= group_price(group) %></td>
-                    <td class='line_vat'><%= group_vat(group) %></td>  
-                    <td class='line_price'><%= group_total(group) %></td>
+                <tr class='line_data'>
+                    <td class='quote_sub_text'>Subtotal</td>
+                    <td class='quote_sub_price'><%= group_price(group) %></td>
+                    <td class='quote_sub_vat_rate'></td> 
+                    <td class='quote_sub_vat'><%= group_vat(group) %></td>  
+                    <td class='quote_sub_total'><%= group_total(group) %></td>
                 </tr>
             </table>                 
         </td>

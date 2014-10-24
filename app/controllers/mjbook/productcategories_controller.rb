@@ -10,7 +10,7 @@ module Mjbook
     end
     
     def cat_options
-      @productcats = Productcategory.where(:company_id => current_user.company_id)
+      @productcats = policy_scope(Productcategory).order(:text)
   
       #create hash of options
       @productcat_options = {}
@@ -39,7 +39,7 @@ module Mjbook
       @productcategory = Productcategory.new(productcategory_params)
 
       if @productcategory.save
-        redirect_to @productcategory, notice: 'Productcategory was successfully created.'
+        redirect_to productcategories_path, notice: 'Productcategory was successfully created.'
       else
         render :new
       end
@@ -48,7 +48,7 @@ module Mjbook
     # PATCH/PUT /productcategories/1
     def update
       if @productcategory.update(productcategory_params)
-        redirect_to @productcategory, notice: 'Productcategory was successfully updated.'
+        redirect_to productcategories_path, notice: 'Productcategory was successfully updated.'
       else
         render :edit
       end
@@ -57,13 +57,13 @@ module Mjbook
     # DELETE /productcategories/1
     def destroy
       @productcategory.destroy
-      redirect_to productcategories_url, notice: 'Productcategory was successfully destroyed.'
+      redirect_to productcategories_path, notice: 'Productcategory was successfully destroyed.'
     end
 
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_productcategories
-        @productcategories = Productcategory.where(:company_id => current_user.company_id).order(:name)
+        @productcategories = policy_scope(Productcategory).order(:text)
       end
       
       def set_productcategory

@@ -12,7 +12,7 @@ module Mjbook
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_quote
-        @quote = Quote.find(params[:id])
+        @quote = policy_scope(Quote).where(:id => params[:id]).first
       end
 
   end

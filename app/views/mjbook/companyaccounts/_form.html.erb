@@ -1,0 +1,58 @@
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @companyaccount.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@companyaccount.errors.count, "error") %> prohibited this project from being created</p>
+                  <ul>
+                  <% @companyaccount.errors.full_messages.each do |companyaccount| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@companyaccount) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    
+                       <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Name:*</label>                        
+                            <div class="column_form_input"><%= f.text_field :name %></div>
+                            <div class="column_help_tooltip" id="terms_period"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Provider:</label>                        
+                            <div class="column_form_input"><%= f.text_field :provider %></div>
+                            <div class="column_help_tooltip" id="terms_terms"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Code:</label>                        
+                            <div class="column_form_input"><%= f.text_field :code %></div>
+                            <div class="column_help_tooltip" id="terms_terms"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:60px">Number:</label>                        
+                            <div class="column_form_input"><%= f.text_field :ref %></div>
+                            <div class="column_help_tooltip" id="terms_terms"></div>  
+                        </div>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", companyaccounts_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
+    </div>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>
+
+

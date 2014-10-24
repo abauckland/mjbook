@@ -17,7 +17,7 @@ module Mjbook
     end 
 
     def row_edit_link(model, display)
-      link_to '', edit_polymorphic_url(model), method: :delete, class: ('line_edit_icon_' << display) , title: "edit"     
+      link_to '', edit_polymorphic_url(model), class: ('line_edit_icon_' << display) , title: "edit"     
     end    
 
     def row_delete_link(model, display)

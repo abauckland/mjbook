@@ -3,7 +3,13 @@
 one:
   company_id: 1
   name: MyString
+  provider: MyString
+  code: MyString
+  number: MyString
 
 two:
   company_id: 1
   name: MyString
+  provider: MyString
+  code: MyString
+  number: MyString

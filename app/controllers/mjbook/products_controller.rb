@@ -4,6 +4,7 @@ module Mjbook
   class ProductsController < ApplicationController
     before_action :set_products, only: [:index]
     before_action :set_product, only: [:show, :edit, :update, :destroy]
+    before_action :set_categories, only: [:new, :edit]
 
     include PrintIndexes
     
@@ -15,8 +16,7 @@ module Mjbook
 
 # HACK unclear why nessting does not work here!     
       @line = Qline.find(params[:id])
-      productcat = Productcategory.where(:text => @line.cat).first
-      @products = Product.where(:productcategory_id => productcat.id)
+      @products = Product.joins(:productcategory).where('mjbook_productcategories.text' => @line.cat)
   
       #create hash of options
       @product_options = {}
@@ -31,9 +31,8 @@ module Mjbook
     end
 
     def cat_item_options
-
-# HACK unclear why nessting does not work here!     
-      @products = Product.where(:company_id => current_user.company_id) 
+    
+      @products = policy_scope(Product).where(:linetype => 0).order(:item)
   
       #create hash of options
       @product_options = {}
@@ -61,11 +60,20 @@ module Mjbook
     def create
       @product = Product.new(product_params)
       #calculate cost field for product
-      vat = Mjbook::VAT.where(:id => product_params[:vat_id]).first      
-      @product.cost = product_params[:price]*(1/vat.rate)
+      vat = Mjbook::Vat.where(:id => product_params[:vat_id]).first
+      quantity = product_params[:quantity].to_d
+      rate = product_params[:rate].to_d
+      price = (quantity*rate)
+      vat_rate = vat.rate
+      vat_due = price*(vat_rate/100)
+      total = price+vat_due
+      
+      @product.price = price
+      @product.vat_due = vat_due           
+      @product.total = total
 
       if @product.save
-        redirect_to @product, notice: 'Product was successfully created.'
+        redirect_to products_path, notice: 'Product was successfully created.'
       else
         render :new
       end
@@ -76,11 +84,17 @@ module Mjbook
       if @product.update(product_params)
 
         #calculate cost field for product and update
-        vat = Mjbook::VAT.where(:id => product_params[:vat_id]).first      
-        cost = product_params[:price]*(1/vat.rate)
-        @product.update(:cost => cost)        
+        vat = Mjbook::Vat.where(:id => product_params[:vat_id]).first
+        quantity = product_params[:quantity].to_d
+        rate = product_params[:rate].to_d
+        price = (quantity*rate)
+        vat_rate = vat.rate
+        vat_due = price*(vat_rate/100)
+        total = price+vat_due
         
-        redirect_to @product, notice: 'Product was successfully updated.'
+        @product.update(:price => price, :vat_due => vat_due, :total => total)     
+        
+        redirect_to products_path, notice: 'Product was successfully updated.'
       else
         render :edit
       end
@@ -89,14 +103,14 @@ module Mjbook
     # DELETE /products/1
     def destroy
       @product.destroy
-      redirect_to products_url, notice: 'Product was successfully destroyed.'
+      redirect_to products_path, notice: 'Product was successfully destroyed.'
     end
 
     def print
         
-      products = Product.where(:company_id => current_user.company_id)
+      products = Product.where(:company_id => current_user.company_id, :linetype => 0).order(:item)
          
-      filename = "Products.pdf"
+      filename = "Products (variable sum).pdf"
                  
       document = Prawn::Document.new(
         :page_size => "A4",
@@ -113,16 +127,20 @@ module Mjbook
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_products
-        @products = Product.where(:company_id => current_user.company_id).order(:item)
+        @products = policy_scope(Product).where(:linetype => 0).order(:item)
       end
 
       def set_product
         @product = Product.find(params[:id])
       end
+      
+      def set_categories
+        @productcategories = policy_scope(Productcategory).order(:text)
+      end
 
       # Only allow a trusted parameter "white list" through.
       def product_params
-        params.require(:product).permit(:company_id, :productcategory_id, :item, :quantity, :unit_id, :rate, :vat_id, :vat, :price, :total)
+        params.require(:product).permit(:company_id, :productcategory_id, :item, :quantity, :unit_id, :rate, :vat_id, :vat, :price, :total, :linetype)
       end
   end
 end

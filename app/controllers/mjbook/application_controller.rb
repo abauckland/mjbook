@@ -1,8 +1,7 @@
 module Mjbook
-  class ApplicationController < ActionController::Base
-    
+  class Mjbook::ApplicationController < ActionController::Base
       layout "mjbook/books"
- 
+   include Pundit
    def current_user
     @current_user = User.first    
   end
@@ -32,8 +31,6 @@ module Mjbook
         end                
         @value = @value.to_d
       end
-
-
     
   end
 end

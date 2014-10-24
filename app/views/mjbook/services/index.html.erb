@@ -1,19 +1,24 @@
 <div class="page_title">
-    <h1>Listing Services (fixed price)</h1>
+    <h1>Listing Services (lump sum)</h1>
+    <div class="page_title_button"><%= link_to "add product", new_service_path %> </div>
 </div>
 
 <div class="table_content_with_title">
     <table>
       <thead>
         <tr>
-          <th class="tab_cell">Category</th>
-          <th class="mob_cell">Item</th>
-          <th class="tab_cell">Quantity</th>
-          <th class="tab_cell">Unit</th>
-          <th class="lrg_cell">Cost/Unit</th>
-          <th class="tab_cell">Vat Rate</th>
-          <th class="mob_cell">Price/Unit</th>                                        
-          <th width="20px" class="row_button"><%= link_to "", new_service_path, class: 'line_new_icon', title: "create new service" %></th>
+          <th class="product_catetory_name">Category</th>
+          <th class="product_item">Item</th>
+          <th class="product_quantity">Quantity</th>
+          <th class="product_unit">Unit</th>
+          <th class="product_rate">Rate/Unit</th>
+          <th class="product_price">Price</th>
+          <th class="product_vat">Vat Rate</th>
+          <th class="product_vat_due">Vat</th>
+          <th class="product_total">Total</th>                                        
+          <th width="75px" class="row_button">
+            <%= link_to "", print_service_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+          </th>
         </tr>
       </thead>
     </table>
@@ -22,15 +27,20 @@
           <tbody>
             <% @services.each do |service| %>
               <tr>
-                <td class="tab_cell"><%= servicecategory.name %></td>
-                <td class="mob_cell"><%= service.item %></td>
-                <td class="tab_cell"><%= service.quantity %></td>
-                <td class="tab_cell"><%= service.unit.text %></td>
-                <td class="lrg_cell"><%= pounds(service.cost) %></td>
-                <td class="tab_cell"><%= service.vat.cat %></td>
-                <td class="mob_cell"><%= pounds(service.price) %></td>                
-                <td width="20px" class="row_button"><%= link_to '', edit_service_path(service), class: 'line_edit_icon', title: "edit service" %></td>
-                <td width="20px" class="row_button"><%= link_to '', service, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete service" %></td>
+                <td class="product_catetory_name"><%= service.productcategory.text %></td>
+                <td class="product_item"><%= service.item %></td>
+                <td class="product_quantity">n/a</td>
+                <td class="product_unit">n/a</td>
+                <td class="product_rate">n/a</td>
+                <td class="product_price"><%= pounds(service.price) %></td>                
+                <td class="product_vat"><%= service.vat.cat %></td>
+                <td class="product_vat_due"><%= pounds(service.vat_due) %></td>
+                <td class="product_total"><%= pounds(service.total) %></td>                
+                <td width="75px" class="row_button">
+                    <%= row_delete_link(service, 'show') %>
+                    <%= row_edit_link(service, 'show') %>
+                    <%= row_show_link(service, 'show') %>
+                </td>        
               </tr>
             <% end %>
           </tbody>

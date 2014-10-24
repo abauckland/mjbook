@@ -17,21 +17,22 @@
                 <div class="column_form">
                 <%= form_for(@misc) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>    
+                    <%= f.hidden_field :linetype, :value => :misc %>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Category:</label>                        
-                        <% if @misccategorys %>
-                            <div class="column_form_input"><%= f.collection_select(:misccategory_id, @misccategorys, :id, :name, {:prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="misc_misccategory"></div>  
+                            <label class="column_form_label" style="width:70px">Category*:</label>                        
+                        <% if @misccategories %>
+                            <div class="column_form_input"><%= f.collection_select(:productcategory_id, @misccategories, :id, :text, {:prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="product_productcategory"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px"></label>                        
+                            <label class="column_form_label" style="width:70px"></label>                        
                         <% end %>
-                            <div class="column_form_button"><%= link_to "add new category", new_misccategory_path %></div>  
+                            <div class="column_form_button"><%= link_to "add new category", new_productcategory_path %></div>  
                         </div>                    
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Name:</label>                        
+                            <label class="column_form_label" style="width:70px">Name*:</label>                        
                             <div class="column_form_input"><%= f.text_field :item %></div>
-                            <div class="column_help_tooltip" id="misc_name"></div> 
+                            <div class="column_help_tooltip" id="product_name"></div> 
                         </div>
                 </div>
            </div>     
@@ -39,7 +40,7 @@
            <div class="column_footer">
                 <div class="column_line"></div>
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", @miscs_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", miscs_path %></div>
                 <% end %>
            </div>
             

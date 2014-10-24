@@ -1,20 +1,19 @@
 Mjbook::Engine.routes.draw do
   
+  resources :companyaccounts
+
   resources :expends do
     get :new_personal, :on => :member
     get :edit_personal, :on => :member
     get :reconcile, :on => :member  
-    get :print, :on => :member 
   end
 
   resources :salaries do
     get :reconcile, :on => :member
-    get :print, :on => :member
   end
 
   resources :payments do
     get :reconcile, :on => :member
-    get :print, :on => :member
   end
 
   resources :inlines do
@@ -50,23 +49,21 @@ Mjbook::Engine.routes.draw do
 
   resources :invoicecontents, :only => [:show]
 
-  resources :invoiceterms do
+  resources :invoiceterms, :only => [:index, :edit, :new, :create, :update, :destroy] do
     get :print, :on => :member
   end
 
-  resources :quoteterms do
+  resources :quoteterms, :only => [:index, :edit, :new, :create, :update, :destroy] do
     get :print, :on => :member
   end
-
-  resources :terms
 
   resources :hmrcexpcats
 
-  resources :units do
+  resources :units, :only => [] do
     get :unit_options, :on => :member
   end
 
-  resources :vats do
+  resources :vats, :only => [] do
     get :vat_options, :on => :member
   end
 
@@ -112,10 +109,7 @@ Mjbook::Engine.routes.draw do
 
     get :accept, :on => :member
     get :reject, :on => :member 
-    
-    get :print_business, :on => :member
-    get :print_personal, :on => :member
-    get :print_employee, :on => :member     
+  
   end
 
  get 'business', :to => 'expenses#business'
@@ -141,6 +135,19 @@ Mjbook::Engine.routes.draw do
     get :cat_item_options, :on => :member 
     get :print, :on => :member
   end
+  
+  resources :services do 
+    get :item_options, :on => :member 
+    get :cat_item_options, :on => :member 
+    get :print, :on => :member
+  end
+
+  resources :miscs do 
+    get :item_options, :on => :member 
+    get :cat_item_options, :on => :member 
+    get :print, :on => :member
+  end
+  
   resources :productcategories do
     get :cat_options, :on => :member 
   end
@@ -159,7 +166,7 @@ Mjbook::Engine.routes.draw do
     get :print, :on => :member
   end
 
-  resources :mileagemodes, :only => [:edit, :update, :create]
+  resources :mileagemodes, :only => [:edit, :update]
 
   resources :suppliers do
     get :print, :on => :member

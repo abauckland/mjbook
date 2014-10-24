@@ -16,8 +16,8 @@
             <div class="column_sub_content">
                 <div class="column_form">
                 <%= form_for(@mileage) do |f| %>
-                    <%= f.hidden_field :current_user_id, :value => current_user.id %>
-		            <%= f.hidden_field :hmrcexpcat_id, :value => "" %>       
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+		            <%= f.hidden_field :hmrcexpcat_id, :value => 1 %>       
                     
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:95px">Job Reference*:</label>                        
@@ -39,9 +39,9 @@
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:95px">Mode*:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:mileagemethod_id, Mjbook::Mileagemode.all, :id, :mode, {:selected => @mileage.mileagemode_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_form_input"><%= f.collection_select(:mileagemode_id, Mjbook::Mileagemode.all, :id, :mode, {:selected => @mileage.mileagemode_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="mileage_mileagemethod"></div>
-                            <div class="column_error_note"> <%= error_check(@mileage, :mileagemethod_id)%></div>   
+                            <div class="column_error_note"> <%= error_check(@mileage, :mileagemode_id)%></div>   
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:95px">Start*:</label>                        

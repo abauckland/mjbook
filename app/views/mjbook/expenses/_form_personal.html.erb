@@ -73,14 +73,19 @@
                         </div>
 
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">Total Amount*:</label>                        
-                            <div class="column_form_input"><%= f.text_field :amount, :placeholder => "0.00" %></div>
-                            <div class="column_help_tooltip" id="personalexpense_amount"></div>  
+                            <label class="column_form_label" style="width:90px">Total (ex vat)*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :price, :placeholder => "0.00" %></div>
+                            <div class="column_help_tooltip" id="personalexpense_price"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">VAT Paid*:</label>                        
                             <div class="column_form_input"><%= f.text_field :vat, :placeholder => "0.00"  %></div>
                             <div class="column_help_tooltip" id="personalexpense_vat"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Total (inc vat)*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :total, :placeholder => "0.00"  %></div>
+                            <div class="column_help_tooltip" id="personalexpense_total"></div>  
                         </div>
 
                         <div class="column_form_item">

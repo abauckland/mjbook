@@ -3,17 +3,16 @@
   They will automatically be included in application.css.
 */
 $lrg_menu: 1300px;
-$tab_lrg_menu: 940px;
-$tab_sml_menu: 780px;
-$mob_menu: 520px;
+$tab_lrg_menu: 780px;
+$tab_sml_menu: 640px;
+$mob_menu: 540px;
 
 //index table 
-.project_ref{display: table-cell; width: 80px}
-.project_title{display: table-cell}
-.project_customer{display: table-cell; width: 200px}
-.project_customer_ref{display: table-cell; width: 80px}
-.project_description{display: table-cell; width: 200px}
-.project_invoicemethod{display: table-cell; width: 160px}
+.project_ref{display: table-cell; width: 40px; vertical-align: top;}
+.project_title{display: table-cell; width: 150px; vertical-align: top;}
+.project_customer{display: table-cell; width:180px; vertical-align: top;}
+.project_customer_ref{display: table-cell; width: 80px; vertical-align: top;}
+.project_description{display: table-cell; vertical-align: top;}
 
 
 @media screen and (max-width: $lrg_menu) {
@@ -21,16 +20,15 @@ $mob_menu: 520px;
 }
 
 @media screen and (max-width: $tab_lrg_menu) {
-
+  .project_description{display: none}
 }
   
 @media screen and (max-width: $tab_sml_menu) {
- .project_invoicemethod{display: none}
- .project_customer_ref{display: none}
+  .project_customer_ref{display: none}
 }
 
 @media screen and (max-width: $mob_menu) {
-  .project_description{display: none}
+  .project_ref{display: table-cell; width: 30px; vertical-align: top;}
+  .project_title{display: none}
+  .project_customer{display: table-cell; width:130px; vertical-align: top;}
 }
-
-.vat_note{font-size: 0.8rem; font-weight: normal;}

@@ -13,11 +13,12 @@
           <th class="product_unit">Unit</th>
           <th class="product_rate">Rate/Unit</th>
           <th class="product_price">Price</th>
-          <th class="product_vat_due">Vat Rate</th>
+          <th class="product_vat">Vat Rate</th>
+          <th class="product_vat_due">Vat</th>
           <th class="product_total">Total</th>                                        
-          <th width="20px" class="row_button"></th>
-            <th width="20px" class="row_button"><%= link_to "", print_products_path, class: 'table_pdf_icon', title: "download pdf" %></th>
-
+          <th width="75px" class="row_button">
+            <%= link_to "", print_product_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+          </th>
         </tr>
       </thead>
     </table>
@@ -26,17 +27,20 @@
           <tbody>
             <% @products.each do |product| %>
               <tr>
-                <td class="product_catetory_name"><%= product.productcategory.name %></td>
+                <td class="product_catetory_name"><%= product.productcategory.text %></td>
                 <td class="product_item"><%= product.item %></td>
                 <td class="product_quantity"><%= product.quantity %></td>
                 <td class="product_unit"><%= product.unit.text %></td>
                 <td class="product_rate"><%= pounds(product.rate) %></td>
                 <td class="product_price"><%= pounds(product.price) %></td>                
-                <td class="product_vat_due"><%= product.vat.cat %></td>
+                <td class="product_vat"><%= product.vat.cat %></td>
+                <td class="product_vat_due"><%= pounds(product.vat_due) %></td>
                 <td class="product_total"><%= pounds(product.total) %></td>                
-                <td width="20px" class="row_button"><%= link_to '', edit_product_path(product), class: 'line_edit_icon', title: "edit product" %></td>
-                <td width="20px" class="row_button"><%= link_to "", edit_customer_path(customer), class: 'line_edit_icon', title: "edit customer" %></td>              
-                <td width="20px" class="row_button"><%= link_to '', product, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete product" %></td>        
+                <td width="75px" class="row_button">
+                    <%= row_delete_link(product, 'show') %>
+                    <%= row_edit_link(product, 'show') %>
+                    <%= row_show_link(product, 'show') %>
+                </td>        
               </tr>
             <% end %>
           </tbody>

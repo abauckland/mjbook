@@ -20,18 +20,18 @@
                     <%= f.hidden_field :status, :value => "paid" %>
                     
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">Job Ref*:</label>                        
+                            <label class="column_form_label" style="width:70px">Employee*:</label>                        
                             <div class="column_form_input"><%= f.collection_select(:user_id, @users, :id, :name, {:selected => @salary.user_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="salary_user"></div>  
                         </div>
                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">Amount:*</label>                        
-                            <div class="column_form_input"><%= f.text_field :paid %></div>
+                            <label class="column_form_label" style="width:70px">Amount:*</label>                        
+                            <div class="column_form_input"><%= f.text_field :total %></div>
                             <div class="column_help_tooltip" id="quote_ref"></div> 
-                            <div class="column_error_note"> <%= error_check(@salary, :paid)%></div> 
+                            <div class="column_error_note"> <%= error_check(@salary, :total)%></div> 
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">Date:</label>                        
+                            <label class="column_form_label" style="width:70px">Date:</label>                        
                             <div class="column_form_input"><%= f.date_field :date %></div>
                             <div class="column_help_tooltip" id="quote_date"></div>  
                         </div>

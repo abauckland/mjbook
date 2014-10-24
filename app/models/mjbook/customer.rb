@@ -5,7 +5,6 @@ module Mjbook
     
     has_many :projects
     
-    validates_presence_of :surname
     validates_presence_of :company_name
     
     def name

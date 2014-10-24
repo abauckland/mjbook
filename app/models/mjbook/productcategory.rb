@@ -3,7 +3,7 @@ module Mjbook
     has_many :products
     belongs_to :company
 
-    validates :name, presence: true
+    validates :text, presence: true, uniqueness: true
 
   end
 end

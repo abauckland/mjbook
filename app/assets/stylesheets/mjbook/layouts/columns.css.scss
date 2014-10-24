@@ -170,7 +170,7 @@
 }
 
 .column_info_item{
-@extend .column_form_item;
+  @extend .column_form_item;
 }
 
 .column_info_label{
@@ -178,27 +178,37 @@
 }
 
 .column_info_text{
-  @extend .column_form_input;
+  @extend .column_form_label;
+  padding: 5px 0px 5px 5px;
+  font-weight: normal;  
 }
 
 .column_info_textarea_5{
   @extend .column_form_input;
+  padding: 5px 0px 5px 5px;
+  font-weight: normal; 
   height: 100px;  
 }
 
 .column_info_textarea_10{
   @extend .column_form_input;
+  padding: 5px 0px 5px 5px;
+  font-weight: normal; 
   height: 200px;
 }
 
 .column_info_textarea_15{
   @extend .column_form_input;
+  padding: 5px 0px 5px 5px;
+  font-weight: normal; 
   height: 300px;
 }
 
 .column_info_textarea_20{
-  @extend .column_form_input;
-  height: 400px;
+//  @extend .column_form_label;
+//  padding: 5px 0px 5px 5px;
+//  font-weight: normal; 
+//  height: 400px;
 }
 
 .column_info_image{
@@ -268,6 +278,22 @@
   @include column_title;
   text-decoration:none;    
   @include form_icons(-240px);
+  cursor: pointer;
+  &:hover{
+    text-decoration:underline;
+  }
+}
+
+.column_edit a{
+  position: absolute; 
+  top:20px;
+  border: none;
+  height:20px;
+  padding: 0px 20px 0px 30px;
+  color:#66aa00;
+  @include column_title;
+  text-decoration:none;    
+  @include form_icons(-80px);
   cursor: pointer;
   &:hover{
     text-decoration:underline;

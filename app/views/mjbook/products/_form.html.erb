@@ -17,39 +17,41 @@
                 <div class="column_form">
                 <%= form_for(@product) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>    
+                    <%= f.hidden_field :linetype, :value => :product %>
+                    
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Category:</label>                        
-                        <% if @productcategorys %>
-                            <div class="column_form_input"><%= f.collection_select(:productcategory_id, @productcategorys, :id, :name, {:prompt => :true}, :class => "full_width")%></div>
+                            <label class="column_form_label" style="width:70px">Category*:</label>                        
+                        <% if @productcategories %>
+                            <div class="column_form_input"><%= f.collection_select(:productcategory_id, @productcategories, :id, :text, {:prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="product_productcategory"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px"></label>                        
+                            <label class="column_form_label" style="width:70px"></label>                        
                         <% end %>
                             <div class="column_form_button"><%= link_to "add new category", new_productcategory_path %></div>  
                         </div>                    
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Name:</label>                        
+                            <label class="column_form_label" style="width:70px">Name*:</label>                        
                             <div class="column_form_input"><%= f.text_field :item %></div>
                             <div class="column_help_tooltip" id="product_name"></div> 
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Quantity:</label>                        
+                            <label class="column_form_label" style="width:70px">Quantity*:</label>                        
                             <div class="column_form_input"><%= f.text_field :quantity, :placeholder => "0"   %></div>
                             <div class="column_help_tooltip" id="product_name"></div> 
                         </div>      
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Units:</label>                        
+                            <label class="column_form_label" style="width:70px">Units*:</label>                        
                             <div class="column_form_input"><%= f.collection_select(:unit_id, Mjbook::Unit.all, :id, :text, {:value => 1}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="producty_unit_id"></div> 
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Rate:</label>                        
+                            <label class="column_form_label" style="width:70px">Rate*:</label>                        
                             <div class="column_form_input"><%= f.text_field :rate, :placeholder => "0.00"   %></div>
                             <div class="column_help_tooltip" id="product_price"></div> 
                         </div>  
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">VAT:</label>                        
+                            <label class="column_form_label" style="width:70px">VAT*:</label>                        
                             <div class="column_form_input"><%= f.collection_select(:vat_id, Mjbook::Vat.all, :id, :cat, {:value => 1}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="product_vat"></div> 
                         </div>
@@ -59,7 +61,7 @@
            <div class="column_footer">
                 <div class="column_line"></div>
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", @products_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", products_path %></div>
                 <% end %>
            </div>
             

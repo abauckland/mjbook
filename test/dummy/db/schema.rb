@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141011101854) do
+ActiveRecord::Schema.define(version: 20141023084337) do
 
   create_table "companies", force: true do |t|
     t.string   "name",                   null: false
@@ -72,20 +72,20 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.datetime "updated_at"
   end
 
-  create_table "mjbook_expenditures", force: true do |t|
-    t.decimal  "amount_paid",    precision: 8, scale: 2
+  create_table "mjbook_expends", force: true do |t|
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.integer  "expense_id"
+    t.integer  "paymethod_id"
+    t.integer  "companyaccount_id"
+    t.string   "expend_receipt"
     t.datetime "date"
     t.string   "ref"
-    t.string   "method"
-    t.integer  "user_id"
-    t.string   "expend_receipt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mjbook_expenseexpends", force: true do |t|
-    t.string   "expense_id"
-    t.string   "expenditure_id"
+    t.decimal  "price",             precision: 8, scale: 2, default: 0.0
+    t.decimal  "vat",               precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",             precision: 8, scale: 2, default: 0.0
+    t.text     "note"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.integer  "project_id"
     t.integer  "supplier_id"
     t.integer  "hmrcexpcat_id"
+    t.integer  "mileage_id"
     t.datetime "date"
     t.datetime "due_date"
     t.decimal  "amount",        precision: 8, scale: 2
@@ -118,15 +119,67 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.datetime "updated_at"
   end
 
+  create_table "mjbook_ingroups", force: true do |t|
+    t.integer  "invoice_id"
+    t.string   "ref"
+    t.string   "text"
+    t.decimal  "price",       precision: 8, scale: 2, default: 0.0
+    t.decimal  "vat_due",     precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",       precision: 8, scale: 2, default: 0.0
+    t.integer  "group_order",                         default: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_inlines", force: true do |t|
+    t.integer  "ingroup_id"
+    t.string   "cat",                                default: "Select category"
+    t.string   "item",                               default: "Select item"
+    t.decimal  "quantity",   precision: 8, scale: 0, default: 0
+    t.integer  "unit_id",                            default: 1
+    t.decimal  "rate",       precision: 8, scale: 2, default: 0.0
+    t.decimal  "price",      precision: 8, scale: 2, default: 0.0
+    t.integer  "vat_id",                             default: 1
+    t.decimal  "vat_due",    precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",      precision: 8, scale: 2, default: 0.0
+    t.text     "note"
+    t.integer  "line_order",                         default: 1
+    t.integer  "linetype",                           default: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mjbook_invoicemethods", force: true do |t|
     t.string   "method"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  create_table "mjbook_invoices", force: true do |t|
+    t.integer  "project_id"
+    t.string   "ref"
+    t.string   "customer_ref"
+    t.decimal  "price",           precision: 8, scale: 2, default: 0.0
+    t.decimal  "vat_due",         precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",           precision: 8, scale: 2, default: 0.0
+    t.integer  "status"
+    t.datetime "date"
+    t.integer  "invoiceterms_id"
+    t.integer  "invoicetype_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mjbook_invoiceterms", force: true do |t|
     t.integer  "company_id"
+    t.integer  "period"
     t.text     "terms"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_invoicetypes", force: true do |t|
+    t.string   "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -168,6 +221,21 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.datetime "updated_at"
   end
 
+  create_table "mjbook_payments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "invoice_id"
+    t.integer  "paymethod_id"
+    t.integer  "companyaccount_id"
+    t.decimal  "price",             precision: 8, scale: 2, default: 0.0
+    t.decimal  "vat_due",           precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",             precision: 8, scale: 2, default: 0.0
+    t.datetime "date"
+    t.text     "note"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mjbook_paymethods", force: true do |t|
     t.string   "method"
     t.datetime "created_at"
@@ -176,7 +244,7 @@ ActiveRecord::Schema.define(version: 20141011101854) do
 
   create_table "mjbook_productcategories", force: true do |t|
     t.integer  "company_id"
-    t.string   "name"
+    t.string   "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -187,10 +255,11 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.string   "item"
     t.decimal  "quantity",           precision: 8, scale: 0
     t.integer  "unit_id"
-    t.decimal  "cost",               precision: 8, scale: 2
-    t.integer  "vat_id"
-    t.decimal  "vat_due",            precision: 3, scale: 0
+    t.decimal  "rate",               precision: 8, scale: 2
     t.decimal  "price",              precision: 8, scale: 2
+    t.integer  "vat_id"
+    t.decimal  "vat_due",            precision: 8, scale: 2
+    t.decimal  "total",              precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -212,22 +281,24 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.integer  "ref",                                 default: 1
     t.integer  "group_order",                         default: 1
     t.string   "text",                                default: "Please add brief description of work"
-    t.decimal  "sub_vat",     precision: 8, scale: 2, default: 0.0
-    t.decimal  "sub_price",   precision: 8, scale: 2, default: 0.0
+    t.decimal  "price",       precision: 8, scale: 2, default: 0.0
+    t.decimal  "vat_due",     precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",       precision: 8, scale: 2, default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "mjbook_qlines", force: true do |t|
     t.integer  "qgroup_id"
-    t.string   "cat",                                default: "#Please select category"
-    t.string   "item",                               default: "Please select item"
+    t.string   "cat",                                default: "Select category"
+    t.string   "item",                               default: "Select item"
     t.decimal  "quantity",   precision: 8, scale: 0, default: 0
     t.integer  "unit_id",                            default: 1
     t.decimal  "rate",       precision: 8, scale: 2, default: 0.0
-    t.integer  "vat_id",                             default: 1
-    t.decimal  "vat",        precision: 8, scale: 2, default: 0.0
     t.decimal  "price",      precision: 8, scale: 2, default: 0.0
+    t.integer  "vat_id",                             default: 1
+    t.decimal  "vat_due",    precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",      precision: 8, scale: 2, default: 0.0
     t.text     "note"
     t.integer  "linetype",                           default: 1
     t.integer  "line_order",                         default: 1
@@ -242,14 +313,17 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.string   "customer_ref"
     t.datetime "date"
     t.integer  "status"
-    t.decimal  "total_vat",    precision: 8, scale: 2, default: 0.0
-    t.decimal  "total_price",  precision: 8, scale: 2, default: 0.0
+    t.integer  "quoteterms_id"
+    t.decimal  "price",         precision: 8, scale: 2, default: 0.0
+    t.decimal  "vat_due",       precision: 8, scale: 2, default: 0.0
+    t.decimal  "total",         precision: 8, scale: 2, default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "mjbook_quoteterms", force: true do |t|
     t.integer  "company_id"
+    t.integer  "period"
     t.text     "terms"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -272,6 +346,15 @@ ActiveRecord::Schema.define(version: 20141011101854) do
     t.integer  "vat_id"
     t.decimal  "vat",             precision: 3, scale: 0
     t.decimal  "price",           precision: 8, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mjbook_salaries", force: true do |t|
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.decimal  "total",      precision: 8, scale: 2, default: 0.0
+    t.datetime "date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -327,7 +410,7 @@ ActiveRecord::Schema.define(version: 20141011101854) do
 
   create_table "mjbook_vats", force: true do |t|
     t.string   "cat"
-    t.decimal  "rate",       precision: 2, scale: 1
+    t.decimal  "rate",       precision: 3, scale: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end

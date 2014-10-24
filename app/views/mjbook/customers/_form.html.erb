@@ -18,7 +18,11 @@
         <div class="sub_column_linked_1">
                  <div class="column_content">
                         <div class="column_form">
-
+                            <div class="column_form_item">
+                                <label class="column_form_label" style="width:80px">Company*:</label>                        
+                                <div class="column_form_input"><%= f.text_field :company_name %></div>
+                                <div class="column_help_tooltip" id="customer_company"></div>  
+                            </div>
                         
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">Title:</label>                        
@@ -57,11 +61,7 @@
                                 <div class="column_form_input"><%= f.text_field :alt_phone %></div>
                                 <div class="column_help_tooltip" id="customer_alt_phone"></div>  
                             </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Company:</label>                        
-                                <div class="column_form_input"><%= f.text_field :company_name %></div>
-                                <div class="column_help_tooltip" id="customer_company"></div>  
-                            </div>
+
                 </div>
             </div>
         </div>

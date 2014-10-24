@@ -26,15 +26,19 @@ module Mjbook
           else
             if params[:date_from] != ""
               if params[:date_to] != ""
-                @payments = Payment.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+               # @payments = Payment.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+                @payments = policy_scope(Payment).where(:date => params[:date_from]..params[:date_to])          
               else
-                @payments = Payment.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+                #@payments = Payment.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+                @payments = policy_scope(Payment).where('date > ?', params[:date_from])  
               end  
             else  
               if params[:date_to] != ""
-                @payments = Payment.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+                #@payments = Payment.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+                @payments = policy_scope(Payment).where('date < ?', params[:date_to])            
               else
-                @payments = Payment.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+                #@payments = Payment.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+                @payments = policy_scope(Payment) 
               end     
             end
           end   
@@ -44,20 +48,22 @@ module Mjbook
           end
               
        else
-         @payments = Payment.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
+         @payments = policy_scope(Payment)     
        end          
   
        #selected parameters for filter form
-       all_invoices = Invoice.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)       
+       all_invoices = policy_scope(Inovice)     
        @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
-      
+
+      authorize @payments      
     end
 
     # GET /payments/1
     def show
+      authorize @payment
     end
 
     # GET /payments/new
@@ -67,12 +73,13 @@ module Mjbook
 
     # GET /payments/1/edit
     def edit
+      authorize @payment
     end
 
     # POST /payments
     def create
+      authorize @payment
       @payment = Payment.new(payment_params)
-
       if @payment.save
         redirect_to @payment, notice: 'Payment was successfully created.'
       else
@@ -82,6 +89,7 @@ module Mjbook
 
     # PATCH/PUT /payments/1
     def update
+      authorize @payment
       if @payment.update(payment_params)
         redirect_to @payment, notice: 'Payment was successfully updated.'
       else
@@ -91,11 +99,13 @@ module Mjbook
 
     # DELETE /payments/1
     def destroy
+      authorize @payment
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully destroyed.'
     end
 
     def reconcile
+      authorize @payment
       #mark expense as rejected
       @payment = Payment.where(:id => params[:id]).first
       if @payment.update(:status => "reconciled")

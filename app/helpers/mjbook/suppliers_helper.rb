@@ -4,7 +4,7 @@ module Mjbook
     def supplier_in_use(supplier)      
       supplier = Expense.where(:supplier_id => supplier.id).first      
       if supplier.blank?
-        true
+        false
       end  
     end
          

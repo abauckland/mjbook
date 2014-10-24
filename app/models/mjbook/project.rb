@@ -5,7 +5,7 @@ module Mjbook
         
    
     has_many :mileages
-    belongs_to :invoicemethods
+    belongs_to :invoicemethod
     has_many :expenses
     
     

@@ -19,13 +19,18 @@
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
                     
                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">Period Valid:*</label>                        
+                            <label class="column_form_label" style="width:100px">Reference:*</label>                        
+                            <div class="column_form_input"><%= f.text_field :ref %></div>
+                            <div class="column_help_tooltip" id="terms_period"></div>  
+                        </div>
+                       <div class="column_form_item">
+                            <label class="column_form_label" style="width:100px">Period (days):*</label>                        
                             <div class="column_form_input"><%= f.text_field :period %></div>
                             <div class="column_help_tooltip" id="terms_period"></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:60px">Terms:</label>                        
-                            <div class="column_form_input"><%= f.text_area :terms %></div>
+                            <label class="column_form_label" style="width:100px">Terms*:</label>                        
+                            <div class="column_form_input"><%= f.text_area :terms, :rows => 6 %></div>
                             <div class="column_help_tooltip" id="terms_terms"></div>  
                         </div>
                 </div>

@@ -1,14 +1,24 @@
 <div class="page_title">
-    <h1>Listing Misc Services/Items</h1>
+    <h1>Listing Miscellaneous Items</h1>
+    <div class="page_title_button"><%= link_to "add product", new_misc_path %> </div>
 </div>
 
 <div class="table_content_with_title">
     <table>
       <thead>
         <tr>
-          <th class="tab_cell">Category</th>
-          <th class="mob_cell">Item</th>                                      
-          <th width="20px" class="row_button"><%= link_to "", new_misc_path, class: 'line_new_icon', title: "create new misc" %></th>
+          <th class="product_catetory_name">Category</th>
+          <th class="product_item">Item</th>
+          <th class="product_quantity">Quantity</th>
+          <th class="product_unit">Unit</th>
+          <th class="product_rate">Rate/Unit</th>
+          <th class="product_price">Price</th>
+          <th class="product_vat">Vat Rate</th>
+          <th class="product_vat_due">Vat</th>
+          <th class="product_total">Total</th>                                        
+          <th width="75px" class="row_button">
+            <%= link_to "", print_misc_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+          </th>
         </tr>
       </thead>
     </table>
@@ -17,10 +27,20 @@
           <tbody>
             <% @miscs.each do |misc| %>
               <tr>
-                <td class="tab_cell"><%= misccategory.name %></td>
-                <td class="mob_cell"><%= misc.item %></td>             
-                <td width="20px" class="row_button"><%= link_to '', edit_misc_path(misc), class: 'line_edit_icon', title: "edit misc" %></td>
-                <td width="20px" class="row_button"><%= link_to '', misc, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete misc" %></td>
+                <td class="product_catetory_name"><%= misc.productcategory.text %></td>
+                <td class="product_item"><%= misc.item %></td>
+                <td class="product_quantity">n/a</td>
+                <td class="product_unit">n/a</td>
+                <td class="product_rate">n/a</td>
+                <td class="product_price">n/a</td>                
+                <td class="product_vat">n/a</td>
+                <td class="product_vat_due">n/a</td>
+                <td class="product_total">n/a</td>                
+                <td width="75px" class="row_button">
+                    <%= row_delete_link(misc, 'show') %>
+                    <%= row_edit_link(misc, 'show') %>
+                    <%= row_show_link(misc, 'show') %>
+                </td>        
               </tr>
             <% end %>
           </tbody>

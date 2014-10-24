@@ -1,16 +1,19 @@
 <div class="page_title">
-    <h1>Inovice Terms</h1>
-    <div class="page_title_button"><%= link_to 'New Terms', new_invoiceterm_path %> </div>
+    <h1>Invoice Terms</h1>
+    <div class="page_title_button"><%= link_to 'add new terms', new_invoiceterm_path %> </div>
 </div>
 
-<div class="table_content_with_filter">
+<div class="table_content_with_title">
     <table>
       <thead>
         <tr>
-          <th class="terms_period">Period</th>
+          <th class="terms_ref">Reference</th>
+          <th class="terms_period_large">Payment Period (days)</th>
+          <th class="terms_period_small">Period</th>
           <th class="terms_terms">Terms</th>         
-          <th width="20px" class="row_button"></th>
-          <th width="20px" class="row_button"><%= link_to "", print_invoiceterms_path, class: 'table_pdf_icon', title: "download pdf" %></th>
+          <th width="50px" class="row_button">
+              <%= link_to "", print_invoiceterm_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+          </th>
         </tr>
       </thead>
     </table>
@@ -19,16 +22,17 @@
           <tbody>
           <% if @invoiceterms %>            
             <% @invoiceterms.each do |invoiceterm| %>
-              <tr id ="<%= salary.id %>">
-                <td class="terms_period"><%= invoiceterm.period %></td> 
-                <td class="terms_terms"><%= invoiceterm.terms %></td> 
-                <% if invoiceterm_used(invoiceterm) %>
-                    <td width="20px" class="row_button"><%= link_to "", edit_salary_path(salary), class: 'line_edit_icon', title: "edit terms" %></td>
-                    <td width="20px" class="row_button"><%= link_to "", invoiceterm, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_edit_icon', title: "delete terms" %></td>
-                <% else %>
-                    <td width="20px" class="row_button"></th>
-                    <td width="20px" class="row_button"></th>                
+              <tr>
+                <td class="terms_ref"><%= invoiceterm.ref %></td> 
+                <td class="terms_period_large"><%= invoiceterm.period %></td> 
+                <td class="terms_period_small"><%= invoiceterm.period %></td>
+                <td class="terms_terms"><%= invoiceterm.terms %></td>
+                <td width="50px" class="row_button"> 
+                <% if invoiceterm_in_use(invoiceterm) %>
+                    <%= row_delete_link(invoiceterm, 'show') %>
+                    <%= row_edit_link(invoiceterm, 'show') %>
                 <% end %>             
+                </td> 
               </tr>
             <% end %>  
           <% end %>
@@ -36,4 +40,3 @@
         </table>
     </div>
 </div>
-

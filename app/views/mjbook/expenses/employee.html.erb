@@ -57,7 +57,7 @@
                 <td class="employee_due_date"><%= employeeexpense.due_date.strftime("%d/%m/%y") %></td>
                 <td class="employee_job"><%= employeeexpense.project.ref %></td>
                 <td class="employee_category"><%= employeeexpense.hmrcexpcat.category %></td>
-                <% if employeeexpense.hmrcexpcat.category == "mileage" %>                
+                <% if employeeexpense.hmrcexpcat_id == 1 %>                
                     <td class="employee_ref"></td>
                     <td class="employee_supplier"></td>
                     <td class="employee_supplier_ref"></td>

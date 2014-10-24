@@ -9,33 +9,22 @@
             <div class="column_content">
                 <div class="column_info">                        
                             <div class="column_info_item">
-                                <label class="column_info_label">Payment Method:</label>                        
-                                <div class="column_info_text"><%= @expend.paymethod.method %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label">Account:</label>                        
-                                <div class="column_info_text"><%= @expend.companyaccount.name %></div>  
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label">Ref:</label>                        
+                                <label class="column_info_label" style="width:90px">Ref:</label>                        
                                 <div class="column_info_text"><%= @project.ref %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Title:</label>                        
+                                <label class="column_info_label" style="width:90px">Title:</label>                        
                                 <div class="column_info_text"><%= @project.title %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Customer Ref:</label>                        
+                                <label class="column_info_label" style="width:90px">Customer Ref:</label>                        
                                 <div class="column_info_text"><%= @project.customer_ref %></div> 
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Customer:</label>                        
+                                <label class="column_info_label" style="width:90px">Customer:</label>                        
                                 <div class="column_info_text"><%= @project.customer.company_name %></div> 
                             </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label">Inovice Method:</label>                        
-                                <div class="column_info_text"><%= @project.invoicemethod.method %></div> 
-                            </div>
+
                 </div>
             </div>
         </div>
@@ -43,7 +32,7 @@
             <div class="column_content">
                 <div class="column_info">                        
                             <div class="column_info_item">
-                                <label class="column_info_label">Description:</label>                        
+                                <label class="column_info_label" style="width:90px">Description:</label>                        
                                 <div class="column_info_textarea_20"><%= @project.description %></div>   
                             </div>
                 </div>
@@ -53,7 +42,7 @@
                    
         <div class="column_linked_footer">
             <div class="column_line"></div>
-            <div class="column_submit"><%= link_to "edit details", edit_project_path(@project) %></div>
+            <div class="column_edit"><%= link_to "edit details", edit_project_path(@project) %></div>
             <div class="column_cancel"><%= link_to "back", projects_path %></div>
         </div>
             

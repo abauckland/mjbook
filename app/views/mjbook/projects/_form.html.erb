@@ -17,6 +17,7 @@
                 <div class="column_form">
                 <%= form_for(@project) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>    
+                    <%= f.hidden_field :invoicemethod_id, :value => 1 %>
                     
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Reference:*</label>                        
@@ -33,7 +34,7 @@
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:100px">Customer*:</label>                        
                         <% if @customers %>
-                            <div class="column_form_input"><%= f.collection_select(:customer_id, @customers, :id, :name, {:prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_form_input"><%= f.collection_select(:customer_id, @customers, :id, :company_name, {:prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="project_customer"></div>  
                         </div>
                         <div class="column_form_item">
@@ -42,14 +43,14 @@
                             <div class="column_form_button"><%= link_to "add new customer", new_customer_path %></div>  
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Description:</label>                        
-                            <div class="column_form_input"><%= f.text_area :description, :rows => "5" %></div>
-                            <div class="column_help_tooltip" id="project_description"></div>  
+                            <label class="column_form_label" style="width:100px">Customer_ref:</label>                        
+                            <div class="column_form_input"><%= f.text_field :customer_ref %></div>
+                            <div class="column_help_tooltip" id="project_customer_ref"></div>   
                         </div>
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Invoice Method*:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:invoicemethod_id, Mjbook::Invoicemethod.all, :id, :text, {:selected => @project.invoicemethod_id, :prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="project_invoicemethod"></div>  
+                            <label class="column_form_label" style="width:100px">Description:</label>                        
+                            <div class="column_form_input"><%= f.text_area :description, :rows => 6 %></div>
+                            <div class="column_help_tooltip" id="project_description"></div>  
                         </div>
                 </div>
            </div>     

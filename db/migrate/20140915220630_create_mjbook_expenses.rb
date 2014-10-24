@@ -10,8 +10,9 @@ class CreateMjbookExpenses < ActiveRecord::Migration
       t.integer :mileage_id
       t.timestamp :date
       t.timestamp :due_date
-      t.decimal :amount, :precision => 8, :scale => 2
+      t.decimal :price, :precision => 8, :scale => 2
       t.decimal :vat, :precision => 8, :scale => 2
+      t.decimal :total, :precision => 8, :scale => 2
       t.string :receipt
       t.integer :recurrence
       t.string :ref

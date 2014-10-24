@@ -2,26 +2,16 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class MileagemodesController < ApplicationController
-    before_action :set_mileagemode, only: [:show, :edit, :update, :destroy]
+    before_action :set_mileagemode, only: [:update]
 
     # GET /mileagemodes/1/edit
     def edit
-      @mileagemodes = Mileagemode.where(:company_id => current_user.company_id)
-    end
-
-    # POST /mileagemodes
-    def create
-      @mileagemode = Mileagemode.new(mileagemode_params)
-
-      if @mileagemode.save
-        redirect_to @mileagemode, notice: 'Mileagemode was successfully created.'
-      else
-        render :new
-      end
+      @mileagemodes = policy_scope(Mileagemode)
     end
 
     # PATCH/PUT /mileagemodes/1
     def update
+      authorize @mileagemode
       if @mileagemode.update(mileagemode_params)
         redirect_to edit_mileagemode_path(current_user.company_id), notice: 'Mileagemode was successfully updated.'
       else

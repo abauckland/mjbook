@@ -3,6 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class ExpendsController < ApplicationController
     before_action :set_expend, only: [:show, :edit, :update, :destroy]
+    before_action :set_accounts, only: [:index, :edit, :edit_personal]
 
     # GET /expends
     def index
@@ -11,27 +12,27 @@ module Mjbook
         if params[:companyaccount_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expends = Expend.where(:date => params[:date_from]..params[:date_to], :companyaccount_id => params[:companyaccount_id])
+              @expends = policy_scope(Expend).where(:date => params[:date_from]..params[:date_to], :companyaccount_id => params[:companyaccount_id])
             else
-              @expends = Expend.where('date > ? AND companyaccount_id =?', params[:date_from], params[:companyaccount_id])
+              @expends = policy_scope(Expend).where('date > ? AND companyaccount_id =?', params[:date_from], params[:companyaccount_id])
             end  
           else  
             if params[:date_to] != ""
-              @expends = Expend.where('date < ? AND companyaccount_id = ?', params[:date_to], params[:companyaccount_id])
+              @expends = policy_scope(Expend).where('date < ? AND companyaccount_id = ?', params[:date_to], params[:companyaccount_id])
             end
           end   
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expends = Expend.joins(:project).where(:date => params[:date_from]..params[:date_to], :company_id => current_user.company_id)
+              @expends = policy_scope(Expend).where(:date => params[:date_from]..params[:date_to])
             else
-              @expends = Expend.joins(:project).where('date > ? AND company_id = ?', params[:date_from], current_user.company_id)
+              @expends = policy_scope(Expend).where('date > ?', params[:date_from])
             end  
           else  
             if params[:date_to] != ""
-              @expends = Expend.joins(:project).where('date < ? AND company_id = ?', params[:date_to], current_user.company_id)
+              @expends = policy_scope(Expend).where('date < ?', params[:date_to])
             else
-              @expends = Expend.joins(:project).where(:company_id => current_user.company_id)
+              @expends = policy_scope(Expend)
             end     
           end
         end   
@@ -41,19 +42,21 @@ module Mjbook
         end
             
      else
-       @expends = Expend.joins(:project).where(:company_id => current_user.company_id)
+       @expends = policy_scope(Expend)
      end          
 
      #selected parameters for filter form     
-     @companyaccounts = Mjbook::Companyaccount.where(:ompany_id => current_user.company_id)
+     @companyaccounts = policy_scope(Companyaccount)
      @companyaccount = params[:companyaccount_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]
 
+     authorize @expends  
     end
 
     # GET /expends/1
     def show
+      authorize @expend
     end
 
     # GET /expends/new
@@ -70,19 +73,18 @@ module Mjbook
 
     # GET /expends/new
     def new_personal
-      
       if params[:user_id]
         @user_id = params[:user_id]
       end
 
-      @users = Users.joins(:expenses).where(:company_id => current_user.company_id, 'mjbook_expenses.exp_type' => :personal)
+      @users = policy_scope(User).joins(:expenses).where('mjbook_expenses.exp_type' => :personal)
       @expend = Expend.new
 
     end
 
     # GET /expends/new
     def edit_personal
-      
+      authorize @expend
       @expend = Expend.find(params[:id])
        
       #get list of all expenses for user
@@ -93,19 +95,17 @@ module Mjbook
       @expend = Expend.update(:price => @expenses.sum(:price),
                               :vat=> @expenses.sum(:vat),
                               :total=> @expenses.sum(:total))
-                              
-      @companyaccounts = Mjbook::Companyaccount.where(:company_id => current_user.company_id)
-
     end
 
 
     # GET /expends/1/edit
     def edit
-      @companyaccounts = Mjbook::Companyaccount.where(:company_id => current_user.company_id)
+      authorize @expend
     end
 
     # POST /expends
     def create
+      authorize @expend
       @expend = Expend.new(expend_params)
 
       if @expend.save
@@ -117,6 +117,7 @@ module Mjbook
 
     # PATCH/PUT /expends/1
     def update
+      authorize @expend
       if @expend.update(expend_params)
         redirect_to expends_url, notice: 'Expend was successfully updated.'
       else
@@ -126,11 +127,13 @@ module Mjbook
 
     # DELETE /expends/1
     def destroy
+      authorize @expend
       @expend.destroy
       redirect_to expends_url, notice: 'Expend was successfully destroyed.'
     end
     
     def reconcile
+      authorize @expend
       #mark expense as rejected
       @expend = Expend.where(:id => params[:id]).first
       if @expend.update(:status => "reconciled")
@@ -146,6 +149,10 @@ module Mjbook
         @expend = Expend.find(params[:id])
       end
 
+      def set_accounts
+        @companyaccounts = policy_scope(Companyaccount)
+      end
+
       # Only allow a trusted parameter "white list" through.
       def expend_params
         params.require(:expend).permit(:company_id, :user_id, :expense_id, :paymethod_id, :companyaccount_id, :expend_receipt, :date, :ref, :price, :vat, :total, :note)
@@ -154,8 +161,8 @@ module Mjbook
       def pdf_expend_index(expends, account_id, date_from, date_to)
 
          if account_id
-           companyaccounts = Mjbook::Companyaccount.where(:id => account_id).first
-           filter_group = companyaccounts.company_name
+           companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
+           filter_group = companyaccount.company_name
          else
            filter_group = "All Accounts"
          end

@@ -5,7 +5,7 @@ module Mjbook
     belongs_to :hmrcexpcat
     belongs_to :project
     belongs_to :user
-    belongs_to :expense
+    has_one :expense
 
     
   end

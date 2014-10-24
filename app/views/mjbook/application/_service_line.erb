@@ -1,24 +1,28 @@
 <table class='line_data_table'>
     <tr class='line_data'>
-        <td class='line_prefix tab_cell'>-</td>
-        <td class='line_category lrg_cell'><%= line_category(line) %></td>
-        <td class='line_item mob_cell'><%= line_item(line) %></td>
-        <td class='line_quantity mob_cell'><%= line_quantity(line) %></td>
-        <td class='line_unit lrg_cell'><%= line_unit(line) %>
-        <td class='line_rate lrg_cell'><%= line_rate(line) %></td> 
-        <td class='line_vat_rate tab_cell'><%= line_vat_rate(line) %></td> 
-        <td class='line_vat lrg_cell'><%= line_vat(line) %></td>  
-        <td class='line_price mob_cell'><%= line_price(line) %></td>     
+        <td class='quote_line_prefix'>-</td>
+        <td class='quote_line_category'><%= line_category(line) %></td>
+        <td class='quote_line_cat_item'><%= line_cat_item(line) %></td>
+        <td class='quote_line_item'><%= line_item(line) %></td>
+        <td class='quote_line_quantity'></td>
+        <td class='quote_line_unit'></td>
+        <td class='quote_line_rate'></td> 
+        <td class='quote_line_price'><%= line_price(line) %></td> 
+        <td class='quote_line_vat_rate'><%= line_vat_rate(line) %></td> 
+        <td class='quote_line_vat'><%= line_vat(line) %></td> 
+        <td class='quote_line_total'><%= line_total(line) %></td>     
     </tr>    
     <tr class='line_note'>
-        <td class='line_prefix tab_cell'></td>
-        <td class='line_category lrg_cell'></td>
-        <td class='line_item mob_cell'><%= line_note(line) %></td>
-        <td class='line_quantity mob_cell'></td>
-        <td class='line_unit lrg_cell'></td> 
-        <td class='line_rate lrg_cell'></td> 
-        <td class='line_vat_rate tab_cell'></td> 
-        <td class='line_vat lrg_cell'></td>  
-        <td class='line_price mob_cell'></td>                      
+        <td class='quote_line_prefix'></td>
+        <td class='quote_line_category'></td>
+        <td class='quote_line_cat_item'><%= line_note(line) %></td>
+        <td class='quote_line_item'><%= line_note(line) %></td>
+        <td class='quote_line_quantity'><</td>
+        <td class='quote_line_unit'></td>
+        <td class='quote_line_rate'></td> 
+        <td class='quote_line_price'></td> 
+        <td class='quote_line_vat_rate'></td> 
+        <td class='quote_line_vat'></td> 
+        <td class='quote_line_total'></td>                       
     </tr>
 </table>
