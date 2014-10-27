@@ -17,7 +17,7 @@
                 <div class="column_form">
                 <%= form_for(@salary) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
-                    <%= f.hidden_field :status, :value => "paid" %>
+                    <%= f.hidden_field :status, :value => 0 %>
                     
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:70px">Employee*:</label>                        
@@ -26,7 +26,7 @@
                         </div>
                        <div class="column_form_item">
                             <label class="column_form_label" style="width:70px">Amount:*</label>                        
-                            <div class="column_form_input"><%= f.text_field :total %></div>
+                            <div class="column_form_input"><%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)}  %></div>
                             <div class="column_help_tooltip" id="quote_ref"></div> 
                             <div class="column_error_note"> <%= error_check(@salary, :total)%></div> 
                         </div>

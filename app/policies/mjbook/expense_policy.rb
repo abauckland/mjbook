@@ -6,53 +6,13 @@ module Mjbook
           scope.joins(:project).where('mjbook_projects.company_id' => user.company_id)
       end
     end
-   
-      def business?
-        true
-      end
-      
-      def personal?
-        index
-      end
-
-      def employee?
-        index
-      end    
-
-      def show?
-        index
-      end 
-            
-      def new_business?
-        index
-      end
-  
-      def new_personal?
-        index
-      end
-      
-      def edit_business?
-        index
-      end 
-
-      def create?
-        index
-      end       
-
-      def update?
-        index
-      end 
-      
-      def destroy?
-        index
-      end       
-
+       
       def accept?
-        index
+        true
       end 
             
       def reject?
-        index
+        true
       end 
   end
 end

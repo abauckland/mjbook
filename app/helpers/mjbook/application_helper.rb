@@ -25,11 +25,11 @@ module Mjbook
     end
 
     def row_reject_link(model, display)
-      link_to '', polymorphic_path([:reject, model]), :method => :get,  :remote => true, class: ('line_reject_icon_' << display) , title: "mark as rejected"     
+      link_to '', polymorphic_path([:reject, model]), :method => :get,  :remote => true, class: ('line_reject_icon_' << display) , title: "reject"     
     end
 
     def row_accept_link(model, display)
-      link_to '', polymorphic_path([:accept, model]), :method => :get,  :remote => true, class: ('line_accept_icon_' << display) , title: "mark as accepted"     
+      link_to '', polymorphic_path([:accept, model]), :method => :get,  :remote => true, class: ('line_accept_icon_' << display) , title: "accept"     
     end
     
     def row_print_link(model, display)
@@ -37,8 +37,12 @@ module Mjbook
     end        
 
     def row_reconcile_link(model, display)
-      link_to '', polymorphic_path([:reconcile, model]), class: ('line_reconcile_icon_' << display) , title: "mark as reconciled"     
+      link_to '', polymorphic_path([:reconcile, model]), :method => :get,  :remote => true, class: ('line_reconcile_icon_' << display) , title: "mark as reconciled"     
     end 
+
+    def row_pay_link(model, display)
+      link_to '', polymorphic_path([:pay, model]), class: ('line_payment_icon_' << display) , title: "repayment"     
+    end
     
   end
 end

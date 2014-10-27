@@ -104,6 +104,8 @@ module Mjbook
       redirect_to payments_url, notice: 'Payment was successfully destroyed.'
     end
 
+
+
     def reconcile
       authorize @payment
       #mark expense as rejected

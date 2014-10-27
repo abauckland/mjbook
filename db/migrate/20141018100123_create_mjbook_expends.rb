@@ -1,6 +1,7 @@
 class CreateMjbookExpends < ActiveRecord::Migration
   def change
     create_table :mjbook_expends do |t|
+      t.integer :exp_type
       t.integer :company_id
       t.integer :user_id
       t.integer :expense_id

@@ -12,31 +12,31 @@ module Mjbook
     end
   
     def show?
-      index
+      index?
     end
 
     def new?
-      index
+      index?
     end
 
     def edit?
-      index
+      index?
     end
 
     def create?
-      index
+      index?
     end
 
     def update?
-      index
+      index?
     end
 
     def delete?
-      index
+      index?
     end
 
     def reconcile?
-      index
+      index?
     end
 
   end

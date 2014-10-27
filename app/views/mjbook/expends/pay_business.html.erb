@@ -1,0 +1,95 @@
+<div class="page_title">
+    <h1>Record Payment of Approved Expenses</h1>
+</div>
+
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+            
+            <% if @expend.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@pexpend.errors.count, "error") %> prohibited this record from being created</p>
+                  <ul>
+                  <% @expend.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+                <%= form_for(@expend) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <%= f.hidden_field :expense_id, :value => @expense.id %>
+                    <%= f.hidden_field :status, :value => 0 %>
+                    <%= f.hidden_field :price, :value => @expense.price %>
+                    <%= f.hidden_field :vat, :value => @expense.vat %>
+                    <%= f.hidden_field :total, :value => @expense.total %>
+                    <%= f.hidden_field :exp_type, :value => 0 %>
+
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">Job Reference:</label>                        
+                            <div class="column_info_text"><%= @expense.project.ref %></div>
+                        </div>
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">Reference:</label>                        
+                            <div class="column_info_text"><%= @expense.ref %></div>
+                        </div>
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">Supplier:</label>                        
+                            <div class="column_info_text"><%= @expense.supplier.company_name %></div>
+                        </div>
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">Supplier Ref:</label>                        
+                            <div class="column_info_text"><%= @expense.supplier_ref %></div>
+                        </div>
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">Total (ex VAT):</label>                        
+                            <div class="column_info_text"><%= pounds(@expense.price) %></div>
+                        </div>
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">VAT:</label>                        
+                            <div class="column_info_text"><%= pounds(@expense.vat) %></div>
+                        </div>
+                        <div class="column_info_item">
+                            <label class="column_info_label" style="width:120px">Total (inc VAT):</label>                        
+                            <div class="column_info_text"><%= pounds(@expense.total) %></div>
+                        </div>
+                                                                                                                                                               
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:120px">Payment Method*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {:selected => @expend.companyaccount_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
+                        </div> 
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:120px">Account Paid From*:</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:companyaccount_id, @companyaccounts, :id, :name, {:selected => @expend.companyaccount_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
+                        </div>                         
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:120px">Date:</label>                        
+                            <div class="column_form_input"><%= f.date_field :date %></div>
+                            <div class="column_help_tooltip" id="quote_date"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:120px">Notes:</label>                        
+                            <div class="column_form_input"><%= f.text_area :note %></div>
+                            <div class="column_help_tooltip" id="quote_date"></div>  
+                        </div>
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", businesses_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
+    </div>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

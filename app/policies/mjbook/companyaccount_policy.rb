@@ -2,10 +2,8 @@ module Mjbook
   class CompanyaccountPolicy < Struct.new(:user, :record)
   
     class Scope < Struct.new(:user, :scope)
-      def resolve
-        if user.owner? || user.admin?   
-          scope.where(:company_id => user.company_id)
-        end   
+      def resolve  
+          scope.where(:company_id => user.company_id)  
       end
     end
             

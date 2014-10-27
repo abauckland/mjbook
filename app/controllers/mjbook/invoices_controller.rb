@@ -132,6 +132,12 @@ module Mjbook
         send_data document.render, filename: filename, :type => "application/pdf"      
     end
 
+    def quote_new
+      #id => quote.id
+      @invoice = Invoice.new
+    
+    end
+
 
     private
       # Use callbacks to share common setup or constraints between actions.

@@ -1,12 +1,18 @@
+<div class="page_title">
+    <h1>New Personal Expense Item</h1>
+</div>
+
+
+
 <div class="content">
     <div class="column_1">
         <div class="column_content">
         
-            <% if @personalexpense.errors.any? %>
+            <% if @expense.errors.any? %>
             <div class="column_error">
-            <p><%= pluralize(@personalexpense.errors.count, "error") %> prohibited this personalexpense from being created</p>
+            <p><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being created</p>
                   <ul>
-                  <% @personalexpense.errors.full_messages.each do |message| %>
+                  <% @expense.errors.full_messages.each do |message| %>
                     <li><%= message %></li>
                   <% end %>
                   </ul>
@@ -16,7 +22,7 @@
             <div class="column_sub_content">
                 <div class="column_form">
   
-            <%= form_for(@personalexpense) do |f| %>
+            <%= form_for(@expense, url: { action: "create" }) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
                     <%= f.hidden_field :user_id, :value => current_user.id %>
                     <%= f.hidden_field :exp_type, :value => "personal" %>
@@ -25,7 +31,7 @@
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Job Ref:*</label>                        
                         <% if @projects %>
-                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @personalexpense.project_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="personalexpense_project"></div>  
                         </div>
                         <div class="column_form_item">
@@ -38,7 +44,7 @@
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Supplier:*</label>                        
                         <% if @suppliers %>
-                            <div class="column_form_input"><%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @personalexpense.supplier_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_form_input"><%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="personalexpense_supplier"></div>  
                         </div>
                         <div class="column_form_item">
@@ -49,7 +55,7 @@
 
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Expense Type:*</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @personalexpense.hmrcexpcat_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_form_input"><%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="personalexpense_hmrcexpcat"></div>  
                         </div>
 
@@ -61,8 +67,8 @@
 
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Receipt Image:</label>                        
-                        <% if @personalexpense.receipt? %>
-                            <div class="column_form_input"><%= image_tag(@personalexpense.receipt_url, {:height => "50px"}) %></div>
+                        <% if @expense.receipt? %>
+                            <div class="column_form_input"><%= image_tag(@expense.receipt_url, {:height => "50px"}) %></div>
                             <div class="column_help_tooltip" id="businessexpense_receipt"></div>  
                         </div>                        
                         <div class="column_form_item">
@@ -100,7 +106,7 @@
            <div class="column_footer">
                 <div class="column_line"></div>
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", personal_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", personals_path %></div>
                 <% end %>
            </div>
             
@@ -109,3 +115,4 @@
     <div class="column_2 column_2_blank"></div> 
     <div class="column_3 column_3_blank"></div> 
 </div>
+

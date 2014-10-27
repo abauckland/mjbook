@@ -23,8 +23,8 @@
             <%= submit_tag 'Filter', :class => "filter_submit_button"%>    
         </div>        
     </div>
-    <% end %>
     <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div> 
+    <% end %>
 </div>   
 
  <div class="table_content_with_filter">
@@ -50,14 +50,14 @@
                 <td class="salary_date"><%= salary.date.strftime("%d/%m/%y") %></td>
                 <td class="salary_status"><%= salary.status %></td>
                 <td id="<%= salary.id %>_links" width="75px" class="row_button">
-                <% if salary.reconciled? %>
-                    <%= row_delete_link(salary, 'hidden') %>
-                    <%= row_edit_link(salary, 'hidden') %>
-                    <%= row_reconcile_link(salary, 'hidden') %> 
-                <% else %>
+                <% if salary.submitted? %>
                     <%= row_delete_link(salary, 'show') %>
                     <%= row_edit_link(salary, 'show') %>
-                    <%= row_reconcile_link(salary, 'show')  %> 
+                    <%= link_to '', pay_salary_expend_path(salary.id), class: 'line_payment_icon_show' , title: "record payment" %>
+                <% else %>
+                    <%= row_delete_link(salary, 'hidden') %>
+                    <%= row_edit_link(salary, 'hidden') %>
+                    <%= link_to '', pay_salary_expend_path(salary.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
                 <% end %> 
                 </td>
               </tr>

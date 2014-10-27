@@ -3,7 +3,7 @@
 </div>
 
 <div class="filter_band_single">
-    <%= form_tag employee_path, method: :get do %>
+    <%= form_tag employees_path, method: :get do %>
     <div class="filter_search">
         <div class="filter_project_label">Employee:</div>
         <div class="filter_project_input">
@@ -21,8 +21,9 @@
             <%= submit_tag 'Filter', :class => "filter_submit_button"%>    
         </div>        
     </div>
-    <% end %>
+
     <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div> 
+    <% end %>
 </div>  
 
 
@@ -51,55 +52,57 @@
     <div class="table_container">
         <table>
           <tbody>
-            <% @employeeexpenses.each do |employeeexpense| %>
-              <tr id="<%= employeeexpense.id %>">
-                <td class="employee_employee"><%= employeeexpense.user.name %></td>
-                <td class="employee_due_date"><%= employeeexpense.due_date.strftime("%d/%m/%y") %></td>
-                <td class="employee_job"><%= employeeexpense.project.ref %></td>
-                <td class="employee_category"><%= employeeexpense.hmrcexpcat.category %></td>
-                <% if employeeexpense.hmrcexpcat_id == 1 %>                
+            <% @expenses.each do |expense| %>
+              <tr id="<%= expense.id %>">
+                <td class="employee_employee"><%= expense.user.name %></td>
+                <td class="employee_due_date"><%= expense.due_date.strftime("%d/%m/%y") %></td>
+                <td class="employee_job"><%= expense.project.ref %></td>
+                <td class="employee_category"><%= expense.hmrcexpcat.category %></td>
+                <% if expense.hmrcexpcat_id == 1 %>                
                     <td class="employee_ref"></td>
                     <td class="employee_supplier"></td>
                     <td class="employee_supplier_ref"></td>
-                    <td class="employee_issue_date"><%= employeeexpense.date.strftime("%d/%m/%y") %></td>
+                    <td class="employee_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
                     <td width="20px" class="row_button"></td>
-                    <td class="employee_distance"><%= employeeexpense.mileage.distance %></td>                
+                    <td class="employee_distance"><%= expense.mileage.distance %></td>                
                  <% else %>
-                    <td class="employee_ref"><%= employeeexpense.ref %></td>
-                    <td class="employee_supplier"><%= employeeexpense.supplier.name %></td>
-                    <td class="employee_supplier_ref"><%= employeeexpense.supplier_ref %></td>
-                    <td class="employee_issue_date"><%= employeeexpense.date.strftime("%d/%m/%y") %></td>                    
+                    <td class="employee_ref"><%= expense.ref %></td>
+                    <td class="employee_supplier"><%= expense.supplier.company_name %></td>
+                    <td class="employee_supplier_ref"><%= expense.supplier_ref %></td>
+                    <td class="employee_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>                    
                     <td width="20px" class="row_button">
-                        <%= "Yes".html_safe if employeeexpense.receipt? %>
+                        <%= "Yes".html_safe if expense.receipt? %>
                     </td>
                     <td class="employee_distance"></td>
                  <% end %>    
-                    <td class="employee_price"><%= pounds(employeeexpense.price) %></td>
-                    <td class="employee_vat_due"><%= pounds(employeeexpense.vat) %></td>
-                    <td class="employee_total"><%= pounds(employeeexpense.total) %></td>
-                    <td  id="<%= employeeexpense.id %>_status" class="employee_status"><%= employeeexpense.status %></td>
-                    <td id="<%= employeeexpense.id %>_links"  width="100px" class="row_button">
+                    <td class="employee_price"><%= pounds(expense.price) %></td>
+                    <td class="employee_vat_due"><%= pounds(expense.vat) %></td>
+                    <td class="employee_total"><%= pounds(expense.total) %></td>
+                    <td  id="<%= expense.id %>_status" class="employee_status"><%= expense.status %></td>
+                    <td id="<%= expense.id %>_links"  width="100px" class="row_button">
                         
-                        <% if employeeexpense.submitted? || employeeexpense.rejected? %>
-                            <%= row_accept_link(employeeexpense, 'show') %>
+                        <% if expense.submitted? || expense.rejected? %>
+                            <%= row_accept_link(expense, 'show') %>
                         <% else %>
-                            <%= row_accept_link(employeeexpense, 'hidden') %> 
+                            <%= row_accept_link(expense, 'hidden') %> 
                         <% end %>                                
          
-                        <% if employeeexpense.submitted? || employeeexpense.accepted? %>
-                            <%= row_reject_link(employeeexpense, 'show') %>                 
+                        <% if expense.submitted? || expense.accepted? %>
+                            <%= row_reject_link(expense, 'show') %>                 
                         <% else %>
-                            <%= row_reject_link(employeeexpense, 'hidden') %>                 
+                            <%= row_reject_link(expense, 'hidden') %>                 
                         <% end %> 
                     
-                        <% if employeeexpense.accepted? %>
-                            <%= link_to "", new_personal_expend_path(:expense_id => employeeexpense.id), class: 'line_payment_icon_show', title: "record payment" %>                
+                        <% if expense.accepted? %>
+                            <%= link_to '', pay_employee_expend_path(expense.user_id), class: 'line_payment_icon_show' , title: "show full details"  %>  
                         <% else %>
-                            <%= link_to "", new_personal_expend_path(:expense_id => employeeexpense.id), class: 'line_payment_icon_hidden', title: "record payment" %>                 
+                            <%= link_to '', pay_employee_expend_path(expense.user_id), class: 'line_payment_icon_hidden' , title: "show full details"  %>                 
                         <% end %>        
-        
-                        <%= row_show_link(employeeexpense, 'show') %> 
-    
+                    <% if expense.hmrcexpcat_id == 1 %>   
+                        <%= link_to '', mileage_path(expense.mileage_id), class: 'line_show_icon_show' , title: "show full details"  %> 
+                    <% else %>    
+                        <%= link_to '', employee_path(expense), class: 'line_show_icon_show' , title: "show full details"  %> 
+                    <% end %> 
                     </td>                             
               </tr>
             <% end %>

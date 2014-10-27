@@ -1,20 +1,15 @@
 Mjbook::Engine.routes.draw do
   
-  resources :companyaccounts
-
-  resources :expends do
-    get :new_personal, :on => :member
-    get :edit_personal, :on => :member
-    get :reconcile, :on => :member  
+  resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
+    get :reconcile, :on => :member
   end
+
+  resources :companyaccounts, :only => [:index, :edit, :new, :create, :update, :destroy]
 
   resources :salaries do
     get :reconcile, :on => :member
   end
 
-  resources :payments do
-    get :reconcile, :on => :member
-  end
 
   resources :inlines do
     get :new_line, :on => :member
@@ -45,6 +40,9 @@ Mjbook::Engine.routes.draw do
     get :accept, :on => :member
     get :reject, :on => :member 
     get :print, :on => :member
+    
+    get :quote_new, :on => :member
+    
   end
 
   resources :invoicecontents, :only => [:show]
@@ -94,7 +92,7 @@ Mjbook::Engine.routes.draw do
 
   resources :quotes do
     get :accept, :on => :member
-    get :reject, :on => :member 
+    get :reject, :on => :member
     get :print, :on => :member
   end
 
@@ -102,33 +100,31 @@ Mjbook::Engine.routes.draw do
 
   resources :summaries
 
-  resources :expenses do
-   # get :personal
-    get :edit_personal, :on => :member
-    get :edit_business, :on => :member
-
+  resources :expenses do 
     get :accept, :on => :member
     get :reject, :on => :member 
-  
+
+    get :pay, :on => :member
   end
+  
+  resources :personals
 
- get 'business', :to => 'expenses#business'
- get 'new_business', :to => 'expenses#new_business'
- get 'personal', :to => 'expenses#personal' 
- get 'new_personal', :to => 'expenses#new_personal'
+  resources :employees, :only => [:index, :show] 
 
- get 'employee', :to => 'expenses#employee'
+  resources :businesses
 
+  resources :expends do
+    get :pay_employee, :on => :member
+    get :pay_business, :on => :member
+    get :pay_salary, :on => :member
+    
+    get :reconcile, :on => :member
+  end
 
   resources :payments do
-    get :business_paid, :on => :member 
-    get :personal_paid, :on => :member
-    get :salary_paid, :on => :member   
+    get :reconcile, :on => :member  
   end
 
- get 'pay_business', :to => 'payments#pay_business'
- get 'pay_personal', :to => 'payments#pay_personal'
- get 'pay_salary', :to => 'payments#pay_salary' 
  
   resources :products do 
     get :item_options, :on => :member 

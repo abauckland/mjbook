@@ -47,7 +47,7 @@
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:70px">Rate*:</label>                        
-                            <div class="column_form_input"><%= f.text_field :rate, :placeholder => "0.00"   %></div>
+                            <div class="column_form_input"><%= f.text_field :rate, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)}%></div>
                             <div class="column_help_tooltip" id="product_price"></div> 
                         </div>  
                         <div class="column_form_item">

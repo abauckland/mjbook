@@ -9,56 +9,56 @@
             <div class="column_content">
                 <div class="column_info">                        
                             <div class="column_info_item">
-                                <label class="column_info_label">Reference:</label>                        
-                                <div class="column_info_text"><%= @expense.ref %></div>
+                                <label class="column_info_label" style="width:80px">Reference:</label>                        
+                                <div class="column_info_text"><%= @expense.ref if @expense.ref %></div>
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Issue date:</label>                        
-                                <div class="column_info_text"><%= @expense.issue_date.strftime("%d/%m/%y") %></div>
+                                <label class="column_info_label" style="width:80px">Issue date:</label>                        
+                                <div class="column_info_text"><%= @expense.date.strftime("%d/%m/%y") %></div>
                             </div>
-                            <% if @expend.user_id %>
+                            <% if @expense.user_id %>
                             <div class="column_info_item">
-                                <label class="column_info_label">Employee:</label>                        
-                                <div class="column_info_text"><%= @expend.user.name %></div> 
+                                <label class="column_info_label" style="width:80px">Employee:</label>                        
+                                <div class="column_info_text"><%= @expense.user.name %></div> 
                             </div>
                             <% end %>
                             <div class="column_info_item">
-                                <label class="column_info_label">Project:</label>                        
+                                <label class="column_info_label" style="width:80px">Project:</label>                        
                                 <div class="column_info_text"><%= @expense.project.name %></div> 
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Supplier:</label>                        
+                                <label class="column_info_label" style="width:80px">Supplier:</label>                        
                                 <div class="column_info_text"><%= @expense.supplier.company_name %></div> 
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Expense Category:</label>                        
+                                <label class="column_info_label" style="width:80px">Expense Cat:</label>                        
                                 <div class="column_info_text"><%= @expense.hmrcexpcat.category %></div> 
                             </div>
-                            <% if @expend.receipt %>
+                            <% if @expense.receipt %>
                             <div class="column_info_item">
-                                <label class="column_info_label">Receipt:</label>                        
+                                <label class="column_info_label" style="width:80px">Receipt:</label>                        
                                 <div class="column_info_text"><%= image_tag(@expense.receipt) %></div> 
                             </div>
                             <% end %>
                             <div class="column_info_item">
-                                <label class="column_info_label">Due Date:</label>                        
+                                <label class="column_info_label" style="width:80px">Due Date:</label>                        
                                 <div class="column_info_text"><%= @expense.due_date.strftime("%d/%m/%y") %></div>   
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Price:</label>                        
+                                <label class="column_info_label" style="width:80px">Price:</label>                        
                                 <div class="column_info_text"><%= pounds(@expense.price) %></div>  
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">VAT:</label>                        
+                                <label class="column_info_label" style="width:80px">VAT:</label>                        
                                 <div class="column_info_text"><%= pounds(@expense.vat) %></div>  
                             </div>
                             <div class="column_info_item">
-                                <label class="column_info_label">Total:</label>                        
-                                <div class="column_info_text"><%= pounds(@expense.total) %></div>v>  
+                                <label class="column_info_label" style="width:80px">Total:</label>                        
+                                <div class="column_info_text"><%= pounds(@expense.total) %></div>
                             </div>  
                             <div class="column_info_item">
-                                <label class="column_info_label">Status:</label>                        
-                                <div class="column_info_text"><%= @expense.status %></div>v>  
+                                <label class="column_info_label" style="width:80px">Status:</label>                        
+                                <div class="column_info_text"><%= @expense.status %></div> 
                             </div>  
                 </div>
             </div>
@@ -68,7 +68,6 @@
                    
         <div class="column_linked_footer">
             <div class="column_line"></div>
-            <div class="column_submit"><%= link_to "edit details", edit_expense_path(@expense) %></div>
             <div class="column_cancel"><%= link_to "back", expenses_path %></div>
         </div>
             

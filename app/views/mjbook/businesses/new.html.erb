@@ -1,12 +1,17 @@
+<div class="page_title">
+    <h1>New Business Expenses</h1>
+</div>
+
+
 <div class="content">
     <div class="column_1">
         <div class="column_content">
         
-            <% if @businessexpense.errors.any? %>
+            <% if @expense.errors.any? %>
             <div class="column_error">
-            <p><%= pluralize(@businessexpense.errors.count, "error") %> prohibited this businessexpense from being created</p>
+            <p><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being created</p>
                   <ul>
-                  <% @businessexpense.errors.full_messages.each do |message| %>
+                  <% @expense.errors.full_messages.each do |message| %>
                     <li><%= message %></li>
                   <% end %>
                   </ul>
@@ -15,7 +20,7 @@
             
             <div class="column_sub_content">
                 <div class="column_form">
-                <%= form_for(@businessexpense) do |f| %>
+                <%= form_for(@expense, url: { action: "create" }) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
                     <%= f.hidden_field :user_id, :value => current_user.id %>
                     <%= f.hidden_field :exp_type, :value => "business" %>
@@ -24,8 +29,8 @@
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Job Ref*:</label>                        
                         <% if @projects %>
-                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @businessexpense.project_id, :prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="businessexpense_project"></div>  
+                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="expense_project"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px"></label>                        
@@ -36,8 +41,8 @@
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Supplier*:</label>                        
                         <% if @suppliers %>
-                            <div class="column_form_input"><%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @businessexpense.supplier_id, :prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="businessexpense_supplier"></div>  
+                            <div class="column_form_input"><%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="expense_supplier"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px"></label>                        
@@ -46,55 +51,59 @@
                         </div>
                         
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">Expense Type*:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @businessexpense.hmrcexpcat_id, :prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="businessexpense_hmrcexpcat"></div>  
+                            <label class="column_form_label" style="width:90px">Expense Type:*</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="expense_hmrcexpcat"></div>  
                         </div>
                         
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Reference:</label>                        
                             <div class="column_form_input"><%= f.text_field :ref %></div>
-                            <div class="column_help_tooltip" id="businessexpense_reference"></div>  
+                            <div class="column_help_tooltip" id="expense_reference"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Supplier Ref:</label>                        
                             <div class="column_form_input"><%= f.text_field :supplier_ref %></div>
-                            <div class="column_help_tooltip" id="businessexpense_supplier_ref"></div>  
+                            <div class="column_help_tooltip" id="expense_supplier_ref"></div>  
                         </div>
 
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Bill Image:</label>                        
-                        <% if @businessexpense.receipt? %>
-                            <div class="column_form_input"><%= image_tag(@businessexpense.receipt_url, {:height => "50px"}) %></div>
-                            <div class="column_help_tooltip" id="businessexpense_receipt"></div>  
+                        <% if @expense.receipt? %>
+                            <div class="column_form_input"><%= image_tag(@expense.receipt_url, {:height => "50px"}) %></div>
+                            <div class="column_help_tooltip" id="expense_receipt"></div>  
                         </div>                        
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px"></label>                                                 
                         <% end %>  
                             <div class="column_form_input"><%= f.file_field :receipt %></div>
-                            <div class="column_help_tooltip" id="businessexpense_receipt"></div>  
+                            <div class="column_help_tooltip" id="expense_receipt"></div>  
                         </div>
 
                         <div class="column_form_item">
-                            <label class="column_form_label" style="width:90px">Total Amount*:</label>                        
-                            <div class="column_form_input"><%= f.text_field :amount, :placeholder => "0.00"  %></div>
-                            <div class="column_help_tooltip" id="businessexpense_amount"></div>  
+                            <label class="column_form_label" style="width:90px">Total (ex vat)*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :price, :placeholder => "0.00"  %></div>
+                            <div class="column_help_tooltip" id="expense_price"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">VAT Payable*:</label>                        
                             <div class="column_form_input"><%= f.text_field :vat, :placeholder => "0.00"  %></div>
-                            <div class="column_help_tooltip" id="businessexpense_vat"></div>  
+                            <div class="column_help_tooltip" id="expense_vat"></div>  
                         </div>
-
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Total (inc vat)*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :total, :placeholder => "0.00"  %></div>
+                            <div class="column_help_tooltip" id="expense_total"></div>  
+                        </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Inovice Date*:</label>                        
                             <div class="column_form_input"><%= f.date_field :date, :value => Time.now.strftime('%Y-%m-%d') %></div>
-                            <div class="column_help_tooltip" id="businessexpense_issue_date"></div>  
+                            <div class="column_help_tooltip" id="expense_issue_date"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:90px">Payment Due:</label>                        
                             <div class="column_form_input"><%= f.date_field :due_date %></div>
-                            <div class="column_help_tooltip" id="businessexpense_due_date"></div>  
+                            <div class="column_help_tooltip" id="expense_due_date"></div>  
                         </div>
 
                 </div>
@@ -104,7 +113,7 @@
                 <div class="column_line"></div>
 
                 <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", business_path %></div>
+                <div class="column_cancel"><%= link_to "cancel", businesses_path %></div>
                 <% end %>
            </div>
             
@@ -113,3 +122,5 @@
     <div class="column_2 column_2_blank"></div> 
     <div class="column_3 column_3_blank"></div> 
 </div>
+
+

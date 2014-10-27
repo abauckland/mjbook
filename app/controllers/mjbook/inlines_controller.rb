@@ -75,19 +75,9 @@ module Mjbook
           format.js {render :update_cat_new, :layout => false }        
         end        
       else  
-        #set model names for each type of item, determined by linetype
-        #case line.linetype
-        #  when 1 ; @model_name = "Product"
-        #  when 2 ; @model_name = "Service "         
-        #  when 3 ; @model_name = "Rate"          
-        #  when 4 ; @model_name = "Misc"
-        #end
-        old_line = Inline.find(params[:id])
-        @model_name = "Productcategory"
-        
-        const_name =  @model_name.camelize
-        category_klass = Mjbook.const_get(const_name)
-        cat = category_klass.where(:id => params[:value]).first        
+
+        old_line = Inline.find(params[:id])        
+        cat = Productcategory.where(:text => params[:value]).first        
         
         @line = Inline.create(:cat => cat.text,
                              :ingroup_id => old_line.ingroup_id,
@@ -114,22 +104,12 @@ module Mjbook
           format.js {render :update_product_new, :layout => false }        
         end         
       else  
-        #set model names for each type of item, determined by linetype
-        #case line.linetype
-        #  when 1 ; @model_name = "Product"
-        #  when 2 ; @model_name = "Service "         
-        #  when 3 ; @model_name = "Rate"          
-        #  when 4 ; @model_name = "Misc"
-        #end
+
         old_line = Inline.find(params[:id])
-        @model_name = "Product"
-        
-        const_name =  @model_name.camelize
-        item_klass = Mjbook.const_get(const_name)
-        item = item_klass.where(:id => params[:value]).first        
-        
+        item = Product.where(:item => params[:value]).first                
         cat = Productcategory.where(:id => item.productcategory_id).first
-        
+
+        if new_linetype == 1
         @line = Inline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => item.quantity,
@@ -141,8 +121,39 @@ module Mjbook
                              :total=> item.price,     
                              :ingroup_id => old_line.ingroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)        
+                             :linetype => old_line.linetype)  
+        end
 
+        if new_linetype == 2
+        @line = Inline.create(:cat => cat.text,
+                             :item => item.item,
+                             :quantity => 0,
+                             :unit_id => item.unit_id,
+                             :rate => 0,
+                             :price => item.price, 
+                             :vat_id => item.vat_id,
+                             :vat_due => item.vat_due,
+                             :total=> item.price,     
+                             :ingroup_id => old_line.ingroup_id,
+                             :line_order => old_line.line_order,
+                             :linetype => old_line.linetype)          
+        end
+
+        if new_linetype == 3
+        @line = Inline.create(:cat => cat.text,
+                             :item => item.item,
+                             :quantity => 0,
+                             :unit_id => item.unit_id,
+                             :rate => 0,
+                             :price => 0, 
+                             :vat_id => item.vat_id,
+                             :vat_due => 0,
+                             :total=> 0,     
+                             :ingroup_id => old_line.ingroup_id,
+                             :line_order => old_line.line_order,
+                             :linetype => old_line.linetype)          
+        end        
+      
         @old_line_id = old_line.id 
         old_line.destroy
 

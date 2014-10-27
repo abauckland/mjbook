@@ -1,0 +1,69 @@
+<div class="page_title">
+    <h1>Business Expense Item</h1>
+</div>
+
+<div class="content">
+    <div class="column_linked_container">          
+    
+        <div class="sub_column_linked_1">
+            <div class="column_content">
+                <div class="column_info">                        
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Due Date:</label>                        
+                                <div class="column_info_text"><%= @expense.due_date.strftime("%d/%m/%y") %></div>   
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Project:</label>                        
+                                <div class="column_info_text"><%= @expense.project.name %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Expense Cat:</label>                        
+                                <div class="column_info_text"><%= @expense.hmrcexpcat.category %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Reference:</label>                        
+                                <div class="column_info_text"><%= @expense.ref if @expense.ref %></div>
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Supplier:</label>                        
+                                <div class="column_info_text"><%= @expense.supplier.company_name %></div> 
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Issue date:</label>                        
+                                <div class="column_info_text"><%= @expense.date.strftime("%d/%m/%y") %></div>
+                            </div>
+                            <% if @expense.receipt %>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Receipt:</label>                        
+                                <div class="column_info_text"><%= image_tag(@expense.receipt) %></div> 
+                            </div>
+                            <% end %>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Price (ex VAT):</label>                        
+                                <div class="column_info_text"><%= pounds(@expense.price) %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">VAT:</label>                        
+                                <div class="column_info_text"><%= pounds(@expense.vat) %></div>  
+                            </div>
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Total (inc VAT):</label>                        
+                                <div class="column_info_text"><%= pounds(@expense.total) %></div>
+                            </div>  
+                            <div class="column_info_item">
+                                <label class="column_info_label" style="width:100px">Status:</label>                        
+                                <div class="column_info_text"><%= @expense.status %></div> 
+                            </div>  
+                </div>
+            </div>
+        </div>
+        <div class="sub_column_linked_2 column_linked_blank"></div>    
+        <div class="sub_column_linked_3 column_linked_blank"></div> 
+                   
+        <div class="column_linked_footer">
+            <div class="column_line"></div>
+            <div class="column_cancel"><%= link_to "back", businesses_path %></div>
+        </div>
+            
+    </div>
+</div>

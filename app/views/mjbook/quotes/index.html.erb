@@ -78,9 +78,9 @@
                         <%= row_print_link(quote, 'show') %>
                     
                     <% if quote.accepted? %>                
-                        <%= link_to "", nil, class: 'line_invoice_icon_show', title: "create invoice from quote" %>
+                        <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_show', title: "create invoice from quote" %>
                     <% else %>    
-                        <%= link_to "", nil, class: 'line_invoice_icon_hidden', title: "create invoice from quote" %>
+                        <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_hidden', title: "create invoice from quote" %>
                     <% end %>
                     
                     <% if quote.submitted? || quote.accepted? %>

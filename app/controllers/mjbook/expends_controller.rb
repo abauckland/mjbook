@@ -2,8 +2,9 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class ExpendsController < ApplicationController
-    before_action :set_expend, only: [:show, :edit, :update, :destroy]
-    before_action :set_accounts, only: [:index, :edit, :edit_personal]
+    before_action :set_expend, only: [:show, :edit, :update, :destroy, :reconcile]
+    before_action :set_accounts, only: [:edit, :pay_employee, :pay_business, :pay_salary]
+    before_action :set_paymethods, only: [:edit, :pay_employee, :pay_business, :pay_salary]
 
     # GET /expends
     def index
@@ -72,29 +73,31 @@ module Mjbook
     end
 
     # GET /expends/new
-    def new_personal
-      if params[:user_id]
-        @user_id = params[:user_id]
-      end
 
-      @users = policy_scope(User).joins(:expenses).where('mjbook_expenses.exp_type' => :personal)
+    def pay_employee
+
+      expenses = Mjbook::Expense.where(:exp_type => 1, :user_id => params[:id], :status => 2)
+      user = User.where(:id => params[:id]).first
+
+      @expenses = {}
+      @expenses[:employee_id] = user.id
+      @expenses[:employee_name] = user.name
+      @expenses[:price] = expenses.sum(:price)
+      @expenses[:vat] = expenses.sum(:vat)
+      @expenses[:total] = expenses.sum(:total)
+            
       @expend = Expend.new
 
     end
 
-    # GET /expends/new
-    def edit_personal
-      authorize @expend
-      @expend = Expend.find(params[:id])
-       
-      #get list of all expenses for user
-      @expenses = Mjbook::Expense.where(:user_id => @expend.user_id, :status => 'accepted').personal
- 
-      #calculate totals          
-      #create new model         
-      @expend = Expend.update(:price => @expenses.sum(:price),
-                              :vat=> @expenses.sum(:vat),
-                              :total=> @expenses.sum(:total))
+    def pay_business
+      @expense = Mjbook::Expense.where(:id => params[:id]).first
+      @expend = Expend.new      
+    end
+
+    def pay_salary
+      @salary = Mjbook::Salary.where(:id => params[:id]).first
+      @expend = Expend.new      
     end
 
 
@@ -105,11 +108,27 @@ module Mjbook
 
     # POST /expends
     def create
-      authorize @expend
       @expend = Expend.new(expend_params)
-
+      authorize @expend
       if @expend.save
-        redirect_to edit_expend_path(@expend), notice: 'Expend was successfully created.'
+        
+        if @expend.business?
+          expense = Expense.where(:id => @expend.expense_id).first
+          expense.update(:status => :paid)
+        end
+
+        if @expend.personal?
+          expenses = Expense.where(:user_id => @expend.user_id, :exp_type => 1, :status => 2)
+          expenses.each do |item|
+            item.update(:status => :paid)            
+          end          
+        end
+
+        if @expend.salary?
+          
+        end
+        
+        redirect_to expends_path, notice: 'Expend was successfully created.'
       else
         render :new
       end
@@ -119,7 +138,7 @@ module Mjbook
     def update
       authorize @expend
       if @expend.update(expend_params)
-        redirect_to expends_url, notice: 'Expend was successfully updated.'
+        redirect_to expends_path, notice: 'Expend was successfully updated.'
       else
         render :edit
       end
@@ -129,13 +148,12 @@ module Mjbook
     def destroy
       authorize @expend
       @expend.destroy
-      redirect_to expends_url, notice: 'Expend was successfully destroyed.'
+      redirect_to expends_path, notice: 'Expend was successfully destroyed.'
     end
     
     def reconcile
       authorize @expend
       #mark expense as rejected
-      @expend = Expend.where(:id => params[:id]).first
       if @expend.update(:status => "reconciled")
         respond_to do |format|
           format.js   { render :reconcile, :layout => false }
@@ -152,10 +170,14 @@ module Mjbook
       def set_accounts
         @companyaccounts = policy_scope(Companyaccount)
       end
+      
+      def set_paymethods
+        @paymethods = Mjbook::Paymethod.all        
+      end
 
       # Only allow a trusted parameter "white list" through.
       def expend_params
-        params.require(:expend).permit(:company_id, :user_id, :expense_id, :paymethod_id, :companyaccount_id, :expend_receipt, :date, :ref, :price, :vat, :total, :note)
+        params.require(:expend).permit(:company_id, :exp_type, :user_id, :expense_id, :paymethod_id, :companyaccount_id, :expend_receipt, :date, :ref, :price, :vat, :total, :status, :note)
       end
 
       def pdf_expend_index(expends, account_id, date_from, date_to)

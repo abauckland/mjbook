@@ -4,7 +4,7 @@ module Mjbook
     belongs_to :company
     belongs_to :user
 
-    enum status: [:paid, :reconciled]
+    enum status: [:submitted, :paid]
         
   end
 end

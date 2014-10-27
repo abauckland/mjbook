@@ -79,7 +79,7 @@ module Mjbook
       @salary = Salary.new(salary_params)
       authorize @salary
       if @salary.save
-        redirect_to @salary, notice: 'Salary was successfully created.'
+        redirect_to salaries_path, notice: 'Salary was successfully created.'
       else
         render :new
       end
@@ -89,7 +89,7 @@ module Mjbook
     def update
       authorize @salary
       if @salary.update(salary_params)
-        redirect_to @salary, notice: 'Salary was successfully updated.'
+        redirect_to salaries_path, notice: 'Salary was successfully updated.'
       else
         render :edit
       end
@@ -99,7 +99,7 @@ module Mjbook
     def destroy
       authorize @salary
       @salary.destroy
-      redirect_to salaries_url, notice: 'Salary was successfully destroyed.'
+      redirect_to salaries_path, notice: 'Salary was successfully destroyed.'
     end
 
     def reconcile
@@ -124,10 +124,10 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def salary_params
-        params.require(:salary).permit(:company_id, :user_id, :total, :date)
+        params.require(:salary).permit(:company_id, :user_id, :total, :date, :status)
       end
       
-      def pdf_employee_index(salaries, user_id, date_from, date_to)
+      def pdf_salary_index(salaries, user_id, date_from, date_to)
          user = User.where(:id => user_id).first if user_id
 
         if user
@@ -136,14 +136,14 @@ module Mjbook
           filter_group = "All Employees"
         end
          
-        filename = "Employee_salary_payments_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+        filename = "#{ filter_group }_salary_payments_#{ date_from }_#{ date_to }.pdf"
                    
         document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
         ) do |pdf|      
-          table_indexes(salaries, 'terms', nil, nil, nil, filename, pdf)      
+          table_indexes(salaries, 'salary', nil, nil, nil, filename, pdf)      
         end
   
         send_data document.render, filename: filename, :type => "application/pdf"        

@@ -12,7 +12,7 @@ module Mjbook
     mount_uploader :receipt, ReceiptUploader
 
     enum exp_type: [:business, :personal]
-    enum status: [:submitted, :accepted, :rejected, :paid]
+    enum status: [:submitted, :rejected, :accepted, :paid]
 
 
    # validates :project_id, presence: true

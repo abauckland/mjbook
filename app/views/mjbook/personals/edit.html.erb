@@ -1,0 +1,115 @@
+<div class="page_title">
+    <h1>Edit Personal Expense Record</h1>
+</div>
+
+<div class="content">
+    <div class="column_1">
+        <div class="column_content">
+        
+            <% if @expense.errors.any? %>
+            <div class="column_error">
+            <p><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being created</p>
+                  <ul>
+                  <% @expense.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+            </div>
+            <% end %>
+            
+            <div class="column_sub_content">
+                <div class="column_form">
+  
+            <%= form_for(@expense, url: { action: "update" }) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    <%= f.hidden_field :exp_type, :value => "personal" %>
+                    <%= f.hidden_field :status, :value => "submitted" %>  
+                                      
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Job Ref:*</label>                        
+                        <% if @projects %>
+                            <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="personalexpense_project"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "create new job", new_project_path %></div>  
+                        </div>
+                        
+                        
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Supplier:*</label>                        
+                        <% if @suppliers %>
+                            <div class="column_form_input"><%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="personalexpense_supplier"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px"></label>                        
+                        <% end %>
+                            <div class="column_form_button"><%= link_to "add new supplier", new_supplier_path %></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Expense Type:*</label>                        
+                            <div class="column_form_input"><%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true}, :class => "full_width")%></div>
+                            <div class="column_help_tooltip" id="personalexpense_hmrcexpcat"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Reference:</label>                        
+                            <div class="column_form_input"><%= f.text_field :ref %></div>
+                            <div class="column_help_tooltip" id="personalexpense_reference"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Receipt Image:</label>                        
+                        <% if @expense.receipt? %>
+                            <div class="column_form_input"><%= image_tag(@expense.receipt_url, {:height => "50px"}) %></div>
+                            <div class="column_help_tooltip" id="businessexpense_receipt"></div>  
+                        </div>                        
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px"></label>                                                 
+                        <% end %>  
+                            <div class="column_form_input"><%= f.file_field :receipt %></div>
+                            <div class="column_help_tooltip" id="businessexpense_receipt"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Total (ex vat)*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :price, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %></div>
+                            <div class="column_help_tooltip" id="personalexpense_price"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">VAT Paid*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :vat, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %></div>
+                            <div class="column_help_tooltip" id="personalexpense_vat"></div>  
+                        </div>
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Total (inc vat)*:</label>                        
+                            <div class="column_form_input"><%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %></div>
+                            <div class="column_help_tooltip" id="personalexpense_total"></div>  
+                        </div>
+
+                        <div class="column_form_item">
+                            <label class="column_form_label" style="width:90px">Date*:</label>                        
+                            <div class="column_form_input"><%= f.date_field :date, :value => Time.now.strftime('%Y-%m-%d') %></div>
+                            <div class="column_help_tooltip" id="personalexpense_issue_date"></div>  
+                        </div>
+
+                </div>
+           </div>     
+                
+           <div class="column_footer">
+                <div class="column_line"></div>
+                <div class="column_submit"><%= f.submit "save"%></div>
+                <div class="column_cancel"><%= link_to "cancel", personals_path %></div>
+                <% end %>
+           </div>
+            
+        </div>
+    </div>
+    <div class="column_2 column_2_blank"></div> 
+    <div class="column_3 column_3_blank"></div> 
+</div>

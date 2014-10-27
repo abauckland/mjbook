@@ -51,9 +51,9 @@ module Mjbook
           #products
           when 1 ; render :partial => 'product_line', locals: { line: line }
           #services & rate
-          when 2,3 ; render :partial => 'service_line', locals: { line: line }
+          when 2 ; render :partial => 'service_line', locals: { line: line }
           #misc  
-          when 4 ; render :partial => 'misc_line', locals: { line: line }  
+          when 3 ; render :partial => 'misc_line', locals: { line: line }  
         end
     end
   
