@@ -23,8 +23,7 @@
                             <label class="column_form_label" style="width:95px">Job Reference*:</label>                        
                         <% if @projects %>
                             <div class="column_form_input"><%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @mileage.project_id, :prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="mileage_project"></div>
-                            <div class="column_error_note"> <%= error_check(@mileage, :project_id)%></div>   
+                            <div class="column_help_tooltip" id="mileage_project"></div>  
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:95px"></label>                        
@@ -41,7 +40,6 @@
                             <label class="column_form_label" style="width:95px">Mode*:</label>                        
                             <div class="column_form_input"><%= f.collection_select(:mileagemode_id, Mjbook::Mileagemode.all, :id, :mode, {:selected => @mileage.mileagemode_id, :prompt => :true}, :class => "full_width")%></div>
                             <div class="column_help_tooltip" id="mileage_mileagemethod"></div>
-                            <div class="column_error_note"> <%= error_check(@mileage, :mileagemode_id)%></div>   
                         </div>
                         <div class="column_form_item">
                             <label class="column_form_label" style="width:95px">Start*:</label>                        

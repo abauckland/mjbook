@@ -10,7 +10,7 @@
                 <div class="column_table">
                 <table>
                 <thead>
-                    <tr>
+                    <tr class="column_line_form">
                         <th class="column_line_form_label" style="width:60px">Mode</th>                        
                         <th class="column_line_form_label" style="width:95px">HMRC Rate (£)</th> 
                         <th class="column_line_form_label" style="width:95px">Rate Used (£)</th>
@@ -20,12 +20,12 @@
                 <% @mileagemodes.each do |mode| %>
 
                 <tbody>
-                    <tr>
+                    <tr class="column_line_form">
                     <%= form_for(mode) do |f| %>
-                        <td class="column_line_form"><%= mode.mode %>:</td>
-                        <td class="column_line_form"><%= pounds(mode.hmrc_rate) %></td>
-                        <td class="column_line_form"><%= f.text_field :rate, :class => "currency" %></td>
-                        <td class="column_line_form"><%= f.submit ""%></td>
+                        <td class="column_line_form_input"><%= mode.mode %>:</td>
+                        <td class="column_line_form_input"><%= pounds(mode.hmrc_rate) %></td>
+                        <td class="column_line_form_input"><%= f.text_field :rate, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %></td>
+                        <td class="column_line_form_input"><%= f.submit ""%></td>
                     <% end %>
                     </tr>
                 <% end %>

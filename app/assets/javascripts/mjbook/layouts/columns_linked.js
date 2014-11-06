@@ -74,7 +74,20 @@ function input_width() {
 	$('.column_form_input input[type=url]').css({'width': (w-l-25) + 'px'});
 	$('.column_form_input').children('select.full_width').css({'width': (w-l-25) + 'px'});	
 	$('.column_form_input textarea').css({'width': (w-l-27) + 'px'});
+
 };
+
+function show_width() {
+	var w = $('.column_info_item').width();
+	var l = $('.column_info_label').width();
+	
+	$('.column_info_text').css({'width': (w-l-5) + 'px'});	
+	$('.column_info_textarea_5').css({'width': (w-l-5) + 'px'});
+	$('.column_info_textarea_10').css({'width': (w-l-5) + 'px'});
+	$('.column_info_textarea_15').css({'width': (w-l-5) + 'px'});
+	$('.column_info_textarea_20').css({'width': (w-l-5) + 'px'});	
+};
+
 
 $(document).ready(function(){
 
@@ -95,11 +108,13 @@ $(document).ready(function(){
 	columns_linked_width(s_tab, mob, limit);
 	columns_linked_height(s_tab, mob, limit, col_l_1, col_l_2, col_l_3);
 	input_width();
+	show_width();
 	$(window).resize(function(){
 
 		columns_linked_width(s_tab, mob, limit);
 		columns_linked_height(s_tab, mob, limit, col_l_1, col_l_2, col_l_3);//set column height depending on size of window
 	input_width();
+	show_width();
 	});
 
 });

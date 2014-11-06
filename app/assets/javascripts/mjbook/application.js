@@ -20,8 +20,9 @@
 //= require mjbook/plugins/jquery.jeditable.js
 //= require mjbook/plugins/jeditable_extensions.js
 //= require mjbook/plugins/qtip2.js
-//= require mjbook/plugins/jquery.jqplot.min.js
+//= require mjbook/plugins/jquery.jqplot.js
 //= require mjbook/jqplotPlugins/jqplot.barRenderer.js
 //= require mjbook/jqplotPlugins/jqplot.categoryAxisRenderer.js
+//= require mjbook/jqplotPlugins/jqplot.enhancedLegendRenderer.js
 //= require mjbook/jqplotPlugins/jqplot.pointLabels.js
 //= require_tree .

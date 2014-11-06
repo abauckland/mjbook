@@ -37,6 +37,7 @@
   float: left;
   border: 2px solid #dddddd;
   padding: 10px 10px 10px 10px;
+  margin: 0px 0px 0px 0px; 
   @include border-radius(4px);
   background: #fff;
   }
@@ -187,28 +188,28 @@
   @extend .column_form_input;
   padding: 5px 0px 5px 5px;
   font-weight: normal; 
-  height: 100px;  
+  height: 500px;  
 }
 
 .column_info_textarea_10{
   @extend .column_form_input;
   padding: 5px 0px 5px 5px;
   font-weight: normal; 
-  height: 200px;
+  height: 100px;
 }
 
 .column_info_textarea_15{
   @extend .column_form_input;
   padding: 5px 0px 5px 5px;
   font-weight: normal; 
-  height: 300px;
+  height: 150px;
 }
 
 .column_info_textarea_20{
-//  @extend .column_form_label;
-//  padding: 5px 0px 5px 5px;
-//  font-weight: normal; 
-//  height: 400px;
+  @extend .column_form_label;
+  padding: 5px 0px 5px 5px;
+  font-weight: normal; 
+  height: 200px;
 }
 
 .column_info_image{

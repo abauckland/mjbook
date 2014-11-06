@@ -7,6 +7,7 @@ module Mjbook
     belongs_to :user
     has_one :expense
 
+    validates :project_id, :date, :mileagemode_id, :start, :finish, presence: true
     
   end
 end

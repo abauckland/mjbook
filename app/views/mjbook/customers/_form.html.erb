@@ -33,13 +33,11 @@
                                 <label class="column_form_label" style="width:80px">First Name:</label>                        
                                 <div class="column_form_input"><%= f.text_field :first_name %></div>
                                 <div class="column_help_tooltip" id="customer_first_name"></div>
-    			                 <div class="column_error_note"> <%= error_check(@customer, :first_name)%></div>  
                             </div>
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">Surname:</label>                        
                                 <div class="column_form_input"><%= f.text_field :surname %></div>
-                                <div class="column_help_tooltip" id="customer_surname"></div> 
-    			                 <div class="column_error_note"> <%= error_check(@customer, :surname)%></div>   
+                                <div class="column_help_tooltip" id="customer_surname"></div>  
                             </div>
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">Position:</label>                        
@@ -72,8 +70,7 @@
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">Address 1:</label>                        
                                 <div class="column_form_input"><%= f.text_field :address_1 %></div>
-                                <div class="column_help_tooltip" id="customer_address_1"></div>
-    			                 <div class="column_error_note"> <%= error_check(@customer, :address_1)%></div>     
+                                <div class="column_help_tooltip" id="customer_address_1"></div>   
                             </div>
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">Address 2:</label>                        
@@ -83,8 +80,7 @@
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">City:</label>                        
                                 <div class="column_form_input"><%= f.text_field :city %></div>
-                                <div class="column_help_tooltip" id="customer_city"></div>
-    			                 <div class="column_error_note"> <%= error_check(@customer, :city)%></div>     
+                                <div class="column_help_tooltip" id="customer_city"></div>    
                             </div>
                             <div class="column_form_item">
                                 <label class="column_form_label" style="width:80px">County:</label>                        
