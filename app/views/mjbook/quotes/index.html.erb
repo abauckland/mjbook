@@ -1,6 +1,8 @@
-<div class="page_title">
-    <h1>Quotes</h1>
-    <div class="page_title_button"><%= link_to "create new quote", new_quote_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Quotes</h1>
+    </div>
+    <div><%= link_to "create new quote", new_quote_path, class: "title_button" %> </div>
 </div>
 
 
@@ -26,80 +28,91 @@
 
     <div class="option_band_submit"><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>    
     <% end %>
-</div>  
+</div> 
 
- <div class="table_content_with_filter">
-    <table>
-      <thead>
-        <tr>
-          <th class="quote_ref">Ref</th> 
-          <th class="quote_title">Title</th>
-          <th class="quote_project_ref">Job Ref</th>
-          <th class="quote_customer_ref">Cust. Ref</th>          
-          <th class="quote_customer">Cust. Name</th> 
-          <th class="quote_company_name">Cust. Company</th> 
-          <th class="quote_date">Date</th>
-          <th class="quote_price">Price</br><span class="vat_note">(ex VAT)</span></th>          
-          <th class="quote_vat_due">Vat</th>         
-          <th class="quote_total">Total</br><span class="vat_note">(Inc VAT)</span></th>          
-          <th class="quote_status">Status</th>
-          <th width="125px" class="row_button"></th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-          <% if @quotes %>
-            
-            <% @quotes.each do |quote| %>
-              <tr>
-                <td class="quote_ref"><%= quote.ref %></td> 
-                <td class="quote_title"><%= quote.title %></td> 
-                <td class="quote_project_ref"><%= quote.project.ref %></td>
-                <td class="quote_customer_ref"><%= quote.customer_ref %></td> 
-                <td class="quote_customer"><%= quote.project.customer.name %></td>
-                <td class="quote_company_name"><%= quote.project.customer.company_name %></td>
-                <td class="quote_date"><%= quote.date.strftime("%d/%m/%y") %></td>
-                <td class="quote_price"><%= pounds(quote.price) %></td> 
-                <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>         
-                <td class="quote_total"><%= pounds(quote.total) %></td>          
-                <td id="<%= quote.id %>_status" class="quote_status"><%= quote.status %></td>              
-                <td id="<%= quote.id %>_links" width="125x" class="row_button">
-                
-                    <% if quote.submitted? || quote.rejected? %>                
-                        <%= row_delete_link(quote, 'show') %>
-                        <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
-                    <% else %>    
-                        <%= row_delete_link(quote, 'hidden') %>
-                        <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_hidden', title: "edit" %>                        
-                    <% end %>
-                    
-                        <%= row_print_link(quote, 'show') %>
-                    
-                    <% if quote.accepted? %>                
-                        <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_show', title: "create invoice from quote" %>
-                    <% else %>    
-                        <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_hidden', title: "create invoice from quote" %>
-                    <% end %>
-                    
-                    <% if quote.submitted? || quote.accepted? %>
-                        <%= row_reject_link(quote, 'show') %>               
-                    <% else %> 
-                        <%= row_reject_link(quote, 'hidden') %>
-                    <% end %>
-                    
-                    <% if quote.submitted? || quote.rejected?  %>
-                        <%= row_accept_link(quote, 'show') %>
-                    <% else %>    
-                        <%= row_accept_link(quote, 'hidden') %>
-                    <% end %>                
 
-                </td>
-              </tr>
-            <% end %>  
-          <% end %>
-          </tbody>
-        </table>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="quote_ref">Ref</th> 
+                            <th class="quote_title">Title</th>
+                            <th class="quote_project_ref">Job Ref</th>
+                            <th class="quote_customer_ref">Cust. Ref</th>          
+                            <th class="quote_customer">Cust. Name</th> 
+                            <th class="quote_company_name">Cust. Company</th> 
+                            <th class="quote_date">Date</th>
+                            <th class="quote_price">Price</br><span>(ex VAT)</span></th>          
+                            <th class="quote_vat_due">Vat</th>         
+                            <th class="quote_total">Total</br><span>(Inc VAT)</span></th>          
+                            <th class="quote_status">Status</th>
+                            <th class="row_button no_buttons_5"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                          <% if @quotes %>            
+                            <% @quotes.each do |quote| %>
+                                <tr>
+                                    <td class="quote_ref"><%= quote.ref %></td> 
+                                    <td class="quote_title"><%= quote.title.titleize %></td> 
+                                    <td class="quote_project_ref"><%= quote.project.ref %></td>
+                                    <td class="quote_customer_ref"><%= quote.customer_ref %></td> 
+                                    <td class="quote_customer"><%= quote.project.customer.name.titleize %></td>
+                                    <td class="quote_company_name"><%= quote.project.customer.company_name.titleize %></td>
+                                    <td class="quote_date"><%= quote.date.strftime("%d/%m/%y") %></td>
+                                    <td class="quote_price"><%= pounds(quote.price) %></td> 
+                                    <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>         
+                                    <td class="quote_total"><%= pounds(quote.total) %></td>          
+                                    <td id="<%= quote.id %>_status" class="quote_status"><%= quote.state %></td> 
+                                    <td id="<%= quote.id %>_links" class="row_button no_buttons_5">
+                                        <% if quote.submitted? || quote.rejected? %>                
+                                            <%= row_delete_link(quote, 'show') %>
+                                            <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
+                                        <% else %>    
+                                            <%= row_delete_link(quote, 'hidden') %>
+                                            <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_hidden', title: "edit" %>                        
+                                        <% end %>
+                                        
+                                            <%= row_print_link(quote, 'show') %>
+                                        
+                                        <% if quote.accepted? %>                
+                                            <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_show', title: "create invoice from quote" %>
+                                        <% else %>    
+                                            <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_hidden', title: "create invoice from quote" %>
+                                        <% end %>
+                                        
+                                        <% if quote.submitted? || quote.accepted? %>
+                                            <%= row_reject_link(quote, 'show') %>               
+                                        <% else %> 
+                                            <%= row_reject_link(quote, 'hidden') %>
+                                        <% end %>
+                                        
+                                        <% if quote.submitted? || quote.rejected?  %>
+                                            <%= row_accept_link(quote, 'show') %>
+                                        <% else %>    
+                                            <%= row_accept_link(quote, 'hidden') %>
+                                        <% end %>                
+                                    </td)
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

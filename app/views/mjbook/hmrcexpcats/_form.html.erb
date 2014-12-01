@@ -1,46 +1,47 @@
-<div class="content">
-    <div class="column_1">
-        <div class="column_content">
-            
-            <% if @hmrcexpcat.errors.any? %>
-            <div class="column_error">
-            <p><%= pluralize(@hmrcexpcat.errors.count, "error") %> prohibited this detail from being saved:</p>
-                  <ul>
-                  <% @hmrcexpcat.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                  <% end %>
-                  </ul>
-            </div>
-            <% end %>
-            
-            <div class="column_sub_content">
-                <div class="column_form">
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+
+<!-- error messages - associated with form start--> 
+            <%= render :partial => "form_error", :locals => {:item => @hmrcexpcat} %>
+
+<!-- form column start-->
+            <div class="row">
                 <%= form_for(@hmrcexpcat) do |f| %>
-                    <%= f.hidden_field :company_id, :value => current_user.company_id %>    
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Group:</label>                        
-                            <div class="column_form_input"><%= f.collection_select(:hmrcgroup_id, Mjbook::Hmrcgroup.all, :id, :group, {:prompt => :true}, :class => "full_width")%></div>
-                            <div class="column_help_tooltip" id="misc_name"></div> 
-                        </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:80px">Category:</label>                        
-                            <div class="column_form_input"><%= f.text_field :category  %></div>
-                            <div class="column_help_tooltip" id="misc_name"></div> 
-                        </div>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <fieldset>
+
+                        <!-- form input[select] -->
+                        <div class="form_tooltip" id="hmrcexpcats_group"></div>
+                        <label class="label_80">Group:*</label>
+                        <span>
+                            <%= f.collection_select(:hmrcgroup_id, Mjbook::Hmrcgroup.all, :id, :group, {:prompt => :true})%>
+                        </span></br>
+
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="hmrcexpcats_category"></div>
+                        <label class="label_80">Category:*</label>
+                        <span>
+                            <%= f.text_field :category %>
+                        </span></br>
+                        
+                    </fieldset>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= f.submit "save"%>
+                    <%= link_to "cancel", hmrcexpcats_path %>
                 </div>
-           </div>     
-                
-           <div class="column_footer">
-                <div class="column_line"></div>
-                <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", hmrcexpcats_path %></div>
                 <% end %>
-           </div>
-            
+            </div>
         </div>
     </div>
-    <div class="column_2 column_2_blank"></div> 
-    <div class="column_3 column_3_blank"></div> 
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
 </div>
-
-

@@ -1,50 +1,57 @@
-<div class="page_title">
-    <h1>Project Details</h1>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Project Details</h1>
+    </div>
 </div>
 
-<div class="content">
-    <div class="column_linked_container">          
-    
-        <div class="sub_column_linked_1">
-            <div class="column_content">
-                <div class="column_info">                        
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:90px">Ref:</label>                        
-                                <div class="column_info_text"><%= @project.ref %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:90px">Title:</label>                        
-                                <div class="column_info_text"><%= @project.title %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:90px">Customer Ref:</label>                        
-                                <div class="column_info_text"><%= @project.customer_ref %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:90px">Customer:</label>                        
-                                <div class="column_info_text"><%= @project.customer.company_name %></div> 
-                            </div>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+                
+            <%= render :partial => "flash_notice" %>
+<!-- column start-->
+            <div class="row">
+                <article>
+                    <div class="article-set">
 
+                        <!-- show text line --> 
+                        <label class="label_80">Reference:</label>
+                        <span><%= @project.ref %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Title:</label>
+                        <span><%= @project.title.titleize %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Customer:</label>
+                        <span><%= @project.customer.company_name.titleize %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Customer Ref:</label>
+                        <span><%= @project.customer_ref %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Description:</label>
+                        <span><%= @project.description %></span></br>
+
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="sub_column_linked_2">
-            <div class="column_content">
-                <div class="column_info">    
-                    <div class="column_info_item">
-                        <label class="column_info_label" style="width:80px">Description:</label>                        
-                        <div class="column_info_textarea_20"><%= @project.description %></div>
-                    </div>    
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "edit details", edit_project_path(@project) %>
+                    <%= link_to "back", projects_path %>
                 </div>
-            </div>     
-        </div> 
-        <div class="sub_column_linked_3 column_linked_blank"></div> 
-                   
-        <div class="column_linked_footer">
-            <div class="column_line"></div>
-            <div class="column_edit"><%= link_to "edit details", edit_project_path(@project) %></div>
-            <div class="column_cancel"><%= link_to "back", projects_path %></div>
+                <% end %>
+            </div>
         </div>
-            
+    </div>
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
     </div>
 </div>

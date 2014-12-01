@@ -1,5 +1,8 @@
 module Mjbook
   class Quote < ActiveRecord::Base
+    
+    include AASM
+
     has_many :qgroups, :dependent => :destroy
 
     belongs_to :project
@@ -9,10 +12,34 @@ module Mjbook
     
     after_create :create_nested_records
 
-    enum status: [:submitted, :accepted, :rejected, :invoiced]
 
-    validates :project_id, presence: true
-    validates :ref, presence: true    
+    aasm :column => 'state' do
+
+      state :submitted, :initial => true 
+      state :rejected
+      state :accepted
+      state :invoiced
+  
+      event :accept do
+        transitions :from => :submitted, :to => :accepted
+        transitions :from => :rejected, :to => :accepted
+      end
+  
+      event :reject do
+        transitions :from => :submitted, :to => :rejected
+        transitions :from => :accepted, :to => :rejected
+      end
+  
+      event :invoice do
+        transitions :from => :accepted, :to => :invoiced
+      end
+    
+    end
+
+    validates :project_id, :quoteterm_id, :ref, presence: true
+    validates :date,
+      presence: true#,
+   #   format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }  
 
     private
 

@@ -15,8 +15,20 @@ module Mjbook
       #cash_projection
       
       #quotes_accepted_value      
+
+
+      def income_summary
+        
+      end
       
-      
+      def expenditure_summary
+         
+      end
+
+      def transaction_summary
+        @transactions = (policy_scope(Mjbook::Expend) + policy_scope(Mjbook::Payment)).sort{|a,b| a.date <=> b.date }
+      end
+
     end
   end
 end

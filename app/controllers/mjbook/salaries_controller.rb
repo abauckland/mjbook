@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class SalariesController < ApplicationController
-    before_action :set_salary, only: [:show, :edit, :update, :destroy, :reconcile]
+    before_action :set_salary, only: [:show, :edit, :update, :destroy, :accept, :reject]
     before_action :set_users, only: [:index, :new, :edit]
 
     include PrintIndexes
@@ -102,14 +102,24 @@ module Mjbook
       redirect_to salaries_path, notice: 'Salary was successfully destroyed.'
     end
 
-    def reconcile
-      #mark expense as rejected
+    def accept
       authorize @salary
-      if @salary.update(:status => "reconciled")
+      #mark expense ready for payment
+      if @salary.accept!       
         respond_to do |format|
-          format.js   { render :reconcile, :layout => false }
+          format.js   { render :accept, :layout => false }
+        end  
+      end      
+    end 
+
+    def reject
+      authorize @salary
+      #mark expense as rejected
+      if @salary.reject!
+        respond_to do |format|
+          format.js   { render :reject, :layout => false }
         end 
-      end 
+      end    
     end
 
     private

@@ -32,7 +32,7 @@ module Mjbook
       if @mileage.save
         add_to_expenses(@mileage)
 
-        redirect_to @mileage, notice: 'Mileage was successfully created.'
+        redirect_to personals_path, notice: 'Mileage was successfully created.'
       else
         render :new
       end
@@ -41,7 +41,7 @@ module Mjbook
     # PATCH/PUT /mileages/1
     def update
       if @mileage.update(mileage_params)
-        redirect_to @mileage, notice: 'Mileage was successfully updated.'
+        redirect_to personals_path, notice: 'Mileage was successfully updated.'
       else
         render :edit
       end

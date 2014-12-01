@@ -1,42 +1,57 @@
-<div class="page_title">
-    <h1>Quote Terms</h1>
-    <div class="page_title_button"><%= link_to 'add new terms', new_quoteterm_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Quote Terms</h1>
+    </div>
+    <div class="title_help" id="quoteterms_index"></div>       
+    <div><%= link_to 'add new terms', new_quoteterm_path, class: "title_button" %></div>
 </div>
 
-<div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-          <th class="terms_ref">Reference</th>
-          <th class="terms_period_large">Period Valid (days)</th>
-          <th class="terms_period_small">Period</th>
-          <th class="terms_terms">Terms</th>         
-          <th width="50px" class="row_button">
-              <%= link_to "", print_quoteterm_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>              
-          </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-          <% if @quoteterms %>            
-            <% @quoteterms.each do |quoteterm| %>
-              <tr>
-                <td class="terms_ref"><%= quoteterm.ref %></td>
-                <td class="terms_period_large"><%= quoteterm.period %></td> 
-                <td class="terms_period_small"><%= quoteterm.period %></td>
-                <td class="terms_terms"><%= quoteterm.terms %></td>
-                <td width="50px" class="row_button"> 
-                <% if quoteterm_in_use(quoteterm) %>
-                    <%= row_delete_link(quoteterm, 'show') %>
-                    <%= row_edit_link(quoteterm, 'show') %>                   
-                <% end %> 
-                </td>            
-              </tr>
-            <% end %>  
-          <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="terms_ref">Reference</th>
+                            <th class="terms_period_large">Payment Period (days)</th>
+                            <th class="terms_terms">Terms</th> 
+                            <th class="row_button no_buttons_2">
+                                <% if @quoteterms %>
+                                    <%= link_to "", print_quoteterm_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>                                
+                                <% end %> 
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @quoteterms %>            
+                            <% @quoteterms.each do |term| %>
+                                <tr>
+                                    <td class="terms_ref"><%= term.ref %></td> 
+                                    <td class="terms_period_large"><%= term.period %></td> 
+                                    <td class="terms_terms"><%= term.terms %></td>
+                                    <td class="row_button no_buttons_2">
+                                        <% if quoteterm_in_use(term) %>
+                                            <%= row_delete_link(term, 'show') %>
+                                            <%= row_edit_link(term, 'show') %>
+                                        <% end %>                                        
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

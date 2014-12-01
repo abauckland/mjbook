@@ -1,87 +1,105 @@
-<div class="page_title">
-    <h1>Customer Details</h1>
-    <div class="page_title_button"><%= link_to "add new customer", new_customer_path %> </div> 
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Customers Details</h1>
+    </div>
 </div>
 
-<div class="content">
-    <div class="column_linked_container">          
+<div class="row">
+    <div class="col-1-1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
     
-        <div class="sub_column_linked_1">
-            <div class="column_content">
-                <div class="column_info">                        
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Name:</label>                        
-                                <div class="column_info_text"><%= @customer.name %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Position:</label>                        
-                                <div class="column_info_text"><%= @customer.position %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">E-mail:</label>                        
-                                <div class="column_info_text"><%= @customer.email %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Tel:</label>                        
-                                <div class="column_info_text"><%= @customer.phone %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Alt. Tel:</label>                        
-                                <div class="column_info_text"><%= @customer.alt_phone %></div>  
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Company:</label>                        
-                                <div class="column_info_text"><%= @customer.company_name %></div> 
-                            </div>
+            <div class="row">
+                <div class="sub-1-3 column_1">
+                    <article>
+                        <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Company:</label>
+                        <span><%= @customer.company_name %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Title:</label>
+                        <span><%= @customer.title %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">First Name:</label>
+                        <span><%= @customer.first_name %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Surname:</label>
+                        <span><%= @customer.surname %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Position:</label>
+                        <span><%= @customer.position %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">E-mail:</label>
+                        <span><%= @customer.email %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Tel:</label>
+                        <span><%= @customer.phone %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Alt. Tel:</label>
+                        <span><%= @customer.alt_phone %></span></br>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-1-3 column_2">
+                    <article>
+                        <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Address 1:</label>
+                        <span><%= @customer.address_1 %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Address 2:</label>
+                        <span><%= @customer.address_2 %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">City:</label>
+                        <span><%= @customer.city %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">County:</label>
+                        <span><%= @customer.county %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Country:</label>
+                        <span><%= @customer.country %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Postcode:</label>
+                        <span><%= @customer.postcode %></span></br>
+
+                        </div>
+                    </div>                                       
+                </div>
+                <div class="sub-1-3 column_3">
+                    <article>
+                        <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Notes:</label>
+                        <span><%= @customer.notes %></span></br>
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "edit details", edit_customer_path(@customer) %>
+                    <%= link_to "back", customers_path %>
                 </div>
             </div>
         </div>
-        <div class="sub_column_linked_2">
-            <div class="column_content">
-                <div class="column_info">    
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Address 1:</label>                        
-                                <div class="column_info_text"><%= @customer.address_1 %></div>   
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Address 2:</label>                        
-                                <div class="column_info_text"><%= @customer.address_2 %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">City:</label>                        
-                                <div class="column_info_text"><%= @customer.city %></div>   
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">County:</label>                        
-                                <div class="column_info_text"><%= @customer.county %></div>  
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Country:</label>                        
-                                <div class="column_info_text"><%= @customer.country %></div>  
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Postcode:</label>                        
-                                <div class="column_info_text"><%= @customer.postcode %></div>
-                            </div>    
-                </div>
-            </div>     
-        </div>    
-        <div class="sub_column_linked_3">
-            <div class="column_content">
-                <div class="column_info">    
-                    <div class="column_info_item">
-                        <label class="column_info_label" style="width:40px">Notes:</label>                        
-                        <div class="column_info_textarea_20"><%= @customer.notes %></div>
-                    </div>    
-                </div>
-            </div>     
-        </div> 
-                   
-        <div class="column_linked_footer">
-            <div class="column_line"></div>
-            <div class="column_edit"><%= link_to "edit details", edit_customer_path(@customer) %></div>
-            <div class="column_cancel"><%= link_to "back", customers_path %></div>
-        </div>
-            
     </div>
 </div>

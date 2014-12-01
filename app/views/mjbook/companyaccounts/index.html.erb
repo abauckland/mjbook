@@ -1,40 +1,54 @@
-<div class="page_title">
-    <h1>Company Accounts</h1>
-    <div class="page_title_button"><%= link_to 'New Account', new_companyaccount_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Company Accounts</h1>
+    </div>
+    <div class="title_help" id="companyaccounts_index"></div>       
+    <div><%= link_to 'New Account', new_companyaccount_path, class: "title_button" %></div>
 </div>
 
-<div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-          <th class="accounts_name">Name</th>
-          <th class="accounts_provider">Provider</th>
-          <th class="accounts_code">Code</th>
-          <th class="accounts_ref">Number</th>         
-          <th width="50px" class="row_button"></th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-          <% if @companyaccounts %>            
-            <% @companyaccounts.each do |companyaccount| %>
-              <tr>
-                <td class="accounts_name"><%= companyaccount.name %></td> 
-                <td class="accounts_provider"><%= companyaccount.provider %></td>
-                <td class="accounts_code"><%= companyaccount.code %></td>
-                <td class="accounts_ref"><%= companyaccount.ref %></td>
-                <td width="50px" class="row_button"> 
-                <% if companyaccount_in_use(companyaccount) %>
-                    <%= link_to "", companyaccount, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete" %>                         
-                    <%= link_to "", edit_companyaccount_path(companyaccount), class: 'line_edit_icon', title: "edit" %>
-                <% end %> 
-                </td>            
-              </tr>
-            <% end %>  
-          <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+                
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">                
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="accounts_name">Name</th>
+                            <th class="accounts_provider">Provider</th>
+                            <th class="accounts_code">Code</th>
+                            <th class="accounts_ref">Number</th>
+                            <th class="row_button no_buttons_2"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @companyaccounts %>            
+                            <% @companyaccounts.each do |account| %>
+                                <tr>
+                                    <td class="accounts_name"><%= account.name.titleize %></td> 
+                                    <td class="accounts_provider"><%= account.provider.titleize %></td>
+                                    <td class="accounts_code"><%= account.code %></td>
+                                    <td class="accounts_ref"><%= account.ref %></td>
+                                    <td class="row_button no_buttons_2">
+                                        <% if companyaccount_in_use(account) %>
+                                            <%= link_to "", account, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete" %>                         
+                                            <%= link_to "", edit_companyaccount_path(account), class: 'line_edit_icon', title: "edit" %>
+                                        <% end %>                                         
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

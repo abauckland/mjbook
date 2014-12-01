@@ -1,49 +1,68 @@
-<div class="page_title">
-    <h1>Listing Miscellaneous Items</h1>
-    <div class="page_title_button"><%= link_to "add product", new_misc_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>miscs</h1>
+    </div>
+    <div class="title_help" id="misc_index"></div>
+    <div><%= link_to "add misc", new_misc_path, class: "title_button" %></div>
 </div>
 
-<div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-          <th class="product_catetory_name">Category</th>
-          <th class="product_item">Item</th>
-          <th class="product_quantity">Quantity</th>
-          <th class="product_unit">Unit</th>
-          <th class="product_rate">Rate/Unit</th>
-          <th class="product_price">Price</th>
-          <th class="product_vat">Vat Rate</th>
-          <th class="product_vat_due">Vat</th>
-          <th class="product_total">Total</th>                                        
-          <th width="75px" class="row_button">
-            <%= link_to "", print_misc_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
-          </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-            <% @miscs.each do |misc| %>
-              <tr>
-                <td class="product_catetory_name"><%= misc.productcategory.text %></td>
-                <td class="product_item"><%= misc.item %></td>
-                <td class="product_quantity">n/a</td>
-                <td class="product_unit">n/a</td>
-                <td class="product_rate">n/a</td>
-                <td class="product_price">n/a</td>                
-                <td class="product_vat">n/a</td>
-                <td class="product_vat_due">n/a</td>
-                <td class="product_total">n/a</td>                
-                <td width="75px" class="row_button">
-                    <%= row_delete_link(misc, 'show') %>
-                    <%= row_edit_link(misc, 'show') %>
-                    <%= row_show_link(misc, 'show') %>
-                </td>        
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+               
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="misc_catetory_name">Category</th>
+                            <th class="misc_item">Item</th>
+                            <th class="misc_quantity">Quantity</th>
+                            <th class="misc_unit">Unit</th>
+                            <th class="misc_rate">Rate/Unit</br><span>(ex VAT)</span></th>
+                            <th class="misc_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="misc_vat">Vat Rate</th>
+                            <th class="misc_vat_due">Vat</th>
+                            <th class="misc_total">Total</br><span>(inc VAT)</span></th> 
+                            <th class="row_button no_buttons_3">
+                                <% if @miscs %> 
+                                    <%= link_to "", print_misc_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+                                <% end %> 
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @miscs %>            
+                            <% @miscs.each do |misc| %>
+                                <tr>
+                                    <td class="misc_catetory_name"><%= misc.productcategory.text.titleize %></td>
+                                    <td class="misc_item"><%= misc.item.titleize %></td>
+                                    <td class="misc_quantity">n/a</td>
+                                    <td class="misc_unit">n/a</td>
+                                    <td class="misc_rate">n/a</td>
+                                    <td class="misc_price">n/a</td>                
+                                    <td class="misc_vat">n/a</td>
+                                    <td class="misc_vat_due">n/a</td>
+                                    <td class="misc_total">n/a</td> 
+                                    <td class="row_button no_buttons_3">
+                                        <%= row_delete_link(misc, 'show') %>
+                                        <%= row_edit_link(misc, 'show') %>
+                                        <%= row_show_link(misc, 'show') %>                                         
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

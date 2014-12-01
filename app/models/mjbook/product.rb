@@ -6,10 +6,14 @@ module Mjbook
     belongs_to :vat
 
     validates :productcategory_id, presence: true
-    validates :item, presence: true
-    validates :vat_id, presence: true
+    validates :item, presence: true, uniqueness: {:scope => [:company_id]}
+    validates :quantity, :unit_id, :rate, :price, :vat_id, :vat_due, :total, numericality: true
 
     enum linetype: [:product, :service, :misc]
+
+    def item=(text)
+      super(text.downcase)
+    end
 
   end
 end

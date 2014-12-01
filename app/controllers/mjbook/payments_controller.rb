@@ -3,6 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class PaymentsController < ApplicationController
     before_action :set_payment, only: [:show, :edit, :update, :destroy]
+    before_action :set_companyaccounts, only: [:new, :edit] 
 
     include PrintIndexes
     
@@ -52,11 +53,12 @@ module Mjbook
        end          
   
        #selected parameters for filter form
-       all_invoices = policy_scope(Inovice)     
+       all_invoices = policy_scope(Invoice)     
        @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
+
 
       authorize @payments      
     end
@@ -99,6 +101,10 @@ module Mjbook
 
     # DELETE /payments/1
     def destroy
+      
+      #delete transfer in expend
+      #update state of transfer record
+      
       authorize @payment
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully destroyed.'
@@ -117,6 +123,15 @@ module Mjbook
       end 
     end
 
+    def unreconcile
+      #mark expense as rejected
+      authorize @payment
+      if @payment.unreconcile!
+        respond_to do |format|
+          format.js   { render :unreconcile, :layout => false }
+        end 
+      end 
+    end
 
     private
       # Use callbacks to share common setup or constraints between actions.
@@ -124,9 +139,13 @@ module Mjbook
         @payment = Payment.find(params[:id])
       end
 
+      def set_companyaccounts     
+        @companyaccounts = policy_scope(Companyaccount) 
+      end
+
       # Only allow a trusted parameter "white list" through.
       def payment_params
-        params.require(:payment).permit(:user_id, :invoice_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :note)
+        params.require(:payment).permit(:user_id, :invoice_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :note, :state)
       end
 
       def pdf_quote_index(payments, customer_id, date_from, date_to)

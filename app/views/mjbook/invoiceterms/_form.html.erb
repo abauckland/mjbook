@@ -1,51 +1,55 @@
-<div class="content">
-    <div class="column_1">
-        <div class="column_content">
-            
-            <% if @invoiceterm.errors.any? %>
-            <div class="column_error">
-            <p><%= pluralize(@invoiceterm.errors.count, "error") %> prohibited this project from being created</p>
-                  <ul>
-                  <% @invoiceterm.errors.full_messages.each do |invoiceterm| %>
-                    <li><%= message %></li>
-                  <% end %>
-                  </ul>
-            </div>
-            <% end %>
-            
-            <div class="column_sub_content">
-                <div class="column_form">
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+
+<!-- error messages - associated with form start--> 
+            <%= render :partial => "form_error", :locals => {:item => @invoiceterm} %>
+
+<!-- form column start-->
+            <div class="row">
                 <%= form_for(@invoiceterm) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
-                    
-                       <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Reference:*</label>                        
-                            <div class="column_form_input"><%= f.text_field :ref %></div>
-                            <div class="column_help_tooltip" id="terms_period"></div>  
-                        </div>
-                       <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Period (days):*</label>                        
-                            <div class="column_form_input"><%= f.text_field :period %></div>
-                            <div class="column_help_tooltip" id="terms_period"></div>  
-                        </div>
-                        <div class="column_form_item">
-                            <label class="column_form_label" style="width:100px">Terms*:</label>                        
-                            <div class="column_form_input"><%= f.text_area :terms, :rows => 6 %></div>
-                            <div class="column_help_tooltip" id="terms_terms"></div>  
-                        </div>
-                </div>
-           </div>     
-                
-           <div class="column_footer">
-                <div class="column_line"></div>
+                    <fieldset>
 
-                <div class="column_submit"><%= f.submit "save"%></div>
-                <div class="column_cancel"><%= link_to "cancel", invoiceterms_path %></div>
+                       <!-- form input[text] -->
+                        <div class="form_tooltip" id="terms_ref"></div>
+                        <label class="label_80">Reference:*</label>
+                        <span>
+                            <%= f.text_field :ref %>
+                        </span></br>
+
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="terms_period"></div>
+                        <label class="label_80">Period (days):*</label>
+                        <span>
+                            <%= f.text_field :period, {placeholder: 'e.g. 90'} %>
+                        </span></br>
+
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="terms_terms"></div>
+                        <label class="label_80">Terms:*</label>
+                        <span>
+                            <%= f.text_area :terms, {rows: 6, maxlength: 500, class: "maxlength"} %>
+                            <p class="input_note">Maximum of 500 characters</p>
+                        </span></br>
+                        
+                    </fieldset>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= f.submit "save"%>
+                    <%= link_to "cancel", invoiceterms_path %>
+                </div>
                 <% end %>
-           </div>
-            
+            </div>
         </div>
     </div>
-    <div class="column_2 column_2_blank"></div> 
-    <div class="column_3 column_3_blank"></div> 
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
 </div>

@@ -13,18 +13,18 @@
     
     <body>
         
-        <div class="body_container">
+        <div class="grid-container outline">
         
-            <header class="app_page_header">        
-                <figure class="app_logo"></figure>		                                       
-                <%= render :partial => "book_menu" %>        
-                <%= render :partial => "user_menu" %>        
-                <nav class="app_logout"><%= link_to "logout", nil %></nav>                
-            </header>
-    
-       <!--     <div  class="header_message">Success or Error Message Here</div> -->
+            <div class="row header">
+                <figure><%= image_tag("header_logo.png", height: "30px") %></figure>
+                        
+                <%= render :partial => "book_menu" %>                
 
-     
+                <%= render :partial => "user_menu" %>
+            </div>
+    
+            <!--     <div  class="header_message">Success or Error Message Here</div> -->
+    
             <%= yield %>
     
         </div> 

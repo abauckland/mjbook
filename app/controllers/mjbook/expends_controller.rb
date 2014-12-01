@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class ExpendsController < ApplicationController
-    before_action :set_expend, only: [:show, :edit, :update, :destroy, :reconcile]
+    before_action :set_expend, only: [:show, :edit, :update, :destroy, :reconcile, :unreconcile]
     before_action :set_accounts, only: [:edit, :pay_employee, :pay_business, :pay_salary]
     before_action :set_paymethods, only: [:edit, :pay_employee, :pay_business, :pay_salary]
 
@@ -68,7 +68,7 @@ module Mjbook
       end
         
       @expend = Expend.new
-      @expenses = Mjbook::Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id, :status => 'accepted').business
+      @expenses = Mjbook::Expense.accepted.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
       
     end
 
@@ -76,7 +76,7 @@ module Mjbook
 
     def pay_employee
 
-      expenses = Mjbook::Expense.where(:exp_type => 1, :user_id => params[:id], :status => 2)
+      expenses = Mjbook::Expense.accepted.where(:exp_type => 1, :user_id => params[:id])
       user = User.where(:id => params[:id]).first
 
       @expenses = {}
@@ -113,19 +113,24 @@ module Mjbook
       if @expend.save
         
         if @expend.business?
-          expense = Expense.where(:id => @expend.expense_id).first
-          expense.update(:status => :paid)
+          expense = Mjbook::Expense.where(:id => params[:expense_id]).first
+          Mjbook::Expenditem.create(:expend_id => @expend.id, :expense_id => expense.id)
+          expense.pay!
         end
 
         if @expend.personal?
-          expenses = Expense.where(:user_id => @expend.user_id, :exp_type => 1, :status => 2)
+          expenses = Mjbook::Expense.accepted.where(:exp_type => 1, :user_id => params[:employee_id])
           expenses.each do |item|
-            item.update(:status => :paid)            
+            Mjbook::Expenditem.create(:expend_id => @expend.id, :expense_id => item.id)
+            item.pay!           
           end          
         end
 
         if @expend.salary?
-          
+          #need to pass in salary id so correct record can be updated
+          salary = Mjbook::Salary.where(:id => params[:salary_id]).first
+          Mjbook::Expenditem.create(:expend_id => @expend.id, :salary_id => salary.id)
+          salary.pay!                   
         end
         
         redirect_to expends_path, notice: 'Expend was successfully created.'
@@ -147,19 +152,57 @@ module Mjbook
     # DELETE /expends/1
     def destroy
       authorize @expend
-      @expend.destroy
+
+      #change state of associated expenses to 'accepted', i.e. not paid
+      expenditems = Mjbook::Expenditem.where(:expend_id => @expend.id)        
+      expenditems.each do |item|
+
+        if @expend.exp_type == 'business' || @expend.exp_type == 'personal'
+          expense = Mjbook::Expense.where(:id => item.expense_id)
+          expense.correct_payment!               
+        end
+
+        if @expend.exp_type == 'salary'
+          salary = Mjbook::Salary.where(:id => item.salary_id)
+          salary.correct_payment!               
+        end          
+
+        if @expend.exp_type == 'transfer'
+          transfer = Mjbook::Transfer.where(:id => item.transfer_id)
+          transfer.correct_payment!
+          
+          #if transfer is destoyed also need to destroy record of payment
+          payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first           
+          payment.destroy               
+        end 
+
+      end
+      
+      @expend.destroy #also destroys expenditem 
       redirect_to expends_path, notice: 'Expend was successfully destroyed.'
     end
     
     def reconcile
       authorize @expend
       #mark expense as rejected
-      if @expend.update(:status => "reconciled")
+      if @expend.reconcile!
         respond_to do |format|
           format.js   { render :reconcile, :layout => false }
         end 
       end 
     end
+
+    def unreconcile
+      authorize @expend
+      #mark expense as rejected
+      if @expend.unreconcile!
+        respond_to do |format|
+          format.js   { render :unreconcile, :layout => false }
+        end 
+      end 
+    end
+
+
 
     private
       # Use callbacks to share common setup or constraints between actions.
@@ -177,7 +220,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def expend_params
-        params.require(:expend).permit(:company_id, :exp_type, :user_id, :expense_id, :paymethod_id, :companyaccount_id, :expend_receipt, :date, :ref, :price, :vat, :total, :status, :note)
+        params.require(:expend).permit(:company_id, :exp_type, :user_id, :paymethod_id, :companyaccount_id, :expend_receipt, :date, :ref, :price, :vat, :total, :state, :note)
       end
 
       def pdf_expend_index(expends, account_id, date_from, date_to)

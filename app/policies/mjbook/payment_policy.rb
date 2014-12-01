@@ -39,5 +39,9 @@ module Mjbook
         index
       end       
 
+      def unreconcile?
+        index
+      end  
+
   end
 end

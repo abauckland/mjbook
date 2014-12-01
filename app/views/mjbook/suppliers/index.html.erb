@@ -1,59 +1,77 @@
-<div class="page_title">
-    <h1>Suppliers</h1>
-    <div class="page_title_button"><%= link_to "add new supplier", new_supplier_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Suppliers</h1>
+    </div>
+    <div class="title_help" id="suppliers_index"></div>       
+    <div><%= link_to "add new supplier", new_supplier_path, class: "title_button" %></div>
 </div>
 
- <div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-            <th class="supplier_company">Company</th>
-            <th class="supplier_name">Name</th>
-            <th class="supplier_position">Position</th>
-            <th class="supplier_address">Address</th>
-            <th class="supplier_phone">Phone</th>
-            <th class="supplier_alt_phone">Alt. Phone</th>
-            <th class="supplier_email">Email</th>
-            <th class="supplier_vat">VAT No.</th>
-            <th class="supplier_note">Notes</th>
-            <th width="75px" class="row_button">
-                <%= link_to "", print_supplier_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>                
-            </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-            <% @suppliers.each do |supplier| %>
-              <tr>
-                <td class="supplier_company"><%= supplier.company_name %></td>
-                <td class="supplier_name"><%= supplier.name %></td>
-                <td class="supplier_position"><%= supplier.position %></td>
-                <td class="supplier_address">
-        			<p class="table_address"><%= supplier.address_1 %></p>
-        			<p class="table_address"><%= supplier.address_2 %></p>
-        			<p class="table_address"><%= supplier.city %></p>
-        			<p class="table_address"><%= supplier.county %></p>
-        			<p class="table_address"><%= supplier.country %></p>
-        			<p class="table_address"><%= supplier.postcode %></p>
-                </td>
-                <td class="supplier_phone"><%= supplier.phone %></td>
-                <td class="supplier_alt_phone"><%= supplier.alt_phone %></td>
-                <td class="supplier_email"><%= supplier.email %></td>
-                <td class="supplier_vat"><%= supplier.vat_no %></td>
-                <td class="supplier_note"><%= supplier.notes %></td>
-                <td width="75px" class="row_button">
-                    <% unless supplier_in_use(supplier) %>
-                        <%= row_delete_link(supplier, 'show') %>
-                    <% end %>
-                    <%= row_edit_link(supplier, 'show') %>
-                    <%= row_show_link(supplier, 'show') %>
-                </td> 
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="supplier_company">Company</th>
+                            <th class="supplier_vat">VAT No.</th>
+                            <th class="supplier_name">Name</th>
+                            <th class="supplier_position">Position</th>
+                            <th class="supplier_phone">Phone</th>
+                            <th class="supplier_alt_phone">Alt. Phone</th>
+                            <th class="supplier_email">Email</th>
+                            <th class="supplier_address">Address</th>
+                            <th class="supplier_note">Notes</th>
+                            <th class="row_button no_buttons_3">
+                                <% if @suppliers %> 
+                                    <%= link_to "", print_supplier_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+                                <% end %>  
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @suppliers %>            
+                            <% @suppliers.each do |supplier| %>
+                                <tr>
+                                    <td class="supplier_company"><%= supplier.company_name.titleize %></td>
+                                    <td class="supplier_vat"><%= supplier.vat_no %></td>
+                                    <td class="supplier_name"><%= supplier.name.titleize %></td>
+                                    <td class="supplier_position"><%= supplier.position.titleize %></td>
+                                    <td class="supplier_phone"><%= supplier.phone %></td>
+                                    <td class="supplier_alt_phone"><%= supplier.alt_phone %></td>
+                                    <td class="supplier_email"><%= supplier.email %></td>
+                                    <td class="supplier_address">
+                                        <p class="table_address"><%= supplier.address_1.titleize %></p>
+                                        <p class="table_address"><%= supplier.address_2.titleize %></p>
+                                        <p class="table_address"><%= supplier.city.titleize %></p>
+                                        <p class="table_address"><%= supplier.county.titleize %></p>
+                                        <p class="table_address"><%= supplier.country.titleize %></p>
+                                        <p class="table_address"><%= supplier.postcode %></p>
+                                    </td>
+                                    <td class="row_button no_buttons_3">
+                                        <% unless supplier_in_use(supplier) %>
+                                            <%= row_delete_link(supplier, 'show') %>
+                                        <% end %>
+                                        <%= row_edit_link(supplier, 'show') %>
+                                        <%= row_show_link(supplier, 'show') %>                                        
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>
 

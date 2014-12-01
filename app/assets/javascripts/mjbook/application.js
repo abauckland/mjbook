@@ -13,9 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require mjbook/layouts/nav.js
+//= require mjbook/layouts/grid.js
 //= require mjbook/layouts/columns.js
-//= require mjbook/layouts/columns_linked.js
 //= require mjbook/layouts/editable_tables.js
+//= require mjbook/plugins/ddslick.js
 //= require mjbook/plugins/autogrow.js
 //= require mjbook/plugins/jquery.jeditable.js
 //= require mjbook/plugins/jeditable_extensions.js

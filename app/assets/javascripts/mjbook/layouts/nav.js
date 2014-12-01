@@ -17,8 +17,8 @@ $(document).ready(function(){
 	});
 
 //mob_menu
-	$('.app_mob_menu').click(function (){
-		$('ul.left_menu_mob').toggle();
+	$('.left_menu_mob_select').click(function (){
+		$('ul.left_menu').toggle();
 		$('ul.right_menu_mob').hide();
 	});
 
@@ -40,9 +40,13 @@ $(document).ready(function(){
 	});
 
 //user_menu_mob
-	$('.user_menu_mob').click(function (){
-		$('ul.right_menu_mob').toggle();
-		$('ul.left_menu_mob').hide();
+	$('.user_menu').click(function (){
+		$('ul.right_menu').toggle();
+		$('ul.left_menu').hide();
 	});
+
+
+
+
 
 });

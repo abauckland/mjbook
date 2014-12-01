@@ -40,8 +40,16 @@ module Mjbook
       link_to '', polymorphic_path([:reconcile, model]), :method => :get,  :remote => true, class: ('line_reconcile_icon_' << display) , title: "mark as reconciled"     
     end 
 
+    def row_unreconcile_link(model, display)
+      link_to '', polymorphic_path([:unreconcile, model]), :method => :get,  :remote => true, class: ('line_unreconcile_icon_' << display) , title: "mark as unreconciled"     
+    end 
+
     def row_pay_link(model, display)
       link_to '', polymorphic_path([:pay, model]), class: ('line_payment_icon_' << display) , title: "repayment"     
+    end
+
+    def row_transfer_link(model, display)
+      link_to '', polymorphic_path([:transfer, model]), class: ('line_payment_icon_' << display) , title: "record transfer"     
     end
     
   end

@@ -1,13 +1,20 @@
 module Mjbook
   class Companyaccount < ActiveRecord::Base
 
-    belongs_to :company    
-    
+    belongs_to :company
     has_many :expends
-    
     has_many :transfers
     
-    validates_presence_of :name
+    validates :name, presence: true,
+      uniqueness: {:scope => [:company_id]}    
+
+    def name=(text)
+      super(text.downcase)
+    end
+
+    def provider=(text)
+      super(text.downcase)
+    end
 
   end
 end

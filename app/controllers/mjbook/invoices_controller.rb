@@ -4,6 +4,7 @@ module Mjbook
   class InvoicesController < ApplicationController
     before_action :set_invoice, only: [:show, :edit, :update, :destroy, :reject, :accept]
     before_action :set_invoiceterms, only: [:new, :edit]
+    before_action :set_projects, only: [:new, :edit]
 
     include PrintIndexes
         
@@ -64,7 +65,8 @@ module Mjbook
 
     # GET /invoice/new
     def new
-      @invoice = Invoice.new
+      @invoice = Invoice.new      
+      @quotes = policy_scope(Quote).accepted
     end
 
     # GET /invoice/1/edit
@@ -73,12 +75,18 @@ module Mjbook
 
     # POST /invoice
     def create
-      @invoice = Invoice.new(invoice_params)
 
-      if @invoice.save
+      if params[:invoice][:invoice_content] == 'clone'           
+        create_clone(params[:invoice][:clone_quote])
         redirect_to @invoice, notice: 'Invoice was successfully created.'
-      else
-        render :new
+      else     
+        @invoice = Invoice.new(invoice_params)   
+
+        if @invoice.save
+          redirect_to @invoice, notice: 'Invoice was successfully created.'
+        else
+          render :new
+        end
       end
     end
 
@@ -97,9 +105,17 @@ module Mjbook
       redirect_to invoice_url, notice: 'Invoice was successfully destroyed.'
     end
 
+
+    def quote_new
+      create_clone(params[:id])
+
+      redirect_to @invoice, notice: 'Invoice was successfully created.'
+
+    end
+
     def accept
       #mark expense ready for payment
-      if @invoice.update(:status => "accepted")        
+      if @invoice.accept!       
         respond_to do |format|
           format.js   { render :accept, :layout => false }
         end  
@@ -108,7 +124,7 @@ module Mjbook
 
     def reject
       #mark expense as rejected
-      if @invoice.update(:status => "rejected")
+      if @invoice.reject!
         respond_to do |format|
           format.js   { render :reject, :layout => false }
         end 
@@ -132,12 +148,6 @@ module Mjbook
         send_data document.render, filename: filename, :type => "application/pdf"      
     end
 
-    def quote_new
-      #id => quote.id
-      @invoice = Invoice.new
-    
-    end
-
 
     private
       # Use callbacks to share common setup or constraints between actions.
@@ -145,13 +155,17 @@ module Mjbook
         @invoice = Invoice.find(params[:id])
       end
 
+      def set_projects
+        @projects = policy_scope(Project).order('ref')
+      end
+      
       def set_invoiceterms
         @invoiceterms = policy_scope(Invoiceterm)        
       end
 
       # Only allow a trusted parameter "white list" through.
       def invoice_params
-        params.require(:invoice).permit(:project_id, :ref, :customer_ref, :price, :vat_due, :total, :status, :date, :invoiceterm_id, :invoicetype_id)
+        params.require(:invoice).permit(:project_id, :ref, :customer_ref, :price, :vat_due, :total, :state, :date, :invoiceterm_id, :invoicetype_id)
       end
 
       def pdf_invoice_index(invoices, customer_id, date_from, date_to)
@@ -177,6 +191,34 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"
       end 
+
+      def create_clone(clone_id)
+        
+        quote = Mjbook::Quote.where(:id => clone_id).first
+        dup_quote = quote.dup
+        @invoice = Invoice.create(dup_quote.attributes)
+
+
+
+        clone_qgroup = Mjbook::Qgroup.where(:quote_id => quote.id)
+        clone_qgroup.each do |group|
+          dup_group = group.dup
+          @ingroup = Mjbook::Ingroup.new(dup_group)
+          @ingroup.invoice_id = @invoice.id
+          @ingroup.save
+
+          clone_qline = Mjbook::Qline.where(:qgroup_id => group.id)
+          clone_qline.each do |line|
+            dup_line = line.dup
+            inline = Mjbook::Inline.new(dup_line)
+            inline.ingroup_id = @ingroup.id
+            inline.save
+          end
+        end
+
+        quote.invoice
+        
+      end
 
   end
 end

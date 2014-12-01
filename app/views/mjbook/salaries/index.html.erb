@@ -1,7 +1,11 @@
-<div class="page_title">
-    <h1>Salary Payments</h1>
-    <div class="page_title_button"><%= link_to 'New Payment', new_salary_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Salary Payments</h1>
+    </div>
+    <div class="title_help" id="salary_index"></div>       
+    <div><%= link_to 'New Payment', new_salary_path, class: "title_button" %></div>
 </div>
+
 
 
 <div class="filter_band_single">
@@ -27,44 +31,70 @@
     <% end %>
 </div>   
 
- <div class="table_content_with_filter">
-    <table>
-      <thead>
-        <tr>
-          <th class="salary_employee">Employee</th>
-          <th class="salary_paid">Paid</th>
-          <th class="salary_date">Date</th>          
-          <th class="salary_status">Status</th>
-          <th width="75px" class="row_button"></th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-          <% if @salaries %>            
-            <% @salaries.each do |salary| %>
-              <tr>
-                <td class="salary_employee"><%= salary.user.name %></td> 
-                <td class="salary_paid"><%= pounds(salary.total) %></td> 
-                <td class="salary_date"><%= salary.date.strftime("%d/%m/%y") %></td>
-                <td class="salary_status"><%= salary.status %></td>
-                <td id="<%= salary.id %>_links" width="75px" class="row_button">
-                <% if salary.submitted? %>
-                    <%= row_delete_link(salary, 'show') %>
-                    <%= row_edit_link(salary, 'show') %>
-                    <%= link_to '', pay_salary_expend_path(salary.id), class: 'line_payment_icon_show' , title: "record payment" %>
-                <% else %>
-                    <%= row_delete_link(salary, 'hidden') %>
-                    <%= row_edit_link(salary, 'hidden') %>
-                    <%= link_to '', pay_salary_expend_path(salary.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
-                <% end %> 
-                </td>
-              </tr>
-            <% end %>  
-          <% end %>
-          </tbody>
-        </table>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+
+            <%= render :partial => "flash_notice" %>
+            
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="salary_employee">Employee</th>
+                            <th class="salary_paid">Paid</th>
+                            <th class="salary_date">Date</th>          
+                            <th class="salary_status">Status</th>
+                            <th class="row_button no_buttons_4"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @salaries %>            
+                            <% @salaries.each do |salary| %>
+                                <tr>
+                                    <td class="salary_employee"><%= salary.user.name.titleize %></td> 
+                                    <td class="salary_paid"><%= pounds(salary.total) %></td> 
+                                    <td class="salary_date"><%= salary.date.strftime("%d/%m/%y") %></td>
+                                    <td  id="<%= salary.id %>_status" class="salary_status"><%= salary.state %></td>
+                                    <td id="<%= salary.id %>_links"class="row_button no_buttons_4">
+                                        <% if salary.submitted? || salary.rejected? %>
+                                            <%= link_to '', salary_path(salary), method: :delete, class: 'line_delete_icon_show' , title: "delete" %>
+                                            <%= link_to "", edit_salary_path(salary), class: 'line_edit_icon_show', title: "edit" %>
+                                            <%= row_accept_link(salary, 'show') %>
+                                        <% else %>
+                                            <%= link_to '', salary_path(salary), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>
+                                            <%= link_to "", edit_salary_path(salary), class: 'line_edit_icon_hidden', title: "edit" %>
+                                            <%= row_accept_link(salary, 'hidden') %>
+                                        <% end %>
+                         
+                                        <% if salary.submitted? || salary.accepted? %>
+                                            <%= row_reject_link(salary, 'show') %>
+                                        <% else %>
+                                            <%= row_reject_link(salary, 'hidden') %>
+                                        <% end %>
+                                    
+                                        <% if salary.accepted? %>
+                                            <%= link_to '', pay_salary_expend_path(salary.id), class: 'line_payment_icon_show' , title: "record payment"  %>
+                                        <% else %>
+                                            <%= link_to '', pay_salary_expend_path(salary.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
+                                        <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>
+
 

@@ -1,13 +1,16 @@
 Mjbook::Engine.routes.draw do
   
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
-    get :reconcile, :on => :member
+    get :transfer, :on => :member
   end
 
   resources :companyaccounts, :only => [:index, :edit, :new, :create, :update, :destroy]
 
   resources :salaries do
-    get :reconcile, :on => :member
+    get :accept, :on => :member
+    get :reject, :on => :member 
+
+    get :transfer, :on => :member
   end
 
 
@@ -119,10 +122,12 @@ Mjbook::Engine.routes.draw do
     get :pay_salary, :on => :member
     
     get :reconcile, :on => :member
+    get :unreconcile, :on => :member
   end
 
   resources :payments do
     get :reconcile, :on => :member  
+    get :unreconcile, :on => :member
   end
 
  

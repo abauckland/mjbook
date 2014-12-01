@@ -28,12 +28,12 @@
       }
   }
   }
-  @media screen and (max-width: $medium_menu) {
+  @media screen and (max-width: $tablet-landscape) {
     .table_content_with_info {
       top:130px;
     }
   }
-  @media screen and (max-width: $small_menu) {
+  @media screen and (max-width: $tablet-landscape) {
     .table_content_with_info {
       top:120px;
     }
@@ -55,7 +55,7 @@
 .line_prefix{
   width: 10px;
   }
-  @media screen and (max-width: $medium_menu) {
+  @media screen and (max-width: $tablet-landscape) {
     .line_menu{
       width: 0px;
     } 
@@ -71,7 +71,7 @@
   padding: 5px 0px 0px 5px;
   a{padding: 0px 0px 0px 5px}
   } 
-  @media screen and (max-width: $medium_menu) {
+  @media screen and (max-width: $tablet-landscape) {
     .line_menu{
       display: none; //not displayed when screen is small
       visibility:hidden; 
@@ -83,7 +83,7 @@
   display: none;
   width:25px;
 }
-  @media screen and (max-width: $medium_menu) {
+  @media screen and (max-width: $tablet-landscape) {
     .line_menu_mob{
       display: table-cell; //not displayed when screen is small
       visibility:hidden; 
@@ -240,7 +240,7 @@ table.table_header_with_info{
   padding: 4px 5px 10px 10px;
   @include shadow-all(0px 0px 5px #aeaeae);
 }
-  @media screen and (max-width: $small_menu) {
+  @media screen and (max-width: $tablet-protrait) {
     .linetype_menu{right: 100px;}  
   }
 

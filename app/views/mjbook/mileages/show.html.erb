@@ -1,47 +1,60 @@
-<div class="page_title">
-    <h1>Show Mileage Record</h1>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Mileage Details</h1>
+    </div>
 </div>
 
-<div class="content">
-    <div class="column_1">
-        <div class="column_content">
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
 
-            <div class="column_sub_content">
-                <div class="column_form">                      
-                        <div class="column_form_item">
-                            <label class="column_info_label" style="width:100px">Job Reference:</label>                        
-                            <div class="column_info_text"><%= @mileage.project.name %></div>
-                        </div>                       
-                        <div class="column_info_item">
-                            <label class="column_info_label" style="width:100px">Date:</label>                        
-                            <div class="column_info_text"><%= @mileage.date %></div>  
-                        </div>
-                        <div class="column_info_item">
-                            <label class="column_info_label" style="width:100px">Mode:</label>                        
-                            <div class="column_info_text"><%= @mileage.mileagemode.mode %></div>  
-                        </div>
-                        <div class="column_info_item">
-                            <label class="column_info_label" style="width:100px">Start:</label>                        
-                            <div class="column_info_text"><%= @mileage.start %></div>  
-                        </div>
-                        <div class="column_info_item">
-                            <label class="column_info_label" style="width:100px">Destination:</label>                        
-                            <div class="column_info_text"><%= @mileage.finish %></div> 
-                        </div>
-                        <div class="column_info_item">
-                            <label class="column_info_label" style="width:100px">Total Mileage:</label>                        
-                            <div class="column_info_text"><%= @mileage.distance %></div>  
-                        </div>
+            <%= render :partial => "flash_notice" %>
+<!-- column start-->
+            <div class="row">
+                <article>
+                    <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Job:</label>
+                        <span><%= @mileage.project.name.titleize %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Date:</label>
+                        <span><%= @mileage.date.strftime("%d/%m/%y") %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Mode:</label>
+                        <span><%= @mileage.mileagemode.mode.titleize %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Start:</label>
+                        <span><%= @mileage.start.titleize %></span></br>
+    
+                        <!-- show text line --> 
+                        <label class="label_80">Destination:</label>
+                        <span><%= @mileage.finish.titleize %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Total Mileage:</label>
+                        <span><%= @mileage.distance %></span></br>
+
+                    </div>
                 </div>
-           </div>     
-                
-           <div class="column_footer">
-                <div class="column_line"></div>
-                <div class="column_cancel"><%= link_to "cancel", employees_path %></div>
-           </div>
-            
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "back", employees_path %>
+                </div>
+                <% end %>
+            </div>
         </div>
     </div>
-    <div class="column_2 column_2_blank"></div> 
-    <div class="column_3 column_3_blank"></div> 
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
 </div>

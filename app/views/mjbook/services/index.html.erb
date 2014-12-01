@@ -1,49 +1,68 @@
-<div class="page_title">
-    <h1>Listing Services (lump sum)</h1>
-    <div class="page_title_button"><%= link_to "add product", new_service_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>services</h1>
+    </div>
+    <div class="title_help" id="service_index"></div>
+    <div><%= link_to "add service", new_service_path, class: "title_button" %></div>
 </div>
 
-<div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-          <th class="product_catetory_name">Category</th>
-          <th class="product_item">Item</th>
-          <th class="product_quantity">Quantity</th>
-          <th class="product_unit">Unit</th>
-          <th class="product_rate">Rate/Unit</th>
-          <th class="product_price">Price</th>
-          <th class="product_vat">Vat Rate</th>
-          <th class="product_vat_due">Vat</th>
-          <th class="product_total">Total</th>                                        
-          <th width="75px" class="row_button">
-            <%= link_to "", print_service_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
-          </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-            <% @services.each do |service| %>
-              <tr>
-                <td class="product_catetory_name"><%= service.productcategory.text %></td>
-                <td class="product_item"><%= service.item %></td>
-                <td class="product_quantity">n/a</td>
-                <td class="product_unit">n/a</td>
-                <td class="product_rate">n/a</td>
-                <td class="product_price"><%= pounds(service.price) %></td>                
-                <td class="product_vat"><%= service.vat.cat %></td>
-                <td class="product_vat_due"><%= pounds(service.vat_due) %></td>
-                <td class="product_total"><%= pounds(service.total) %></td>                
-                <td width="75px" class="row_button">
-                    <%= row_delete_link(service, 'show') %>
-                    <%= row_edit_link(service, 'show') %>
-                    <%= row_show_link(service, 'show') %>
-                </td>        
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+                
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="service_catetory_name">Category</th>
+                            <th class="service_item">Item</th>
+                            <th class="service_quantity">Quantity</th>
+                            <th class="service_unit">Unit</th>
+                            <th class="service_rate">Rate/Unit</br><span>(ex VAT)</span></th>
+                            <th class="service_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="service_vat">Vat Rate</th>
+                            <th class="service_vat_due">Vat</th>
+                            <th class="service_total">Total</br><span>(inc VAT)</span></th> 
+                            <th class="row_button no_buttons_3">
+                                <% if @services %> 
+                                    <%= link_to "", print_service_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+                                <% end %>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @services %>            
+                            <% @services.each do |service| %>
+                                <tr>
+                                    <td class="service_catetory_name"><%= service.productcategory.text.titleize %></td>
+                                    <td class="service_item"><%= service.item.titleize %></td>
+                                    <td class="service_quantity">n/a</td>
+                                    <td class="service_unit">n/a</td>
+                                    <td class="service_rate">n/a</td>
+                                    <td class="service_price"><%= pounds(service.price) %></td>
+                                    <td class="service_vat"><%= service.vat.cat %></td>
+                                    <td class="service_vat_due"><%= pounds(service.vat_due) %></td>
+                                    <td class="service_total"><%= pounds(service.total) %></td>
+                                    <td class="row_button no_buttons_3">
+                                        <%= row_delete_link(service, 'show') %>
+                                        <%= row_edit_link(service, 'show') %>
+                                        <%= row_show_link(service, 'show') %>                                         
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

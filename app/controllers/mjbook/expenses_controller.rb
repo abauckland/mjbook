@@ -6,8 +6,9 @@ module Mjbook
     before_action :set_expense, only: [:accept, :reject]
 
     def accept
+      authorize @expense
       #mark expense ready for payment
-      if @expense.update(:status => "accepted")        
+      if @expense.accept!     
         respond_to do |format|
           format.js   { render :accept, :layout => false }
         end  
@@ -15,8 +16,9 @@ module Mjbook
     end 
 
     def reject
+      authorize @expense
       #mark expense as rejected
-      if @expense.update(:status => "rejected")
+      if @expense.reject!
         respond_to do |format|
           format.js   { render :reject, :layout => false }
         end 

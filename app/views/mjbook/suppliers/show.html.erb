@@ -1,90 +1,110 @@
-<div class="page_title">
-    <h1>Suppliers Details</h1>
+<%= render :partial => "notice_band" %>
+
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Suppliers Details</h1>
+    </div>
 </div>
 
-<div class="content">
-    <div class="column_linked_container">
+<div class="row">
+    <div class="col-1-1">
+        <div class="border">
 
-        <div class="sub_column_linked_1">
-            <div class="column_content">
-                <div class="column_info">
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Company:</label>
-                                <div class="column_info_text"><%= @supplier.company_name %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">VAT No:</label>
-                                <div class="column_info_text"><%= @supplier.vat_no %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Name:</label>
-                                <div class="column_info_text"><%= @supplier.name %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Position:</label>
-                                <div class="column_info_text"><%= @supplier.position %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">E-mail:</label>
-                                <div class="column_info_text"><%= @supplier.email %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Tel:</label>
-                                <div class="column_info_text"><%= @supplier.phone %></div> 
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Alt. Tel::</label>
-                                <div class="column_info_text"><%= @supplier.alt_phone %></div> 
-                            </div>
-                </div>
-            </div>
-        </div>
-        <div class="sub_column_linked_2">
-            <div class="column_content">
-                <div class="column_info">    
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Address 1:</label>
-                                <div class="column_info_text"><%= @supplier.address_1 %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Address 2:</label>
-                                <div class="column_info_text"><%= @supplier.address_2 %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">City:</label>
-                                <div class="column_info_text"><%= @supplier.city %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">County:</label>
-                                <div class="column_info_text"><%= @supplier.county %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Country:</label>
-                                <div class="column_info_text"><%= @supplier.country %></div>
-                            </div>
-                            <div class="column_info_item">
-                                <label class="column_info_label" style="width:80px">Postcode:</label>
-                                <div class="column_info_text"><%= @supplier.postcode %></div>
-                            </div>
-                </div>
-            </div>
-        </div>    
-        <div class="sub_column_linked_3">
-            <div class="column_content">
-                <div class="column_info">
-                    <div class="column_info_item">
-                        <label class="column_info_label" style="width:80px">Notes:</label>
-                        <div class="column_info_textarea_20"><%= @supplier.notes %></div>
+    
+            <div class="row">
+                <div class="sub-1-3 column_1">
+                    <article>
+                        <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Company:</label>
+                        <span><%= @supplier.company_name %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">VAT No:</label>
+                        <span><%= @supplier.vat_no %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Title:</label>
+                        <span><%= @supplier.title %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">First Name:</label>
+                        <span><%= @supplier.first_name %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Surname:</label>
+                        <span><%= @supplier.surname %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Position:</label>
+                        <span><%= @supplier.position %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">E-mail:</label>
+                        <span><%= @supplier.email %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Tel:</label>
+                        <span><%= @supplier.phone %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Alt. Tel:</label>
+                        <span><%= @supplier.alt_phone %></span></br>
+
+                        </div>
                     </div>
                 </div>
+                <div class="sub-1-3 column_2">
+                    <article>
+                        <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Address 1:</label>
+                        <span><%= @supplier.address_1 %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Address 2:</label>
+                        <span><%= @supplier.address_2 %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">City:</label>
+                        <span><%= @supplier.city %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">County:</label>
+                        <span><%= @supplier.county %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Country:</label>
+                        <span><%= @supplier.country %></span></br>
+
+                        <!-- show text line --> 
+                        <label class="label_80">Postcode:</label>
+                        <span><%= @supplier.postcode %></span></br>
+
+                        </div>
+                    </div>                                       
+                </div>
+                <div class="sub-1-3 column_3">
+                    <article>
+                        <div class="article-set">
+
+                        <!-- show text line --> 
+                        <label class="label_80">Notes:</label>
+                        <span><%= @supplier.notes %></span></br>
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "edit details", edit_supplier_path(@supplier) %>
+                    <%= link_to "back", suppliers_path %>
+                </div>
             </div>
         </div>
-                   
-        <div class="column_linked_footer">
-            <div class="column_line"></div>
-            <div class="column_edit"><%= link_to "edit details", edit_supplier_path(@supplier) %></div>
-            <div class="column_cancel"><%= link_to "back", suppliers_path %></div>
-        </div>
-            
     </div>
 </div>

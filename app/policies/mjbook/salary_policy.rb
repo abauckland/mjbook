@@ -35,9 +35,13 @@ module Mjbook
       index?
     end
 
-    def reconcile?
+    def accept?
       index?
-    end
+    end 
+            
+    def reject?
+      index?
+    end 
 
   end
 end

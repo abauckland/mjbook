@@ -120,7 +120,7 @@ module Mjbook
       
       # Only allow a trusted parameter "white list" through.
       def expense_params
-        params.require(:expense).permit(:company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :price, :vat, :total, :receipt, :recurrence, :ref, :supplier_ref)
+        params.require(:expense).permit(:company_id, :user_id, :exp_type, :state, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :price, :vat, :total, :receipt, :recurrence, :ref, :supplier_ref)
       end
       
       def pdf_business_index(expenses, supplier_id, date_from, date_to)

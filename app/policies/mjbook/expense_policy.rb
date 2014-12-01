@@ -8,11 +8,11 @@ module Mjbook
     end
        
       def accept?
-        true
+        user.owner? || user.admin?
       end 
             
       def reject?
-        true
+        accept?
       end 
   end
 end

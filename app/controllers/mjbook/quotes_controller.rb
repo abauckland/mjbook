@@ -5,6 +5,7 @@ module Mjbook
         
     before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept]
     before_action :set_quoteterms, only: [:new, :edit]
+    before_action :set_projects, only: [:new, :edit]
         
     include PrintIndexes
     include PrintQuote
@@ -71,11 +72,12 @@ module Mjbook
     # GET /quotes/new
     def new
       @quote = Quote.new
-      @projects = Project.where(:company_id => current_user.company_id)
+      @projects = policy_scope(Project)
     end
 
     # GET /quotes/1/edit
     def edit
+
     end
 
     # POST /quotes
@@ -83,7 +85,7 @@ module Mjbook
       @quote = Quote.new(quote_params)
 
       if @quote.save
-        redirect_to quoteterms_path, notice: 'Quote was successfully created.'
+        redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
       else
         render :new
       end
@@ -92,7 +94,7 @@ module Mjbook
     # PATCH/PUT /quotes/1
     def update
       if @quote.update(quote_params)
-        redirect_to quoteterms_path, notice: 'Quote was successfully updated.'
+        redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully updated.'
       else
         render :edit
       end
@@ -106,7 +108,7 @@ module Mjbook
     
     def accept
       #mark expense ready for payment
-      if @quote.update(:status => "accepted")        
+      if @quote.accept!       
         respond_to do |format|
           format.js   { render :accept, :layout => false }
         end  
@@ -115,7 +117,7 @@ module Mjbook
 
     def reject
       #mark expense as rejected
-      if @quote.update(:status => "rejected")
+      if @quote.reject!
         respond_to do |format|
           format.js   { render :reject, :layout => false }
         end 
@@ -144,6 +146,10 @@ module Mjbook
       def set_quote
         @quote = Quote.find(params[:id])
       end
+
+      def set_projects
+        @projects = policy_scope(Project).order('ref')
+      end
       
       def set_quoteterms
         @quoteterms = policy_scope(Quoteterm)      
@@ -151,7 +157,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def quote_params
-        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :status, :price, :vat_due, :total, :quoteterm_id)
+        params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :state, :price, :vat_due, :total, :quoteterm_id)
       end
       
       def pdf_quote_index(quotes, customer_id, date_from, date_to)

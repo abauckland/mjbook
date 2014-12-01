@@ -1,57 +1,75 @@
-<div class="page_title">
-    <h1>Customers</h1>    
-    <div class="page_title_button"><%= link_to "add new customer", new_customer_path %> </div>    
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Customers</h1>
+    </div>
+    <div class="title_help" id="customers_index"></div>       
+    <div><%= link_to "add new customer", new_customer_path, class: "title_button" %></div>
 </div>
 
- <div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-            <th class="customer_company">Company</th>
-            <th class="customer_name">Name</th>
-            <th class="customer_position">Position</th>
-            <th class="customer_phone">Phone</th>
-            <th class="customer_alt_phone">Alt. Phone</th>
-            <th class="customer_email">Email</th>
-            <th class="customer_address">Address</th>
-            <th class="customer_note">Notes</th>
-            <th width="75px" class="row_button">
-                <%= link_to "", print_customer_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>                
-            </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-            <% @customers.each do |customer| %>
-              <tr>
-                <td class="customer_company"><%= customer.company_name %></td>
-                <td class="customer_name"><%= customer.name %></td>
-                <td class="customer_position"><%= customer.position %></td>
-                <td class="customer_phone"><%= customer.phone %></td>
-                <td class="customer_alt_phone"><%= customer.alt_phone %></td>
-                <td class="customer_email"><%= customer.email %></td>
-                <td class="customer_address">
-                    <p class="table_address"><%= customer.address_1 %></p>
-                    <p class="table_address"><%= customer.address_2 %></p>
-                    <p class="table_address"><%= customer.city %></p>
-                    <p class="table_address"><%= customer.county %></p>
-                    <p class="table_address"><%= customer.country %></p>
-                    <p class="table_address"><%= customer.postcode %></p>
-                </td>
-                <td class="customer_note"><%= customer.notes %></td>
-                <td width="75px" class="row_button">
-                    <% unless customer_in_use(customer) %>
-                        <%= row_delete_link(customer, 'show') %>
-                    <% end %>
-                    <%= row_edit_link(customer, 'show') %>
-                    <%= row_show_link(customer, 'show') %>
-                </td>    
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="customer_company">Company</th>
+                            <th class="customer_name">Name</th>
+                            <th class="customer_position">Position</th>
+                            <th class="customer_phone">Phone</th>
+                            <th class="customer_alt_phone">Alt. Phone</th>
+                            <th class="customer_email">Email</th>
+                            <th class="customer_address">Address</th>
+                            <th class="customer_note">Notes</th>
+                            <th class="row_button no_buttons_3">
+                                <% if @customers %>
+                                    <%= link_to "", print_customer_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+                                <% end %>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @customers %>            
+                            <% @customers.each do |customer| %>
+                                <tr>
+                                    <td class="customer_company"><%= customer.company_name.titleize %></td>
+                                    <td class="customer_name"><%= customer.name.titleize %></td>
+                                    <td class="customer_position"><%= customer.position.titleize %></td>
+                                    <td class="customer_phone"><%= customer.phone %></td>
+                                    <td class="customer_alt_phone"><%= customer.alt_phone %></td>
+                                    <td class="customer_email"><%= customer.email %></td>
+                                    <td class="customer_address">
+                                        <p class="table_address"><%= customer.address_1.titleize %></p>
+                                        <p class="table_address"><%= customer.address_2.titleize %></p>
+                                        <p class="table_address"><%= customer.city.titleize %></p>
+                                        <p class="table_address"><%= customer.county.titleize %></p>
+                                        <p class="table_address"><%= customer.country.titleize %></p>
+                                        <p class="table_address"><%= customer.postcode %></p>
+                                    </td>
+                                    <td class="row_button no_buttons_3">
+                                        <% unless customer_in_use(customer) %>
+                                            <%= row_delete_link(customer, 'show') %>
+                                        <% end %>
+                                        <%= row_edit_link(customer, 'show') %>
+                                        <%= row_show_link(customer, 'show') %>                                        
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>
 

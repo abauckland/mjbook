@@ -1,31 +1,22 @@
-@media all and (min-width: 800px){//, only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (min-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (min-resolution: 192dpi) and (min-width: 1024px), only screen and (min-resolution: 2dppx) and (min-width: 1024px) {
-
-  .lrg_menu {  
-    display: block;
-    position: absolute;
-    top: 4px;
-    left: 10px; //set to suit size of MyHq logo
-    right: 80px;
-  }
-  
-  
   ul.left_menu{
-      position: relative;
+      display: block;
+      float: left;
+      padding: 0px;
+      margin: 13px 0px 0px 0px;
       list-style-type: none;
       li{float:left;
-        height:30px;
+      //  height:30px;
         a{
           float: left;
-          height: 33px;
+          height: 32px;
           font-family: "Trebuchet MS", Trebuchet, "Liberation Sans", sans-serif;
           font-weight: bold;
           font-size: 1.4rem;
           text-decoration: none; 
           padding: 0px 9px 0px 9px;
           color: #fff;
-          &:hover {text-decoration: underline;}             
+          &:hover {text-decoration: underline;}   
         }
-        a.left_menu_blue{color: #85C2FF} 
         ul.sub_menu{
           visibility: hidden;
           position: absolute;
@@ -48,72 +39,25 @@
               &:hover {
                 text-decoration: underline;
                 color: #fff;
-              }
-            
+              }             
             }
-            
           }
         }
       }  
   }
   
-  .lrg_menu_mob {  
-    display: none;
-  }
-  
-  .app_mob_menu{
+  .left_menu_mob_select{
     display: none;
   } 
-  
-  ul.left_menu_mob{
-      display: none;
-      li{display: none;
-        ul{display: none;
-          li{display: none;
-          }
-        }
-      }  
-  }
-
-
-}
 
 @media all and (max-width: 800px){//, only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
-
-  .lrg_mob {  
-    display: none;
-  }
   
-  ul.left_menu{
-    display: none;
-    li {display: none;}
-  }
-  
-  ul.left_menu{
-      display: none;
-      li{display: none;
-        ul{display: none;
-          li{display: none;
-          }
-        }
-      }  
-  }
-  
-  .lrg_menu_mob {  
-    position: absolute;
-    top: 27px;
-    left: 10px;   //set to suit size of MyHq logo
-    right:55px;
-  }
-  
-  //mobile menu item
-  .app_mob_menu{
+  //mobile menu item  
+  .left_menu_mob_select {  
     display: block;
-    position: absolute;
-    top: 10px;
-    left: 45px;  //set to suit size of MyHq logo
-    height: 32px;
-    width: 32px;
+    float: left;
+    padding: 0px;
+    margin: 13px 0px 0px 0px;
     font-family: "Trebuchet MS", Trebuchet, "Liberation Sans", sans-serif;
     font-weight: bold;
     font-size: 1.4rem;
@@ -128,9 +72,12 @@
   
   
   //mobile drop down menu     
-  ul.left_menu_mob {
+  ul.left_menu {
       display: none;
-      position: relative;
+      position: absolute;
+      top: 42px;
+      left: 30px;
+      right: 30px;
       list-style-type: none;
       z-index: 1000;
       li{
@@ -146,6 +93,7 @@
           line-height: 40px;
           padding: 0px 9px 0px 9px;
           color: #fff;
+          width: 100%;
           &:hover {
             text-decoration: underline;
             background: #333;
@@ -173,4 +121,6 @@
       }
   } 
 
-}     
+} 
+
+    

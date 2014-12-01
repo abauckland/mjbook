@@ -1,0 +1,68 @@
+@import "core";
+@import "buttons";
+
+.option_band{
+  @include border-radius(0.5rem);
+//  @include shadow-all(0px 0px 5px #aeaeae);  
+//  @include light_grey_32_gradient; 
+  margin: 0px 10px 0px 10px;
+  padding: 1px 12px 0px 12px; 
+
+  background: #c2c2c2;
+  background-image: -webkit-linear-gradient(top, #c2c2c2, #adadad);
+  background-image: -moz-linear-gradient(top, #c2c2c2, #adadad);
+  background-image: -ms-linear-gradient(top, #c2c2c2, #adadad);
+  background-image: -o-linear-gradient(top, #c2c2c2, #adadad);
+  background-image: linear-gradient(to bottom, #c2c2c2, #adadad);
+
+}
+
+.option_right{
+  float: right;
+}
+
+.option_right div{
+  float: right;
+}
+
+.option_right a.option_button{
+  float: right;
+  margin: 3px 0px 4px 10px;
+  @include title-button-green;
+}
+
+
+.option_left{
+  overflow: hidden;
+}
+
+.option_left div{
+  float: left;
+  width: 385px;
+  margin: 4px 10px 4px 0px;
+}
+
+.option_left label.select_1{
+  padding-top: 4px;
+  margin-right:2px;
+  font-weight: bold;
+  width: 60px;
+}
+
+.option_left label.select_2{
+  padding-top: 4px;
+  margin-right:2px;
+  font-weight: bold;
+  width: 60px;
+}
+
+
+//form footer submit and cancel buttons
+.option_left select{
+  float: left;
+  margin: 0px 0px 0px 2px;
+  padding: 2px 0px 2px 0px;
+  width: 320px;
+}
+
+

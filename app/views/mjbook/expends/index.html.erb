@@ -1,6 +1,7 @@
-<div class="page_title">
-    <h1>Expenditure</h1>
-    <div class="page_title_button"><%= link_to "add new expenditure", new_expend_path %></div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Expenditure</h1>
+    </div>
 </div>
 
 
@@ -28,61 +29,82 @@
 </div>
 
 
-<div class="table_content_with_filter">
-    <table>
-      <thead>
-        <tr>
-          <th class="expend_ref">Ref</th>
-          <th class="expend_paid">Paid to</th>
-          <th class="expend_method">Payment Method</th>
-          <th class="expend_account">Account</th>
-          <th class="expend_receipt">Receipt</th>
-          <th class="expend_date">Date</th>
-          <th class="expend_price">Price</br><span class="vat_note">(ex VAT)</span></th>
-          <th class="expend_vat">Vat</th>
-          <th class="expend_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
-          <th class="expend_status">Status</th>
-          <th class="expend_note">Note</th>
-          <th width="75px" class="row_button"></th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-          <% if @expends %>            
-            <% @expends.each do |expend| %>
-              <tr>
-                <td class="expend_ref"><%= expend.ref %></td>
-                <% if expend.personal? %>
-                    <td class="expend_paid"><%= expend.user.name if expend.user_id? %></td>
-                <% else %>
-                    <td class="expend_paid"><%= expend.expense.supplier.company_name if expend.expense_id? %></td>
-                <% end %>
-                <td class="expend_method"><%= expend.paymethod.text %></td>
-                <td class="expend_account"><%= expend.companyaccount.name %></td>
-                <td class="expend_receipt"><%= expend.expend_receipt %></td>
-                <td class="expend_date"><%= expend.date.strftime("%d/%m/%y") %></td>
-                <td class="expend_price"><%= pounds(expend.price) %></td>
-                <td class="expend_vat"><%= pounds(expend.vat) %></td>
-                <td class="expend_total"><%= pounds(expend.total) %></td>
-                <td id="<%= expend.id %>_status" class="expend_status"><%= expend.status %></td>
-                <td class="expend_note"><%= expend.note %></td>
-                <td id="<%= expend.id %>_links" width="75px" class="row_button">
-                <% if expend.reconciled? %>
-                    <%= row_delete_link(expend, 'hidden') %>
-                    <%= row_edit_link(expend, 'hidden') %>
-                    <%= row_reconcile_link(expend, 'hidden') %> 
-                <% else %>
-                    <%= row_delete_link(expend, 'show') %>
-                    <%= row_edit_link(expend, 'show') %>
-                    <%= row_reconcile_link(expend, 'show')  %> 
-                <% end %>
-                </td>
-              </tr>       
-            <% end %>
-          <% end %>
-          </tbody>
-        </table>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="expend_ref">Ref</th>
+                            <th class="expend_exp_type">Exp Type</th>
+                            <th class="expend_paid">Paid to</th>
+                            <th class="expend_method">Payment Method</th>
+                            <th class="expend_account">Account</th>
+                            <th class="expend_receipt">Receipt</th>
+                            <th class="expend_date">Date</th>
+                            <th class="expend_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="expend_vat">Vat</th>
+                            <th class="expend_total">Total</br><span>(Inc VAT)</span></th>
+                            <th class="expend_status">Status</th>
+                            <th class="expend_note">Note</th>
+                            <th class="row_button no_buttons_3"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @expends %>            
+                            <% @expends.each do |expend| %>
+                                <tr>
+                                    <td class="expend_ref"><%= expend.ref %></td>
+                                    <td class="expend_exp_type"><%= expend.exp_type.titleize %></td>
+                                    <% if expend.personal? %>
+                                        <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
+                                    <% end %>
+                                    <% if expend.business? %>
+                                        <td class="expend_paid"><%= expend_expenses(expend.id) %></td>                
+                                    <% end %>
+                                    <% if expend.salary? %>
+                                        <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
+                                    <% end %>
+                                    <td class="expend_method"><%= expend.paymethod.text.titleize %></td>
+                                    <td class="expend_account"><%= expend.companyaccount.name.titleize %></td>
+                                    <td class="expend_receipt"><%= expend.expend_receipt %></td>
+                                    <td class="expend_date"><%= expend.date.strftime("%d/%m/%y") %></td>
+                                    <td class="expend_price"><%= pounds(expend.price) %></td>
+                                    <td class="expend_vat"><%= pounds(expend.vat) %></td>
+                                    <td class="expend_total"><%= pounds(expend.total) %></td>
+                                    <td id="<%= expend.id %>_status" class="expend_status"><%= expend.state %></td>
+                                    <td class="expend_note"><%= expend.note %></td>
+                                    <td id="<%= expend.id %>_links" class="row_button no_buttons_3">
+                                        <% if expend.reconciled? %>
+                                            <%= row_delete_link(expend, 'hidden') %>
+                                            <%= row_edit_link(expend, 'hidden') %>
+                                            <%= row_reconcile_link(expend, 'hidden') %> 
+                                            <%= row_unreconcile_link(expend, 'show') %> 
+                                        <% else %>
+                                            <%= row_delete_link(expend, 'show') %>
+                                            <%= row_edit_link(expend, 'show') %>
+                                            <%= row_reconcile_link(expend, 'show') %> 
+                                            <%= row_unreconcile_link(expend, 'hidden') %>
+                                        <% end %>               
+                                    </td)
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

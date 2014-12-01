@@ -1,32 +1,48 @@
-<div class="page_title">
-    <h1>Listing Product Categories</h1>
-    <div class="page_title_button"><%= link_to "add product category", new_productcategory_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Product/Service Categories</h1>
+    </div>
+    <div class="title_help" id="productcategories_index"></div>
+    <div><%= link_to "add product category", new_productcategory_path, class: "title_button" %></div>
 </div>
 
-<div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-          <th class="product_category_name">Category Name</th>
-          <th width="25px" class="row_button">
-          </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-            <% @productcategories.each do |productcategory| %>
-              <tr>
-                <td class="product_category_name"><%= productcategory.text %></td>
-                <td width="25px" class="row_button">
-                <% if !productcategory.products.any? %>
-                    <%= row_delete_link(productcategory, 'show') %>
-                <% end %>
-                </td>                                 
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+                
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="product_category_name">Category Name</th>
+                            <th class="row_button no_buttons_1"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @productcategories %>            
+                            <% @productcategories.each do |productcategory| %>
+                                <tr>
+                                    <td class="product_category_name"><%= productcategory.text.titleize %></td> 
+                                    <td class="row_button no_buttons_1">
+                                        <% if !productcategory.products.any? %>
+                                            <%= row_delete_link(productcategory, 'show') %>
+                                        <% end %>                                        
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

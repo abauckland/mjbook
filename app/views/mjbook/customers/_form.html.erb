@@ -1,129 +1,141 @@
-<div class="content">
-    <div class="column_linked_container">
-           
-        <% if @customer.errors.any? %>
-            <div class="column_error">
-                <p><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being created</p>
-                <ul>
-                    <% @customer.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                    <% end %>
-                </ul>
-            </div>
-        <% end %>
+<div class="row">
+    <div class="col-1-1">
+        <div class="border">
 
-        <%= form_for(@customer) do |f| %>
-        <%= f.hidden_field :company_id, :value => current_user.company_id %>  
+            <%= render :partial => "form_error", :locals => {:item => @customer} %>
+
+            <%= form_for(@customer) do |f| %>
+                <%= f.hidden_field :company_id, :value => current_user.company_id %>
     
-        <div class="sub_column_linked_1">
-                 <div class="column_content">
-                        <div class="column_form">
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Company*:</label>                        
-                                <div class="column_form_input"><%= f.text_field :company_name %></div>
-                                <div class="column_help_tooltip" id="customer_company"></div>  
-                            </div>
+            <div class="row">
+                <div class="sub-1-3 column_1">
+                    <fieldset>
+
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_company"></div>
+                        <label class="label_80">Company:*</label>
+                        <span>
+                            <%= f.text_field :company_name %>
+                        </span></br>
                         
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Title:</label>                        
-                                <div class="column_form_input"><%= f.text_field :title %></div>
-                                <div class="column_help_tooltip" id="customer_title"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">First Name:</label>                        
-                                <div class="column_form_input"><%= f.text_field :first_name %></div>
-                                <div class="column_help_tooltip" id="customer_first_name"></div>
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Surname:</label>                        
-                                <div class="column_form_input"><%= f.text_field :surname %></div>
-                                <div class="column_help_tooltip" id="customer_surname"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Position:</label>                        
-                                <div class="column_form_input"><%= f.text_field :position %></div>
-                                <div class="column_help_tooltip" id="customer_position"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">E-mail:</label>                        
-                                <div class="column_form_input"><%= f.email_field :email %></div>
-                                <div class="column_help_tooltip" id="customer_email"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Tel:</label>                        
-                                <div class="column_form_input"><%= f.text_field :phone %></div>
-                                <div class="column_help_tooltip" id="customer_phone"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Alt. Tel:</label>                        
-                                <div class="column_form_input"><%= f.text_field :alt_phone %></div>
-                                <div class="column_help_tooltip" id="customer_alt_phone"></div>  
-                            </div>
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_title"></div>
+                        <label class="label_80">Title:</label>
+                        <span>
+                            <%= f.text_field :title %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <label class="label_80">First Name:</label>
+                        <span>
+                            <%= f.text_field :first_name %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <label class="label_80">Surname:</label>
+                        <span>
+                            <%= f.text_field :surname %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_position"></div>
+                        <label class="label_80">Position:</label>
+                        <span>
+                            <%= f.text_field :position %>
+                        </span></br>
+    
+                        <!-- form input[email] --> 
+                        <div class="form_tooltip" id="customer_email"></div>
+                        <label class="label_80">E-mail:</label>
+                        <span>
+                            <%= f.email_field :email, {placeholder: 'e.g. demo@example.com'} %>
+                        </span></br>
+    
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_phone"></div>
+                        <label class="label_80">Tel:</label>
+                        <span>
+                            <%= f.text_field :phone %>
+                        </span></br>
+    
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_alt_phone"></div>
+                        <label class="label_80">Alt. Tel:</label>
+                        <span>
+                            <%= f.text_field :alt_phone %>
+                        </span></br>
 
+                    </fieldset>
+                </div>
+                <div class="sub-1-3 column_2">
+                    <fieldset>
+
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_address_1"></div>
+                        <label class="label_80">Address 1:</label>
+                        <span>
+                            <%= f.text_field :address_1 %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_address_2"></div>
+                        <label class="label_80">Address 2:</label>
+                        <span>
+                            <%= f.text_field :address_2 %>
+                        </span></br>
+    
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_city"></div>
+                        <label class="label_80">City:</label>
+                        <span>
+                            <%= f.text_field :city %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_county"></div>
+                        <label class="label_80">County:</label>
+                        <span>
+                            <%= f.text_field :county %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_country"></div>
+                        <label class="label_80">Country:</label>
+                        <span>
+                            <%= f.text_field :country %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_postcode"></div>
+                        <label class="label_80">Postcode:</label>
+                        <span>
+                            <%= f.text_field :postcode %>
+                        </span></br>
+
+                    </fieldset>                                        
+                </div>
+                <div class="sub-1-3 column_3">
+                    <fieldset>
+
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="customer_notes"></div>
+                        <label class="label_80">Notes:</label>
+                        <span>
+                            <%= f.text_area :notes, {rows: 10, maxlength: 500, class: "maxlength"} %>
+                            <p class="input_note">Maximum of 500 characters</p>
+                        </span></br>
+
+                    </fieldset>
                 </div>
             </div>
-        </div>
-        <div class="sub_column_linked_2">
-            <div class="column_content">
-                <div class="column_form">
-    
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Address 1:</label>                        
-                                <div class="column_form_input"><%= f.text_field :address_1 %></div>
-                                <div class="column_help_tooltip" id="customer_address_1"></div>   
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Address 2:</label>                        
-                                <div class="column_form_input"><%= f.text_field :address_2 %></div>
-                                <div class="column_help_tooltip" id="customer_address_2"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">City:</label>                        
-                                <div class="column_form_input"><%= f.text_field :city %></div>
-                                <div class="column_help_tooltip" id="customer_city"></div>    
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">County:</label>                        
-                                <div class="column_form_input"><%= f.text_field :county %></div>
-                                <div class="column_help_tooltip" id="customer_county"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Country:</label>                        
-                                <div class="column_form_input"><%= f.text_field :country %></div>
-                                <div class="column_help_tooltip" id="customer_country"></div>  
-                            </div>
-                            <div class="column_form_item">
-                                <label class="column_form_label" style="width:80px">Postcode:</label>                        
-                                <div class="column_form_input"><%= f.text_field :postcode %></div>
-                                <div class="column_help_tooltip" id="customer_postcode"></div>  
-                            </div>
-    
+            
+            <div class="row">
+                <div class="form_footer">
+                    <%= f.submit "save" %>
+                    <%= link_to "cancel", customers_path %>
                 </div>
-            </div>     
-        </div>
-    
-        <div class="sub_column_linked_3">
-            <div class="column_content">
-                <div class="column_form">    
-                    <div class="column_form_item">
-                        <label class="column_form_label" style="width:80px">Notes:</label>                        
-                        <div class="column_form_input"><%= f.text_area :notes, :rows => "10"  %></div>
-                        <div class="column_help_tooltip" id="customer_motes"></div>  
-                    </div>    
-                </div>
-            </div>     
-        </div> 
-                   
-        <div class="column_linked_footer">
-            <div class="column_line"></div>
-            <div class="column_submit"><%= f.submit "save" %></div>
-            <div class="column_cancel"><%= link_to "cancel", customers_path %></div>
+            </div>
             <% end %>
         </div>
-            
     </div>
 </div>
-
-
-
-

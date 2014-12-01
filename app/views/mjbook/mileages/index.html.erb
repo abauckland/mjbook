@@ -1,49 +1,66 @@
-<div class="page_title">
-    <h1>Mileage Expenses</h1>
-    <div class="page_title_button"><%= link_to "add mileage", new_mileage_path %> </div>    
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Mileage Expenses</h1>
+    </div> 
+    <div><%= link_to "add mileage", new_mileage_path, class: "title_button" %></div>
 </div>
 
- <div class="table_content_with_title">
-    <table>
-      <thead>
-        <tr>
-          <th class="mileage_date">Date</th>
-          <th class="mileage_job">Job</th>
-          <th class="mileage_mode">Mode</th>
-          <th class="mileage_start">Start Location</th>
-          <th class="mileage_destination">Destination</th>
-          <th class="mileage_return">Return</th>
-          <th class="mileage_distance">Distance</th>
-          <th width="50px" class="row_button">
-            <%= link_to "", print_mileages_path, class: 'table_pdf_icon', title: "download pdf" %>              
-          </th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-            <% @mileages.each do |mileage| %>
-              <tr>
-                <td class="mileage_date"><%= mileage.date %></td>
-                <td class="mileage_job"><%= mileage.project.ref_name %></td>
-                <td class="mileage_mode"><%= mileage.mileagemethod.mode %></td>
-                <td class="mileage_start"><%= mileage.start %></td>
-                <td class="mileage_destination"><%= mileage.finish %></td>
-                <td class="mileage_return"><%= mileage.return %></td>
-                <td class="mileage_distance"><%= mileage.distance %></td>
-                <td width="50px" class="row_button">
-                    <%= row_edit_link(mileage, 'show') %>
-                    <% if mileage_in_use(mileage) %>
-                        <%= row_delete_link(mileage, 'show') %>
-                    <% else %>
-                        <%= row_delete_link(mileage, 'hidden') %>        
-                    <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="mileage_date">Date</th>
+                            <th class="mileage_job">Job</th>
+                            <th class="mileage_mode">Mode</th>
+                            <th class="mileage_start">Start Location</th>
+                            <th class="mileage_destination">Destination</th>
+                            <th class="mileage_return">Return</th>
+                            <th class="mileage_distance">Distance</th>
+                            <th class="row_button no_buttons_2">
+                                <% if @mileages %>
+                                    <%= link_to "", print_mileages_path, class: 'table_pdf_icon', title: "download pdf" %>
+                                <% end %> 
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @mileages %>            
+                            <% @mileages.each do |mileage| %>
+                                <tr>
+                                    <td class="mileage_date"><%= mileage.date %></td>
+                                    <td class="mileage_job"><%= mileage.project.ref_name.titleize %></td>
+                                    <td class="mileage_mode"><%= mileage.mileagemethod.mode.titleize %></td>
+                                    <td class="mileage_start"><%= mileage.start %></td>
+                                    <td class="mileage_destination"><%= mileage.finish %></td>
+                                    <td class="mileage_return"><%= mileage.return %></td>
+                                    <td class="mileage_distance"><%= mileage.distance %></td
+                                    <td class="row_button no_buttons_2">
+                                        <% if mileage_in_use(mileage) %>
+                                            <%= row_delete_link(mileage, 'show') %>
+                                        <% else %>
+                                            <%= row_delete_link(mileage, 'hidden') %>        
+                                        <% end %>                                        
+                                        <%= row_edit_link(mileage, 'show') %>
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
-</div>
 
+</div>

@@ -1,57 +1,84 @@
-<div class="page_title">
-    <h1>Summary</h1>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Summary</h1>
+    </div>
 </div>
 
-<div class="content">
-    <div class="column_1">
-        <div class="column_content">            
-           <div class="column_sub_content">
-               <div class="column_linked_sub_title">Expenses Pending</div> 
-               <div id="expenses_bar_chart" class="column_bar_chart"></div> 
-           </div>     
-                
-           <div class="column_footer">
-                <div class="column_line"></div>
-                <div class="column_add"><%= link_to "add", nil %></div>
-                <div class="column_index"><%= link_to "list", nil %></div>
-           </div>            
-        </div>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+
+                <div class="row">
+                    <div class="column_title">
+                        <h3>Expenses Pending<span class="form_tooltip"></span></h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="expenses_bar_chart" class="column_bar_chart"></div> 
+                </div>
+
+                <div class="row">
+                    <div class="form_footer">
+                        <%= link_to "add", nil %>
+                        <%= link_to "list", nil %>
+                    </div>
+                </div>
+            
+        </div>            
     </div>
-    <div class="column_2">
-        <div class="column_content">
-           
-            
-           <div class="column_sub_content">
-               <div class="column_linked_sub_title">Income Pending</div> 
-               <div id="income_bar_chart" class="column_bar_chart"></div>
-           </div>     
-                
-           <div class="column_footer">
-                <div class="column_line"></div>
-                <div class="column_add"><%= link_to "add", nil %></div>
-                <div class="column_index"><%= link_to "list", nil %></div>
-           </div>
-            
-        </div>
-    </div> 
-    <div class="column_3">
-        <div class="column_content">
-           
-            
-           <div class="column_sub_content">
-               <div class="column_linked_sub_title">Projected Balance</div> 
-               <div id="balance_bar_chart" class="column_bar_chart"></div>
-           </div>     
-                
-           <div class="column_footer">
-                <div class="column_line"></div>
-                <div class="column_add"><%= link_to "add", nil %></div>
-                <div class="column_index"><%= link_to "list", nil %></div>
-           </div>
-            
-        </div>
-    </div>  
 </div>
+
+<div class="row">
+    <div class="col-1-3 column_2">
+        <div class="border">
+
+                <div class="row">
+                    <div class="column_title">
+                        <h3>Income Pending<span class="form_tooltip"></span></h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="income_bar_chart" class="column_bar_chart"></div>
+                </div>
+
+                <div class="row">
+                    <div class="form_footer">
+                        <%= link_to "add", nil %>
+                        <%= link_to "list", nil %>
+                    </div>
+                </div>
+                        
+        </div>            
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-1-3 column_3">
+        <div class="border">
+
+                <div class="row">
+                    <div class="column_title">
+                        <h3>Projected Balance<span class="form_tooltip"></span></h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="balance_bar_chart" class="column_bar_chart"></div>
+                </div>
+
+                <div class="row">
+                    <div class="form_footer">
+                        <%= link_to "add", nil %>
+                        <%= link_to "list", nil %>
+                    </div>
+                </div>
+            
+        </div>            
+    </div>
+</div>
+
 
 
 <script type="text/javascript">

@@ -1,12 +1,8 @@
-@media all and (min-width: 800px){//, only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (min-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (min-resolution: 192dpi) and (min-width: 1024px), only screen and (min-resolution: 2dppx) and (min-width: 1024px) {
-
-  .user_menu{
+ .user_menu{
     display: block;
-    position: absolute;
-    top: 17px;
-    right: 65px;
-    height: 33px;
-    padding: 0px 20px 0px 0px;  
+    float: right;
+    margin: 16px 10px 0px 0px;
+    padding: 0px 20px 16px 0px;  
     background: image-url('settings-icon-white.png') no-repeat;
     background-position: 100% 0%;  
     font-family: "Trebuchet MS", Trebuchet, "Liberation Sans", sans-serif;
@@ -21,8 +17,8 @@
   ul.right_menu{
       visibility: hidden;
       position: absolute;
-      top: 35px;
-      right: 65px;
+      top: 42px;
+      right: 28px;
       z-index: 1000;
       padding: 0px 0px 0px 0px;
       background: #000;
@@ -51,47 +47,17 @@
       }
   }
 
-  .user_menu_mob{display: none;}
-  
-  ul.right_menu_mob{
-    display: none;
-    li{display: none;}
-  }  
-}
 
 @media all and (max-width: 800px){//, only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
 
-  .user_menu{display: none;}
-
-  ul.right_menu{
-    display: none;
-    li{display: none;}
-  } 
-
-  .user_menu_mob{
-    position: absolute;
-    top: 12px;
-    right: 65px;
-    height: 20px;
-    padding: 0px 20px 0px 0px;  
-    background: image-url('settings-icon-white.png') no-repeat;
-    background-position: 100% 0%;  
-    font-family: "Trebuchet MS", Trebuchet, "Liberation Sans", sans-serif;
-    font-size: 1.2rem;
-    color: #fff;
-    cursor: pointer;
-    &:hover{
-      text-decoration: underline;    
-    }
-  }  
 
   //mobile drop down menu     
-  ul.right_menu_mob{
+  ul.right_menu{
       display: none;
       position: absolute;
-      top: 27px;
-      left: 10px;   //set to suit size of MyHq logo
-      right:55px;
+      top: 42px;
+      left: 30px;   //set to suit size of MyHq logo
+      right:30px;
       list-style-type: none;
       z-index: 1000;
       li{

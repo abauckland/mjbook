@@ -24,15 +24,14 @@ Gem::Specification.new do |s|
   
   s.add_dependency  'prawn'
   s.add_dependency  'prawn-table'
+
+  s.add_dependency  'aasm'
   
   #s.add_dependency  'gruff'  
   s.add_development_dependency  'sass-rails', '~> 4.0.3'
   s.add_development_dependency  'coffee-rails', '~> 4.0.0'
   s.add_development_dependency  'tzinfo-data'
   s.add_development_dependency  'jquery-rails'
-  s.add_development_dependency 'pg'
   s.add_development_dependency 'mysql2'
-  s.add_development_dependency 'rails_best_practices'
-  s.add_development_dependency 'bullet'
   s.add_development_dependency 'sprig', '~> 0.1'   
 end

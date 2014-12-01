@@ -1,6 +1,8 @@
-<div class="page_title">
-    <h1>Invoices</h1>
-    <div class="page_title_button"><%= link_to "create new invoice", new_invoice_path %> </div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Invoices</h1>
+    </div>
+    <div><%= link_to "create new invoice", new_invoice_path, class: "title_button" %> </div>
 </div>
 
 
@@ -27,76 +29,88 @@
     <% end %>
 </div>
 
- <div class="table_content_with_filter">
-    <table>
-      <thead>
-        <tr>
-          <th class="invoice_ref">Ref</th>
-          <th class="invoice_title">Type</th>
-          <th class="invoice_project_ref">Job Ref</th>
-          <th class="invoice_customer_ref">Cust. Ref</th>     
-          <th class="invoice_customer">Cust. Name</th>
-          <th class="invoice_company_name">Cust. Company</th>
-          <th class="invoice_date">Date</th>
-          <th class="invoice_price">Price</br><span class="vat_note">(ex VAT)</span></th>
-          <th class="invoice_vat_due">Vat</th>
-          <th class="invoice_total">Total</br><span class="vat_note">(Inc VAT)</span></th>
-          <th class="125px" class="row_button"></th>
-        </tr>
-      </thead>
-    </table>
-    <div class="table_container">
-        <table>
-          <tbody>
-          <% if @invoices %>            
-            <% @invoices.each do |invoice| %>
-              <tr id ="<%= invoice.id %>">
-                <td class="invoice_ref"><%= invoice.ref %></td>
-                <td class="invoice_title"><%= invoice.invoicetype.text %></td>
-                <td class="invoice_project_ref"><%= invoice.project.ref %></td>
-                <td class="invoice_customer_ref"><%= invoice.customer_ref %></td>
-                <td class="invoice_customer"><%= invoice.project.customer.name %></td>
-                <td class="invoice_company_name"><%= invoice.project.customer.company_name %></td>
-                <td class="invoice_date"><%= invoice.date.strftime("%d/%m/%y") %></td>
-                <td class="invoice_price"><%= pounds(invoice.price) %></td>
-                <td class="invoice_vat_due"><%= pounds(invoice.vat_due) %></td> 
-                <td class="invoice_total"><%= pounds(invoice.total) %></td>
-                <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.status %></td>
-                <td id="<%= invoice.id %>_links" width="125px" class="row_button">
-             
-                    <% if invoice.submitted? || invoice.rejected? %>                
-                        <%= row_delete_link(invoice, 'show') %>
-                        <%= row_edit_link(invoice, 'show') %>
-                    <% else %>    
-                        <%= row_delete_link(invoice, 'hidden') %>
-                        <%= row_edit_link(invoice, 'hidden')%>                        
-                    <% end %>
-                    
-                        <%= row_print_link(invoice, 'show') %>
-                    
-                    <% if invoice.accepted? %>                
-                        <%= link_to "", nil, class: 'line_payment_icon_show', title: "record payment" %>
-                    <% else %>    
-                        <%= link_to "", nil, class: 'line_payment_icon_hidden', title: "record payment" %>
-                    <% end %>
-                    
-                    <% if invoice.submitted? || invoice.accepted?  %>
-                        <%= row_reject_link(invoice, 'show') %>               
-                    <% else %> 
-                        <%= row_reject_link(invoice, 'hidden') %>
-                    <% end %>
-                    
-                    <% if invoice.submitted? || invoice.rejected?  %>
-                        <%= row_accept_link(invoice, 'show') %>
-                    <% else %>    
-                        <%= row_accept_link(invoice, 'hidden') %>
-                    <% end %>                
 
-                </td>
-              </tr>
-            <% end %>
-          <% end %>
-          </tbody>
-        </table>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="invoice_ref">Ref</th>
+                            <th class="invoice_title">Type</th>
+                            <th class="invoice_project_ref">Job Ref</th>
+                            <th class="invoice_customer_ref">Cust. Ref</th>     
+                            <th class="invoice_customer">Cust. Name</th>
+                            <th class="invoice_company_name">Cust. Company</th>
+                            <th class="invoice_date">Date</th>
+                            <th class="invoice_price">Price</br><spa>(ex VAT)</span></th>
+                            <th class="invoice_vat_due">Vat</th>
+                            <th class="invoice_total">Total</br><span>(Inc VAT)</span></th>
+                            <th class="row_button no_buttons_5"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                          <% if @invoices %>            
+                            <% @invoices.each do |invoice| %>
+                                <tr>
+                                    <td class="invoice_ref"><%= invoice.ref %></td>
+                                    <td class="invoice_title"><%= invoice.invoicetype.text.titleize %></td>
+                                    <td class="invoice_project_ref"><%= invoice.project.ref %></td>
+                                    <td class="invoice_customer_ref"><%= invoice.customer_ref %></td>
+                                    <td class="invoice_customer"><%= invoice.project.customer.name.titleize %></td>
+                                    <td class="invoice_company_name"><%= invoice.project.customer.company_name.titleize %></td>
+                                    <td class="invoice_date"><%= invoice.date.strftime("%d/%m/%y") %></td>
+                                    <td class="invoice_price"><%= pounds(invoice.price) %></td>
+                                    <td class="invoice_vat_due"><%= pounds(invoice.vat_due) %></td> 
+                                    <td class="invoice_total"><%= pounds(invoice.total) %></td>
+                                    <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.status %></td>
+                                    <td id="<%= invoice.id %>_links" class="row_button no_buttons_5">
+                                        <% if invoice.submitted? || invoice.rejected? %>                
+                                            <%= row_delete_link(invoice, 'show') %>
+                                            <%= row_edit_link(invoice, 'show') %>
+                                        <% else %>
+                                            <%= row_delete_link(invoice, 'hidden') %>
+                                            <%= row_edit_link(invoice, 'hidden')%>                        
+                                        <% end %>
+                                        
+                                            <%= row_print_link(invoice, 'show') %>
+                                        
+                                        <% if invoice.accepted? %>                
+                                            <%= link_to "", nil, class: 'line_payment_icon_show', title: "record payment" %>
+                                        <% else %>    
+                                            <%= link_to "", nil, class: 'line_payment_icon_hidden', title: "record payment" %>
+                                        <% end %>
+                                        
+                                        <% if invoice.submitted? || invoice.accepted?  %>
+                                            <%= row_reject_link(invoice, 'show') %>               
+                                        <% else %> 
+                                            <%= row_reject_link(invoice, 'hidden') %>
+                                        <% end %>
+                                        
+                                        <% if invoice.submitted? || invoice.rejected?  %>
+                                            <%= row_accept_link(invoice, 'show') %>
+                                        <% else %>    
+                                            <%= row_accept_link(invoice, 'hidden') %>
+                                        <% end %>              
+                                    </td)
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
     </div>
+
 </div>

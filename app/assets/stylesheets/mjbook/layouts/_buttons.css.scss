@@ -1,84 +1,112 @@
 //core-ui
 @import "core";
 
-//buttons
-@mixin common-button-params{
-  display:inline-block;
-  color:#ffffff;
-  font-weight:bold;
-  text-decoration:none;
-  text-shadow:1px 1px 0px #528009;
-  cursor:pointer;
+//form_buttons
+@mixin form-button {
+  font-size:1.2rem;
+  font-weight: bold;
+  height:20px; //height of icon
+  padding: 0px 20px 0px 25px; //padding to show icon
+  border: none; //override default settings
+  text-decoration:none;    
+  cursor: pointer;
 }
 
-@mixin small-button {
-  font-size:1.2rem;
-  padding:0.2rem 0.4rem;
-  border:1px solid; 
-  @include common-button-params; 
-  @include border-radius(0.5rem);
+
+@mixin button-box-shadow($colour) {
+  -moz-box-shadow: 0px 1px 2px $colour;
+  -webkit-box-shadow: 0px 1px 2px $colour;
+  box-shadow: 0px 1px 2px $colour;
+} 
+
+@mixin title-button {
+  @include border-radius(0.3rem);
+  @include button-box-shadow(#666666);
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 4px 8px 4px 8px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
   a{
     color: #fff;
     text-decoration: none;
-    cursor: pointer;
-    &:hover{color: #ffffff;}
-    &:visited{color: #ffffff;}
+    &:hover{color: #fff;}
+    &:visited{color: #fff;}
+    }
+}
+                                      
+@mixin title-button-green {
+  @include title-button;
+  background: #66aa00;
+  border: solid #66aa00 0px;
+  &:hover {
+    background: #4b8533;
   }
-      
 }
 
-@mixin red-button {border-color: #db817b; @include red_28_gradient; @include button-box-shadow(#fed897);
-                      &:hover {@include inverted_red_28_gradient; }}
-@mixin green-button {border-color: #b0db64; @include green_28_gradient; @include button-box-shadow(#a4e271);
-                      &:hover {@include inverted_green_28_gradient; }}
-@mixin orange-button {border-color: #ebc178; @include orange_28_gradient; @include button-box-shadow(#f29c93);
-                      &:hover {@include inverted_orange_28_gradient; }} 
-@mixin dark-grey-button {border-color: #ddd; @include dark_grey_28_gradient; @include button-box-shadow(#aaa);
-                      &:hover {@include inverted_dark_grey_28_gradient; }}                                           
+@mixin title-button-orange {
+  @include title-button;
+  background: #f78014;
+  border: solid #f78014 0px;
+  &:hover {
+    background: #df6d05;
+  }
+}
+
+@mixin title-button-red {
+  @include title-button;
+  background: #66aa00;
+  border: solid #66aa00 0px;
+  &:hover {
+    background: #4b8533;
+  }
+}
+
+@mixin title-button-grey {
+  @include title-button;
+  background: #555;
+  border: solid #555 0px;
+  &:hover {
+    background: #333;
+  }
+}
+
                       
 //table row icons
 @mixin menu_icons($var) {
     display: inline-block;
     width: 20px;
     height: 20px;
-    background: asset_url('line_menu_icons.png') 0px $var no-repeat;;
+    background: asset_url('line_menu_icons.png') 0px $var no-repeat;
     &:hover{
       background: asset_url('line_menu_icons.png') -0px $var - 20px no-repeat;
     }
 }
 
-input[type="submit"].options_pdf_icon{
-  @include menu_icons(-1000px);
-  border: 0px;
-  padding: 0px 0px 0px 0px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  font-size: 0px;  
-}
-
-
 @mixin form_icons($var) {
-    background: asset_url('line_menu_icons.png') 0px $var no-repeat;;
+    background: asset_url('line_menu_icons.png') 0px $var no-repeat;
     &:hover{
       background: asset_url('line_menu_icons.png') -0px $var - 20px no-repeat;
     }
 }
 
 .line_insert_icon {@include menu_icons(-560px);}
-.line_new_icon {@include menu_icons(-520px);}
+.line_new_icon {@include menu_icons(-520px); float: right; padding: 0px 5px 0px 0px;}
 .line_edit_icon {@include menu_icons(-80px); float: right; padding: 0px 5px 0px 0px;}
 .line_delete_icon {@include menu_icons(-120px); float: right; padding: 0px 5px 0px 0px;}
 .line_move_icon {@include menu_icons(-0px);}
+.line_menu_icon {@include menu_icons(-40px); float: right; padding: 0px 5px 0px 0px;}
 
+.line_mileage_icon {@include menu_icons(-920px); float: right; padding: 0px 5px 0px 0px;}
 
-.line_mileage_icon {@include menu_icons(-920px);}
+.line_up_icon {@include menu_icons(-680px); float: right; padding: 0px 5px 0px 0px;}
+.line_down_icon {@include menu_icons(-720px); float: right; padding: 0px 5px 0px 0px;}
 
-.line_up_icon {@include menu_icons(-680px);}
-.line_down_icon {@include menu_icons(-720px);}
-
-.line_view_icon {@include menu_icons(-760px);}
-.line_show_icon {@include menu_icons(-800px);}
+.line_view_icon {@include menu_icons(-760px); float: right; padding: 0px 5px 0px 0px;}
+.line_show_icon {@include menu_icons(-800px); float: right; padding: 0px 5px 0px 0px;}
 
 
 .line_show_icon_show {@include menu_icons(-800px); float: right; padding: 0px 5px 0px 0px;}
@@ -110,11 +138,10 @@ input[type="submit"].options_pdf_icon{
 .line_pdf_icon_hidden {@include menu_icons(-1000px); display: none; float: right; padding: 0px 5px 0px 0px;}
 
 
-.line_menu_icon {@include menu_icons(-40px);}
+.line_menu_icon {@include menu_icons(-40px); float: right; padding: 0px 5px 0px 0px;}
 
 .table_pdf_icon {@include menu_icons(-1000px); float: right; padding: 0px 5px 0px 0px;}
 .table_csv_icon {@include menu_icons(-960px); float: right; padding: 0px 5px 0px 0px;}
-
 
 //form action icons
 

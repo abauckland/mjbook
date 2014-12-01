@@ -1,40 +1,50 @@
-<div class="page_title">
-    <h1>Payable Mileage Rates</h1>  
-</div>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Payable Mileage Rates</h1>
+    </div>
+</div> 
 
-<div class="content">
-    <div class="column_1">
-        <div class="column_content">
-                
-            <div class="column_sub_content">
-                <div class="column_table">
-                <table>
-                <thead>
-                    <tr class="column_line_form">
-                        <th class="column_line_form_label" style="width:60px">Mode</th>                        
-                        <th class="column_line_form_label" style="width:95px">HMRC Rate (£)</th> 
-                        <th class="column_line_form_label" style="width:95px">Rate Used (£)</th>
-                        <th class="column_line_form_label" style="width:20px"></th> 
-                    </tr>
-                </thead>
-                <% @mileagemodes.each do |mode| %>
 
-                <tbody>
-                    <tr class="column_line_form">
-                    <%= form_for(mode) do |f| %>
-                        <td class="column_line_form_input"><%= mode.mode %>:</td>
-                        <td class="column_line_form_input"><%= pounds(mode.hmrc_rate) %></td>
-                        <td class="column_line_form_input"><%= f.text_field :rate, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %></td>
-                        <td class="column_line_form_input"><%= f.submit ""%></td>
-                    <% end %>
-                    </tr>
-                <% end %>
-                </tbody>
-                </table>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+            
+            <%= render :partial => "flash_notice" %>
+<!-- error messages - associated with form start--> 
+
+<!-- form column start-->
+                <div class="row">
+                    <div class="column_inline_form">
+                        <div class="header_80">Mode</div>
+                        <div class="header_80">HMRC (£/ml)</div>
+                        <div class="header_90">Company  (£/ml)</div>
+                    </div>
                 </div>
-            </div>            
+
+                <div class="row">
+                    <% @mileagemodes.each do |mode| %>                    
+                    <div class="column_inline_form">
+                        <%= form_for(mode) do |f| %>
+                            <fieldset>
+                                <!-- form input[password] -->
+                                <%= f.submit ""%>
+                                <div class="label_80"><%= mode.mode %>:</div>
+                                <div class="label_80"><%= pounds(mode.hmrc_rate) %></div>
+                                <span>
+                                   <%= f.text_field :rate, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
+                                </span></br>
+                            </fieldset>
+                        <% end %>
+                    </div>
+                    <% end %>
+                </div>
         </div>
     </div>
-    <div class="column_2 column_2_blank"></div> 
-    <div class="column_3 column_3_blank"></div> 
-</div>   
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
+</div>
