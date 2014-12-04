@@ -9,7 +9,7 @@
 .column_title{
   margin: 0px 0 10px 0;
   padding: 5px 0px 5px 0px; 
-  border-bottom: solid 2px $column_border_colour;
+  border-bottom: solid 1px $column_border_colour;
   color: $column_title_text;
 }
 
@@ -29,13 +29,13 @@
 .column_line {
   margin: 0px 0px 20px 0px;
   height: 1px;
-  border-top: solid 2px $column_border_colour;
+  border-top: solid 1px $column_border_colour;
 }
 
 .form_footer {
   margin: 10px 0 0 0;
   padding: 5px 0px 0px 0px; 
-  border-top: solid 2px $column_border_colour;
+  border-top: solid 1px $column_border_colour;
 }
 
 
@@ -59,3 +59,15 @@
   &:hover{text-decoration:underline;}
   &:visited{color: $cancel_text_colour;}  
 }
+
+.form_footer a.left_edit_button{
+  @include form-button; //override default settings
+  float: left;
+  color: $save_text_colour;
+  padding-top: 3px;
+  padding-right: 0px;
+  @include form_icons(-80px);
+  &:hover{text-decoration:underline;}
+  &:visited{color: $save_text_colour;}  
+}
+

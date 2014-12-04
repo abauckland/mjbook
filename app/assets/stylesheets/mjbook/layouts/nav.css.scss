@@ -1,3 +1,5 @@
+
+
   ul.left_menu{
       display: block;
       float: left;
@@ -20,8 +22,9 @@
         ul.sub_menu{
           visibility: hidden;
           position: absolute;
-          top: 32px;
+          top: 54px;
           z-index: 1000;
+//          margin: 0px 0px 0px 30px;
           padding: 0px 0px 0px 0px;
           background: #000;
           list-style-type: none;
@@ -45,6 +48,11 @@
         }
       }  
   }
+
+  ul.left_menu li:first-child a{
+    color: #7EC9F7;
+  }
+
   
   .left_menu_mob_select{
     display: none;
@@ -100,6 +108,7 @@
           }
         }  
         ul{
+          display: none; //add to stop submenus showing in small screens
           padding: 0px 0px 0px 0px;        
           list-style-type: none;
           li{     

@@ -1,6 +1,17 @@
 <ul class="left_menu">
-    <li><%= link_to "Dashboard", main_app.dashboards_path, :class => 'left_menu_blue' %></li>
-    <li><%= link_to "Reports", summaries_path %> </li>
+    <li><%= link_to "Dashboard", main_app.dashboards_path, :class => 'left_menu_blue' %>
+        <ul class="sub_menu">
+            <li><%= link_to "Quotes", quotes_path %> </li>
+            <li><%= link_to "Invoices", invoices_path  %> </li>
+            <li><%= link_to "Payments", payments_path  %> </li>
+        </ul>    </li>
+    <li><%= link_to "Reports", summaries_path %>
+        <ul class="sub_menu">
+            <li><%= link_to "Quotes", quotes_path %> </li>
+            <li><%= link_to "Invoices", invoices_path  %> </li>
+            <li><%= link_to "Payments", payments_path  %> </li>
+        </ul>       
+    </li>
     <li class="has_sub"><%= link_to "Income", nil %>
         <ul class="sub_menu">
             <li><%= link_to "Quotes", quotes_path %> </li>

@@ -28,10 +28,12 @@
     background: asset_url('tooltip_icon.png') no-repeat;
 }
 
-.title_button{
+a.title_button{
   float: right;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 0px 0px 10px;
   @include title-button-green;
+  &:hover{color: #fff;}
+  &:visited{color: #fff;}
   }  
   @media screen and (max-width: $tablet-landscape) {
   .title_button{margin: 4px 10px 0px 0px;}    

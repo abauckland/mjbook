@@ -27,7 +27,9 @@ table thead{
 table tbody{
   tr{
     &:hover{background: #eee;}
-    td{padding: 5px 5px 5px 5px;}
+    td{padding: 5px 5px 5px 5px;
+      p{margin: 0px;}
+    }
     td.row_button{
       padding: 5px 2px 5px 2px;
       vertical-align: top;

@@ -18,10 +18,6 @@ module Mjbook
       format: { with: ADDRESS_REGEXP, message: ": please enter a ref/name with alphabetical or numerical characters" }    
     validates :company_id, uniqueness: {:scope => [:ref, :title, :customer_id]}
 
-    def ref=(text)
-      super(text.downcase)
-    end
-
     def title=(text)
       super(text.downcase)
     end
