@@ -111,7 +111,7 @@
                         <div class="form_tooltip" id="personalexpense_due_date"></div>
                         <label class="label_80">Payment Due:*</label>
                         <span>
-                            <%= f.date_field :due_date, :value => Time.now.strftime('%Y-%m-%d'), {placeholder: 'dd/mm/yyyy'} %>
+                            <%= f.date_field :due_date, :value => Time.now.strftime('%Y/%m/%d')%>
                         </span></br>
 
                         

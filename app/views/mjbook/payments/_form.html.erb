@@ -59,14 +59,14 @@
                         <div class="form_tooltip" id="invoice_date"></div>
                         <label class="label_80">Date:*</label>
                         <span>
-                            <%= f.date_field :date, :value => Time.now.strftime('%Y-%m-%d'), {placeholder: 'dd/mm/yyyy'} %>
+                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d')%>
                         </span></br>
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="invoice_note"></div>
                         <label class="label_80">Notes:</label>
                         <span>
-                            <%= f.date_field :note, :value => Time.now.strftime('%Y-%m-%d'), {placeholder: 'dd/mm/yyyy'} %>
+                            <%= f.date_field :note, :value => Time.now.strftime('%Y/%m/%d') %>
                         </span></br>
                         
                     </fieldset>
