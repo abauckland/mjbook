@@ -31,7 +31,7 @@
                         <div class="form_tooltip" id="mileage_date"></div>
                         <label class="label_80">Date:*</label>
                         <span>
-                           <%= date_field_tag( "people", :value => Time.now.strftime('%Y-%m-%d'), {placeholder: 'dd/mm/yyyy'} nil) %>
+                           <%= date_field_tag( "people", :value => Time.now.strftime('%Y/%m/%d')) %>
                         </span></br>
 
                         <!-- form input[select] -->

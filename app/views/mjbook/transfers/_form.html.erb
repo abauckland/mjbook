@@ -37,14 +37,14 @@
                         <div class="form_tooltip" id="transfer_total"></div>
                         <label class="label_80">Total:*</label>
                         <span>
-                            <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
+                            <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.total, :precision => 2)} %>
                         </span></br>
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="personalexpense_issue_date"></div>
                         <label class="label_80">Date:*</label>
                         <span>
-                            <%= f.date_field :date, :value => Time.now.strftime('%Y-%m-%d') %>
+                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
                         </span></br>
 
                     </fieldset>

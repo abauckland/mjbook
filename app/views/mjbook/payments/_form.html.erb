@@ -38,21 +38,21 @@
                         <div class="form_tooltip" id="invoice_price"></div>
                         <label class="label_80">Total (ex VAT):*</label>
                         <span>
-                            <%= f.text_field :price, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
+                            <%= f.text_field :price, {:placeholder => "0.00", :value => number_with_precision(f.object.price, :precision => 2)} %>
                         </span></br>
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="invoice_vat"></div>
                         <label class="label_80">VAT Paid:*</label>
                         <span>
-                            <%= f.text_field :vat, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
+                            <%= f.text_field :vat, {:placeholder => "0.00", :value => number_with_precision(f.object.vat, :precision => 2)} %>
                         </span></br>
                         
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="invoice_total"></div>
                         <label class="label_80">Total (inc VAT):*</label>
                         <span>
-                            <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
+                            <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.total, :precision => 2)} %>
                         </span></br>
 
                         <!-- form input[text] --> 

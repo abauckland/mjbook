@@ -58,7 +58,7 @@
                         <div class="form_tooltip" id="payexpense_date"></div>
                         <div class="form_tooltip">Date:*</label>
                         <span>
-                            <%= f.date_field :date, :value => Time.now.strftime('%Y-%m-%d'), {placeholder: 'dd/mm/yyyy'} %>
+                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
                         </span></br>
 
                         <!-- form input[text] --> 

@@ -11,10 +11,12 @@
             <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
         </div>    
         <div class="filter_left">    
+            <% if @projects %>  
             <div>
                 <label class="select">Project:</label>
                 <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
             </div>                
+            <% end %> 
             <div>
                 <label class="date">Date From:</label>
                 <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    

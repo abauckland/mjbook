@@ -1,6 +1,6 @@
 <ul class="left_menu">
     <li><%= link_to "Dashboard", main_app.dashboards_path, :class => 'left_menu_blue' %></li>
-    <li><%= link_to "Reports", nil %>
+    <li class="has_sub"><%= link_to "Reports", nil %>
         <ul class="sub_menu">
             <li><%= link_to "Summary", summaries_path %>
             <li><%= link_to "Payments", payments_path %> </li>
