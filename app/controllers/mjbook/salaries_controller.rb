@@ -3,7 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class SalariesController < ApplicationController
     before_action :set_salary, only: [:show, :edit, :update, :destroy, :accept, :reject]
-    before_action :set_users, only: [:index, :new, :edit]
+    before_action :set_users, only: [:index, :new, :edit, :update, :create]
 
     include PrintIndexes
     

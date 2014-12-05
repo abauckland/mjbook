@@ -16,7 +16,7 @@
                         <label class="label_80">Job Reference:*</label>
                         <% if @projects %>
                             <span>
-                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @invoice.project_id, :prompt => :true})%>
+                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @quote.project_id, :prompt => :true})%>
                             </span></br>
     
                             <!-- link button -->
@@ -53,7 +53,7 @@
                         <div class="form_tooltip" id="quote_terms"></div>
                         <label class="label_80">Terms:*</label>
                         <span>
-                            <%= f.collection_select(:invoiceterm_id, @invoiceterms, :id, :period, {:selected => @invoice.invoiceterm_id, :prompt => :true})%>
+                            <%= f.collection_select(:invoiceterm_id, @invoiceterms, :id, :period, {:selected => @quote.invoiceterm_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] --> 
