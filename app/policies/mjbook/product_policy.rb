@@ -35,7 +35,7 @@ module Mjbook
       index
     end
 
-    def delete?
+    def destroy?
       index
     end
 
