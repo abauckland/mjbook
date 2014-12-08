@@ -1,4 +1,6 @@
   module PrintIndexes
+    
+    extend ActiveSupport::Concern
 
     include PrintIndexHeader
     include PrintIndexTable
