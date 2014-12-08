@@ -1,4 +1,5 @@
 require_dependency "mjbook/application_controller"
+    include PrintIndexes
 
 module Mjbook
   class BusinessesController < ApplicationController
@@ -8,7 +9,7 @@ module Mjbook
     before_action :set_projects, only: [:new, :edit]
     before_action :set_hmrcexpcats, only: [:new, :edit]
 
-    include PrintIndexes
+
     
          
     # GET /business
