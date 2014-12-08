@@ -1,6 +1,6 @@
 class PaymentMailer < ActionMailer::Base
   
-  default from: current_user.email
+#  default from: current_user.email
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -9,9 +9,9 @@ class PaymentMailer < ActionMailer::Base
   #
   def reciept(payment)
 
-    reciept_subject = "Reciept" << payment.ref << payment.date
+#    reciept_subject = "Reciept" << payment.ref << payment.date
 
-    mail :to => payment.customer.email, :subject => reciept_subject
+#    mail :to => payment.customer.email, :subject => reciept_subject
     
     
     
