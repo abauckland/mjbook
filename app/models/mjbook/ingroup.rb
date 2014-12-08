@@ -3,7 +3,7 @@ module Mjbook
     belongs_to :invoice
     has_many :inlines, :dependent => :destroy
 
-    accepts_nested_attributes_for :Inlines
+    accepts_nested_attributes_for :inlines
 
     after_create :create_nested_records    
 
