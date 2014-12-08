@@ -1,7 +1,7 @@
 #index table
 
-    include Printheader
-    include Printfooter
+    include PrintIndexHeader
+    include PrintIndexFooter
 
    document = Prawn::Document.new(
     :page_size => "A4",
