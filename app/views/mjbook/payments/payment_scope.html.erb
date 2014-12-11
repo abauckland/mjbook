@@ -1,0 +1,16 @@
+<%= form_for(@payment, url: {:controller => 'payment', :action => 'invoice_paid'}) do %>
+
+    <% @ingroups.each do |group| %>
+        <% group.inlines.each do |line| %>
+        
+            <%= check_box_tag 'line_ids[]', line.id -%>
+            <%= line.item -%>
+            <%= line.total -%>
+            
+        <% end %>
+    <% end %>
+    
+    <%= pounds(@invoice.total) %>
+    
+<%= submit_tag 'Record Payment' %>
+<% end %>
