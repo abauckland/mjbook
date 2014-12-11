@@ -15,7 +15,7 @@ module Mjbook
       
     mount_uploader :receipt, ReceiptUploader
 
-    enum exp_type: [:business, :personal]
+    enum exp_type: [:business, :personal, :salary, :transfer]
 #    enum status: [:submitted, :rejected, :accepted, :paid]
 
     aasm :column => 'state' do
@@ -42,7 +42,6 @@ module Mjbook
       event :correct_payment do
         transitions :from => :paid, :to => :accepted
       end
-  
     end
 
 
