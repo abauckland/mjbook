@@ -1,5 +1,7 @@
 Mjbook::Engine.routes.draw do
   
+  resources :miscexpenses
+
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
     get :transfer, :on => :member
   end
@@ -125,7 +127,12 @@ Mjbook::Engine.routes.draw do
     get :unreconcile, :on => :member
   end
 
+  resources :paymentscopes 
+
   resources :payments do
+    get :payment_scope, :on => :member
+    get :invoice_paid, :on => :member
+    
     get :reconcile, :on => :member  
     get :unreconcile, :on => :member
   end
