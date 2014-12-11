@@ -1,0 +1,30 @@
+<table class='line_data_table'>
+    <tr class='line_data'>
+        <td class='invoice_line_prefix'>-</td>
+        <td class='invoice_line_category'><%= inline_category(line) %></td>
+        <td class='invoice_line_cat_item'><%= inline_cat_item(line) %></td>
+        <td class='invoice_line_item'><%= inline_item(line) %></td>
+        <td class='invoice_line_quantity'></td>
+        <td class='invoice_line_unit'></td>
+        <td class='invoice_line_rate'></td> 
+        <td class='invoice_line_price'><%= inline_price(line) %></td> 
+        <td class='invoice_line_vat_rate'><%= inline_vat_rate(line) %></td> 
+        <td class='invoice_line_vat'><%= auto_inline_vat(line) %></td> 
+        <td class='invoice_line_total'><%= auto_inline_total(line) %></td>     
+    </tr>    
+<!--
+    <tr class='line_note'>
+        <td class='invoice_line_prefix'></td>
+        <td class='invoice_line_category'></td>
+        <td class='invoice_line_cat_item'><%= inline_note(line) %></td>
+        <td class='invoice_line_item'><%= inline_note(line) %></td>
+        <td class='invoice_line_quantity'></td>
+        <td class='invoice_line_unit'></td>
+        <td class='invoice_line_rate'></td> 
+        <td class='invoice_line_price'></td> 
+        <td class='invoice_line_vat_rate'></td> 
+        <td class='invoice_line_vat'></td> 
+        <td class='invoice_line_total'></td>                       
+    </tr>
+-->
+</table>

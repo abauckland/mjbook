@@ -1,0 +1,31 @@
+var p = $('table#<%=@line.id%>').children('tbody').children('tr.line_row').children('td.line_menu');
+var m = $('table#<%=@line.id%>').children('tbody').children('tr.line_row').children('td.line_menu_mob');
+
+if ($('.line_menu_mob').css('display') == 'none'){
+	var position = p.offset();
+}else{
+	var position = m.offset();
+};
+var p_top = position.top;
+
+$('body').after('<%= escape_javascript(render :partial => "edit_line", :locals => {:line => @line, :linetypes => @linetypes}) %>');
+
+$('.linetype_menu').css({top: p_top});
+
+$('div.linetype_menu').hover(function (){
+  $('table#<%=@line.id%>').children('tbody').children('tr.line_row').css('background-color', '#efefef');
+    },
+  function (){
+  $('table#<%=@line.id%>').children('tbody').children('tr.line_row').css('background-color', '#fff');
+});
+
+$('span.button').click(function (){
+  $(this).parents('form:first').submit();
+  $('div.linetype_menu').remove();
+  $('table#<%=@line.id%>').children('tbody').children('tr.line_row').css('background-color', '#fff');
+     return false;
+});
+
+$('tr.line_row').mouseenter(function (){
+  $('div.linetype_menu').remove();
+});

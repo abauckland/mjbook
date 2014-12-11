@@ -45,15 +45,77 @@ $mob_menu: 520px;
 
 
 //invoice content form
-.invoice_line_prefix{}
-.invoice_line_category{}
-.invoice_line_cat_item{}
-.invoice_line_item{}
-.invoice_line_quantity{}
-.invoice_line_unit{}
-.invoice_line_rate{}
-.invoice_line_price{}
-.invoice_line_vat_rate{}
-.invoice_line_vat{}
-.invoice_line_total{}
+.invoice_line_prefix{display: table-cell; width: 10px; text-align: right;}
+.invoice_line_category{display: table-cell; width: 160px}
+.invoice_line_cat_item{display: none}
+.invoice_line_item{display: table-cell;}
+.invoice_line_quantity{display: table-cell; width: 60px; text-align: right;}
+.invoice_line_unit{display: table-cell; width: 50px; text-align: right;}
+.invoice_line_rate{display: table-cell; width: 80px; text-align: right;}
+.invoice_line_price{display: table-cell; width: 80px; text-align: right;}
+.invoice_line_vat_rate{display: table-cell; width: 50px; text-align: right;}
+.invoice_line_vat{display: table-cell; width: 80px; text-align: right;}
+.invoice_line_total{display: table-cell; width: 80px; text-align: right;}
 .invoice_line_menu_mob{}
+
+
+@media screen and (max-width: $lrg_menu) {
+  .invoice_line_price{display: none}
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .invoice_line_category{display: none}
+  .invoice_line_cat_item{display: table-cell}
+  .invoice_line_item{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .invoice_line_prefix{display: none}
+  .invoice_line_vat_rate{display: none}
+  .invoice_line_rate{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .invoice_line_unit{display: none}
+  .invoice_line_vat{display: none}
+}
+
+
+//invoice subtotal
+.invoice_sub_text{display: table-cell; text-align: right; padding: 8px 0px 8px 0px;}
+.invoice_sub_price{display: table-cell; width: 80px; text-align: right; padding: 8px 0px 8px 0px;}
+.invoice_sub_vat_rate{display: table-cell; width: 50px; text-align: right; padding: 8px 0px 8px 0px;}
+.invoice_sub_vat{display: table-cell; width: 80px; text-align: right; padding: 8px 0px 8px 0px;}
+.invoice_sub_total{display: table-cell; width: 80px; text-align: right; padding: 8px 0px 8px 0px;}
+
+@media screen and (max-width: $lrg_menu) {
+  .invoice_sub_price{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .invoice_sub_vat_rate{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .invoice_sub_vat{display: none}
+}
+
+
+//invoice total
+.invoice_total_text{display: table-cell; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.invoice_total_price{display: table-cell; width: 80px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.invoice_total_vat_rate{display: table-cell; width: 50px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.invoice_total_vat{display: table-cell; width: 80px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+.invoice_total_total{display: table-cell; width: 80px; text-align: right; font-weight: bold; padding: 8px 0px 8px 0px;}
+
+@media screen and (max-width: $lrg_menu) {
+  .invoice_total_price{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .invoice_total_vat_rate{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .invoice_sub_vat{display: none}
+}

@@ -1,0 +1,5 @@
+<%= render :partial => 'ingroup_row', locals: { group: group } %>    
+<% group.inlines.each do |line| %>
+    <%= render :partial => 'inline_row', locals: { line: line } %>    
+<% end %>        
+<%= render :partial => 'ingroup_total', locals: { group: group } %>

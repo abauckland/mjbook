@@ -1,0 +1,11 @@
+<div class="linetype_menu">
+    <div class="list_header">Select line format:</div>
+    <%= form_for @line, :remote => true do |f| %>
+      <%@linetypes.each do |linetype|%>
+        <div class="linetype">
+        	<%= f.radio_button 'linetype', linetype[0], {:class=> 'submittable2'} %>
+        	<%= linetype[1] %>
+        </div>
+      <% end %>
+    <% end %>
+</div>

@@ -1,0 +1,21 @@
+
+$('table#group_<%= @group.id %>').hide();
+
+$('table#group_sub_<%= @group.id %>').hide();
+
+
+var substr = <%=@line_ids%>;
+var i;
+for (i = 0; i < substr.length; ++i){
+$("table#" + substr[i]).hide();
+};
+
+$('table#total_<%= @group.invoice_id %>').find('.invoice_total_price').html('<%= pounds(@invoice.price) %>');
+$('table#total_<%= @group.invoice_id %>').find('.invoice_total_vat').html('<%= pounds(@invoice.vat_due) %>');
+$('table#total_<%= @group.invoice_id %>').find('.invoice_total_total').html('<%= pounds(@invoice.total) %>');
+
+
+<% if @subsequent_prefix.each_with_index do |sub_prefix, i|  %>
+        $('table#group_<%=sub_prefix[0]%>').find('.item_prefix').html('<%=sub_prefix[1]%>');
+    <% end %>
+<% end %>

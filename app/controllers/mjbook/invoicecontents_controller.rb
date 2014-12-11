@@ -5,7 +5,7 @@ module Mjbook
     before_action :set_invoice, only: [:show]
 
     def show
-      @ingroups = INgroup.where(:invoice_id => params[:id])
+      @ingroups = Mjbook::Ingroup.where(:invoice_id => params[:id])
     end
     
 

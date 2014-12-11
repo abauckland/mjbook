@@ -1,13 +1,14 @@
 <div class="row title_band">
     <div class="page_title">
         <h1>Invoice Build Up</h1>
-    </div>
-    <div><%= link_to "List of invoices", invoices_path %></div>
+    </div>  
+    <%= link_to "cancel", invoices_path, class: "title_button_orange" %>
+    <%= link_to "edit details", edit_invoice_path(@invoice), class: "title_button" %>
 </div>
 
 <div class="row info_band">
     <div class="info_right">
-        <%= link_to "edit details", edit_invoice_path(@invoice) %>       
+             
     </div>
 
     <div class="info_left">
@@ -28,6 +29,7 @@
         
                 <table class="table_header_with_info">
                 <tr class='line_row'>
+                <tr class='line_row'>
                     <td class='invoice_line_prefix'></td>
                     <td class='invoice_line_prefix'></td>
                     <td class='invoice_line_category'>Category</td>
@@ -40,15 +42,16 @@
                     <td class='invoice_line_vat_rate'>VAT (%)</td> 
                     <td class='invoice_line_vat'>VAT</td>  
                     <td class='invoice_line_total'>Total</td>
-                    <td class='invoice_line_menu_mob'></td><td class='line_menu'></td> 
+                    <td class='line_menu'></td> 
+                 </tr>
                  </tr>
                 </table>
                 <% @ingroups.each do |group| %>    
-                    <%= render :partial => 'group_row', locals: { group: group } %>  
-                    <% group.qlines.each do |line| %>
-                        <%= render :partial => 'line_row', locals: { line: line } %>    
+                    <%= render :partial => 'ingroup_row', locals: { group: group } %>  
+                    <% group.inlines.each do |line| %>
+                        <%= render :partial => 'inline_row', locals: { line: line } %>    
                     <% end %>        
-                    <%= render :partial => 'group_total', locals: { group: group } %>
+                    <%= render :partial => 'ingroup_total', locals: { group: group } %>
                 <% end %>
                 <%= render :partial => 'invoice_total', locals: { ingroups: @ingroups } %>
        

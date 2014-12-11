@@ -18,6 +18,7 @@ module Mjbook
       state :submitted, :initial => true 
       state :rejected
       state :accepted
+      state :part_paid      
       state :paid
   
       event :accept do
@@ -29,13 +30,23 @@ module Mjbook
         transitions :from => :submitted, :to => :rejected
         transitions :from => :accepted, :to => :rejected
       end
+
+      event :part_pay do
+        transitions :from => :accepted, :to => :part_paid
+      end
   
       event :pay do
         transitions :from => :accepted, :to => :paid
+        transitions :from => :part_paid, :to => :paid
       end
   
       event :correct_payment do
         transitions :from => :paid, :to => :accepted
+        transitions :from => :part_paid, :to => :accepted
+      end
+
+      event :correct_part_payment do
+        transitions :from => :paid, :to => :part_paid
       end
 
     end

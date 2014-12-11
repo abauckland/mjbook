@@ -3,8 +3,9 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class InvoicesController < ApplicationController
     before_action :set_invoice, only: [:show, :edit, :update, :destroy, :reject, :accept]
-    before_action :set_invoiceterms, only: [:new, :edit]
-    before_action :set_projects, only: [:new, :edit]
+    before_action :set_invoices, only: [:new, :create]
+    before_action :set_invoiceterms, only: [:new, :create, :edit, :update]
+    before_action :set_projects, only: [:new, :create, :edit, :update]
 
     include PrintIndexes
         
@@ -43,13 +44,13 @@ module Mjbook
           end
         end   
      
-        if params[:commit] == 'pdf'          
-          pdf_invoice_index(invoices, params[:customer_id], params[:date_from], params[:date_to])      
+        if params[:commit] == 'pdf'
+          pdf_invoice_index(invoices, params[:customer_id], params[:date_from], params[:date_to])
         end
-            
+
      else
-       @invoices = policy_scope(Invoice)       
-     end          
+       @invoices = policy_scope(Invoice)
+     end
 
      #selected parameters for filter form
      all_invoices = policy_scope(Invoice)        
@@ -65,8 +66,7 @@ module Mjbook
 
     # GET /invoice/new
     def new
-      @invoice = Invoice.new      
-      @quotes = policy_scope(Quote).accepted
+      @invoice = Invoice.new
     end
 
     # GET /invoice/1/edit
@@ -76,14 +76,35 @@ module Mjbook
     # POST /invoice
     def create
 
-      if params[:invoice][:invoice_content] == 'clone'           
-        create_clone(params[:invoice][:clone_quote])
-        redirect_to @invoice, notice: 'Invoice was successfully created.'
-      else     
-        @invoice = Invoice.new(invoice_params)   
+      if params[:invoice_content] == 'clone'
+        
+       clone_invoice = Invoice.where(:id => params[:clone_invoice]).first
 
+       new_invoice_hash = {
+                          :project_id => params[:invoice][:project_id],
+                          :ref => params[:invoice][:ref],
+                          :customer_ref => params[:invoice][:customer_ref],
+                          :date => params[:invoice][:date],
+                          :invoicetype_id => clone_invoice.invoicetype_id,
+                          :invoiceterm_id => clone_invoice.invoiceterm_id,
+                          :price => clone_invoice.price,
+                          :vat_due => clone_invoice.vat_due,
+                          :total => clone_invoice.total
+                          }
+                                  
+        @invoice = Invoice.new(new_invoice_hash)
         if @invoice.save
-          redirect_to @invoice, notice: 'Invoice was successfully created.'
+          
+          create_invoice_content(@invoice, clone_invoice)
+          
+          redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
+        else
+          render :new
+        end
+      else     
+        @invoice = Invoice.new(invoice_params)
+        if @invoice.save
+          redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
         else
           render :new
         end
@@ -93,7 +114,7 @@ module Mjbook
     # PATCH/PUT /invoice/1
     def update
       if @invoice.update(invoice_params)
-        redirect_to @invoice, notice: 'Invoice was successfully updated.'
+        redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully updated.'
       else
         render :edit
       end
@@ -109,7 +130,7 @@ module Mjbook
     def quote_new
       create_clone(params[:id])
 
-      redirect_to @invoice, notice: 'Invoice was successfully created.'
+      redirect_to invoices_path, notice: 'Invoice was successfully created from quote.'
 
     end
 
@@ -155,6 +176,10 @@ module Mjbook
         @invoice = Invoice.find(params[:id])
       end
 
+      def set_invoices
+        @invoices = policy_scope(Invoice)
+      end      
+      
       def set_projects
         @projects = policy_scope(Project).order('ref')
       end
@@ -191,6 +216,24 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"
       end 
+
+      def create_invoice_content(invoice_id, clone_invoice)        
+
+        clone_group = Mjbook::Ingroup.where(:invoice_id => clone_invoice.id)
+        clone_group.each do |group|
+          ingroup = group.dup
+          ingroup.invoice_id = invoice_id
+          ingroup.save
+
+          clone_line = Mjbook::Inline.where(:qgroup_id => group.id)
+          clone_line.each do |line|
+            inline = line.dup
+            inline.ingroup_id = ingroup.id
+            inline.save
+          end
+        end        
+      end
+
 
       def create_clone(clone_id)
         

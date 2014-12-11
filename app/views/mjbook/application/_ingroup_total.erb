@@ -1,0 +1,17 @@
+<table id='group_sub_<%=h group.id %>'  class='line_table' width='100%'>
+    <tr class='line_row'>
+        <td class='line_prefix'></td>
+        <td class='line_content'>
+            <table class='group_sub_table'>
+                <tr class='line_data'>
+                    <td class='invoice_sub_text'>Subtotal</td>
+                    <td class='invoice_sub_price'><%= ingroup_price(group) %></td>
+                    <td class='invoice_sub_vat_rate'></td> 
+                    <td class='invoice_sub_vat'><%= ingroup_vat(group) %></td>  
+                    <td class='invoice_sub_total'><%= ingroup_total(group) %></td>
+                </tr>
+            </table>                 
+        </td>
+        <td class='line_menu_mob'></td><td class='line_menu'></td>
+    </tr>
+</table>

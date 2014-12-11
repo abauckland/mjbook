@@ -1,0 +1,11 @@
+
+$('span#<%= @line.id %>.auto_inline_vat').html('<%= pounds(@line.vat_due) %>');      
+$('span#<%= @line.id %>.auto_inline_total').html('<%= pounds(@line.total) %>');
+
+$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_price').html('<%= pounds(@ingroup.price) %>');
+$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_vat').html('<%= pounds(@ingroup.vat_due) %>');
+$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_total').html('<%= pounds(@ingroup.total) %>');
+  
+$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_price').html('<%= pounds(@invoice.price) %>');
+$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_vat').html('<%= pounds(@invoice.vat_due) %>');
+$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_total').html('<%= pounds(@invoice.total) %>');
