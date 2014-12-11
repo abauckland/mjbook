@@ -1,4 +1,6 @@
-$('table#<%=@deleted_line_id%>').hide();
+
+$('span#<%= @line.id %>.auto_qline_vat').html('<%= pounds(@line.vat_due) %>');    
+$('span#<%= @line.id %>.auto_qline_total').html('<%= pounds(@line.total) %>');
 
 $('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= pounds(@qgroup.price) %>');
 $('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= pounds(@qgroup.vat_due) %>');

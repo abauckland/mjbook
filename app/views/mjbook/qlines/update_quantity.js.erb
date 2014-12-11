@@ -1,14 +1,14 @@
+$('span#<%= @line.id %>.qline_quantity').html('<%= @line.quantity %>');
 
-$('table#<%= @line.id %>').find('.line_quantity').children('span').html('<%= @line.quantity %>');
+$('span#<%= @line.id %>.qline_price').html('<%= pounds(@line.price) %>');
+$('span#<%= @line.id %>.auto_qline_price').html('<%= pounds(@line.price) %>');
+$('span#<%= @line.id %>.auto_qline_vat').html('<%= pounds(@line.vat_due) %>');    
+$('span#<%= @line.id %>.auto_qline_total').html('<%= pounds(@line.total) %>');
 
-$('table#<%= @line.id %>').find('.line_price').children('span').html('<%= pounds(@line.price) %>');
-$('table#<%= @line.id %>').find('.line_vat').children('span').html('<%= pounds(@line.vat_due) %>');    
-$('table#<%= @line.id %>').find('.line_total').children('span').html('<%= pounds(@line.total) %>');
-
-$('table#group_sub_<%= @line.qgroup_id %>').find('.line_price').html('<%= pounds(@qgroup.price) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.line_vat').html('<%= pounds(@qgroup.vat_due) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.line_total').html('<%= pounds(@qgroup.total) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= pounds(@qgroup.price) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= pounds(@qgroup.vat_due) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_total').html('<%= pounds(@qgroup.total) %>');
   
-$('table#total_<%= @line.qgroup.quote_id %>').find('.total_price').html('<%= pounds(@quote.price) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.total_vat').html('<%= pounds(@quote.vat_due) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.total_total').html('<%= pounds(@quote.total) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_price').html('<%= pounds(@quote.price) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_vat').html('<%= pounds(@quote.vat_due) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_total').html('<%= pounds(@quote.total) %>');

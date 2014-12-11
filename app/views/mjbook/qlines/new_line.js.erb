@@ -1,12 +1,12 @@
 $('table#<%=@line.id%>').after('<%= escape_javascript(render :partial => 'line_row', locals: { line: @new_line }) %>');
 
-$('table#group_sub_<%= @line.qgroup_id %>').find('.line_price').html('<%= pounds(@qgroup.price) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.line_vat').html('<%= pounds(@qgroup.vat_due) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.line_total').html('<%= pounds(@qgroup.total) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= pounds(@qgroup.price) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= pounds(@qgroup.vat_due) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_total').html('<%= pounds(@qgroup.total) %>');
   
-$('table#total_<%= @line.qgroup.quote_id %>').find('.total_price').html('<%= pounds(@quote.price) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.total_vat').html('<%= pounds(@quote.vat_due) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.total_total').html('<%= pounds(@quote.total) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_price').html('<%= pounds(@quote.price) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_vat').html('<%= pounds(@quote.vat_due) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_total').html('<%= pounds(@quote.total) %>');
 
 
 // show/hide menu and mob menu link
@@ -40,36 +40,6 @@ $('table#total_<%= @line.qgroup.quote_id %>').find('.total_total').html('<%= pou
        return false;
     });
 
+<%= render 'qline_jeditable' %>
 
 
-
-//$('span#<%= @new_line.id%>').mouseover(function(){
-    var line_id = 103;   
-        $('span#103').editable('http://localhost:3000/mjbook/qlines/103/update_quantity', {
-            id: line_id, width: ($(this).width() +10)+'px',
-            type: 'text',
-            ajaxoptions: {dataType: 'script'},
-            onblur: 'submit',
-            method: 'PUT',
-            indicator: 'Saving..',
-            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        }); 
-//    });
-
-
-//$('span#<%= @new_line.id%>').trigger('click');
-
-
-// update rate  
-    $('.qline_rate').mouseover(function(){
-    var line_id = $(this).attr('id');
-        $(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_rate', {
-            id: line_id, width: ($(this).width() +10)+'px',
-            type: 'text',
-            ajaxoptions: {dataType: 'script'},
-            onblur: 'submit',
-            method: 'PUT',
-            indicator: 'Saving..',
-            submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });     
-    });

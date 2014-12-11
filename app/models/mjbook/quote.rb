@@ -6,7 +6,7 @@ module Mjbook
     has_many :qgroups, :dependent => :destroy
 
     belongs_to :project
-    belongs_to :quoteterm    
+    belongs_to :quoteterm
     
     accepts_nested_attributes_for :qgroups
     
@@ -38,8 +38,8 @@ module Mjbook
 
     validates :project_id, :quoteterm_id, :ref, presence: true
     validates :date,
-      presence: true#,
-   #   format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }  
+      presence: true,
+      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }  
 
     private
 

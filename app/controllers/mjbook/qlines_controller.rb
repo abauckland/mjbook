@@ -23,7 +23,7 @@ module Mjbook
 
     def edit_line
       
-      @linetypes = [['1','product item'],['2','service item (fixed price)'],['3','service item (hourly rate)'],['4','misc item']]
+      @linetypes = [['1','product item'],['2','service item (fixed price)'],['3','misc item']]
       
       respond_to do |format|
         format.js {render :edit_line, :layout => false }  
@@ -33,32 +33,31 @@ module Mjbook
 
     def update
       # changes format of line by inserting new line then delete old line 
-      @old_line = Qline.find(params[:id])     
-     
-      @line = Qline.create(:qgroup_id => @old_line.qgroup_id,
-                               :line_order => @old_line.line_order,
-                               :linetype => params[:qline][:linetype]) 
+      @old_line = Qline.find(params[:id])
+      @old_line_id = @old_line.id
 
-      @old_line_id = @old_line.id      
-      @old_line.destroy   
-      
+      @line = Qline.create(:qgroup_id => @old_line.qgroup_id,
+                           :line_order => @old_line.line_order,
+                           :linetype => params[:qline][:linetype])
+
+      @old_line.destroy
       update_totals(@line.qgroup_id)
                 
       respond_to do |format|
-        format.js {render :update_line, :layout => false }  
-      end      
+        format.js {render :update_line, :layout => false }
+      end
     end
 
 
     def delete_line
 
       @deleted_line_id = @line.id
-      deleted_line_group_id = @line.qgroup_id      
-      @line.destroy      
-# TODO this does not work - line ahs been deleted
-      update_line_order(@line, 'delete') 
-
-      update_totals(deleted_line_group_id)
+      line_dup = @line.dup 
+         
+      @line.destroy
+      
+      update_line_order(line_dup, 'delete') 
+      update_totals(line_dup.qgroup_id)
                    
       respond_to do |format|
         format.js {render :delete_line, :layout => false }  
@@ -72,31 +71,27 @@ module Mjbook
       if params[:value] == "Add new..."
         #render option for inputting new category      
         respond_to do |format|      
-          format.js {render :update_cat_new, :layout => false }        
+          format.js {render :change_cat_input, :layout => false }        
         end        
       else  
-        #set model names for each type of item, determined by linetype
-        #case line.linetype
-        #  when 1 ; @model_name = "Product"
-        #  when 2 ; @model_name = "Service "         
-        #  when 3 ; @model_name = "Rate"          
-        #  when 4 ; @model_name = "Misc"
-        #end
+
         old_line = Qline.find(params[:id])
-        @model_name = "Productcategory"
+        @old_line_id = old_line.id
+
+#        @model_name = "Productcategory"
         
-        const_name =  @model_name.camelize
-        category_klass = Mjbook.const_get(const_name)
-        cat = category_klass.where(:id => params[:value]).first        
+#        const_name =  @model_name.camelize
+#        category_klass = Mjbook.const_get(const_name)
+#        cat = category_klass.where(:id => params[:value]).first
+        
+        cat = Mjbook::Productcategory.where(:id => params[:value]).first         
         
         @line = Qline.create(:cat => cat.text,
                              :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)        
+                             :linetype => old_line.linetype)
 
-        @old_line_id = old_line.id 
         old_line.destroy
-
         update_totals(@line.qgroup_id)
 
         respond_to do |format|      
@@ -109,9 +104,11 @@ module Mjbook
     def update_item
       
       if params[:value] == "Add new..."
+        
+         @line = Qline.find(params[:id])
         #render option for inputting new category      
         respond_to do |format|      
-          format.js {render :update_product_new, :layout => false }        
+          format.js {render :change_product_input, :layout => false }        
         end         
       else  
         #set model names for each type of item, determined by linetype
@@ -124,12 +121,14 @@ module Mjbook
         old_line = Qline.find(params[:id])
         @model_name = "Product"
         
-        const_name =  @model_name.camelize
-        item_klass = Mjbook.const_get(const_name)
-        item = item_klass.where(:id => params[:value]).first        
+#        const_name =  @model_name.camelize
+#        item_klass = Mjbook.const_get(const_name)
+#        item = item_klass.where(:id => params[:value]).first        
         
+        item = Product.where(:item => params[:value]).first        
         cat = Productcategory.where(:id => item.productcategory_id).first
         
+        if new_linetype == 1
         @line = Qline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => item.quantity,
@@ -139,9 +138,40 @@ module Mjbook
                              :vat_id => item.vat_id,
                              :vat_due => item.vat_due,
                              :total=> item.price,     
-                             :qgroup_id => old_line.qgroup_id,
+                             :ingroup_id => old_line.ingroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)        
+                             :linetype => old_line.linetype)  
+        end
+
+        if new_linetype == 2
+        @line = Qline.create(:cat => cat.text,
+                             :item => item.item,
+                             :quantity => 0,
+                             :unit_id => item.unit_id,
+                             :rate => 0,
+                             :price => item.price, 
+                             :vat_id => item.vat_id,
+                             :vat_due => item.vat_due,
+                             :total=> item.price,     
+                             :ingroup_id => old_line.ingroup_id,
+                             :line_order => old_line.line_order,
+                             :linetype => old_line.linetype)          
+        end
+
+        if new_linetype == 3
+        @line = Qline.create(:cat => cat.text,
+                             :item => item.item,
+                             :quantity => 0,
+                             :unit_id => item.unit_id,
+                             :rate => 0,
+                             :price => 0, 
+                             :vat_id => item.vat_id,
+                             :vat_due => 0,
+                             :total=> 0,     
+                             :ingroup_id => old_line.ingroup_id,
+                             :line_order => old_line.line_order,
+                             :linetype => old_line.linetype)          
+        end         
 
         @old_line_id = old_line.id 
         old_line.destroy
@@ -195,7 +225,7 @@ module Mjbook
 
       vat = Vat.where(:id => params[:value]).first 
       
-      vat_due = (@line.rate*(vat.rate/100))
+      vat_due = (@line.rate*(vat.rate/100))*@line.quantity  
       total = (@line.rate + vat_due)*@line.quantity   
       #update line, group and quote totals
       @line.update(:total =>total, :vat_id => params[:value], :vat_due => vat_due)            
@@ -209,31 +239,31 @@ module Mjbook
 
     def update_price
  
-#      clean_number(params[:value])
+      clean_number(params[:value])
             
-#      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
-#      rate = @value-vat_due
-#      #update line, group and quote totals      
-#      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)            
+      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
+      rate = @value-vat_due
+      #update line, group and quote totals      
+      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)            
       
-#      update_totals(@line.qgroup_id)
+      update_totals(@line.qgroup_id)
     
-#      render :update_qline, :layout => false 
+      render :update_line, :layout => false 
     end
 
     def update_total
  
-      clean_number(params[:value])
+#      clean_number(params[:value])
             
-      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
-      rate = (@value-vat_due)/@line.quantity
-      price = @value-vat_due
+#      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
+#      rate = (@value-vat_due)/@line.quantity
+#      price = @value-vat_due
       #update line, group and quote totals      
-      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)            
+#      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)            
       
-      update_totals(@line.qgroup_id)
+#      update_totals(@line.qgroup_id)
     
-      render :update_qline, :layout => false 
+#      render :update_qline, :layout => false 
     end
 
     def update_unit  
@@ -267,21 +297,23 @@ module Mjbook
 
       def update_totals(qgroup_id)
         #group subtotal
-        vat_due = Qline.where(:qgroup_id => qgroup_id).sum(:vat_due)
         price = Qline.where(:qgroup_id => qgroup_id).sum(:price)
+        vat_due = Qline.where(:qgroup_id => qgroup_id).sum(:vat_due)
+        total = Qline.where(:qgroup_id => qgroup_id).sum(:total)
         #update group subtotal
         @qgroup = Qgroup.where(:id => qgroup_id).first
-        @qgroup.update(:sub_vat => vat_due, :sub_price => price)
+        @qgroup.update(:vat_due => vat_due, :total => total, :price => price)
 
        #quote totals              
         group_ids = Qgroup.where(:quote_id => @qgroup.quote_id)
-        total_price = Qline.where(:qgroup_id => group_ids).sum(:price)
-        total_vat = Qline.where(:qgroup_id => group_ids).sum(:vat_due)
+        price = Qline.where(:qgroup_id => group_ids).sum(:price)
+        total = Qline.where(:qgroup_id => group_ids).sum(:total)
+        vat_due = Qline.where(:qgroup_id => group_ids).sum(:vat_due)
         #update quote
         @quote = Quote.where(:id => @qgroup.quote_id).first
-        @quote.update(:total_vat => total_vat, :total_price => total_price)
+        @quote.update(:vat_due => vat_due, :total => total, :price => price)
                    
-      end      
+      end       
      
       def update_line_order(selected_line, action) 
         subsequent_lines = Qline.where('qgroup_id = ? AND line_order > ?', selected_line.qgroup_id, selected_line.line_order)

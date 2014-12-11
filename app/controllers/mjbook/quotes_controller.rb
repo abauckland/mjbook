@@ -4,8 +4,8 @@ module Mjbook
   class QuotesController < ApplicationController
         
     before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept]
-    before_action :set_quoteterms, only: [:new, :edit]
-    before_action :set_projects, only: [:new, :edit]
+    before_action :set_quoteterms, only: [:new, :edit, :create, :update]
+    before_action :set_projects, only: [:new, :edit, :create, :update]
         
     include PrintIndexes
     include PrintQuote
