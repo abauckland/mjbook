@@ -179,7 +179,7 @@ module Mjbook
       end
       
       @expend.destroy #also destroys expenditem 
-      redirect_to expends_path, notice: 'Expend was successfully destroyed.'
+      redirect_to expends_path, notice: 'Expend was successfully deleted.'
     end
     
     def reconcile

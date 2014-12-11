@@ -134,7 +134,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def salary_params
-        params.require(:salary).permit(:company_id, :user_id, :total, :date, :status)
+        params.require(:salary).permit(:company_id, :user_id, :total, :date, :state)
       end
       
       def pdf_salary_index(salaries, user_id, date_from, date_to)

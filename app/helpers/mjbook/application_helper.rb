@@ -11,6 +11,9 @@ module Mjbook
       number_to_currency(price, :unit => "£")
     end
 
+    def pounds_no_unit(price)
+      number_to_currency(price, :unit => "")
+    end
 
     def row_show_link(model, display)
       link_to '', polymorphic_url(model), class: ('line_show_icon_' << display) , title: "show full details"     

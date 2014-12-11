@@ -75,7 +75,7 @@ module Mjbook
     # POST /expenses
     def create
       @expense = Expense.new(expense_params)
-      @expense.due_date = Time.now.utc.end_of_month
+     # @expense.due_date = Time.now.utc.end_of_month
       if @expense.save
           redirect_to businesses_path, notice: 'Expense was successfully created.'            
       else

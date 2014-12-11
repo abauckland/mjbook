@@ -3,6 +3,7 @@ module Mjbook
 
     belongs_to :company
     has_many :expends
+    has_many :payments
     has_many :transfers
     
     validates :name, presence: true,

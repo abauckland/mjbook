@@ -4,4 +4,125 @@
     </div>
 </div>
 
-<%= render 'form' %>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+
+<!-- error messages - associated with form start--> 
+            <%= render :partial => "form_error", :locals => {:item => @expense} %>
+
+<!-- form column start-->
+            <div class="row">
+                <%= form_for(@expense, url: { action: "create" }) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    <%= f.hidden_field :exp_type, :value => "personal" %> 
+                    <fieldset>
+
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="personalexpense_project"></div>
+                        <label class="label_100">Job Reference:*</label>
+                        <% if @projects %>
+                            <span>
+                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true})%>
+                            </span></br>
+    
+                            <!-- link button -->
+                            <label class="label_100"></label>
+                        <% end %>
+                        <span>
+                            <%= link_to "add new customer", new_customer_path, class: "form_button" %>
+                        </span></br>
+                        
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="personalexpense_supplier"></div>
+                        <label class="label_100">Supplier:*</label>
+                        <% if @suppliers %>
+                            <span>
+                                <%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true})%>
+                            </span></br>
+    
+                            <!-- link button -->
+                            <label class="label_100"></label>
+                        <% end %>
+                        <span>
+                            <%= link_to "add new supplier", new_supplier_path, class: "form_button" %>
+                        </span></br>
+
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="personalexpense_hmrcexpcat"></div>
+                        <label class="label_100">Expense Type:*</label>
+                        <span>
+                            <%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true})%>
+                        </span></br>
+
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="personalexpense_reference"></div>
+                        <label class="label_100">Reference:</label>
+                        <span>
+                            <%= f.text_field :ref %>
+                        </span></br>
+
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="businessexpense_receipt"></div>
+                        <label class="label_100">Receipt Image:</label>
+                        <% if @expense.receipt? %>
+                            <span>
+                                <%= image_tag(@expense.receipt_url, {:height => "50px"}) %>
+                            </span></br>
+    
+                            <!-- link button -->
+                            <label class="label_100"></label>
+                        <% end %>
+                        <span>
+                            <%= f.file_field :receipt %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="personalexpense_price"></div>
+                        <label class="label_100">Total (ex VAT):*</label>
+                        <span>
+                            <%= f.text_field :price, {:placeholder => "0.00", :value => number_with_precision(f.object.price, :precision => 2)} %>
+                        </span></br>
+
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="personalexpense_vat"></div>
+                        <label class="label_100">VAT Paid:*</label>
+                        <span>
+                            <%= f.text_field :vat, {:placeholder => "0.00", :value => number_with_precision(f.object.vat, :precision => 2)} %>
+                        </span></br>
+                        
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="personalexpense_total"></div>
+                        <label class="label_100">Total (inc VAT):*</label>
+                        <span>
+                            <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.total, :precision => 2)} %>
+                        </span></br>
+
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="personalexpense_issue_date"></div>
+                        <label class="label_100">Date:*</label>
+                        <span>
+                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
+                        </span></br>
+                        
+                    </fieldset>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= f.submit "save"%>
+                    <%= link_to "cancel", personals_path %>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
+</div>

@@ -17,8 +17,7 @@ class CreateMjbookExpenses < ActiveRecord::Migration
       t.integer :recurrence
       t.string :ref
       t.string :supplier_ref
-      t.integer :state
-      t.integer :expend_id
+      t.string :state
 
       t.timestamps
     end

@@ -14,6 +14,7 @@ class CreateMjbookInlines < ActiveRecord::Migration
       t.text :note
       t.integer :line_order, default: 1
       t.integer :linetype, default: 1
+      t.string :state
 
       t.timestamps
     end

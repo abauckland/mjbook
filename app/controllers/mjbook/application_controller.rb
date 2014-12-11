@@ -31,6 +31,7 @@ module Mjbook
         end                
         @value = @value.to_d
       end
+ 
     
   end
 end

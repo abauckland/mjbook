@@ -57,7 +57,8 @@ module Mjbook
                           :date => @transfer.date,
                           :companyaccount_id => @transfer.account_to_id,
                           :paymethod_id => @transfer.paymethod_id,
-                          :total => @transfer.total      
+                          :total => @transfer.total,
+                          :exp_type => 'transfer'      
                           )
       if @expend.save      
         Mjbook::Expenditem.create(:expend_id => @expend.id, :transfer_id => @transfer.id)    
@@ -68,7 +69,8 @@ module Mjbook
                           :date => @transfer.date,
                           :companyaccount_id => @transfer.account_from_id,
                           :paymethod_id => @transfer.paymethod_id,
-                          :total => @transfer.total                 
+                          :total => @transfer.total,
+                          :inc_type => 'transfer'                 
         )
         
         if @payment.save      
