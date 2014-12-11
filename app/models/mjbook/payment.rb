@@ -2,10 +2,14 @@ module Mjbook
   class Payment < ActiveRecord::Base
 
     include AASM
-    
-    belongs_to :invoice
-    belongs_to :project
- #   enum status: [:paid, :reconciled]
+
+    belongs_to :companyaccount
+    belongs_to :paymethod
+    belongs_to :user    
+    has_many :paymentitems, :dependent => :destroy
+
+    enum inc_type: [:invoice, :transfer]
+        
     aasm :column => 'state' do
 
       state :paid, :initial => true

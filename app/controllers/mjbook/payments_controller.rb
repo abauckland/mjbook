@@ -4,6 +4,8 @@ module Mjbook
   class PaymentsController < ApplicationController
     before_action :set_payment, only: [:show, :edit, :update, :destroy]
     before_action :set_companyaccounts, only: [:new, :edit] 
+    before_action :set_accounts, only: [:new, :edit, :invoice_paid]
+    before_action :set_paymethods, only: [:new, :edit, :invoice_paid]
 
     include PrintIndexes
     
@@ -80,8 +82,35 @@ module Mjbook
 
     # POST /payments
     def create
-      authorize @payment
+
       @payment = Payment.new(payment_params)
+      authorize @payment
+      if @payment.save
+
+        if @payment.invoice?
+          inlines = Mjbook::Inline.where(:id => params[:invoice_item_ids])
+          invoice = Mjbook::Invoice.where(:id => params[:invoice_id]).first
+          
+          inlines.each do |item|
+            Mjbook::Paymentitem.create(:expend_id => @expend.id, :line_id => item.id)
+            item.pay!          
+          end
+          
+          #check if all the inlines for the invoice have been paid          
+          check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id]).first
+          if check_inlines.blank?
+            invoice.pay!
+          else  
+            invoice.part_pay!
+          end            
+        end
+        
+        redirect_to payments_path, notice: 'Expend was successfully created.'
+      else
+        render :new
+      end
+
+
       if @payment.save
         redirect_to @payment, notice: 'Payment was successfully created.'
       else
@@ -101,16 +130,39 @@ module Mjbook
 
     # DELETE /payments/1
     def destroy
-      
-      #delete transfer in expend
-      #update state of transfer record
-      
-      authorize @payment
+      authorize @payment      
+
+      #change state of associated expenses to 'accepted', i.e. not paid
+      paymentitems = Mjbook::Paymentitem.where(:payment_id => @payment.id)        
+      paymentitems.each do |item|
+
+        if @payment.invoice?
+          inline = Mjbook::Inline.where(:id => item.inline_id)
+          inline.correct_payment!               
+        
+          #check if any of the inlines for the invoice have been paid          
+          check_inlines = Mjbook::Inline.paid.join(:ingroup).where(:invoice_id => params[:invoice_id]).first
+          if check_inlines.blank?
+            invoice.correct_payment!
+          else  
+            invoice.correct_part_payment!
+          end
+        end
+
+        if @payment.transfer?
+          transfer = Mjbook::Transfer.where(:id => item.transfer_id)
+          transfer.correct_payment!
+          
+          #if transfer is destoyed also need to destroy record of payment
+          expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first           
+          expend.destroy               
+        end
+
+      end
+
       @payment.destroy
-      redirect_to payments_url, notice: 'Payment was successfully destroyed.'
+      redirect_to payments_url, notice: 'Payment was successfully deleted.'
     end
-
-
 
     def reconcile
       authorize @payment
@@ -139,13 +191,17 @@ module Mjbook
         @payment = Payment.find(params[:id])
       end
 
-      def set_companyaccounts     
-        @companyaccounts = policy_scope(Companyaccount) 
+      def set_accounts
+        @companyaccounts = policy_scope(Companyaccount)
+      end
+      
+      def set_paymethods
+        @paymethods = Mjbook::Paymethod.all        
       end
 
       # Only allow a trusted parameter "white list" through.
       def payment_params
-        params.require(:payment).permit(:user_id, :invoice_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :note, :state)
+        params.require(:payment).permit(:user_id, :invoice_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :inc_type, :note, :state)
       end
 
       def pdf_quote_index(payments, customer_id, date_from, date_to)
