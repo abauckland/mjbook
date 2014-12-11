@@ -22,9 +22,18 @@ form label.label_100 {width: 100px;}
 form label.label_110 {width: 110px;}
 form label.label_120 {width: 120px;}
 
-form input {width: 100%;}
-form select {width: 100%; padding: 2px 0px 2px 0px;}
-form textarea {width: 100%;}
+form input {
+  width: 100%;
+  &:disabled {background: #dddddd;}
+}
+form select {
+  width: 100%; padding: 2px 0px 2px 0px;
+  &:disabled {background: #dddddd;}
+}
+form textarea {
+  width: 100%;
+  &:disabled {background: #dddddd;}
+}
 
 form input[type="radio"]{
   float: left;
@@ -123,3 +132,6 @@ div.label_90{width: 90px;}
   padding-left: 0px; //override default settings
 }
 
+
+.blank_select{}
+.clone_select{disabled: disabled}

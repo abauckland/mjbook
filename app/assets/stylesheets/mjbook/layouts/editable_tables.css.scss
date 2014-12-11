@@ -225,49 +225,4 @@ table.table_header_with_info{
   border-style: double;
   font-weight: bold;  
 }
-
-
-////////////////////////////////////////
-//line formatt popup
-.linetype_menu{
-  font-family: $standard_font;
-  font-size: 1.2rem;
-  position: absolute;
-  right: 40px;
-  width: 210px;
-  background: #000;
-  color: #fff;
-  padding: 4px 5px 10px 10px;
-  @include shadow-all(0px 0px 5px #aeaeae);
-}
-  @media screen and (max-width: $tablet-protrait) {
-    .linetype_menu{right: 100px;}  
-  }
-
-.linetype_menu_header{
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 210px;
-  color: #fff;
-  padding: 9px 10px 9px 5px;
-  border-bottom: 1pt solid #fff;
-  font-weight: bold;
-}
-
-.linetype_menu_linetype_id{
-  padding: 35px 0px 0px 0px;
-}
-
-.linetype_menu_button {
-  height: 15px;
-  padding: 5px 0px 5px 0px;
-  font-weight: normal;
-}
-
-.linetype_menu_button_label{
-  padding: 2px 0px 3px 5px;
-  cursor: pointer;
-}
-
   

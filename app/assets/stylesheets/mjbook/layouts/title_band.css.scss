@@ -42,3 +42,17 @@ a.title_button{
   .title_button{margin: 0px 10px 0px 0px;}    
   }
  
+
+a.title_button_orange{
+  float: right;
+  margin: 10px 0px 0px 10px;
+  @include title-button-orange;
+  &:hover{color: #fff;}
+  &:visited{color: #fff;}
+  }  
+  @media screen and (max-width: $tablet-landscape) {
+  .title_button_orange{margin: 4px 10px 0px 0px;}    
+  }  
+  @media screen and (max-width: $phone-landscape) {
+  .title_button_orange{margin: 0px 10px 0px 0px;}    
+  }
