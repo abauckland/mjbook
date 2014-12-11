@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 1
+  user_id: 1
+  exp_type: 1
+  ref: MyString
+  project_id: 1
+  hmrcexpcat_id: 1
+  date: 2014-12-11 16:03:51
+  due_date: 2014-12-11 16:03:51
+  price: 9.99
+  vat: 9.99
+  total: 9.99
+  item: MyString
+  provider_id: 1
+  provider_ref: MyString
+  receipt: MyString
+  note: MyText
+  state: MyString
+
+two:
+  company_id: 1
+  user_id: 1
+  exp_type: 1
+  ref: MyString
+  project_id: 1
+  hmrcexpcat_id: 1
+  date: 2014-12-11 16:03:51
+  due_date: 2014-12-11 16:03:51
+  price: 9.99
+  vat: 9.99
+  total: 9.99
+  item: MyString
+  provider_id: 1
+  provider_ref: MyString
+  receipt: MyString
+  note: MyText
+  state: MyString
