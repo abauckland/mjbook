@@ -9,15 +9,16 @@
         <td class='quote_line_rate'></td> 
         <td class='quote_line_price'><%= line_price(line) %></td> 
         <td class='quote_line_vat_rate'><%= line_vat_rate(line) %></td> 
-        <td class='quote_line_vat'><%= line_vat(line) %></td> 
-        <td class='quote_line_total'><%= line_total(line) %></td>     
+        <td class='quote_line_vat'><%= auto_line_vat(line) %></td> 
+        <td class='quote_line_total'><%= auto_line_total(line) %></td>     
     </tr>    
+<!--
     <tr class='line_note'>
         <td class='quote_line_prefix'></td>
         <td class='quote_line_category'></td>
         <td class='quote_line_cat_item'><%= line_note(line) %></td>
         <td class='quote_line_item'><%= line_note(line) %></td>
-        <td class='quote_line_quantity'><</td>
+        <td class='quote_line_quantity'></td>
         <td class='quote_line_unit'></td>
         <td class='quote_line_rate'></td> 
         <td class='quote_line_price'></td> 
@@ -25,4 +26,5 @@
         <td class='quote_line_vat'></td> 
         <td class='quote_line_total'></td>                       
     </tr>
+-->
 </table>

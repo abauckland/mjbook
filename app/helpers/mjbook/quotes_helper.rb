@@ -75,7 +75,7 @@ module Mjbook
     end
     
     def line_rate(line)  
-        "<span id='#{ line.id }' class='qline_rate'>#{ pounds(line.rate) }</span>".html_safe
+        "<span id='#{ line.id }' class='qline_rate'>#{ pounds_no_unit(line.rate) }</span>".html_safe
     end
     
     def line_unit(line)  
@@ -90,16 +90,22 @@ module Mjbook
         "<span id='#{ line.id }' class='qline_vat_rate'>#{ line.vat.rate }%</span>".html_safe
     end
     
-    def line_vat(line)  
-        "<span id='#{ line.id }' class='qline_vat'>#{ pounds(line.vat_due) }</span>".html_safe
-    end
-    
-    def line_total(line)  
-        "<span id='#{ line.id }' class='qline_total'>#{ pounds(line.total) }".html_safe      
-    end
-    
     def line_note(line)  
         "<span id='#{ line.id }' class='qline_text'>#{ line.note }</span>".html_safe
+    end
+
+
+
+    def auto_line_price(line)  
+        "<span id='#{ line.id }' class='auto_qline_price'>#{ pounds(line.price) }".html_safe      
+    end
+    
+    def auto_line_vat(line)  
+        "<span id='#{ line.id }' class='auto_qline_vat'>#{ pounds(line.vat_due) }</span>".html_safe
+    end
+    
+    def auto_line_total(line)  
+        "<span id='#{ line.id }' class='auto_qline_total'>#{ pounds(line.total) }".html_safe      
     end
   
   
