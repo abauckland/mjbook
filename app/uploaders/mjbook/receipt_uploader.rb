@@ -3,17 +3,17 @@ module Mjbook
   class ReceiptUploader < CarrierWave::Uploader::Base
 
   #Include RMagick or MiniMagick support:
-#  include CarrierWave::RMagick
+  include CarrierWave::RMagick
   #include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  #storage :file
+  storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/receipts/#{current_user.company_id}/#{current_user.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -30,12 +30,12 @@ module Mjbook
   # def scale(width, height)
   #   # do something
   # end
-#  process :resize_to_limit => [1000, 1000]  
+  process :resize_to_limit => [1000, 1000]  
 
   # Create different versions of your uploaded files:
-#   version :thumb do
-#     process :resize_to_limit => [50, 50]
-#   end
+   version :thumb do
+     process :resize_to_limit => [100,100]
+   end
 
 
   # Add a white list of extensions which are allowed to be uploaded.
