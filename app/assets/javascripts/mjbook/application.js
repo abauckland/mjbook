@@ -26,4 +26,6 @@
 //= require mjbook/jqplotPlugins/jqplot.categoryAxisRenderer.js
 //= require mjbook/jqplotPlugins/jqplot.enhancedLegendRenderer.js
 //= require mjbook/jqplotPlugins/jqplot.pointLabels.js
+//= require mjbook/plugins/jquery.fancybox.pack.js
+//= require mjbook/plugins/jquery.fancybox.js
 //= require_tree .

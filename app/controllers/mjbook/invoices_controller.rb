@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class InvoicesController < ApplicationController
-    before_action :set_invoice, only: [:show, :edit, :update, :destroy, :reject, :accept]
+    before_action :set_invoice, only: [:show, :edit, :update, :destroy, :accept, :email]
     before_action :set_invoices, only: [:new, :create]
     before_action :set_invoiceterms, only: [:new, :create, :edit, :update]
     before_action :set_projects, only: [:new, :create, :edit, :update]
@@ -114,6 +114,7 @@ module Mjbook
     # PATCH/PUT /invoice/1
     def update
       if @invoice.update(invoice_params)
+        @invoice.draft!
         redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully updated.'
       else
         render :edit
@@ -128,47 +129,48 @@ module Mjbook
 
 
     def quote_new
-      create_clone(params[:id])
+        
+        quote = Mjbook::Quote.where(:id => clone_id).first
+        dup_quote = quote.dup
+        @invoice = Invoice.create(dup_quote.attributes)
+
+        clone_qgroup = Mjbook::Qgroup.where(:quote_id => quote.id)
+        clone_qgroup.each do |group|
+          dup_group = group.dup
+          @ingroup = Mjbook::Ingroup.new(dup_group)
+          @ingroup.invoice_id = @invoice.id
+          @ingroup.save
+
+          clone_qline = Mjbook::Qline.where(:qgroup_id => group.id)
+          clone_qline.each do |line|
+            dup_line = line.dup
+            inline = Mjbook::Inline.new(dup_line)
+            inline.ingroup_id = @ingroup.id
+            inline.save
+          end
+        end
 
       redirect_to invoices_path, notice: 'Invoice was successfully created from quote.'
 
     end
 
-    def accept
-      #mark expense ready for payment
-      if @invoice.accept!       
-        respond_to do |format|
-          format.js   { render :accept, :layout => false }
-        end  
-      end      
-    end 
-
-    def reject
-      #mark expense as rejected
-      if @invoice.reject!
-        respond_to do |format|
-          format.js   { render :reject, :layout => false }
-        end 
-      end    
-    end
-
-    def print
-
-       document = Prawn::Document.new(
-        :page_size => "A4",
-        :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-        :info => {:title => @invoice.project.title}
-        ) do |pdf|    
-
-          print_invoice(@invoice, pdf)
-       
-        end         
-
+    def print      
+        print_invoice_document(@invoice)      
         filename = "#{@invoice.project.ref}.pdf"   
 
-        send_data document.render, filename: filename, :type => "application/pdf"      
+        send_data @document.render, filename: filename, :type => "application/pdf"      
     end
-
+    
+    def email
+        print_invoice_document(@invoice)
+        InvoiceMailer.invoice(@invoice, @document).deliver
+        
+        if @invoice.submit!
+          respond_to do |format|
+            format.js   { render :email, :layout => false }
+          end 
+        end
+    end
 
     private
       # Use callbacks to share common setup or constraints between actions.
@@ -217,6 +219,16 @@ module Mjbook
           send_data document.render, filename: filename, :type => "application/pdf"
       end 
 
+      def print_invoice_document(invoice)  
+         @document = Prawn::Document.new(
+          :page_size => "A4",
+          :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+          :info => {:title => invoice.project.title}
+          ) do |pdf|    
+            print_invoice(invoice, pdf)       
+          end 
+      end
+
       def create_invoice_content(invoice_id, clone_invoice)        
 
         clone_group = Mjbook::Ingroup.where(:invoice_id => clone_invoice.id)
@@ -233,35 +245,5 @@ module Mjbook
           end
         end        
       end
-
-
-      def create_clone(clone_id)
-        
-        quote = Mjbook::Quote.where(:id => clone_id).first
-        dup_quote = quote.dup
-        @invoice = Invoice.create(dup_quote.attributes)
-
-
-
-        clone_qgroup = Mjbook::Qgroup.where(:quote_id => quote.id)
-        clone_qgroup.each do |group|
-          dup_group = group.dup
-          @ingroup = Mjbook::Ingroup.new(dup_group)
-          @ingroup.invoice_id = @invoice.id
-          @ingroup.save
-
-          clone_qline = Mjbook::Qline.where(:qgroup_id => group.id)
-          clone_qline.each do |line|
-            dup_line = line.dup
-            inline = Mjbook::Inline.new(dup_line)
-            inline.ingroup_id = @ingroup.id
-            inline.save
-          end
-        end
-
-        quote.invoice
-        
-      end
-
   end
 end

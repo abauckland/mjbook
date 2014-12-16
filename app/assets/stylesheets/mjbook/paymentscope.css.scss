@@ -1,0 +1,66 @@
+
+.group_info{
+  font-weight: bold;
+  p{margin: 10px 0px 4px 0px;}
+}
+
+.line_info{
+  clear: both;
+  &:hover{background-color: #eee;}
+}
+
+.line_info div.left{
+  overflow: hidden;
+  padding: 5px 0px 5px 5px;
+  width: auto;
+}
+
+.line_info div.right{
+  float: right;
+  width: 120px;
+}
+
+.line_info div.right span{
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+.line_info div.right span p{
+  margin: 5px 0px 0px 0px;
+}
+
+.line_info input[type="checkbox"]{
+  width: 20px;
+  margin-top: 5px;
+  }
+
+.column_line_double {
+  margin: 0px 7px 5px 0px;
+  height: 3px;
+  border-top: solid 1px #888;
+  border-bottom: solid 1px #888;
+}
+
+
+.line_info div.total_left{
+  overflow: hidden;
+  padding: 5px 0px 5px 5px;
+  width: auto;
+  text-align: right;
+  font-weight: bold;
+}
+
+.line_info div.total_right{
+  float: right;
+  width: 100px;
+  text-align: right;
+  margin-right: 12px;
+  font-weight: bold;
+}
+
+.line_info div.total_right span p{
+  margin: 5px 0px 0px 0px;
+}
+
+

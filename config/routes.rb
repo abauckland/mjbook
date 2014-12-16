@@ -1,5 +1,11 @@
 Mjbook::Engine.routes.draw do
   
+  resources :writeoffs, :only => [:index, :show, :create, :destroy]
+
+  resources :creditnotes, :only => [:index, :show, :create, :destroy] do
+    get :email, :on => :member 
+  end
+
   resources :miscexpenses
 
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
@@ -42,8 +48,7 @@ Mjbook::Engine.routes.draw do
   end 
 
   resources :invoices do
-    get :accept, :on => :member
-    get :reject, :on => :member 
+    get :email, :on => :member
     get :print, :on => :member
     
     get :quote_new, :on => :member
@@ -96,6 +101,7 @@ Mjbook::Engine.routes.draw do
   end  
 
   resources :quotes do
+    get :email, :on => :member 
     get :accept, :on => :member
     get :reject, :on => :member
     get :print, :on => :member
@@ -127,12 +133,14 @@ Mjbook::Engine.routes.draw do
     get :unreconcile, :on => :member
   end
 
-  resources :paymentscopes 
+  resources :processinvoices, :only => [:index, :new] do
+    get :payment, :on => :member
+    get :creditnote, :on => :member  
+    get :writeoff, :on => :member  
+  end
 
   resources :payments do
-    get :payment_scope, :on => :member
-    get :invoice_paid, :on => :member
-    
+    get :email, :on => :member 
     get :reconcile, :on => :member  
     get :unreconcile, :on => :member
   end

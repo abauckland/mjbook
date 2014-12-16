@@ -1,0 +1,119 @@
+require_dependency "mjbook/application_controller"
+
+module Mjbook
+  class CreditnotesController < ApplicationController
+    before_action :set_creditnote, only: [:show, :destroy, :email]
+
+    # GET /creditnotes
+    def index
+    
+      if params[:customer_id]
+    
+          if params[:customer_id] != ""
+            if params[:date_from] != ""
+              if params[:date_to] != ""
+                @creditnotes = Creditnote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])          
+              else
+                @creditnotes = Creditnote.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id]) 
+              end  
+            else  
+              if params[:date_to] != ""
+                @creditnotes = Creditnote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])            
+              end
+            end   
+          else
+            if params[:date_from] != ""
+              if params[:date_to] != ""
+               # @creditnotes = Creditnote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
+                @creditnotes = policy_scope(Creditnote).where(:date => params[:date_from]..params[:date_to])          
+              else
+                #@creditnotes = Creditnote.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
+                @creditnotes = policy_scope(Creditnote).where('date > ?', params[:date_from])  
+              end  
+            else  
+              if params[:date_to] != ""
+                #@creditnotes = Creditnote.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
+                @creditnotes = policy_scope(Creditnote).where('date < ?', params[:date_to])            
+              else
+                #@creditnotes = Creditnote.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+                @creditnotes = policy_scope(Creditnote) 
+              end     
+            end
+          end   
+       
+          if params[:commit] == 'pdf'          
+            pdf_creditnote_index(creditnotes, params[:customer_id], params[:date_from], params[:date_to])      
+          end
+              
+       else
+         @creditnotes = policy_scope(Creditnote)     
+       end          
+  
+       #selected parameters for filter form
+       all_invoices = policy_scope(Invoice)     
+       @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
+       @customer = params[:customer_id]
+       @date_from = params[:date_from]
+       @date_to = params[:date_to]
+
+
+      authorize @creditnotes 
+    end
+
+    # GET /creditnotes/1
+    def show
+    end
+
+    # POST /creditnotes
+    def create
+      @creditnote = Creditnote.new(creditnote_params)
+
+      if @creditnote.save
+        redirect_to @creditnote, notice: 'Creditnote was successfully created.'
+      else
+        render :new
+      end
+    end
+
+    # DELETE /creditnotes/1
+    def destroy
+      @creditnote.destroy
+      redirect_to creditnotes_url, notice: 'Creditnote was successfully destroyed.'
+    end
+
+    def email
+      #change state of payment to show receipt has been emailed?
+        print_creditnote_document(@creditnote)
+        CreditnoteMailer.creditnote(@creditnote, @document).deliver
+        @creditnote.confirm!
+        
+        if @creditnote.confirm!
+          respond_to do |format|
+            format.js   { render :email, :layout => false }
+          end 
+        end
+    end
+
+    private
+      # Use callbacks to share common setup or constraints between actions.
+      def set_creditnote
+        @creditnote = Creditnote.find(params[:id])
+      end
+
+      # Only allow a trusted parameter "white list" through.
+      def creditnote_params
+        params.require(:creditnote).permit(:company_id, :ref, :price, :vat, :total, :date, :notes, :state)
+      end
+
+      def print_creditnote_document(creditnote)  
+         @document = Prawn::Document.new(
+          :page_size => "A4",
+          :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+          :info => {:title => creditnote.ref}
+          ) do |pdf|    
+            print_creditnote(creditnote, pdf)       
+          end 
+      end
+
+  end
+end

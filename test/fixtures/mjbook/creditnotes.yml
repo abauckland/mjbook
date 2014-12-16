@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 1
+  ref: MyString
+  price: 9.99
+  vat: 9.99
+  total: 9.99
+  date: 2014-12-13 11:11:17
+  notes: MyText
+
+two:
+  company_id: 1
+  ref: MyString
+  price: 9.99
+  vat: 9.99
+  total: 9.99
+  date: 2014-12-13 11:11:17
+  notes: MyText

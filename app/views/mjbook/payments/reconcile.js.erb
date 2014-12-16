@@ -1,5 +1,5 @@
 $('td#'+<%= @payment.id %>+'_status').html('reconciled');
 
-$('td#'+<%= @payment.id %>+'_links').children('a.line_reconcile_icon_show').attr('class', 'line_accept_icon_hidden');
-$('td#'+<%= @payment.id %>+'_links').children('a.line_edit_icon_show').attr('class', 'line_edit_icon_hidden');
-$('td#'+<%= @payment.id %>+'_links').children('a.line_delete_icon_show').attr('class', 'line_delete_icon_hidden');
+$('td#'+<%= @payment.id %>+'_links').children('a.line_reconcile_icon_show').attr('class', 'line_reconcile_icon_hidden');
+
+$('td#'+<%= @payment.id %>+'_links').children('a.line_unreconcile_icon_hidden').attr('class', 'line_unreconcile_icon_show');

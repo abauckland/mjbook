@@ -1,0 +1,80 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Writeoffs Recieved</h1>
+    </div>
+    <div><%= link_to "+ writeoff", new_writeoff_path, class: "title_button" %></div>
+</div>
+
+<div class="row filter_band">
+    <%= form_tag writeoffs_path, method: :get do %>  
+        <div>
+            <div>
+                <label class="select">Customer:</label>
+                <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), :prompt => 'all customers' %>
+            </div>
+            <div>
+                <label class="date">Date From:</label>
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
+                <label class="date">Date To:</label>
+                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
+            </div>                                    
+            <%= submit_tag 'Filter'%>     
+        </div>        
+        <div class="float_right">   
+            <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+        </div>  
+    <% end %> 
+</div>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="writeoff_ref">Ref</th>   
+                            <th class="writeoff_date">Date</th>
+                            <th class="writeoff_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="writeoff_vat_due">Vat</th>
+                            <th class="writeoff_total">Total</br><span>(Inc VAT)</span></th>
+                            <th class="writeoff_note">Note</th>
+                            <th class="row_button no_buttons_3"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                          <% if @writeoffs %>            
+                            <% @writeoffs.each do |writeoff| %>
+                                <tr>
+                                    <td class="writeoff_ref"><%= writeoff.ref %></td>
+                                    <td class="writeoff_date"><%= writeoff.date.strftime("%d/%m/%y") %></td>
+                                    <td class="writeoff_price"><%= pounds(writeoff.price) %></td>
+                                    <td class="writeoff_vat_due"><%= pounds(writeoff.vat) %></td>
+                                    <td class="writeoff_total"><%= pounds(writeoff.total) %></td>                      
+                                    <td class="writeoff_note"><%= writeoff.notes %></td> 
+                                    <td id="<%= writeoff.id %>_links" class="row_button no_buttons_3">
+                                        <% if writeoff.reconciled? %>
+                                            <%= row_delete_link(writeoff, 'hidden') %>
+                                        <% else %>
+                                            <%= row_delete_link(writeoff, 'show') %>
+                                        <% end %>              
+                                    </td)
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
+    </div>
+
+</div>

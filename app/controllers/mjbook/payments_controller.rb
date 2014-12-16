@@ -2,8 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class PaymentsController < ApplicationController
-    before_action :set_payment, only: [:show, :edit, :update, :destroy]
-    before_action :set_companyaccounts, only: [:new, :edit] 
+    before_action :set_payment, only: [:show, :edit, :update, :destroy, :reconcile, :unreconcile, :email]
     before_action :set_accounts, only: [:new, :edit, :invoice_paid]
     before_action :set_paymethods, only: [:new, :edit, :invoice_paid]
 
@@ -88,16 +87,25 @@ module Mjbook
       if @payment.save
 
         if @payment.invoice?
-          inlines = Mjbook::Inline.where(:id => params[:invoice_item_ids])
+          inlines = Mjbook::Inline.where(:id => params[:line_ids].to_a)
           invoice = Mjbook::Invoice.where(:id => params[:invoice_id]).first
           
           inlines.each do |item|
-            Mjbook::Paymentitem.create(:expend_id => @expend.id, :line_id => item.id)
-            item.pay!          
+            Mjbook::Paymentitem.create(:payment_id => @payment.id, :inline_id => item.id)
+            item.pay!
           end
+
+#          check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id], :total > 0)
+# if check_lines.blank?
+#check_empty_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id], :total => nil)
+# if check_empty_inlines
+#check_empty_inlines.each do |item|
+#  line.pay!
+#end
+#end 
           
           #check if all the inlines for the invoice have been paid          
-          check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id]).first
+          check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id])
           if check_inlines.blank?
             invoice.pay!
           else  
@@ -105,17 +113,17 @@ module Mjbook
           end            
         end
         
-        redirect_to payments_path, notice: 'Expend was successfully created.'
+        redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
-        render :new
+        redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
       end
 
 
-      if @payment.save
-        redirect_to @payment, notice: 'Payment was successfully created.'
-      else
-        render :new
-      end
+  #    if @payment.save
+  #      redirect_to @payment, notice: 'Payment was successfully created.'
+  #    else
+  #      render :new
+  #    end
     end
 
     # PATCH/PUT /payments/1
@@ -128,47 +136,47 @@ module Mjbook
       end
     end
 
+
     # DELETE /payments/1
     def destroy
-      authorize @payment      
+      authorize @payment
 
-      #change state of associated expenses to 'accepted', i.e. not paid
-      paymentitems = Mjbook::Paymentitem.where(:payment_id => @payment.id)        
-      paymentitems.each do |item|
-
-        if @payment.invoice?
-          inline = Mjbook::Inline.where(:id => item.inline_id)
-          inline.correct_payment!               
+      if payment.invoice?
+        paymentitems = Mjbook::Paymentitem.where(:payment_id => @payment.id)
+        paymentitems.each do |item|
+          inline = Mjbook::Inline.where(:id => item.inline_id).first
+          inline.rescind!
+          #paymentitems are destoyed when payments is deleted
+        end
         
-          #check if any of the inlines for the invoice have been paid          
-          check_inlines = Mjbook::Inline.paid.join(:ingroup).where(:invoice_id => params[:invoice_id]).first
-          if check_inlines.blank?
-            invoice.correct_payment!
-          else  
-            invoice.correct_part_payment!
-          end
+        invoice = Mjbook::Invoice.where(:id => item.invoice_id).first
+        check_inlines = Mjbook::Inline.paid.join(:ingroup).where(:invoice_id => invoice.id)
+        if check_inlines.blank?
+          invoice.correct_payment!
+        else
+          invoice.correct_part_payment!
         end
+      end
 
-        if @payment.transfer?
-          transfer = Mjbook::Transfer.where(:id => item.transfer_id)
-          transfer.correct_payment!
+      if @payment.transfer?
+        #paymentitems are destoyed when payments is deleted
+        transfer = Mjbook::Transfer.where(:id => item.transfer_id)
+        transfer.correct_payment!
           
-          #if transfer is destoyed also need to destroy record of payment
-          expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first           
-          expend.destroy               
-        end
-
+        #if transfer is destoyed also need to destroy record of payment
+        expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first
+        expend.destroy
+        #expenditems are destoyed when payments is deleted
       end
 
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully deleted.'
     end
 
+
     def reconcile
       authorize @payment
-      #mark expense as rejected
-      @payment = Payment.where(:id => params[:id]).first
-      if @payment.update(:status => "reconciled")
+      if @payment.reconcile!
         respond_to do |format|
           format.js   { render :reconcile, :layout => false }
         end 
@@ -176,13 +184,24 @@ module Mjbook
     end
 
     def unreconcile
-      #mark expense as rejected
       authorize @payment
       if @payment.unreconcile!
         respond_to do |format|
           format.js   { render :unreconcile, :layout => false }
         end 
       end 
+    end
+
+    def email
+        authorize @payment
+        print_receipt_document(@payment)
+        PaymentMailer.receipt(@payment, @document).deliver
+        
+        if @payment.confirm!
+          respond_to do |format|
+            format.js   { render :email, :layout => false }
+          end 
+        end         
     end
 
     private
@@ -201,7 +220,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def payment_params
-        params.require(:payment).permit(:user_id, :invoice_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :inc_type, :note, :state)
+        params.require(:payment).permit(:ref, :company_id, :user_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :inc_type, :notes, :state)
       end
 
       def pdf_quote_index(payments, customer_id, date_from, date_to)
@@ -227,5 +246,16 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"
       end 
+
+      def print_receipt_document(payment)  
+         @document = Prawn::Document.new(
+            :page_size => "A4",
+            :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+            :info => {:title => payment.ref}
+          ) do |pdf|
+            print_receipt(payment, pdf)       
+          end 
+      end
+
   end
 end

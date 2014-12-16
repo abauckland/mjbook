@@ -3,7 +3,7 @@ module Mjbook
   
     class Scope < Struct.new(:user, :scope)
       def resolve
-          scope.joins(:project).where('mjbook_projects.company_id' => user.company_id)
+          scope.where(:company_id => user.company_id)
       end
     end
    
@@ -12,35 +12,35 @@ module Mjbook
       end
       
       def show?
-        index
+        index?
       end
 
       def new?
-        index
+        index?
       end    
 
       def create?
-        index
+        index?
       end 
             
       def edit?
-        index
+        index?
       end
   
       def update?
-        index
+        index?
       end
       
       def destroy?
-        index
+        index?
       end 
 
       def reconcile?
-        index
+        index?
       end       
 
       def unreconcile?
-        index
+        index?
       end  
 
   end

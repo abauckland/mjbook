@@ -1,0 +1,13 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Process Invoice</h1>
+    </div>
+</div>
+
+<div class="row info_band">    
+    <div class="info_left">
+        <div><h3>Invoice: <%= @invoice.ref %></h3></div>
+        <div><h3>Job: <%= @invoice.project.ref %></h3></div>
+        <div><h3>Customer: <%= @invoice.project.customer.company_name %></h3></div> 
+    </div>
+</div>

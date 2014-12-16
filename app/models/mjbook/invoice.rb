@@ -15,34 +15,28 @@ module Mjbook
 
     aasm :column => 'state' do
 
-      state :submitted, :initial => true 
-      state :rejected
-      state :accepted
+      state :draft, :initial => true
+      state :submitted
       state :part_paid      
       state :paid
-  
-      event :accept do
-        transitions :from => :submitted, :to => :accepted
-        transitions :from => :rejected, :to => :accepted
-      end
-  
-      event :reject do
-        transitions :from => :submitted, :to => :rejected
-        transitions :from => :accepted, :to => :rejected
+
+      event :submit do
+        transitions :from => :draft, :to => :submitted
       end
 
       event :part_pay do
-        transitions :from => :accepted, :to => :part_paid
+        transitions :from => :submitted, :to => :part_paid
+        transitions :from => :part_paid, :to => :part_paid
       end
   
       event :pay do
-        transitions :from => :accepted, :to => :paid
+        transitions :from => :submitted, :to => :paid
         transitions :from => :part_paid, :to => :paid
       end
   
       event :correct_payment do
-        transitions :from => :paid, :to => :accepted
-        transitions :from => :part_paid, :to => :accepted
+        transitions :from => :paid, :to => :submitted
+        transitions :from => :part_paid, :to => :submitted
       end
 
       event :correct_part_payment do

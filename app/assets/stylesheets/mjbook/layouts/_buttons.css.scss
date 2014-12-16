@@ -80,6 +80,7 @@
     display: inline-block;
     width: 20px;
     height: 20px;
+    margin: 0px 0px 0px 5px;
     background: asset_url('line_menu_icons.png') 0px $var no-repeat;
     &:hover{
       background: asset_url('line_menu_icons.png') -0px $var - 20px no-repeat;
@@ -132,6 +133,15 @@
 
 .line_reconcile_icon_show {@include menu_icons(-1040px); float: right; padding: 0px 5px 0px 0px;}
 .line_reconcile_icon_hidden {@include menu_icons(-1040px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_unreconcile_icon_show {@include menu_icons(-1120px); float: right; padding: 0px 5px 0px 0px;}
+.line_unreconcile_icon_hidden {@include menu_icons(-1120px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_email_icon_show {@include menu_icons(-1160px); float: right; padding: 0px 5px 0px 0px;}
+.line_email_icon_hidden {@include menu_icons(-1160px); display: none; float: right; padding: 0px 5px 0px 0px;}
+
+.line_receipt_icon_show {@include menu_icons(-1200px); float: right; padding: 0px 5px 0px 0px;}
+.line_receipt_icon_hidden {@include menu_icons(-1200px); display: none; float: right; padding: 0px 5px 0px 0px;}
 
 .line_pdf_icon {@include menu_icons(-1000px); float: right; padding: 0px 5px 0px 0px;}
 .line_pdf_icon_show {@include menu_icons(-1000px); float: right; padding: 0px 5px 0px 0px;}

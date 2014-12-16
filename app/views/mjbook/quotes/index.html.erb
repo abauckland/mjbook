@@ -71,7 +71,7 @@
                                     <td class="quote_total"><%= pounds(quote.total) %></td>          
                                     <td id="<%= quote.id %>_status" class="quote_status"><%= quote.state %></td> 
                                     <td id="<%= quote.id %>_links" class="row_button no_buttons_5">
-                                        <% if quote.submitted? || quote.rejected? %>                
+                                        <% if quote.rejected? || quote.draft? %>                
                                             <%= row_delete_link(quote, 'show') %>
                                             <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
                                         <% else %>    
@@ -98,6 +98,12 @@
                                         <% else %>    
                                             <%= row_accept_link(quote, 'hidden') %>
                                         <% end %>                
+
+                                        <% if quote.draft? %> 
+                                            <%= row_email_link(quote, 'show') %>
+                                        <% else %> 
+                                            <%= row_email_link(quote, 'hidden') %>
+                                        <% end %>  
                                     </td)
                                 </tr>
                             <% end %>  

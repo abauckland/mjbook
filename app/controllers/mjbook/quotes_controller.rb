@@ -3,7 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class QuotesController < ApplicationController
         
-    before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept]
+    before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept, :email]
     before_action :set_quoteterms, only: [:new, :edit, :create, :update]
     before_action :set_projects, only: [:new, :edit, :create, :update]
         
@@ -94,6 +94,7 @@ module Mjbook
     # PATCH/PUT /quotes/1
     def update
       if @quote.update(quote_params)
+        @quote.draft!
         redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully updated.'
       else
         render :edit
@@ -125,20 +126,22 @@ module Mjbook
     end
     
     def print
-
-       document = Prawn::Document.new(
-          :page_size => "A4",
-          :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-          :info => {:title => @quote.project.title}
-        ) do |pdf|    
-
-          print_quote(@quote, pdf)
-       
-        end         
-
+      
+        print_quote_document(@quote)        
         filename = "#{@quote.project.ref}.pdf"   
 
-        send_data document.render, filename: filename, :type => "application/pdf"      
+        send_data @document.render, filename: filename, :type => "application/pdf"      
+    end
+
+    def email
+        print_quote_document(@quote)
+        QuoteMailer.quote(@quote, @document).deliver
+        
+        if @quote.submit!
+          respond_to do |format|
+            format.js   { render :email, :layout => false }
+          end 
+        end
     end
 
     private
@@ -183,6 +186,16 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"
       end  
+
+      def print_quote_document(quote)  
+         @document = Prawn::Document.new(
+            :page_size => "A4",
+            :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+            :info => {:title => quote.project.title}
+          ) do |pdf|
+            print_quote(quote, pdf)       
+          end 
+      end
       
   end
 end

@@ -15,10 +15,15 @@ module Mjbook
 
     aasm :column => 'state' do
 
-      state :submitted, :initial => true 
+      state :draft, :initial => true 
+      state :submitted
       state :rejected
       state :accepted
       state :invoiced
+
+      event :submit do
+        transitions :from => :draft, :to => :submitted
+      end
   
       event :accept do
         transitions :from => :submitted, :to => :accepted
@@ -28,6 +33,11 @@ module Mjbook
       event :reject do
         transitions :from => :submitted, :to => :rejected
         transitions :from => :accepted, :to => :rejected
+      end
+
+      event :draft do
+        transitions :from => :rejected, :to => :draft
+        transitions :from => :draft, :to => :draft
       end
   
       event :invoice do

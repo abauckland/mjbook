@@ -51,7 +51,7 @@
                             <th class="invoice_vat_due">Vat</th>
                             <th class="invoice_total">Total</br><span>(Inc VAT)</span></th>
                             <th class="invoice_status">Status</th>
-                            <th class="row_button no_buttons_5"></th>
+                            <th class="row_button no_buttons_4"></th>
                         </tr>
                     </thead>
                 </table>
@@ -72,34 +72,25 @@
                                     <td class="invoice_vat_due"><%= pounds(invoice.vat_due) %></td> 
                                     <td class="invoice_total"><%= pounds(invoice.total) %></td>
                                     <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.state %></td>
-                                    <td id="<%= invoice.id %>_links" class="row_button no_buttons_5">
-                                        <% if invoice.submitted? || invoice.rejected? %>                
+                                    <td id="<%= invoice.id %>_links" class="row_button no_buttons_4">
+                                        <% if invoice.draft? %>                
                                             <%= row_delete_link(invoice, 'show') %>
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_show', title: "edit" %>
+                                            <%= row_email_link(invoice, 'show') %>
                                         <% else %>
                                             <%= row_delete_link(invoice, 'hidden') %>
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_hidden', title: "edit" %>                        
+                                            <%= row_email_link(invoice, 'hidden') %>
                                         <% end %>
                                         
                                             <%= row_print_link(invoice, 'show') %>
                                         
-                                        <% if invoice.accepted? %>                
-                                            <%= link_to "", new_paymentscope_path(:invoice_id => invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
+                                        <% if invoice.part_paid? || invoice.submitted? %>                
+                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
                                         <% else %>    
-                                            <%= link_to "", new_paymentscope_path(:invoice_id => invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
                                         <% end %>
-                                        
-                                        <% if invoice.submitted? || invoice.accepted?  %>
-                                            <%= row_reject_link(invoice, 'show') %>               
-                                        <% else %> 
-                                            <%= row_reject_link(invoice, 'hidden') %>
-                                        <% end %>
-                                        
-                                        <% if invoice.submitted? || invoice.rejected?  %>
-                                            <%= row_accept_link(invoice, 'show') %>
-                                        <% else %>    
-                                            <%= row_accept_link(invoice, 'hidden') %>
-                                        <% end %>              
+
                                     </td)
                                 </tr>
                             <% end %>  

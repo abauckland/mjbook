@@ -51,6 +51,10 @@ module Mjbook
       link_to '', polymorphic_path([:pay, model]), class: ('line_payment_icon_' << display) , title: "repayment"     
     end
 
+    def row_email_link(model, display)
+      link_to '', polymorphic_path([:email, model]), class: ('line_email_icon_' << display) , title: "email to customer"     
+    end
+
     def row_transfer_link(model, display)
       link_to '', polymorphic_path([:transfer, model]), class: ('line_payment_icon_' << display) , title: "record transfer"     
     end

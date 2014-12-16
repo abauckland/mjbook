@@ -59,25 +59,37 @@
                             <% @payments.each do |payment| %>
                                 <tr>
                                     <td class="payment_ref"><%= payment.ref %></td>
-                                    <td class="payment_invoice"><%= payment.invoice.ref %></td>
+                                    <td class="payment_invoice"><%= payment_invoice(payment) %></td>
                                     <td class="payment_method"><%= payment.paymethod.text.titleize %></td>
                                     <td class="payment_account"><%= payment.companyaccount.name.titleize %></td>
                                     <td class="payment_date"><%= payment.date.strftime("%d/%m/%y") %></td>
                                     <td class="payment_price"><%= pounds(payment.price) %></td>
-                                    <td class="payment_vat_due"><%= pounds(payment.vat_due) %></td>
+                                    <td class="payment_vat_due"><%= pounds(payment.vat) %></td>
                                     <td class="payment_total"><%= pounds(payment.total) %></td>                      
-                                    <td class="payment_status"><%= payment.state %></td>
-                                    <td class="payment_note"><%= payment.note %></td> 
+                                    <td id="<%= payment.id %>_status" class="payment_status"><%= payment.state %></td>
+                                    <td class="payment_note"><%= payment.notes %></td> 
                                     <td id="<%= payment.id %>_links" class="row_button no_buttons_3">
-                                        <% if payment.reconciled? %>
-                                            <%= row_delete_link(payment, 'hidden') %>
-                                            <%= row_edit_link(payment, 'hidden') %>
-                                            <%= row_reconcile_link(payment, 'hidden') %> 
-                                        <% else %>
+                                        <% if payment.paid? %>
                                             <%= row_delete_link(payment, 'show') %>
                                             <%= row_edit_link(payment, 'show') %>
-                                            <%= row_reconcile_link(payment, 'show')  %> 
-                                        <% end %>              
+                                            <%= row_email_link(payment, 'show') %>
+                                        <% else %>
+                                            <%= row_delete_link(payment, 'hidden') %>
+                                            <%= row_edit_link(payment, 'hidden') %>
+                                            <%= row_email_link(payment, 'hidden') %> 
+                                        <% end %>
+                                        
+                                        <% if payment.confirmed? %>
+                                            <%= row_reconcile_link(payment, 'show')  %>  
+                                        <% else %>
+                                            <%= row_reconcile_link(payment, 'hidden') %> 
+                                        <% end %>                                        
+                                                                                
+                                        <% if payment.reconciled? %>
+                                            <%= row_unreconcile_link(payment, 'show') %>   
+                                        <% else %>
+                                            <%= row_reconcile_link(payment, 'hidden')  %>
+                                        <% end %>
                                     </td)
                                 </tr>
                             <% end %>  

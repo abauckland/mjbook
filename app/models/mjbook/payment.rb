@@ -5,7 +5,8 @@ module Mjbook
 
     belongs_to :companyaccount
     belongs_to :paymethod
-    belongs_to :user    
+    belongs_to :company
+    belongs_to :user
     has_many :paymentitems, :dependent => :destroy
 
     enum inc_type: [:invoice, :transfer]
@@ -13,14 +14,19 @@ module Mjbook
     aasm :column => 'state' do
 
       state :paid, :initial => true
+      state :confirmed
       state :reconciled
+
+      event :confirm do
+        transitions :from => :paid, :to => :confirmed
+      end
   
       event :reconcile do
-        transitions :from => :paid, :to => :reconciled
+        transitions :from => :confirmed, :to => :reconciled
       end
   
       event :unreconcile do
-        transitions :from => :reconciled, :to => :paid
+        transitions :from => :reconciled, :to => :confirmed
       end
   
     end
