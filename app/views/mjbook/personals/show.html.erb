@@ -43,8 +43,8 @@
 
                         <% if @expense.receipt %>
                         <!-- show text line -->
-                        <label class="label_80">Receipt:</label>
-                        <span><%= image_tag(@expense.receipt, width: "140px") %></span></br>
+                        <label class="label_80">Receipt:</label>                        
+                        <span><%=link_to image_tag(@expense.receipt_url(:thumb), @expense.receipt_url, class: 'fancybox' %></span></br>
                         <% end %>
                                 
                         <!-- show text line -->
