@@ -1,15 +1,15 @@
-module PrintQuoteTable
+module PrintInvoiceTable
   extend ActiveSupport::Concern
   include PrintTableGroup
   include PrintTableLine
 
-  def quote_table(quote, pdf)   
+  def invoice_table(quote, pdf)   
     pdf.line_width(0.1)
-    qgroups = Mjbook::Qgroup.where(:quote_id => quote.id)         
+    ingroups = Mjbook::Ingroup.where(:invoice_id => invoice.id)         
 
  #   pdf.bounding_box([0.mm, 180.mm], :width => 190.mm, :height => 140.mm) do        
  #   pdf.stroke_bounds    
-    qgroups.each do |group|
+    ingroups.each do |group|
     
 #THIS WILL CAUSE NEW PAGE TO BE STARTED
       if pdf.y <= 60.mm
@@ -25,7 +25,7 @@ module PrintQuoteTable
       sub_vat = 0
       sub_total = 0
     
-      lines = Mjbook::Qline.where(:qgroup_id => group.id)
+      lines = Mjbook::Inline.where(:ingroup_id => group.id)
       lines.each do |line|       
         print_table_item_line(line) 
       end
@@ -34,8 +34,8 @@ module PrintQuoteTable
   end
 
 
-  def group_title_data(qgroup) 
-    [[qgroup.group_order, qgroup.text]]
+  def group_title_data(ingroup) 
+    [[ingroup.group_order, ingroup.text]]
   end  
   
   def group_title_options    
@@ -45,18 +45,18 @@ module PrintQuoteTable
     }
   end   
 
-  def draft_group_title_table(qgroup, pdf)     
-     @draft_title_table = pdf.make_table(group_title_data(qgroup), group_title_options) 
+  def draft_group_title_table(ingroup, pdf)     
+     @draft_title_table = pdf.make_table(group_title_data(ingroup), group_title_options) 
   end
 
-  def group_title_table(qgroup, pdf) 
-    pdf.table(group_title_data(qgroup), group_title_options) 
+  def group_title_table(ingroup, pdf) 
+    pdf.table(group_title_data(ingroup), group_title_options) 
   end
 
 
   
   def group_total_data(qgroup) 
-    [["", "Subtotal", number_to_currency(qgroup.price, :unit => "£"), "", number_to_currency(qgroup.vat_due, :unit => "£"), number_to_currency(qgroup.total, :unit => "£")]]
+    [["", "Subtotal", number_to_currency(ingroup.price, :unit => "£"), "", number_to_currency(ingroup.vat_due, :unit => "£"), number_to_currency(ingroup.total, :unit => "£")]]
   end  
   
   def group_total_options    
@@ -66,12 +66,12 @@ module PrintQuoteTable
     }
   end
 
-  def draft_group_subtotal_table(qgroup, pdf)
-      @draft_total_table = pdf.make_table(group_total_data(qgroup), group_total_options)       
+  def draft_group_subtotal_table(ingroup, pdf)
+      @draft_total_table = pdf.make_table(group_total_data(ingroup), group_total_options)       
   end
 
-  def group_subtotal_table(qgroup, pdf)      
-    pdf.table(group_total_data(qgroup), group_total_options) do
+  def group_subtotal_table(ingroup, pdf)      
+    pdf.table(group_total_data(ingroup), group_total_options) do
               values = cells.columns(1..5)                  
               values.align = :right                  
     end         

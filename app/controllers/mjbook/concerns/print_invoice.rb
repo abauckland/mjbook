@@ -8,33 +8,33 @@
     include PrintFooter
     include PrintPageNumbers
                  
-    include PrintQuoteHeader
-    include PrintQuoteDetail
-    include PrintQuoteTable
-    include PrintQuoteFooter
+    include PrintInvoiceHeader
+    include PrintInvoiceDetail
+    include PrintInvoiceTable
+    include PrintInvoiceFooter
         
-   def print_quote(quote, pdf)
+   def print_quote(invoice, pdf)
    
       pdf.repeat(:all) do
         ##HEADERS
         company_header(pdf)
-        quote_header(quote, pdf)
+        invoice_header(pdf)
         ##QUOTE DETAILS
-        customer_details(quote.project.customer, pdf)
-        quote_details(quote, pdf)
+        customer_details(invoice.project.customer, pdf)
+        invoice_details(invoice, pdf)
         
         pdf.y = 192.mm
         table_header(pdf)
       
       end
       ##QUOTE_TABLE
-      print_table(quote, pdf)
-      quote_table(quote, pdf)
+      table_header(pdf)
+      invoice_table(invoice, pdf)
     
       ##FOOTERS
-      quote_total_footer(quote, pdf)
+      invoice_total_footer(invoice, pdf)
       
-      quote_terms_footer(quote, pdf)
+      invoice_terms_footer(invoice, pdf)
       
       pdf.repeat(:all) do
         company_footer(pdf)        
