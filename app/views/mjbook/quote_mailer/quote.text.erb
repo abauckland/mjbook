@@ -1,11 +1,10 @@
 Company Name: <%= @customer.commpany_name %>
-Payment Ref: <%= @payment.ref %>
-Project Ref: <%= @payment.paymentitem.inline.ingroup.invoice.project.ref %>
-Invoice Ref: <%= @payment.paymentitem.inline.ingroup.invoice.ref %>
-Payment Date: <%= @payment.date.strftime("%d/%m/%y") %>
+Quote Ref: <%= @quote.ref %>
+Project Ref: <%= @quote.project.ref %>
+Quote Date: <%= @quote.date.strftime("%d/%m/%y") %>
 ---------------------------------------------------------------------------
 
-Thank you for your payment. Please find attached a Receipt for items purchased.
+Please find attached a pdf of our quote for the items requested.
 
 If you have any questions or concerns, please contact us to discuss.
 

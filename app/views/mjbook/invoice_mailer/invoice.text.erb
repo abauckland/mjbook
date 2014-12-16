@@ -1,11 +1,11 @@
 Company Name: <%= @customer.commpany_name %>
-Payment Ref: <%= @payment.ref %>
-Project Ref: <%= @payment.paymentitem.inline.ingroup.invoice.project.ref %>
-Invoice Ref: <%= @payment.paymentitem.inline.ingroup.invoice.ref %>
-Payment Date: <%= @payment.date.strftime("%d/%m/%y") %>
+Invoice Ref: <%= @invoice.ref %>
+Project Ref: <%= @invoice.project.ref %>
+Customer Ref <%= @invoice.project.customer_ref %>
+Invoice Date: <%= @invoice.date.strftime("%d/%m/%y") %>
 ---------------------------------------------------------------------------
 
-Thank you for your payment. Please find attached a Receipt for items purchased.
+Please find attached our invoice for job: <%= @invoice.project.name %>
 
 If you have any questions or concerns, please contact us to discuss.
 
