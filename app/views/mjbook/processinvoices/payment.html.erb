@@ -30,21 +30,21 @@
                         <!-- form input[radio] -->
                         <label class="label_60">Create:</label>
                         <span id="<%= @invoice.id %>">
-                            <%= radio_button("method", "invoiceprocess", "payment", :checked => true) %>
+                            <%= radio_button("method", "invoiceprocess", "payment", :checked => true, class: "process_select") %>
                             <span>Payment Record</span>
                         </span></br>
                         
                         <!-- form input[radio] -->
                         <label class="label_60"></label>
                         <span id="<%= @invoice.id %>">
-                            <%= radio_button("method", "invoiceprocess", "creditnote") %>
+                            <%= radio_button("method", "invoiceprocess", "creditnote", class: "process_select") %>
                             <span>Credit Note</span>
                         </span></br>
 
                         <!-- form input[radio] -->
                         <label class="label_60"></label>
                         <span id="<%= @invoice.id %>">
-                            <%= radio_button("method", "invoiceprocess", "writeoff") %>
+                            <%= radio_button("method", "invoiceprocess", "writeoff", class: "process_select") %>
                             <span>Write Off</span>
                         </span></br>
 

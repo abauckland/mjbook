@@ -4,7 +4,7 @@
     <div class="col-1-1">
         <div class="border">
 
-            <%= render :partial => "form_error", :locals => {:item => @payment} %>
+            <%= render :partial => "form_error", :locals => {:item => @writeoff} %>
 
                 <%= form_for @writeoff do |f|%>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
@@ -27,22 +27,22 @@
 
                         <!-- form input[radio] -->
                         <label class="label_60">Create:</label>
-                        <span>
-                            <%= radio_button("method", "invoiceprocess_id", 1) %>
+                        <span id="<%= @invoice.id %>">
+                            <%= radio_button("method", "invoiceprocess", "payment", class: "process_select") %>
                             <span>Payment Record</span>
                         </span></br>
                         
                         <!-- form input[radio] -->
                         <label class="label_60"></label>
-                        <span>
-                            <%= radio_button("method", "invoiceprocess_id", 2) %>
+                        <span id="<%= @invoice.id %>">
+                            <%= radio_button("method", "invoiceprocess", "creditnote", class: "process_select") %>
                             <span>Credit Note</span>
                         </span></br>
 
                         <!-- form input[radio] -->
                         <label class="label_60"></label>
-                        <span>
-                            <%= radio_button("method", "invoiceprocess_id", 3, :checked => true) %>
+                        <span id="<%= @invoice.id %>">
+                            <%= radio_button("method", "invoiceprocess", "writeoff", :checked => true, class: "process_select") %>
                             <span>Write Off</span>
                         </span></br>
 

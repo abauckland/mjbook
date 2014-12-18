@@ -1,8 +1,7 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Creditnotes Recieved</h1>
+        <h1>Creditnotes</h1>
     </div>
-    <div><%= link_to "+ creditnote", new_creditnote_path, class: "title_button" %></div>
 </div>
 
 <div class="row filter_band">
@@ -45,7 +44,7 @@
                             <th class="creditnote_total">Total</br><span>(Inc VAT)</span></th>
                             <th class="creditnote_status">Status</th>
                             <th class="creditnote_note">Note</th>
-                            <th class="row_button no_buttons_1"></th>
+                            <th class="row_button no_buttons_2"></th>
                         </tr>
                     </thead>
                 </table>
@@ -62,11 +61,13 @@
                                     <td class="creditnote_total"><%= pounds(creditnote.total) %></td>                      
                                     <td id="<%= creditnote.id %>_status" class="creditnote_status"><%= creditnote.state %></td>
                                     <td class="creditnote_note"><%= creditnote.notes %></td> 
-                                    <td id="<%= creditnote.id %>_links" class="row_button no_buttons_1">
+                                    <td id="<%= creditnote.id %>_links" class="row_button no_buttons_2">
                                         <% if creditnote.draft? %> 
                                             <%= row_email_link(creditnote, 'show') %>
+                                            <%= row_delete_link(creditnote, 'show') %>
                                         <% else %> 
                                             <%= row_email_link(creditnote, 'hidden') %>
+                                            <%= row_delete_link(creditnote, 'hidden') %>
                                         <% end %>             
                                     </td)
                                 </tr>

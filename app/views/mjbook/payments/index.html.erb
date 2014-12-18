@@ -39,6 +39,7 @@
                     <thead>
                         <tr>
                             <th class="payment_ref">Ref</th>
+                            <th class="payment_inc_type"></td>Payment Type</th>
                             <th class="payment_invoice">Invoice Ref</th>
                             <th class="payment_method">Payment Method</th>
                             <th class="payment_account">Account</th>     
@@ -59,6 +60,7 @@
                             <% @payments.each do |payment| %>
                                 <tr>
                                     <td class="payment_ref"><%= payment.ref %></td>
+                                    <td class="payment_inc_type"><%= payment.inc_type.titleize %></td>
                                     <td class="payment_invoice"><%= payment_invoice(payment) %></td>
                                     <td class="payment_method"><%= payment.paymethod.text.titleize %></td>
                                     <td class="payment_account"><%= payment.companyaccount.name.titleize %></td>
@@ -73,22 +75,24 @@
                                             <%= row_delete_link(payment, 'show') %>
                                             <%= row_edit_link(payment, 'show') %>
                                             <%= row_email_link(payment, 'show') %>
+                                            <%= row_reconcile_link(payment, 'hidden') %>
+                                            <%= row_unreconcile_link(payment, 'hidden') %> 
                                         <% else %>
-                                            <%= row_delete_link(payment, 'hidden') %>
                                             <%= row_edit_link(payment, 'hidden') %>
-                                            <%= row_email_link(payment, 'hidden') %> 
-                                        <% end %>
-                                        
-                                        <% if payment.confirmed? %>
-                                            <%= row_reconcile_link(payment, 'show')  %>  
-                                        <% else %>
-                                            <%= row_reconcile_link(payment, 'hidden') %> 
-                                        <% end %>                                        
-                                                                                
-                                        <% if payment.reconciled? %>
-                                            <%= row_unreconcile_link(payment, 'show') %>   
-                                        <% else %>
-                                            <%= row_reconcile_link(payment, 'hidden')  %>
+                                            <%= row_email_link(payment, 'hidden') %>
+                                            <% if payment.confirmed? %>                                                                                    
+                                                <%  if payment.transfer? %>
+                                                    <%= row_delete_link(payment, 'show') %>
+                                                <% else %>
+                                                    <%= row_delete_link(payment, 'hidden') %>                                                
+                                                <% end %>
+                                                <%= row_reconcile_link(payment, 'show') %>
+                                                <%= row_unreconcile_link(payment, 'hidden') %>
+                                            <% else %>
+                                                <%= row_delete_link(payment, 'hidden') %>
+                                                <%= row_reconcile_link(payment, 'hidden') %>
+                                                <%= row_unreconcile_link(payment, 'show') %>                                               
+                                            <% end %>
                                         <% end %>
                                     </td)
                                 </tr>

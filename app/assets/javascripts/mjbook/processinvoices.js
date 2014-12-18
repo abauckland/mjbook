@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$('input:radio').on('click', function(){
+	$('input:radio.process_select').on('click', function(){
 		var method = $(this).val();
 		var invoice_id = $(this).parent('span').attr('id');
 		$(location).attr('href', "http://localhost:3000/mjbook/processinvoices/"+invoice_id+"/"+method);

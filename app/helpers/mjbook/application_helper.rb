@@ -56,7 +56,7 @@ module Mjbook
     end
 
     def row_transfer_link(model, display)
-      link_to '', polymorphic_path([:transfer, model]), class: ('line_payment_icon_' << display) , title: "record transfer"     
+      link_to '', polymorphic_path([:process_transfer, model]), class: ('line_payment_icon_' << display) , title: "record transfer"     
     end
     
   end

@@ -1,8 +1,7 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Writeoffs Recieved</h1>
+        <h1>Writeoffs</h1>
     </div>
-    <div><%= link_to "+ writeoff", new_writeoff_path, class: "title_button" %></div>
 </div>
 
 <div class="row filter_band">
@@ -61,11 +60,7 @@
                                     <td class="writeoff_total"><%= pounds(writeoff.total) %></td>                      
                                     <td class="writeoff_note"><%= writeoff.notes %></td> 
                                     <td id="<%= writeoff.id %>_links" class="row_button no_buttons_3">
-                                        <% if writeoff.reconciled? %>
-                                            <%= row_delete_link(writeoff, 'hidden') %>
-                                        <% else %>
-                                            <%= row_delete_link(writeoff, 'show') %>
-                                        <% end %>              
+                                        <%= row_delete_link(writeoff, 'show') %>              
                                     </td)
                                 </tr>
                             <% end %>  

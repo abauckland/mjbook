@@ -12,7 +12,7 @@ module Mjbook
     def index
     end
     
-    def item_options
+    def quote_item_options
 
 # HACK unclear why nessting does not work here!     
       @line = Qline.find(params[:id])
@@ -29,6 +29,26 @@ module Mjbook
       #render as json for jeditable
       render :json => @product_options
     end
+
+
+    def invoice_item_options
+
+# HACK unclear why nessting does not work here!     
+      @line = Inline.find(params[:id])
+      @products = Product.joins(:productcategory).where('mjbook_productcategories.text' => @line.cat)
+  
+      #create hash of options
+      @product_options = {}
+      
+      @products.each do |p|
+        key = p.id
+        value = p.item
+        @product_options[key] = value
+      end
+      #render as json for jeditable
+      render :json => @product_options
+    end
+
 
     def cat_item_options
     

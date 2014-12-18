@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class TransfersController < ApplicationController
-    before_action :set_transfer, only: [:show, :edit, :update, :destroy, :reconcile]
+    before_action :set_transfer, only: [:show, :edit, :update, :destroy, :process_transfer]
     before_action :set_companyaccounts, only: [:new, :edit]
     before_action :set_paymethods, only: [:new, :edit]
     
@@ -14,16 +14,18 @@ module Mjbook
     # GET /transfers/new
     def new
       @transfer = Transfer.new
+      authorize @transfer
     end
 
     # GET /transfers/1/edit
     def edit
+      authorize @transfer
     end
 
     # POST /transfers
     def create
       @transfer = Transfer.new(transfer_params)
-
+      authorize @transfer
       if @transfer.save
         redirect_to transfers_path, notice: 'Transfer was successfully created.'
       else
@@ -33,6 +35,7 @@ module Mjbook
 
     # PATCH/PUT /transfers/1
     def update
+      authorize @transfer
       if @transfer.update(transfer_params)
         redirect_to transfers_path, notice: 'Transfer was successfully updated.'
       else
@@ -42,41 +45,42 @@ module Mjbook
 
     # DELETE /transfers/1
     def destroy
+      authorize @transfer
       @transfer.destroy
       redirect_to transfers_url, notice: 'Transfer was successfully destroyed.'
     end
 
-    def transfer
+    def process_transfer
 
-      @transfer = Transfer.where(:id => params[:id]).first
       authorize @transfer
       #add expend record
       @expend = Mjbook::Expend.new(
                           :company_id => @transfer.company_id,
                           :user_id => @transfer.user_id,
                           :date => @transfer.date,
-                          :companyaccount_id => @transfer.account_to_id,
+                          :companyaccount_id => @transfer.account_from_id,
                           :paymethod_id => @transfer.paymethod_id,
                           :total => @transfer.total,
-                          :exp_type => 'transfer'      
+                          :exp_type => 'transfer',
+                          :state => 'paid'
                           )
-      if @expend.save      
-        Mjbook::Expenditem.create(:expend_id => @expend.id, :transfer_id => @transfer.id)    
+      if @expend.save
+        Mjbook::Expenditem.create(:expend_id => @expend.id, :transfer_id => @transfer.id)  
         #add payment record
         @payment = Mjbook::Payment.new(
                           :company_id => @transfer.company_id,
                           :user_id => @transfer.user_id,
                           :date => @transfer.date,
-                          :companyaccount_id => @transfer.account_from_id,
+                          :companyaccount_id => @transfer.account_to_id,
                           :paymethod_id => @transfer.paymethod_id,
                           :total => @transfer.total,
-                          :inc_type => 'transfer'                 
+                          :inc_type => 'transfer',
+                          :state => 'confirmed'
         )
         
-        if @payment.save      
-            #need to pass in salary id so correct record can be updated
-            Mjbook::Paymentitem.create(:payment_id => @payment.id, :transfer_id => transfer.id)
-            transfer.transfer!                           
+        if @payment.save
+            Mjbook::Paymentitem.create(:payment_id => @payment.id, :transfer_id => @transfer.id)
+            @transfer.transfer!
         end
       end
       

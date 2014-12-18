@@ -11,15 +11,15 @@ module Mjbook
     
     aasm :column => 'state' do
 
-      state :accepted, :initial => true 
+      state :drafted, :initial => true 
       state :transferred
 
       event :transfer do
-        transitions :from => :accepted, :to => :transferred
+        transitions :from => :drafted, :to => :transferred
       end
   
       event :correct_transfer do
-        transitions :from => :transferred, :to => :accepted
+        transitions :from => :transferred, :to => :drafted
       end
     end  
 

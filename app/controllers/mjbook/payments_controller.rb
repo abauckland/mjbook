@@ -149,8 +149,8 @@ module Mjbook
           #paymentitems are destoyed when payments is deleted
         end
         
-        invoice = Mjbook::Invoice.where(:id => item.invoice_id).first
-        check_inlines = Mjbook::Inline.paid.join(:ingroup).where(:invoice_id => invoice.id)
+        invoice = Mjbook::Invoice.joins(:ingroup => [:inline => :paymentitems]).where('mjbooks_paymentitems.payment_id' => @payment.id).first
+        check_inlines = Mjbook::Inline.paid.join(:ingroup).where('mjbooks_invoice_id' => invoice.id)
         if check_inlines.blank?
           invoice.correct_payment!
         else
@@ -160,8 +160,8 @@ module Mjbook
 
       if @payment.transfer?
         #paymentitems are destoyed when payments is deleted
-        transfer = Mjbook::Transfer.where(:id => item.transfer_id)
-        transfer.correct_payment!
+        transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
+        transfer.correct_transfer!
           
         #if transfer is destoyed also need to destroy record of payment
         expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first

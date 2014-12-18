@@ -62,27 +62,47 @@ module Mjbook
 
     # GET /creditnotes/1
     def show
+      authorize @creditnote
     end
 
     # POST /creditnotes
     def create
       @creditnote = Creditnote.new(creditnote_params)
-
+      authorize @creditnote
       if @creditnote.save
-        redirect_to @creditnote, notice: 'Creditnote was successfully created.'
+
+        inlines = Mjbook::Inline.where(:id => params[:line_ids].to_a)
+        invoice = Mjbook::Invoice.where(:id => params[:invoice_id]).first
+                  
+        inlines.each do |item|
+          Mjbook::Creditnoteitem.create(:creditnote_id => @creditnote.id, :inline_id => item.id)
+          item.pay!
+        end
+
+        #check if all the inlines for the invoice have been paid          
+        check_inlines = Mjbook::Inline.paid.join(:ingroup).where('mjbooks_invoice_id' => invoice.id)
+        if check_inlines.blank?
+          invoice.pay!
+        else  
+          invoice.part_pay!
+        end     
+        
+        redirect_to creditnotes_path, notice: 'Creditnote was successfully created.'
       else
-        render :new
+        redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
       end
     end
 
     # DELETE /creditnotes/1
     def destroy
+      authorize @creditnote
       @creditnote.destroy
-      redirect_to creditnotes_url, notice: 'Creditnote was successfully destroyed.'
+      redirect_to creditnotes_url, notice: 'Creditnote was successfully deleted.'
     end
 
     def email
       #change state of payment to show receipt has been emailed?
+        authorize @creditnote
         print_creditnote_document(@creditnote)
         CreditnoteMailer.creditnote(@creditnote, @document).deliver
         @creditnote.confirm!

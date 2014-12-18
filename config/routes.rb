@@ -9,7 +9,7 @@ Mjbook::Engine.routes.draw do
   resources :miscexpenses
 
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
-    get :transfer, :on => :member
+    get :process_transfer, :on => :member
   end
 
   resources :companyaccounts, :only => [:index, :edit, :new, :create, :update, :destroy]
@@ -49,10 +49,7 @@ Mjbook::Engine.routes.draw do
 
   resources :invoices do
     get :email, :on => :member
-    get :print, :on => :member
-    
-    get :quote_new, :on => :member
-    
+    get :print, :on => :member    
   end
 
   resources :invoicecontents, :only => [:show]
@@ -147,7 +144,8 @@ Mjbook::Engine.routes.draw do
 
  
   resources :products do 
-    get :item_options, :on => :member 
+    get :quote_item_options, :on => :member 
+    get :invoice_item_options, :on => :member 
     get :cat_item_options, :on => :member 
     get :print, :on => :member
   end

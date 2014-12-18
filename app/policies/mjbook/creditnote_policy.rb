@@ -22,18 +22,13 @@ module Mjbook
       def create?
         index?
       end 
-            
-      def edit?
-        index?
-      end
-  
-      def update?
-        index?
-      end
       
       def destroy?
         index?
       end
-
+      
+      def email?
+        index?
+      end
   end
 end

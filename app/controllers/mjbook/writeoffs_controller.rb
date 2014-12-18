@@ -62,12 +62,13 @@ module Mjbook
 
     # GET /writeoffs/1
     def show
+      authorize @writeoff
     end
 
     # POST /writeoffs
     def create
       @writeoff = Writeoff.new(writeoff_params)
-
+      authorize @writeoff
       if @writeoff.save
         redirect_to @writeoff, notice: 'Writeoff was successfully created.'
       else
@@ -75,9 +76,47 @@ module Mjbook
       end
     end
 
+    def create
+      @writeoff = Writeoff.new(writeoff_params)
+      authorize @writeoff
+      if @writeoff.save
+
+        inlines = Mjbook::Inline.where(:id => params[:line_ids].to_a)
+        invoice = Mjbook::Invoice.where(:id => params[:invoice_id]).first
+                  
+        inlines.each do |item|
+          Mjbook::Writeoffitem.create(:writeoff_id => @writeoff.id, :inline_id => item.id)
+          item.pay!
+        end
+
+        #check if all the inlines for the invoice have been paid          
+        check_inlines = Mjbook::Inline.paid.join(:ingroup).where('mjbooks_invoice_id' => invoice.id)
+        if check_inlines.blank?
+          invoice.pay!
+        else  
+          invoice.part_pay!
+        end     
+        
+        redirect_to writeoffs_path, notice: 'Write off was successfully record.'
+      else
+        redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
+      end
+    end
+
+
     # DELETE /writeoffs/1
     def destroy
+      authorize @writeoff
       @writeoff.destroy
+
+        invoice = Mjbook::Invoice.where(:id => writeoff.invoice_id).first
+        check_inlines = Mjbook::Inline.paid.join(:ingroup).where(:invoice_id => invoice.id)
+        if check_inlines.blank?
+          invoice.correct_payment!
+        else
+          invoice.correct_part_payment!
+        end
+
       redirect_to writeoffs_url, notice: 'Writeoff was successfully destroyed.'
     end
 

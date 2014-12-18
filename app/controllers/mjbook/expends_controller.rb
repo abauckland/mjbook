@@ -168,8 +168,8 @@ module Mjbook
         end          
 
         if @expend.exp_type == 'transfer'
-          transfer = Mjbook::Transfer.where(:id => item.transfer_id)
-          transfer.correct_payment!
+          transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
+          transfer.correct_transfer!
           
           #if transfer is destoyed also need to destroy record of payment
           payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first           

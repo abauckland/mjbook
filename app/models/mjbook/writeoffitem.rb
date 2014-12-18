@@ -1,5 +1,5 @@
 module Mjbook
-  class Writeoffitems < ActiveRecord::Base
+  class Writeoffitem < ActiveRecord::Base
 
     belongs_to :writeoff
     belongs_to :inline
