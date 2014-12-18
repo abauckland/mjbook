@@ -4,6 +4,7 @@ module Mjbook
   class InvoicesController < ApplicationController
     before_action :set_invoice, only: [:show, :edit, :update, :destroy, :accept, :email]
     before_action :set_invoices, only: [:new, :create]
+    before_action :set_quotes, only: [:new, :create]
     before_action :set_invoiceterms, only: [:new, :create, :edit, :update]
     before_action :set_projects, only: [:new, :create, :edit, :update]
 
@@ -76,7 +77,33 @@ module Mjbook
     # POST /invoice
     def create
 
-      if params[:invoice_content] == 'clone'
+      if params[:invoice_content] == 'clone_quote'
+        
+       clone_quote = Quote.where(:id => params[:clone_quote]).first
+
+       new_invoice_hash = {
+                          :project_id => clone_quote.project_id,
+                          :ref => params[:invoice][:ref],
+                          :customer_ref => params[:invoice][:customer_ref],
+                          :date => params[:invoice][:date],
+                          :invoicetype_id => params[:invoice][:invoicetype_id],
+                          :invoiceterm_id => params[:invoice][:invoiceterm_id],
+                          :price => clone_quote.price,
+                          :vat_due => clone_quote.vat_due,
+                          :total => clone_quote.total
+                          }                                  
+        @invoice = Invoice.new(new_invoice_hash)
+        if @invoice.save
+          
+          create_quote_content(@invoice, clone_quote)
+          
+          redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
+        else
+          render :new
+        end
+      end  
+
+      if params[:invoice_content] == 'clone_invoice'
         
        clone_invoice = Invoice.where(:id => params[:clone_invoice]).first
 
@@ -90,20 +117,22 @@ module Mjbook
                           :price => clone_invoice.price,
                           :vat_due => clone_invoice.vat_due,
                           :total => clone_invoice.total
-                          }
-                                  
+                          }                                  
         @invoice = Invoice.new(new_invoice_hash)
-        if @invoice.save
-          
-          create_invoice_content(@invoice, clone_invoice)
-          
+        if @invoice.save          
+          create_invoice_content(@invoice, clone_invoice)          
           redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
         else
           render :new
         end
-      else     
+      end 
+
+        
+      if params[:invoice_content] == 'blank'     
         @invoice = Invoice.new(invoice_params)
         if @invoice.save
+          ingroup = Mjbook::Ingroup.create(:invoice_id => @invoice.id)
+          inline = Mjbook::Inline.create(:ingroup_id => ingroup.id)
           redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
         else
           render :new
@@ -124,34 +153,7 @@ module Mjbook
     # DELETE /invoice/1
     def destroy
       @invoice.destroy
-      redirect_to invoice_url, notice: 'Invoice was successfully destroyed.'
-    end
-
-
-    def quote_new
-        
-        quote = Mjbook::Quote.where(:id => clone_id).first
-        dup_quote = quote.dup
-        @invoice = Invoice.create(dup_quote.attributes)
-
-        clone_qgroup = Mjbook::Qgroup.where(:quote_id => quote.id)
-        clone_qgroup.each do |group|
-          dup_group = group.dup
-          @ingroup = Mjbook::Ingroup.new(dup_group)
-          @ingroup.invoice_id = @invoice.id
-          @ingroup.save
-
-          clone_qline = Mjbook::Qline.where(:qgroup_id => group.id)
-          clone_qline.each do |line|
-            dup_line = line.dup
-            inline = Mjbook::Inline.new(dup_line)
-            inline.ingroup_id = @ingroup.id
-            inline.save
-          end
-        end
-
-      redirect_to invoices_path, notice: 'Invoice was successfully created from quote.'
-
+      redirect_to invoices_path, notice: 'Invoice was successfully deleted.'
     end
 
     def print      
@@ -178,6 +180,10 @@ module Mjbook
         @invoice = Invoice.find(params[:id])
       end
 
+      def set_quotes
+        @quotes = policy_scope(Quote).accepted.order('ref')
+      end
+      
       def set_invoices
         @invoices = policy_scope(Invoice)
       end      
@@ -229,21 +235,57 @@ module Mjbook
           end 
       end
 
-      def create_invoice_content(invoice_id, clone_invoice)        
+      def create_invoice_content(invoice, clone_invoice)     
 
         clone_group = Mjbook::Ingroup.where(:invoice_id => clone_invoice.id)
-        clone_group.each do |group|
-          ingroup = group.dup
-          ingroup.invoice_id = invoice_id
-          ingroup.save
-
-          clone_line = Mjbook::Inline.where(:qgroup_id => group.id)
-          clone_line.each do |line|
-            inline = line.dup
-            inline.ingroup_id = ingroup.id
-            inline.save
+        clone_group.each do |ingroup|          
+          new_ingroup = ingroup.dup
+          new_ingroup.save
+          new_ingroup.update(:invoice_id => invoice.id)
+          
+          clone_line = Mjbook::Inline.where(:ingroup_id => ingroup.id)
+          clone_line.each do |inline|
+            new_inline = inline.dup
+            new_inline.save
+            new_inline.update(:ingroup_id => new_ingroup.id)           
           end
-        end        
+        end
       end
+
+      def create_quote_content(invoice, clone_quote)     
+        
+        clone_group = Mjbook::Qgroup.where(:quote_id => clone_quote.id)
+        clone_group.each do |qgroup| 
+                    
+          new_ingroup = Mjbook::Ingroup.create(
+                                              :invoice_id => invoice.id,
+                                              :ref => qgroup.ref,
+                                              :text => qgroup.text,
+                                              :price => qgroup.price,
+                                              :vat_due => qgroup.vat_due,
+                                              :total => qgroup.total,
+                                              :group_order => qgroup.group_order
+                                              )
+
+          clone_line = Mjbook::Qline.where(:qgroup_id => qgroup.id)
+          clone_line.each do |qline|
+
+          new_inline = Mjbook::Inline.create(
+                                              :ingroup_id => new_ingroup.id,
+                                              :cat => qline.cat,
+                                              :item => qline.item,
+                                              :quantity => qline.quantity,
+                                              :unit_id => qline.unit_id,
+                                              :price => qline.price,
+                                              :vat_id => qline.vat_id,
+                                              :vat_due => qline.vat_due,
+                                              :total => qline.total,
+                                              :line_order => qline.line_order,
+                                              :linetype => qline.linetype
+                                              )
+          end
+        end
+      end
+      
   end
 end

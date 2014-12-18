@@ -2,8 +2,8 @@
     <div class="page_title">
         <h1>Invoice Build Up</h1>
     </div>  
-    <%= link_to "cancel", invoices_path, class: "title_button_orange" %>
-    <%= link_to "edit details", edit_invoice_path(@invoice), class: "title_button" %>
+    <%= link_to "invoice list", invoices_path, class: "title_button_orange" %>
+    <%= link_to "edit references", edit_invoice_path(@invoice), class: "title_button" %>
 </div>
 
 <div class="row info_band">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="info_left">
-        <div><h3>Inovice Ref: <%=h @invoice.ref %></h3></div>
+        <div><h3>Invoice Ref: <%=h @invoice.ref %></h3></div>
         <div><h3>Job Ref: <%=h @invoice.project.ref %></h3></div>
     </div>
 </div>

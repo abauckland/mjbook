@@ -20,7 +20,7 @@ $(document).ready(function(){
 	var line_id = $(this).attr('id');
 		$(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_item', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : 'http://localhost:3000/mjbook/products/'+line_id+'/item_options',
+			loadurl : 'http://localhost:3000/mjbook/products/'+line_id+'/quote_item_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -35,7 +35,7 @@ $(document).ready(function(){
 	var line_id = $(this).attr('id');
 		$(this).editable('http://localhost:3000/mjbook/qlines/'+line_id+'/update_cat_item', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : 'http://localhost:3000/mjbook/products/'+line_id+'/item_options',
+			loadurl : 'http://localhost:3000/mjbook/products/'+line_id+'/quote_item_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',

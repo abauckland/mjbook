@@ -4,6 +4,7 @@ module Mjbook
   class QuotesController < ApplicationController
         
     before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept, :email]
+    before_action :set_quotes, only: [:new, :create]
     before_action :set_quoteterms, only: [:new, :edit, :create, :update]
     before_action :set_projects, only: [:new, :edit, :create, :update]
         
@@ -82,12 +83,39 @@ module Mjbook
 
     # POST /quotes
     def create
-      @quote = Quote.new(quote_params)
+      if params[:quote_content] == 'clone_quote'
+        
+       clone_quote = Quote.where(:id => params[:clone_quote]).first
 
-      if @quote.save
-        redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
-      else
-        render :new
+       new_quote_hash = {
+                          :project_id => params[:quote][:project_id],
+                          :ref => params[:quote][:ref],
+                          :title => params[:quote][:title],
+                          :customer_ref => params[:quote][:customer_ref],
+                          :date => params[:quote][:date],
+                          :quoteterm_id => clone_quote.quoteterm_id,
+                          :price => clone_quote.price,
+                          :vat_due => clone_quote.vat_due,
+                          :total => clone_quote.total
+                          }
+        @quote = Quote.new(new_quote_hash)
+        if @quote.save          
+          create_quote_content(@quote, clone_quote)
+          redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
+        else
+          render :new
+        end
+      end 
+
+      if params[:quote_content] == 'blank'
+        @quote = Quote.new(quote_params)
+        if @quote.save
+          qgroup = Mjbook::Qgroup.create(:quote_id => @quote.id)
+          qline = Mjbook::Qline.create(:qgroup_id => qgroup.id)
+          redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
+        else
+          render :new
+        end
       end
     end
 
@@ -150,6 +178,10 @@ module Mjbook
         @quote = Quote.find(params[:id])
       end
 
+      def set_quotes
+        @quotes = policy_scope(Quote).order('ref')
+      end
+      
       def set_projects
         @projects = policy_scope(Project).order('ref')
       end
@@ -195,6 +227,24 @@ module Mjbook
           ) do |pdf|
             print_quote(quote, pdf)       
           end 
+      end
+
+      def create_quote_content(quote, clone_quote)
+
+        clone_group = Mjbook::Qgroup.where(:quote_id => clone_quote.id)
+        clone_group.each do |qgroup|
+          
+          new_qgroup = qgroup.dup
+          new_qgroup.save
+          new_qgroup.update(:quote_id => quote.id)
+          
+          clone_line = Mjbook::Qline.where(:qgroup_id => qgroup.id)
+          clone_line.each do |qline|
+            new_qline = qline.dup
+            new_qline.save
+            new_qline.update(:qgroup_id => new_qgroup.id)           
+          end
+        end        
       end
       
   end

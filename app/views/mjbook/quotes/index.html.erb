@@ -2,6 +2,7 @@
     <div class="page_title">
         <h1>Quotes</h1>
     </div>
+    <div class="title_help" id="quotes_index"></div>
     <div><%= link_to "+ quote", new_quote_path, class: "title_button" %> </div>
 </div>
 
@@ -49,7 +50,7 @@
                             <th class="quote_vat_due">Vat</th>         
                             <th class="quote_total">Total</br><span>(Inc VAT)</span></th>          
                             <th class="quote_status">Status</th>
-                            <th class="row_button no_buttons_5"></th>
+                            <th class="row_button no_buttons_4"></th>
                         </tr>
                     </thead>
                 </table>
@@ -70,7 +71,7 @@
                                     <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>         
                                     <td class="quote_total"><%= pounds(quote.total) %></td>          
                                     <td id="<%= quote.id %>_status" class="quote_status"><%= quote.state %></td> 
-                                    <td id="<%= quote.id %>_links" class="row_button no_buttons_5">
+                                    <td id="<%= quote.id %>_links" class="row_button no_buttons_4">
                                         <% if quote.rejected? || quote.draft? %>                
                                             <%= row_delete_link(quote, 'show') %>
                                             <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
@@ -80,12 +81,6 @@
                                         <% end %>
                                         
                                             <%= row_print_link(quote, 'show') %>
-                                        
-                                        <% if quote.accepted? %>                
-                                            <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_show', title: "create invoice from quote" %>
-                                        <% else %>    
-                                            <%= link_to "", quote_new_invoice_path(:id => quote.id), class: 'line_invoice_icon_hidden', title: "create invoice from quote" %>
-                                        <% end %>
                                         
                                         <% if quote.submitted? || quote.accepted? %>
                                             <%= row_reject_link(quote, 'show') %>               

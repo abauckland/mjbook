@@ -125,10 +125,10 @@ module Mjbook
 #        item_klass = Mjbook.const_get(const_name)
 #        item = item_klass.where(:id => params[:value]).first        
         
-        item = Product.where(:item => params[:value]).first        
+        item = Product.where(:id => params[:value]).first        
         cat = Productcategory.where(:id => item.productcategory_id).first
         
-        if new_linetype == 1
+        if old_line.linetype == 1
         @line = Qline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => item.quantity,
@@ -138,12 +138,12 @@ module Mjbook
                              :vat_id => item.vat_id,
                              :vat_due => item.vat_due,
                              :total=> item.price,     
-                             :ingroup_id => old_line.ingroup_id,
+                             :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
                              :linetype => old_line.linetype)  
         end
 
-        if new_linetype == 2
+        if old_line.linetype == 2
         @line = Qline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => 0,
@@ -153,12 +153,12 @@ module Mjbook
                              :vat_id => item.vat_id,
                              :vat_due => item.vat_due,
                              :total=> item.price,     
-                             :ingroup_id => old_line.ingroup_id,
+                             :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
                              :linetype => old_line.linetype)          
         end
 
-        if new_linetype == 3
+        if old_line.linetype == 3
         @line = Qline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => 0,
@@ -168,7 +168,7 @@ module Mjbook
                              :vat_id => item.vat_id,
                              :vat_due => 0,
                              :total=> 0,     
-                             :ingroup_id => old_line.ingroup_id,
+                             :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
                              :linetype => old_line.linetype)          
         end         

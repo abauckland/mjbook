@@ -2,15 +2,12 @@
     <div class="page_title">
         <h1>Quote Build Up</h1>
     </div>
-    <div><%= link_to "List of Quotes", quotes_path, class: "title_button" %></div>
+    <%= link_to "quote list", quotes_path, class: "title_button_orange" %>
+    <%= link_to "edit references", edit_quote_path(@quote), class: "title_button" %>
 </div>
 
 
 <div class="row info_band">
-    <div class="info_right">
-        <%= link_to "edit details", edit_quote_path(@quote), class: "title_button"  %>        
-    </div>
-
     <div class="info_left">
         <div><h3>Quote Ref: <%=h @quote.ref %></h3></div>
         <div><h3>Job Ref: <%=h @quote.project.ref %></h3></div>

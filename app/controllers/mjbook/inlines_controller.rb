@@ -106,10 +106,10 @@ module Mjbook
       else  
 
         old_line = Inline.find(params[:id])
-        item = Product.where(:item => params[:value]).first                
+        item = Product.where(:id => params[:value]).first                
         cat = Productcategory.where(:id => item.productcategory_id).first
 
-        if new_linetype == 1
+        if old_line.linetype == 1
         @line = Inline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => item.quantity,
@@ -124,7 +124,7 @@ module Mjbook
                              :linetype => old_line.linetype)  
         end
 
-        if new_linetype == 2
+        if old_line.linetype == 2
         @line = Inline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => 0,
@@ -139,7 +139,7 @@ module Mjbook
                              :linetype => old_line.linetype)          
         end
 
-        if new_linetype == 3
+        if old_line.linetype == 3
         @line = Inline.create(:cat => cat.text,
                              :item => item.item,
                              :quantity => 0,

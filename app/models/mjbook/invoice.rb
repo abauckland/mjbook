@@ -11,7 +11,7 @@ module Mjbook
     
     accepts_nested_attributes_for :ingroups
     
-    after_create :create_nested_records
+#   after_create :create_nested_records
 
     aasm :column => 'state' do
 
@@ -55,9 +55,9 @@ module Mjbook
 
     default_scope { order('date DESC') }
     
-    def create_nested_records
-      Mjbook::Ingroup.create(:invoice_id => self.id)
-    end
+#    def create_nested_records
+#      Mjbook::Ingroup.create(:invoice_id => self.id)
+#    end
 
   end
 end
