@@ -1,25 +1,24 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
+
 $lrg_menu: 1300px;
 $tab_lrg_menu: 940px;
 $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
-//index table 
-.employee_due_data{display: table-cell; width: 60px}
-.employee_job{display: table-cell; width: 55px}
-.employee_category{display: table-cell; width: 100px}
-.employee_ref{display: table-cell; width: 55px}
-.employee_supplier{display: table-cell; }
-.employee_supplier_ref{display: table-cell; width: 55px}         
-.employee_issue_date{display: table-cell; width: 60px}  
-.employee_distance{display: table-cell; width: 60px}    
-.employee_price{display: table-cell; width: 70px; text-align: right;}
-.employee_vat_due{display: table-cell; width: 70px; text-align: right;}
-.employee_total{display: table-cell; width: 70px; text-align: right;}
-.employee_status{display: table-cell; width: 60px; text-align: right;}
+//index table
+.employee_due_data    {@include date}
+.employee_job         {@include name}
+.employee_category    {@include name}
+.employee_ref         {@include ref}
+.employee_supplier    {display: table-cell;}
+.employee_supplier_ref{@include ref}        
+.employee_issue_date  {@include date}  
+.employee_distance    {@include distance}    
+.employee_price        {@include pounds}
+.employee_vat_due      {@include pounds}
+.employee_total        {@include pounds}
+.employee_status      {@include state}
+
 
 @media screen and (max-width: $lrg_menu) {
 

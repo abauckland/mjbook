@@ -1,10 +1,7 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
 
-//index table 
-.salary_employee{display: table-cell; width: 120px; text-align: left;}
-.salary_paid{display: table-cell; width: 100px}
-.salary_date{display: table-cell;}
-.salary_status{display: table-cell; width: 100px}
+//index table
+.salary_employee{@include name}
+.salary_paid    {@include pounds}
+.salary_date    {@include date}
+.salary_status  {display: table-cell; width: 100px}

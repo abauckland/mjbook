@@ -1,22 +1,21 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
+
 $lrg_menu: 860px;
 $tab_lrg_menu: 720px;
 $tab_sml_menu: 540px;
 $mob_menu: 430px;
 
 //index table 
-.product_catetory_name{display: table-cell; width: 120px}
-.product_item{display: table-cell}
-.product_quantity{display: table-cell; width: 65px; text-align: right;}
-.product_unit{display: table-cell; width:50px; text-align: right;} 
-.product_rate{display: table-cell; width: 65px; text-align: right;}
-.product_price{display: table-cell; width: 65px; text-align: right;}
-.product_vat{display: table-cell; width: 65px; text-align: right;}
-.product_vat_due{display: table-cell; width: 65px; text-align: right;}
-.product_total{display: table-cell; width: 65px; text-align: right;}
+.product_catetory_name{@include name}
+.product_item         {@include name}
+.product_quantity     {@include quantity}
+.product_unit         {@include unit}
+.product_rate         {@include pounds}
+.product_price        {@include pounds}
+.product_vat          {@include vat}
+.product_vat_due      {@include pounds}
+.product_total        {@include pounds}
+
 
 @media screen and (max-width: $lrg_menu) {
   .product_price{display: none}

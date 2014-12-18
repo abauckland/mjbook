@@ -1,25 +1,22 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
+
 $lrg_menu: 1300px;
 $tab_lrg_menu: 940px;
 $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table 
-.invoice_ref {display: table-cell; width: 35px; text-align: left;}
-.invoice_title {display: table-cell; width: 160px}
-.invoice_project_ref{display: table-cell; width: 50px; text-align: left;}
-.invoice_customer_ref{display: table-cell; width: 55px}
-.invoice_customer{display: table-cell; width: 160px}
-.invoice_company_name{display: table-cell; }
-.invoice_date{display: table-cell; width: 60px}
-.invoice_price{display: table-cell; width: 70px; text-align: right;}
-.invoice_vat_due{display: table-cell; width: 70px; text-align: right;}
-.invoice_total{display: table-cell; width: 70px; text-align: right;}
-.invoice_status{display: table-cell; width: 60px; text-align: right;}
-
+.invoice_ref          {@include ref}
+.invoice_title        {@include title}
+.invoice_project_ref  {@include ref}
+.invoice_customer_ref {@include ref}
+.invoice_customer     {@include name}
+.invoice_company_name {display: table-cell; }
+.invoice_date         {@include date}
+.invoice_price        {@include pounds}
+.invoice_vat_due      {@include pounds}
+.invoice_total        {@include pounds}
+.invoice_status       {@include state}
 
 @media screen and (max-width: $lrg_menu) {
   .invoice_title {display: none}

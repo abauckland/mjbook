@@ -1,7 +1,4 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
 
 $lrg_menu: 1300px;
 $tab_lrg_menu: 940px;
@@ -9,10 +6,10 @@ $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table 
-.terms_ref{display: table-cell; width:140px; text-align: left;}
-.terms_period_large{display: table-cell; width: 140px; text-align: left;}
-.terms_period_small{display: none}
-.terms_terms {display: table-cell}
+.terms_ref          {@include ref}
+.terms_period_large {@include name}
+.terms_period_small {display: none}
+.terms_terms        {display: table-cell}
 
 
 @media screen and (max-width: $mob_menu) {

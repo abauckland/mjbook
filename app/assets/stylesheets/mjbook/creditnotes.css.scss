@@ -1,0 +1,31 @@
+@import "table_headers";
+
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+//index table 
+.creditnote_ref     {@include ref}
+.creditnote_date    {@include date}
+.creditnote_price   {@include pounds}
+.creditnote_vat_due {@include pounds}
+.creditnote_total   {@include pounds}
+.creditnote_status  {@include state}
+.creditnote_note    {display: table-cell; text-align: right;}
+
+@media screen and (max-width: $lrg_menu) {}
+
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .creditnote_note{display: none}
+}
+
+
+@media screen and (max-width: $tab_sml_menu) {}
+
+
+@media screen and (max-width: $mob_menu) { 
+  .creditnote_price{display: none}
+  .creditnote_vat_due{display: none}
+}

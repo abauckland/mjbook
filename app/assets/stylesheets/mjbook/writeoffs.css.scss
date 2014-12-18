@@ -1,0 +1,30 @@
+@import "table_headers";
+
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+//index table 
+.writeoff_ref     {@include ref}
+.writeoff_date    {@include date}
+.writeoff_price   {@include pounds}
+.writeoff_vat_due {@include pounds}
+.writeoff_total   {@include pounds}
+.writeoff_note    {display: table-cell; text-align: right;}
+
+@media screen and (max-width: $lrg_menu) {}
+
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .writeoff_note{display: none}
+}
+
+
+@media screen and (max-width: $tab_sml_menu) {}
+
+
+@media screen and (max-width: $mob_menu) { 
+  .writeoff_price{display: none}
+  .writeoff_vat_due{display: none}
+}

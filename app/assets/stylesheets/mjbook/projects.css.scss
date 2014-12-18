@@ -1,17 +1,15 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
+
 $lrg_menu: 1300px;
 $tab_lrg_menu: 780px;
 $tab_sml_menu: 640px;
 $mob_menu: 540px;
 
 //index table 
-.project_ref{display: table-cell; width: 40px; vertical-align: top;}
-.project_title{display: table-cell; width: 150px; vertical-align: top;}
-.project_customer{display: table-cell; width:180px; vertical-align: top;}
-.project_customer_ref{display: table-cell; width: 80px; vertical-align: top;}
+.project_ref          {@include ref}
+.project_title        {@include title}
+.project_customer     {@include name}
+.project_customer_ref {@include ref}
 .project_description{display: table-cell; vertical-align: top;}
 
 

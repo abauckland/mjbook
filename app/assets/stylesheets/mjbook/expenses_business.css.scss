@@ -1,24 +1,23 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
+
 $lrg_menu: 1300px;
 $tab_lrg_menu: 940px;
 $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table 
-.business_due_data{display: table-cell; width: 60px}
-.business_job{display: table-cell; width: 55px}
-.business_category{display: table-cell; width: 100px}
-.business_ref{display: table-cell; width: 55px}
-.business_supplier{display: table-cell; }
-.business_supplier_ref{display: table-cell; width: 55px}         
-.business_issue_date{display: table-cell; width: 60px}     
-.business_price{display: table-cell; width: 70px; text-align: right;}
-.business_vat_due{display: table-cell; width: 70px; text-align: right;}
-.business_total{display: table-cell; width: 70px; text-align: right;}
-.business_status{display: table-cell; width: 60px; text-align: right;}
+.business_due_data    {@include date}
+.business_job         {@include name}
+.business_category    {@include name}
+.business_ref         {@include ref}
+.business_supplier    {display: table-cell;}
+.business_supplier_ref{@include ref}        
+.business_issue_date  {@include date}    
+.business_price        {@include pounds}
+.business_vat_due      {@include pounds}
+.business_total        {@include pounds}
+.business_status      {@include state}
+
 
 @media screen and (max-width: $lrg_menu) {
 

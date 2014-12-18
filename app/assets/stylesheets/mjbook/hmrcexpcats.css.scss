@@ -1,9 +1,5 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
-
+@import "table_headers";
 //index table 
 .hmrc_category{display: table-cell; text-align: left;}
-.hmrc_group{display: table-cell; width: 120px; text-align: left;}
+.hmrc_group   {@include name}
 

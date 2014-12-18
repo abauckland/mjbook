@@ -1,7 +1,4 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
 
 $lrg_menu: 1300px;
 $tab_lrg_menu: 940px;
@@ -9,16 +6,15 @@ $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table 
-.supplier_company{display: table-cell; width: 140px; vertical-align: top;}
-.supplier_name{display: table-cell; width: 140px; vertical-align: top;}
-.supplier_position{display: table-cell; width: 100px; vertical-align: top;}
-.supplier_address{display: table-cell; width: 160px; vertical-align: top;}
-.supplier_phone{display: table-cell; width: 90px; vertical-align: top;}
-.supplier_alt_phone{display: table-cell; width: 90px; vertical-align: top;}
-.supplier_email{display: table-cell; width: 200px; vertical-align: top;}
-.supplier_vat{display: table-cell; width: 90px; vertical-align: top;}
-.supplier_note{display: table-cell; vertical-align: top;}
-
+.supplier_company   {@include name}
+.supplier_name      {@include name}
+.supplier_position  {@include role}
+.supplier_address   {@include address}
+.supplier_phone     {@include phone}
+.supplier_alt_phone {@include phone}
+.supplier_email     {@include email}
+.supplier_vat       {@include vat}
+.supplier_note      {display: table-cell; vertical-align: top;}
 
 @media screen and (max-width: $lrg_menu) {
   .supplier_position{display: none}

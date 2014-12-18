@@ -1,24 +1,22 @@
-/*
-  Place all the styles related to the matching controller here.
-  They will automatically be included in application.css.
-*/
+@import "table_headers";
+
 $lrg_menu: 1300px;
 $tab_lrg_menu: 940px;
 $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table 
-.quote_ref {display: table-cell; width: 35px; text-align: left;}
-.quote_title {display: table-cell; width: 160px}
-.quote_project_ref{display: table-cell; width: 50px; text-align: left;}
-.quote_customer_ref{display: table-cell; width: 55px}
-.quote_customer{display: table-cell; width: 160px}
-.quote_company_name{display: table-cell; }
-.quote_date{display: table-cell; width: 60px}
-.quote_price{display: table-cell; width: 70px; text-align: right;}
-.quote_vat_due{display: table-cell; width: 70px; text-align: right;}
-.quote_total{display: table-cell; width: 70px; text-align: right;}
-.quote_status{display: table-cell; width: 60px; text-align: right;}
+.quote_ref          {@include ref}
+.quote_title        {@include title}
+.quote_project_ref  {@include ref}
+.quote_customer_ref {@include ref}
+.quote_customer     {@include name}
+.quote_company_name {display: table-cell; }
+.quote_date         {@include date}
+.quote_price        {@include pounds}
+.quote_vat_due      {@include pounds}
+.quote_total        {@include pounds}
+.quote_status       {@include state}
 
 
 @media screen and (max-width: $lrg_menu) {
