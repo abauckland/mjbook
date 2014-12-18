@@ -28,11 +28,11 @@ module Mjbook
     end
 
     def row_reject_link(model, display)
-      link_to '', polymorphic_path([:reject, model]), :method => :get,  :remote => true, class: ('line_reject_icon_' << display) , title: "reject"     
+      link_to '', polymorphic_path([:reject, model]), :method => :get, :remote => true, class: ('line_reject_icon_' << display) , title: "reject"     
     end
 
     def row_accept_link(model, display)
-      link_to '', polymorphic_path([:accept, model]), :method => :get,  :remote => true, class: ('line_accept_icon_' << display) , title: "accept"     
+      link_to '', polymorphic_path([:accept, model]), :method => :get, :remote => true, class: ('line_accept_icon_' << display) , title: "accept"     
     end
     
     def row_print_link(model, display)
@@ -40,11 +40,11 @@ module Mjbook
     end        
 
     def row_reconcile_link(model, display)
-      link_to '', polymorphic_path([:reconcile, model]), :method => :get,  :remote => true, class: ('line_reconcile_icon_' << display) , title: "mark as reconciled"     
+      link_to '', polymorphic_path([:reconcile, model]), :method => :get, :remote => true, class: ('line_reconcile_icon_' << display) , title: "mark as reconciled"     
     end 
 
     def row_unreconcile_link(model, display)
-      link_to '', polymorphic_path([:unreconcile, model]), :method => :get,  :remote => true, class: ('line_unreconcile_icon_' << display) , title: "mark as unreconciled"     
+      link_to '', polymorphic_path([:unreconcile, model]), :method => :get, :remote => true, class: ('line_unreconcile_icon_' << display) , title: "mark as unreconciled"     
     end 
 
     def row_pay_link(model, display)
@@ -52,7 +52,7 @@ module Mjbook
     end
 
     def row_email_link(model, display)
-      link_to '', polymorphic_path([:email, model]), class: ('line_email_icon_' << display) , title: "email to customer"     
+      link_to '', polymorphic_path([:email, model]), :method => :get, :remote => true, class: ('line_email_icon_' << display) , title: "email to customer"
     end
 
     def row_transfer_link(model, display)

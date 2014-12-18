@@ -163,11 +163,11 @@ module Mjbook
 
     def email
         print_quote_document(@quote)
-        QuoteMailer.quote(@quote, @document).deliver
+        QuoteMailer.quote(@quote, @document, current_user).deliver
         
         if @quote.submit!
           respond_to do |format|
-            format.js   { render :email, :layout => false }
+            format.js { render :email, :layout => false, notice: 'Quote has been emailed to the customer.'}
           end 
         end
     end
@@ -220,13 +220,12 @@ module Mjbook
       end  
 
       def print_quote_document(quote)  
-         @document = Prawn::Document.new(
-            :page_size => "A4",
-            :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-            :info => {:title => quote.project.title}
-          ) do |pdf|
-            print_quote(quote, pdf)       
-          end 
+        @document= Prawn::Document.new(
+                                        :page_size => "A4",
+                                        :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+                                       ) do |pdf|
+                                        print_quote(quote, pdf)       
+                                       end
       end
 
       def create_quote_content(quote, clone_quote)

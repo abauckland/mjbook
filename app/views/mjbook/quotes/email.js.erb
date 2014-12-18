@@ -1,0 +1,8 @@
+$('td#'+<%= @quote.id %>+'_status').html('submitted');
+
+$('td#'+<%= @quote.id %>+'_links').children('a.line_email_icon_show').attr('class', 'line_email_icon_hidden');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_edit_icon_show').attr('class', 'line_edit_icon_hidden');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_delete_icon_show').attr('class', 'line_delete_icon_hidden');
+
+$('td#'+<%= @quote.id %>+'_links').children('a.line_reject_icon_hidden').attr('class', 'line_reject_icon_show');
+$('td#'+<%= @quote.id %>+'_links').children('a.line_accept_icon_hidden').attr('class', 'line_accept_icon_show');

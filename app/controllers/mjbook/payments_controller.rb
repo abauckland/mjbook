@@ -195,7 +195,7 @@ module Mjbook
     def email
         authorize @payment
         print_receipt_document(@payment)
-        PaymentMailer.receipt(@payment, @document).deliver
+        PaymentMailer.receipt(@payment, @document, current_user).deliver
         
         if @payment.confirm!
           respond_to do |format|
@@ -248,13 +248,13 @@ module Mjbook
       end 
 
       def print_receipt_document(payment)  
-         @document = Prawn::Document.new(
-            :page_size => "A4",
-            :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-            :info => {:title => payment.ref}
-          ) do |pdf|
-            print_receipt(payment, pdf)       
-          end 
+              @document = Prawn::Document.new(
+                                             :page_size => "A4",
+                                              :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+                                              :info => {:title => payment.ref}
+                                            ) do |pdf|
+                                              print_receipt(payment, pdf)       
+                                            end
       end
 
   end

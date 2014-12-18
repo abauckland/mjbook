@@ -11,12 +11,12 @@ If you have any questions or concerns, please contact us to discuss.
 
 Yours sincerely,
 
-<%= current_user.name %>
-<%= current_user.email %>
+<%= @user.name %>
+<%= @user.email %>
 on behalf of
-<%= current_user.company.name %>
+<%= @user.company.name %>
 
 ---------------------------------------------------------------------------
-<%= current_user.company.email %>
-<%= current_user.company.tel %>
-<%= current_user.company.alt_tel %>
+<%= @user.company.email %>
+<%= @user.company.tel %>
+<%= @user.company.alt_tel %>

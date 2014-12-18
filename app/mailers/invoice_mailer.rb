@@ -1,25 +1,25 @@
 class InvoiceMailer < ActionMailer::Base
 
-  default from: current_user.company.email
-
-  def invoice(invoice, document)
+  def invoice(invoice, document, current_user)
     
     @invoice = invoice
     @customer = Mjbook::Customer.joins(:project => :invoice).where('mjbook_invoices.payment_id' => invoice.id).first    
+    @user = current_user
+        
     if @customer
       email_address = @customer.email
     else  
-      email_address = @current_user.email
+      email_address = current_user.email
     end
     
-    email_subject = "Invoice" << @invoice.ref << @invoice.date
-    file_name = current_user.company.name << "_" << @invoice.ref << "_" << @invoice.date << ".pdf"
+    email_subject = "Invoice" + "_" + @invoice.ref + "_" + @invoice.date.strftime("%d-%m-%y")
+    file_name = current_user.company.name + "_" + @invoice.ref + "_" + @invoice.date.strftime("%d-%m-%y") + ".pdf"
     
-    attachments['#{file_name}'] = document
+    attachments[file_name] = document.render
    
     mail(to: email_address, subject: email_subject, cc: current_user.email ) do |format|
     #  format.html { render 'another_template' }
-      format.text { render text: 'Render text' }
+      format.text
     end
   end
 end

@@ -165,7 +165,7 @@ module Mjbook
     
     def email
         print_invoice_document(@invoice)
-        InvoiceMailer.invoice(@invoice, @document).deliver
+        InvoiceMailer.invoice(@invoice, @document, current_user).deliver
         
         if @invoice.submit!
           respond_to do |format|
@@ -226,13 +226,13 @@ module Mjbook
       end 
 
       def print_invoice_document(invoice)  
-         @document = Prawn::Document.new(
-          :page_size => "A4",
-          :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-          :info => {:title => invoice.project.title}
-          ) do |pdf|    
-            print_invoice(invoice, pdf)       
-          end 
+            @document = Prawn::Document.new(
+                                            :page_size => "A4",
+                                            :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+                                            :info => {:title => invoice.project.title}
+                                            ) do |pdf|
+                                              print_invoice(invoice, pdf)       
+                                            end
       end
 
       def create_invoice_content(invoice, clone_invoice)     

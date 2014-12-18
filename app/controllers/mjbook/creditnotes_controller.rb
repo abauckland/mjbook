@@ -104,7 +104,7 @@ module Mjbook
       #change state of payment to show receipt has been emailed?
         authorize @creditnote
         print_creditnote_document(@creditnote)
-        CreditnoteMailer.creditnote(@creditnote, @document).deliver
+        CreditnoteMailer.creditnote(@creditnote, @document, current_user).deliver
         @creditnote.confirm!
         
         if @creditnote.confirm!
@@ -126,13 +126,13 @@ module Mjbook
       end
 
       def print_creditnote_document(creditnote)  
-         @document = Prawn::Document.new(
-          :page_size => "A4",
-          :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-          :info => {:title => creditnote.ref}
-          ) do |pdf|    
-            print_creditnote(creditnote, pdf)       
-          end 
+       @document = Prawn::Document.new(
+                                             :page_size => "A4",
+                                              :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+                                              :info => {:title => creditnote.ref}        
+                                            ) do |pdf|
+                                              print_creditnote(creditnote, pdf)       
+                                            end
       end
 
   end
