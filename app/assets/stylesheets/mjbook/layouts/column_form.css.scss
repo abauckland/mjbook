@@ -45,7 +45,7 @@ form input[type="radio"]{
 //form footer submit and cancel buttons
 form a.form_button{
   float: left;
-  margin: 3px 0px 4px 0px;
+  margin: 0px 0px 4px 0px;
   width: auto;
   @include title-button-grey;
 }
