@@ -17,6 +17,12 @@
     clear:both;
 }
 
+.border:before, 
+.border:after {
+    content:"";
+    display: table ;
+    clear:both;
+}
 
 /*-- setting border box on all elements inside the grid --*/
 .grid-container *{
