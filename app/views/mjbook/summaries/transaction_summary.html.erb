@@ -15,30 +15,38 @@
                             <th class="transaction_date">Date</th>
                             <th class="transaction_item">Item</th>
                             <th class="transaction_account">Account</th>
+                            <th class="transaction_type">Type</th>
                             <th class="transaction_income">Income</th>
-                            <th class="transaction_expenditure">Expenditure</th>
+                            <th class="transaction_expend">Expenditure</th>
                             <th class="transaction_balance">Balance</th>
+                            <th class="transaction_status">Status</th>
                             <th class="row_button no_buttons_1"></th>
                         </tr>
                     </thead>
                 </table>
                 <table>
                     <tbody>
-                        <% if @tranactions %>
-                            <% @tranactions.each do |tranaction| %>
+                        <% if @transactions_ordered %>
+                            <% @transactions_ordered.each do |tranaction| %>
                                 <tr>                            
                                     <td class="transaction_date"><%= transaction.date %></td>
-                                    <td class="transaction_item"><%= transaction.item %></td>
-                                    <td class="transaction_account"><%= transaction.account %></td>           
+                                    <td class="transaction_ref"><%= transaction.ref %></td>
+                                    <td class="transaction_account"><%= transaction.account_name %></td>           
+                                    <td class="transaction_type"><%= transaction.type %></td>
                                     <td class="transaction_income"><%= transaction.amount_in %></td>
-                                    <td class="transaction_expenditure"><%= transaction.amount_out %></td>
+                                    <td class="transaction_expend"><%= transaction.amount_out %></td>
                                     <td class="transaction_balance"><%= transaction.amount_balance %></td>
+									<td class="transaction_status"><%= transaction.status %></td>
                                     <td id="<%= transaction.id %>_links" class="row_button no_buttons_1">
-                                        <%= row_show_link(transaction, 'hidden') %>                                       
+                                        <% if transaction.expend_id != nil %>
+                                        	
+                                        <% end %>
+                                        <% if transaction.expend_id != nil %>
+                                        	
+                                        <% end %>
                                     </td>
                                <tr>                            
                             <% end %>
-
                     </tbody>
                 </table>
    
