@@ -46,15 +46,15 @@ module Mjbook
         past_dates.each_with_index do |dates, i|
           start_date = Time.now + dates[i][0]
           finish_date = Time.now + dates[i][1]
-          invoices_due = policy_scope(Expense).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
-          @exp_due[i] = expenses_due
+          expenses_due = policy_scope(Expense).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          @exp_due[i] = expenses_due if expenses_due
         end
         
         future_dates.each_with_index do |dates, i|
           start_date = Time.now + dates[i][0]
           finish_date = Time.now + dates[i][1]
           expenses_pending = policy_scope(Expense).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
-          @exp_pending[i] = expenses_pending
+          @exp_pending[i] = expenses_pending if expenses_pending
         end        
         
 #var e1 = [@exp_due[0], @exp_due[1], @exp_due[2]];
@@ -64,9 +64,8 @@ module Mjbook
       end
 
       def transaction_summary
+
         #filter by date and account
-        
-        
         unless params[:date_from]
           date_from = 1.month.ago
         else
@@ -79,46 +78,9 @@ module Mjbook
           date_to = params[:date_to]
         end
         
-        payments = policy_scope(Payment).where("due_date >= ? AND due_date <= ?", date_from, date_to)
-        payment_array = []
-        payments.each do |payment|
-          payment_hash = {}
-
-          payment_hash[:date] = payment.date
-          payment_hash[:your_ref] = payment.ref
-          payment_hash[:account_name] = payment.companyaccount.name
-          payment_hash[:type] = payment.inc_type
-          payment_hash[:amount_in] = payment.total
-          payment_hash[:amount_out] = nil
-          payment_hash[:status] = payment.state
-          payment_hash[:payment_id] = payment.id
-          payment_hash[:expend_id] = nil
-
-          payment_array << payment_hash
-        end
-
-
-        expends = policy_scope(Expend).where("due_date >= ? AND due_date <= ?", date_from, date_to)
-        expend_array = []
-        expends.each do |expend|
-          payment_hash = {}
-
-          expend_hash[:date] = expend.date
-          expend_hash[:your_ref] = expend.ref
-          expend_hash[:account_name] = expend.companyaccount.name
-          expend_hash[:type] = expend.exp_type
-          expend_hash[:amount_in] = nil
-          expend_hash[:amount_out] = expend.tota
-          expend_hash[:status] = expend.state
-          expend_hash[:payment_id] = nil
-          expend_hash[:expend_id] = expend.id
-
-          expend_array << expend_hash
-        end
+        transactions = policy_scope(Summary).where("due_date >= ? AND due_date <= ?", date_from, date_to).order(:date)
+        @transactions_array = transactions.select([:date, :balance]).map {|e| [e.date.strftime("%d/%m/%y"), pounds(e.balance)] } 
         
-        transactions = payment_array << expend_array
-        @transactions_ordered = transations.sort_by{|transaction| transaction[:date]}
-
       end
 
   end

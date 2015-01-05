@@ -9,50 +9,50 @@ module Mjbook
     # GET /expends
     def index
     if params[:companyaccount_id]
-  
+
         if params[:companyaccount_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
               @expends = policy_scope(Expend).where(:date => params[:date_from]..params[:date_to], :companyaccount_id => params[:companyaccount_id])
             else
               @expends = policy_scope(Expend).where('date > ? AND companyaccount_id =?', params[:date_from], params[:companyaccount_id])
-            end  
-          else  
+            end
+          else
             if params[:date_to] != ""
               @expends = policy_scope(Expend).where('date < ? AND companyaccount_id = ?', params[:date_to], params[:companyaccount_id])
             end
-          end   
+          end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
               @expends = policy_scope(Expend).where(:date => params[:date_from]..params[:date_to])
             else
               @expends = policy_scope(Expend).where('date > ?', params[:date_from])
-            end  
-          else  
+            end
+          else
             if params[:date_to] != ""
               @expends = policy_scope(Expend).where('date < ?', params[:date_to])
             else
               @expends = policy_scope(Expend)
-            end     
+            end
           end
-        end   
-     
-        if params[:commit] == 'pdf'          
+        end
+
+        if params[:commit] == 'pdf'
           pdf_expend_index(@expends, params[:companyaccount_id], params[:date_from], params[:date_to])      
         end
-            
+
      else
        @expends = policy_scope(Expend)
-     end          
+     end
 
-     #selected parameters for filter form     
+     #selected parameters for filter form
      @companyaccounts = policy_scope(Companyaccount)
      @companyaccount = params[:companyaccount_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]
 
-     authorize @expends  
+     authorize @expends
     end
 
     # GET /expends/1
@@ -66,10 +66,10 @@ module Mjbook
       if params[:expense_id]
          @expense_id = params[:expense_id]
       end
-        
+
       @expend = Expend.new
       @expenses = Mjbook::Expense.accepted.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
-      
+
     end
 
     # GET /expends/new
@@ -92,12 +92,12 @@ module Mjbook
 
     def pay_business
       @expense = Mjbook::Expense.where(:id => params[:id]).first
-      @expend = Expend.new      
+      @expend = Expend.new
     end
 
     def pay_salary
       @salary = Mjbook::Salary.where(:id => params[:id]).first
-      @expend = Expend.new      
+      @expend = Expend.new
     end
 
 
@@ -122,18 +122,23 @@ module Mjbook
           expenses = Mjbook::Expense.accepted.where(:exp_type => 1, :user_id => params[:employee_id])
           expenses.each do |item|
             Mjbook::Expenditem.create(:expend_id => @expend.id, :expense_id => item.id)
-            item.pay!           
-          end          
+            item.pay!
+          end
         end
 
         if @expend.salary?
           #need to pass in salary id so correct record can be updated
           salary = Mjbook::Salary.where(:id => params[:salary_id]).first
           Mjbook::Expenditem.create(:expend_id => @expend.id, :salary_id => salary.id)
-          salary.pay!                   
+          salary.pay!
         end
-        
+
+        create_summary_record(@expend)
+        add_summary_account_balance(@expend)
+        add_summary_balance(@expend)
+
         redirect_to expends_path, notice: 'Expend was successfully created.'
+
       else
         render :new
       end
@@ -154,7 +159,7 @@ module Mjbook
       authorize @expend
 
       #change state of associated expenses to 'accepted', i.e. not paid
-      expenditems = Mjbook::Expenditem.where(:expend_id => @expend.id)        
+      expenditems = Mjbook::Expenditem.where(:expend_id => @expend.id)
       expenditems.each do |item|
 
         if @expend.exp_type == 'business' || @expend.exp_type == 'personal'
@@ -165,23 +170,27 @@ module Mjbook
         if @expend.exp_type == 'salary'
           salary = Mjbook::Salary.where(:id => item.salary_id)
           salary.correct_payment!               
-        end          
+        end
 
         if @expend.exp_type == 'transfer'
           transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
           transfer.correct_transfer!
-          
+
           #if transfer is destoyed also need to destroy record of payment
           payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first           
           payment.destroy               
-        end 
+        end
 
       end
-      
+
+      delete_summary_record(@expend)
+      delete_summary_account_balance(@expend)
+      delete_summary_balance(@expend)
+
       @expend.destroy #also destroys expenditem 
       redirect_to expends_path, notice: 'Expend was successfully deleted.'
     end
-    
+
     def reconcile
       authorize @expend
       #mark expense as rejected
@@ -213,9 +222,9 @@ module Mjbook
       def set_accounts
         @companyaccounts = policy_scope(Companyaccount)
       end
-      
+
       def set_paymethods
-        @paymethods = Mjbook::Paymethod.all        
+        @paymethods = Mjbook::Paymethod.all
       end
 
       # Only allow a trusted parameter "white list" through.
@@ -231,9 +240,9 @@ module Mjbook
          else
            filter_group = "All Accounts"
          end
-         
+
          filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
-                 
+
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
@@ -243,6 +252,59 @@ module Mjbook
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+
+      def create_summary_record(expend)
+        last_transaction = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date).order('date').last
+        
+        new_balance = last_transaction.balance - expend.total
+        new_account_balance = last_transaction.account_balance - expend.total
+        
+        Mjbook::Summaries.create(:date => expend.date,
+                                  :company_id => expend.company_id,
+                                  :expend_id => expend.id,
+                                  :amount_out => expend.total,
+                                  :balance => new_balance,
+                                  :account_balance => new_account_balance)
+      end
+
+      def add_summary_account_balance(expend)
+        account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
+        account_transactions.each do |account_transaction|
+          new_account_balance = transaction.account_balance - expend.total
+          account_transaction.update(:balance => new_account_balance)
+        end
+      end
+
+      def add_summary_balance(expend)
+        transactions = policy_scope(Summary).subsequent_transactions(expend.date)
+        transactions.each do |transaction|
+          new_balance = transaction.balance - expend.total
+          transaction.update(:balance => new_balance)
+        end
+      end
+
+
+      def delete_summary_record(expend)
+        transaction = policy_scope(Summary).where(:expend_id => expend.id).first
+        transaction.destroy
+      end
+
+      def delete_summary_account_balance(expend)
+        account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
+        account_transactions.each do |account_transaction|
+          new_account_balance = transaction.account_balance + expend.total
+          account_transaction.update(:balance => new_account_balance)
+        end
+      end
+
+      def delete_summary_balance(expend)
+        transactions = policy_scope(Summary).subsequent_transactions(expend.date)
+        transactions.each do |transaction|
+          new_balance = transaction.balance + expend.total
+          transaction.update(:balance => new_balance)
+        end
       end
 
   end

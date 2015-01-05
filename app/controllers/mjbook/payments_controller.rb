@@ -113,6 +113,10 @@ module Mjbook
           end            
         end
         
+        create_summary_record(@payment)
+        add_summary_account_balance(@payment)
+        add_summary_balance(@payment)
+        
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
         redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
@@ -168,6 +172,10 @@ module Mjbook
         expend.destroy
         #expenditems are destoyed when payments is deleted
       end
+
+      delete_summary_record(@payment)
+      delete_summary_account_balance(@payment)
+      delete_summary_balance(@payment)
 
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully deleted.'
@@ -256,6 +264,60 @@ module Mjbook
                                               print_receipt(payment, pdf)       
                                             end
       end
+
+
+      def create_summary_record(payment)
+        last_transaction = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date).order('date').last
+        
+        new_balance = last_transaction.balance + payment.total
+        new_account_balance = last_transaction.account_balance + payment.total
+        
+        Mjbook::Summaries.create(:date => payment.date,
+                                  :company_id => payment.company_id,
+                                  :payment_id => payment.id,
+                                  :amount_out => payment.total,
+                                  :balance => new_balance,
+                                  :account_balance => new_account_balance)
+      end
+
+      def add_summary_account_balance(payment)
+        account_transactions = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date)
+        account_transactions.each do |account_transaction|
+          new_account_balance = transaction.account_balance + payment.total
+          account_transaction.update(:balance => new_account_balance)
+        end
+      end
+
+      def add_summary_balance(payment)
+        transactions = policy_scope(Summary).subsequent_transactions(payment.date)
+        transactions.each do |transaction|
+          new_balance = transaction.balance + payment.total
+          transaction.update(:balance => new_balance)
+        end
+      end
+
+
+      def delete_summary_record(payment)
+        transaction = policy_scope(Summary).where(:payment_id => payment.id).first
+        transaction.destroy
+      end
+
+      def delete_summary_account_balance(payment)
+        account_transactions = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date)
+        account_transactions.each do |account_transaction|
+          new_account_balance = transaction.account_balance - payment.total
+          account_transaction.update(:balance => new_account_balance)
+        end
+      end
+
+      def delete_summary_balance(expend)
+        transactions = policy_scope(Summary).subsequent_transactions(payment.date)
+        transactions.each do |transaction|
+          new_balance = transaction.balance - payment.total
+          transaction.update(:balance => new_balance)
+        end
+      end
+
 
   end
 end

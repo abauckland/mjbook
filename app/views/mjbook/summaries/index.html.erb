@@ -164,29 +164,10 @@
         $("#income_bar_chart").find("td.jqplot-table-legend-swatch").first().hide();
         $("#income_bar_chart").find("div.jqplot-point-0").first().hide();
         
-        var plot3 = $.jqplot('balance_bar_chart', [b1], {
-            stackSeries: true,        
-            seriesDefaults:{
-                renderer:$.jqplot.BarRenderer,
-                rendererOptions: render_options,
-                pointLabels: {show: true, stackedValue: true}
-            },
-            axes: {xaxis: x_axis_settings, yaxis: y_axis_settings},
-            grid: grid_settings,       
-            seriesColors: [ "#507d50", "#64c864", "#b4eab9"],
-            negativeSeriesColors: [ "#ff5050", "#ff9696", "#ffdcdc"]
-        });
         
-        $(window).resize(function() {
-            plot1.replot( { resetAxes: {xaxis:true} } );
-        $("#expenses_bar_chart").find("td.jqplot-table-legend-label").first().hide();
-        $("#expenses_bar_chart").find("td.jqplot-table-legend-swatch").first().hide();
-        $("#expenses_bar_chart").find("div.jqplot-point-0").first().hide();
-            plot2.replot( { resetAxes: {xaxis:true} } );
-        $("#income_bar_chart").find("td.jqplot-table-legend-label").first().hide();
-        $("#income_bar_chart").find("td.jqplot-table-legend-swatch").first().hide();
-        $("#income_bar_chart").find("div.jqplot-point-0").first().hide();
-            plot3.replot( { resetAxes: {xaxis:true} } );
+        var plot3 = $.jqplot('balance', [<%= @transactions_array %>]{
+			axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}},
+			series:[{lineWidth:4, markerOptions:{style:'square'}}]
         });
             
     });        

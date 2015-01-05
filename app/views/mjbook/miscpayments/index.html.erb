@@ -1,0 +1,57 @@
+<h1>Listing miscpayments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>User</th>
+      <th>Exp type</th>
+      <th>Ref</th>
+      <th>Project</th>
+      <th>Hmrcexpcat</th>
+      <th>Date</th>
+      <th>Due date</th>
+      <th>Price</th>
+      <th>Vat</th>
+      <th>Total</th>
+      <th>Item</th>
+      <th>Provider</th>
+      <th>Provider ref</th>
+      <th>Receipt</th>
+      <th>Note</th>
+      <th>State</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @miscpayments.each do |miscpayment| %>
+      <tr>
+        <td><%= miscexpend.company_id %></td>
+        <td><%= miscexpend.user_id %></td>
+        <td><%= miscexpend.exp_type %></td>
+        <td><%= miscexpend.ref %></td>
+        <td><%= miscexpend.project_id %></td>
+        <td><%= miscexpend.hmrcexpcat_id %></td>
+        <td><%= miscexpend.date %></td>
+        <td><%= miscexpend.due_date %></td>
+        <td><%= miscexpend.price %></td>
+        <td><%= miscexpend.vat %></td>
+        <td><%= miscexpend.total %></td>
+        <td><%= miscexpend.item %></td>
+        <td><%= miscexpend.provider_id %></td>
+        <td><%= miscexpend.provider_ref %></td>
+        <td><%= miscexpend.receipt %></td>
+        <td><%= miscexpend.note %></td>
+        <td><%= miscexpend.state %></td>
+        <td><%= link_to 'Show', miscpayment %></td>
+        <td><%= link_to 'Edit', edit_miscpayment_path(miscpayment) %></td>
+        <td><%= link_to 'Destroy', miscpayment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Miscpayment', new_miscpayment_path %>

@@ -7,7 +7,8 @@ module Mjbook
     belongs_to :paymethod
     belongs_to :user
     has_many :expenditems, :dependent => :destroy
-    
+    has_many :summaries
+
 #    enum exp_status: [:paid, :reconciled]
     enum exp_type: [:business, :personal, :salary, :transfer]
 

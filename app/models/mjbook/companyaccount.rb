@@ -5,7 +5,8 @@ module Mjbook
     has_many :expends
     has_many :payments
     has_many :transfers
-    
+    has_many :summaries
+
     validates :name, presence: true,
       uniqueness: {:scope => [:company_id]}    
 
