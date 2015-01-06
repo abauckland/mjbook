@@ -112,7 +112,9 @@ Mjbook::Engine.routes.draw do
 
   resources :quotecontents, :only => [:show]
 
-  resources :summaries
+  resources :summaries, :only => [:index] do
+    get :charts, :on => :member
+  end
 
   resources :expenses do 
     get :accept, :on => :member

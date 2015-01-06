@@ -83,17 +83,16 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        var e1 = [0, 600, 700, 1000]; //accepted
-        var e2 = [460]; //accepted
-        var e3 = [260]; //submitted    
-        var e4 = [260]; //submitted 
-        
-        var i1 = [0, 600, 700, 1000]; //accepted
-        var i2 = [460]; //accepted
-        var i3 = [260]; //submitted 
-        var i4 = [260]; //submitted 
 
-        var b1 = [-200, 600, 700, 1000]; //accepted
+        var e1 = [@exp_due[0], @exp_due[1], @exp_due[2]]; //accepted
+        var e2 = [@exp_pending[0]]; //accepted
+        var e3 = [@exp_pending[1]]; //submitted 
+        var e4 = [@exp_pending[2]]; //submitted 
+
+        var i1 = [@inc_due[0], @inc_due[1], @inc_due[2]]; //accepted
+        var i2 = [@inc_pending[0]]; //accepted
+        var i3 = [@inc_pending[1]]; //submitted 
+        var i4 = [@inc_pending[2]]; //submitted 
 
         var ticks = ['due', '0-30 days', '30-60 days', '60-90 days'];
 

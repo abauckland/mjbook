@@ -9,7 +9,7 @@ class CreateMjbookSummaries < ActiveRecord::Migration
       t.decimal :amount_out, :precision => 8, :scale => 2, default: 0.00
       t.decimal :balance, :precision => 8, :scale => 2, default: 0.00
       t.decimal :account_balance, :precision => 8, :scale => 2, default: 0.00
-      t.timestamp :data
+      t.timestamp :date
 
       t.timestamps
     end
