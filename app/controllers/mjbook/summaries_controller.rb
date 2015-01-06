@@ -70,7 +70,7 @@ module Mjbook
 
 
         #filter by date and account
-        unless params[:date_from]
+
           date_from = 3.month.ago
           date_to = Time.now
 
