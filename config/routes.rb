@@ -1,5 +1,11 @@
 Mjbook::Engine.routes.draw do
   
+  resources :participants
+
+  resources :donations
+
+  resources :donors
+
   resources :writeoffs, :only => [:index, :show, :create, :destroy]
 
   resources :creditnotes, :only => [:index, :show, :create, :destroy] do
