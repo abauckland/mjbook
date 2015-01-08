@@ -17,6 +17,10 @@ Mjbook::Engine.routes.draw do
     get :reject, :on => :member
   end
 
+  resources :miscincomes do
+    get :process_payment, :on => :member
+  end
+
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
     get :process_transfer, :on => :member
   end
@@ -56,7 +60,7 @@ Mjbook::Engine.routes.draw do
 
   resources :invoices do
     get :email, :on => :member
-    get :print, :on => :member    
+    get :print, :on => :member
   end
 
   resources :invoicecontents, :only => [:show]

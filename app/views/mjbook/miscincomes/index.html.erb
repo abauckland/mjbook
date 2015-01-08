@@ -1,0 +1,100 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Miscillaneous Income</h1>
+    </div>      
+    <div><%= link_to "+ expense", new_miscincome_path, class: "title_button" %> </div>
+</div>
+
+<div class="row filter_band">
+    <%= form_tag miscincomes_path, method: :get do %>
+  
+        <div>
+            <% if @projects %>  
+            <div>
+                <label class="select">Project:</label>
+                <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
+            </div>                
+            <% end %> 
+            <div>
+                <label class="date">Date From:</label>
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
+                <label class="date">Date To:</label>
+                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
+            </div>                                    
+            <%= submit_tag 'Filter' %>     
+        </div>
+        
+        <div class="float_right">   
+            <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+        </div>  
+
+    <% end %> 
+</div>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">                
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="miscincome_job">Job</th>
+                            <th class="miscincome_ref">Reference</th>
+                            <th class="miscincome_customer">Customer</th>
+                            <th class="miscincome_customer_ref">Customer Ref</th>
+                            <th class="miscincome_issue_date">Date</th>
+                            <th class="miscincome_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="miscincome_vat_due">Vat</th>
+                            <th class="miscincome_total">Total</br><span>(Inc VAT)</span></th>
+                            <th class="miscincome_note">Note</th>
+                            <th class="miscincome_status">Status</th>
+                            <th class="row_button no_buttons_4"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @miscincomes %>            
+                            <% @miscincomes.each do |payment| %>
+                                <tr>
+                                        <td class="miscincome_job"><%= payment.project.ref %></td>
+                                        <td class="miscincome_ref"><%= payment.ref %></td>
+                                        <td class="miscincome_customer"><%= payment.customer.company_name.titleize %></td>
+                                        <td class="miscincome_customer_ref"><%= payment.customer_ref %></td>
+                                        <td class="miscincome_issue_date"><%= payment.date.strftime("%d/%m/%y") %></td>
+                                        <td class="miscincome_price"><%= pounds(payment.price) %></td>
+                                        <td class="miscincome_vat_due"><%= pounds(payment.vat) %></td>
+                                        <td class="miscincome_total"><%= pounds(payment.total) %></td>
+                                        <td class="miscincome_note"><%= payment.note %></td>
+                                        <td id="<%= payment.id %>_status" class="miscincome_status"><%= payment.state %></td>
+                                        <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
+                                        <% if payment.submitted? %>                
+                                            <%= row_delete_link(miscincome, 'show') %>
+                                            <%= link_to "", miscincome_path(payment), class: 'line_edit_icon_show', title: "edit" %>
+                                        	<%= link_to "", process_payment_miscincome_path(payment.id), class: 'line_payment_icon_show', title: "record payment" %>
+                                        <% else %>
+                                            <%= row_delete_link(miscincome, 'hidden') %>
+                                            <%= link_to "", miscincome_path(payment), class: 'line_edit_icon_hidden', title: "edit" %>
+                                            <%= link_to "", process_payment_miscincome_path(payment.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+                                        <% end %>
+
+                                            <%= row_print_link(invoice, 'show') %>
+
+                                        </td>               
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+   
+            </div>
+        </div>
+    </div>
+
+</div>

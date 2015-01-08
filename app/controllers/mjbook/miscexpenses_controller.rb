@@ -160,7 +160,7 @@ module Mjbook
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|      
-            table_indexes(expenses, 'misc', filter_group, date_from, date_to, filename, pdf)      
+            table_indexes(expenses, 'misc', filter_group, date_from, date_to, filename, pdf)
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"        

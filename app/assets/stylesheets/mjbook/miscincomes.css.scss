@@ -1,0 +1,40 @@
+@import "table_headers";
+
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+//index table 
+.miscincome_job         {@include name}
+.miscincome_ref         {@include ref}
+.miscincome_customer    {@include name}
+.miscincome_customer_ref{@include ref}
+.miscincome_issue_date  {@include date}
+.miscincome_price        {@include pounds}
+.miscincome_vat_due      {@include pounds}
+.miscincome_total        {@include pounds}
+.miscincome_status      {@include state}
+.miscincome_note      {display: table-cell;}
+
+
+@media screen and (max-width: $lrg_menu) {
+
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .miscincome_customer_ref{display: none}
+  .miscincome_price{display: none}
+  .miscincome_vat_due{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .miscincome_job{display: none}
+  .miscincome_ref{display: none}
+}
+
+.vat_note{font-size: 0.8rem; font-weight: normal;}
+
