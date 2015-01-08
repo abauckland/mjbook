@@ -3,7 +3,11 @@ module PrintHeader
   include PrintDocumentStyle
 
   def company_header(pdf)
-    
+
+    if current_user.company.logo_url?
+      pdf.image current_user.company.logo_url, :position => :left, :vposition => -12.mm, :align => :left, :fit => [100,25]
+    end
+
     pdf.bounding_box([0.mm, 265.mm], :width => 95.mm, :height => 20.mm) do
         pdf.text current_user.company.name, company_style unless current_user.company.name.blank?
         pdf.text current_user.company.address_1, company_style unless current_user.company.address_1.blank?
@@ -33,7 +37,7 @@ module PrintHeader
     pdf.stroke do
       pdf.line [0.mm, 234.mm],[190.mm, 234.mm]
     end
-    
-  end  
+
+  end
 
 end
