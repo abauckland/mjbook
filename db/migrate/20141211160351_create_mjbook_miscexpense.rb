@@ -3,7 +3,6 @@ class CreateMjbookMiscexpense < ActiveRecord::Migration
     create_table :mjbook_miscexpense do |t|
       t.integer :company_id
       t.integer :user_id
-      t.integer :exp_type
       t.string :ref
       t.integer :project_id
       t.integer :hmrcexpcat_id
@@ -12,10 +11,10 @@ class CreateMjbookMiscexpense < ActiveRecord::Migration
       t.decimal :price
       t.decimal :vat
       t.decimal :total
-      t.string :item
-      t.integer :provider_id
-      t.string :provider_ref
-      t.string :receipt
+      t.string :reciept
+      t.integer :supplier_id
+      t.string :supplier_ref
+      t.integer :recurrence
       t.text :note
       t.string :state
 

@@ -14,7 +14,7 @@ module Mjbook
     def index
 
     if params[:supplier_id]
-  
+
         if params[:supplier_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
@@ -26,30 +26,30 @@ module Mjbook
             if params[:date_to] != ""
               @expenses = Expense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).business
             end
-          end   
+          end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
               @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id).business
             else
               @expenses = Expense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id).business
-            end  
-          else  
+            end
+          else
             if params[:date_to] != ""
               @expenses = Expense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id).business
             else
               @expenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
-            end     
+            end
           end
-        end   
-     
+        end
+
         if params[:commit] == 'pdf'          
           pdf_business_index(@expenses, params[:supplier_id], params[:date_from], params[:date_to])      
         end
-            
+
      else
        @expenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
-     end          
+     end
 
      #selected parameters for filter form     
      @suppliers = Supplier.joins(:expenses => :project).where('mjbook_projects.company_id' => current_user.company_id)

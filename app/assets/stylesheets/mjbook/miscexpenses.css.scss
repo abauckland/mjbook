@@ -1,0 +1,44 @@
+@import "table_headers";
+
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+//index table 
+.miscexpense_due_data    {@include date}
+.miscexpense_job         {@include name}
+.miscexpense_category    {@include name}
+.miscexpense_ref         {@include ref}
+.miscexpense_supplier    {@include name}
+.miscexpense_supplier_ref{@include ref}
+.miscexpense_issue_date  {@include date}
+.miscexpense_price        {@include pounds}
+.miscexpense_vat_due      {@include pounds}
+.miscexpense_total        {@include pounds}
+.miscexpense_status      {@include state}
+.miscexpense_note      {display: table-cell;}
+
+
+@media screen and (max-width: $lrg_menu) {
+
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .miscexpense_issue_date{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .miscexpense_supplier_ref{display: none}
+  .miscexpense_price{display: none}
+  .miscexpense_vat_due{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .miscexpense_job{display: none}
+  .miscexpense_category{display: none}
+  .miscexpense_ref{display: none}
+}
+
+.vat_note{font-size: 0.8rem; font-weight: normal;}
+

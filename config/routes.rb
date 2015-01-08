@@ -12,7 +12,10 @@ Mjbook::Engine.routes.draw do
     get :email, :on => :member 
   end
 
-  resources :miscexpenses
+  resources :miscexpenses do
+    get :accept, :on => :member
+    get :reject, :on => :member
+  end
 
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
     get :process_transfer, :on => :member
@@ -22,9 +25,7 @@ Mjbook::Engine.routes.draw do
 
   resources :salaries do
     get :accept, :on => :member
-    get :reject, :on => :member 
-
-    get :transfer, :on => :member
+    get :reject, :on => :member
   end
 
 

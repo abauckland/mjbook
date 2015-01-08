@@ -1,89 +1,89 @@
-<p id="notice"><%= notice %></p>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Miscellaneous Expense Item</h1>
+    </div>
+</div>
 
-<p>
-  <strong>Company:</strong>
-  <%= @miscexpend.company_id %>
-</p>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
 
-<p>
-  <strong>User:</strong>
-  <%= @miscexpend.user_id %>
-</p>
+            <%= render :partial => "flash_notice" %>
+<!-- column start-->
+            <div class="row">
+                <article>
+                    <div class="article-set">
 
-<p>
-  <strong>Exp type:</strong>
-  <%= @miscexpend.exp_type %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Reference:</label>
+                        <span><%= @miscexpense.ref if @miscexpense.ref %></span></br>
+                                
+                        <!-- show text line -->
+                        <label class="label_80">Due Date:</label>
+                        <span><%= @miscexpense.due_date.strftime("%d/%m/%y") %></span></br>
 
-<p>
-  <strong>Ref:</strong>
-  <%= @miscexpend.ref %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Issue date:</label>
+                        <span><%= @miscexpense.date.strftime("%d/%m/%y") %></span></br>
+                                
+                        <!-- show text line -->
+                        <label class="label_80">Job:</label>
+                        <span><%= @miscexpense.project.name %></span></br>
 
-<p>
-  <strong>Project:</strong>
-  <%= @miscexpend.project_id %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Supplier:</label>
+                        <span><%= @miscexpense.supplier.company_name %></span></br>
 
-<p>
-  <strong>Hmrcexpcat:</strong>
-  <%= @miscexpend.hmrcexpcat_id %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Supplier Ref:</label>
+                        <span><%= @miscexpense.supplier_ref %></span></br>
 
-<p>
-  <strong>Date:</strong>
-  <%= @miscexpend.date %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Expense Cat:</label>
+                        <span><%= @miscexpense.hmrcexpcat.category %></span></br>
 
-<p>
-  <strong>Due date:</strong>
-  <%= @miscexpend.due_date %>
-</p>
+                        <% if @miscexpense.receipt %>
+                        <!-- show text line -->
+                        <label class="label_80">Receipt:</label>
+                        <span><%=link_to image_tag(@miscexpense.receipt_url(:thumb), @miscexpense.receipt_url, class: 'fancybox' %></span></br>
+                        <% end %>
 
-<p>
-  <strong>Price:</strong>
-  <%= @miscexpend.price %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Price:</label>
+                        <span><%= pounds(@miscexpense.price) %></span></br>
+                                
+                        <!-- show text line -->
+                        <label class="label_80">VAT:</label>
+                        <span><%= pounds(@miscexpense.vat) %></span></br>
 
-<p>
-  <strong>Vat:</strong>
-  <%= @miscexpend.vat %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Total:</label>
+                        <span><%= pounds(@miscexpense.total) %></span></br>
 
-<p>
-  <strong>Total:</strong>
-  <%= @miscexpend.total %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Status:</label>
+                        <span><%= @miscexpense.state %></span></br>
 
-<p>
-  <strong>Item:</strong>
-  <%= @miscexpend.item %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Note:</label>
+                        <span><%= @miscexpense.note %></span></br>
 
-<p>
-  <strong>Provider:</strong>
-  <%= @miscexpend.provider_id %>
-</p>
+                    </div>
+                </article>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "back", businesses_path %>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<p>
-  <strong>Provider ref:</strong>
-  <%= @miscexpend.provider_ref %>
-</p>
-
-<p>
-  <strong>Receipt:</strong>
-  <%= @miscexpend.receipt %>
-</p>
-
-<p>
-  <strong>Note:</strong>
-  <%= @miscexpend.note %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @miscexpend.state %>
-</p>
-
-<%= link_to 'Edit', edit_miscexpend_path(@miscexpend) %> |
-<%= link_to 'Back', miscexpends_path %>
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
+</div>
