@@ -1,6 +1,6 @@
-class CreateMjbookMiscexpense < ActiveRecord::Migration
+class CreateMjbookMiscexpenses < ActiveRecord::Migration
   def change
-    create_table :mjbook_miscexpense do |t|
+    create_table :mjbook_miscexpenses do |t|
       t.integer :company_id
       t.integer :user_id
       t.string :ref
