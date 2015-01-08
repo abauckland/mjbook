@@ -18,7 +18,7 @@ module Mjbook
           date_to = params[:date_to]
         end
 
-        @transactions = policy_scope(Summary).where("due_date >= ? AND due_date <= ?", date_from, date_to).order(:date)
+        @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
 
       end
 
@@ -71,10 +71,10 @@ module Mjbook
 
         #filter by date and account
 
-          date_from = 3.month.ago
+          date_from = 3.months.ago
           date_to = Time.now
 
-        transactions = policy_scope(Summary).where("due_date >= ? AND due_date <= ?", date_from, date_to).order(:date)
+        transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
         @transactions_array = transactions.select([:date, :balance]).map {|e| [e.date.strftime("%d/%m/%y"), pounds(e.balance)] } 
         
       end
