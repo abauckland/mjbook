@@ -1,33 +1,70 @@
-<h1>Listing donations</h1>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Donations</h1>
+    </div>
+    <div class="title_help" id="customers_index"></div>
+    <div><%= link_to "+ donation", new_donation_path, class: "title_button" %></div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Donor</th>
-      <th>Participant</th>
-      <th>Event</th>
-      <th>Date</th>
-      <th>Total</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row">
 
-  <tbody>
-    <% @donations.each do |donation| %>
-      <tr>
-        <td><%= donation.donor_id %></td>
-        <td><%= donation.participant_id %></td>
-        <td><%= donation.event %></td>
-        <td><%= donation.date %></td>
-        <td><%= donation.total %></td>
-        <td><%= link_to 'Show', donation %></td>
-        <td><%= link_to 'Edit', edit_donation_path(donation) %></td>
-        <td><%= link_to 'Destroy', donation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <div class="col-1-1 column_1">
+        <div class="border">
 
-<br>
+            <%= render :partial => "flash_notice" %>
 
-<%= link_to 'New Donation', new_donation_path %>
+            <div class="row">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="donation_donor">Donor</th>
+                            <th class="donation_participant">Participant</th>
+                            <th class="donation_event">Event</th>
+                            <th class="donation_date">Date</th>
+                            <th class="donation_total">Total</th>
+                            <th class="donation_total">Status</th>
+                            <th class="row_button no_buttons_5">
+                                <% if @donations %>
+                                    <%= link_to "", print_donation_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
+                                <% end %>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @donations %>            
+                            <% @donations.each do |donation| %>
+                                <tr>
+                                    <td class="donation_donor"><%= donation.donro.name.titleize %></td>
+                                    <td class="donation_participant"><%= donation.participant.name.titleize %></td>
+                                    <td class="donation_event"><%= donation.event.title.titleize %></td>
+                                    <td class="donation_date"><%= donation.date.strftime("%d/%m/%y") %></td>
+                                    <td class="donation_total"><%= pounds(donation.total) %></td>
+                                    <td id="<%= donation.id %>_status" class="donation_total"><%= donation.state %></td>
+                                    <td id="<%= donation.id %>_links" class="row_button no_buttons_5">
+                                        <% if donation.submitted? %>                
+                                            <%= row_delete_link(donation, 'show') %>
+                                            <%= row_edit_link(donation, 'show') %>
+                                            <%= row_show_link(donation, 'show') %>
+                                            <%= link_to "", process_payment_donation_path(donation.id), class: 'line_payment_icon_show', title: "record payment" %>
+                                        <% else %>
+                                            <%= row_delete_link(donation, 'hidden') %>
+                                            <%= row_edit_link(donation, 'hidden') %>
+                                            <%= row_show_link(donation, 'show') %>
+                                            <%= link_to "", process_payment_donation_path(donation.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+                                        <% end %>
+                                            <%= row_print_link(invoice, 'show') %> 
+                                    </td>
+                                </tr>
+                            <% end %>  
+                        <% end %>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
