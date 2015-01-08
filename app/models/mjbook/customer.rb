@@ -32,8 +32,8 @@ module Mjbook
       format: { with: CITY_REGEXP, message: "please enter a valid city name" }
 
     validates :postcode,
-      allow_blank: true#,
-#      format: { with: POSTCODE_REGEXP, message: "please enter a valid postcode, including a space between the area and street codes e.g.SK2 6PL" }
+      allow_blank: true,
+      format: { with: POSTCODE_REGEXP, message: "please enter a valid postcode, including a space between the area and street codes e.g.SK2 6PL" }
 
     validates :phone, :alt_phone,
       allow_blank: true,
