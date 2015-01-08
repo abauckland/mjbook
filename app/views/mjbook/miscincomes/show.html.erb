@@ -1,89 +1,75 @@
-<p id="notice"><%= notice %></p>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Miscellaneous Expense Item</h1>
+    </div>
+</div>
 
-<p>
-  <strong>Company:</strong>
-  <%= @miscpayment.company_id %>
-</p>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
 
-<p>
-  <strong>User:</strong>
-  <%= @miscpayment.user_id %>
-</p>
+            <%= render :partial => "flash_notice" %>
+<!-- column start-->
+            <div class="row">
+                <article>
+                    <div class="article-set">
 
-<p>
-  <strong>Exp type:</strong>
-  <%= @miscpayment.exp_type %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Reference:</label>
+                        <span><%= @miscincome.ref if @miscincome.ref %></span></br>
 
-<p>
-  <strong>Ref:</strong>
-  <%= @miscpayment.ref %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Issue date:</label>
+                        <span><%= @miscincome.date.strftime("%d/%m/%y") %></span></br>
+                                
+                        <!-- show text line -->
+                        <label class="label_80">Job:</label>
+                        <span><%= @miscincome.project.name %></span></br>
 
-<p>
-  <strong>Project:</strong>
-  <%= @miscpayment.project_id %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Customer:</label>
+                        <span><%= @miscincome.customer.company_name %></span></br>
 
-<p>
-  <strong>Hmrcexpcat:</strong>
-  <%= @miscpayment.hmrcexpcat_id %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Customer Ref:</label>
+                        <span><%= @miscincome.customer_ref %></span></br>
 
-<p>
-  <strong>Date:</strong>
-  <%= @miscpayment.date %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Price:</label>
+                        <span><%= pounds(@miscincome.price) %></span></br>
+                                
+                        <!-- show text line -->
+                        <label class="label_80">VAT:</label>
+                        <span><%= pounds(@miscincome.vat) %></span></br>
 
-<p>
-  <strong>Due date:</strong>
-  <%= @miscpayment.due_date %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Total:</label>
+                        <span><%= pounds(@miscincome.total) %></span></br>
 
-<p>
-  <strong>Price:</strong>
-  <%= @miscpayment.price %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Status:</label>
+                        <span><%= @miscincome.state %></span></br>
 
-<p>
-  <strong>Vat:</strong>
-  <%= @miscpayment.vat %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_80">Note:</label>
+                        <span><%= @miscincome.note %></span></br>
 
-<p>
-  <strong>Total:</strong>
-  <%= @miscpayment.total %>
-</p>
+                    </div>
+                </article>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "back", miscincomes_path %>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<p>
-  <strong>Item:</strong>
-  <%= @miscpayment.item %>
-</p>
-
-<p>
-  <strong>Provider:</strong>
-  <%= @miscpayment.provider_id %>
-</p>
-
-<p>
-  <strong>Provider ref:</strong>
-  <%= @miscpayment.provider_ref %>
-</p>
-
-<p>
-  <strong>Receipt:</strong>
-  <%= @miscpayment.receipt %>
-</p>
-
-<p>
-  <strong>Note:</strong>
-  <%= @miscpayment.note %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @miscpayment.state %>
-</p>
-
-<%= link_to 'Edit', edit_miscpayment_path(@miscpayment) %> |
-<%= link_to 'Back', miscpayments_path %>
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
+</div>

@@ -93,7 +93,7 @@ module Mjbook
     end
 
     def process_payment
-      
+
     end
 
     private
