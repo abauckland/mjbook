@@ -1,4 +1,4 @@
-class CreateExpenditems < ActiveRecord::Migration
+class CreateMjbookExpenditems < ActiveRecord::Migration
   def change
     create_table :mjbook_expenditems do |t|
       t.integer :expend_id
