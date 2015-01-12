@@ -10,7 +10,7 @@ module Mjbook
     has_many :paymentitems, :dependent => :destroy
     has_many :summaries
 
-    enum inc_type: [:invoice, :transfer]
+    enum inc_type: [:invoice, :transfer, :misc]
         
     aasm :column => 'state' do
 

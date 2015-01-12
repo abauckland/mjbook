@@ -17,9 +17,7 @@ Mjbook::Engine.routes.draw do
     get :reject, :on => :member
   end
 
-  resources :miscincomes do
-    get :process_payment, :on => :member
-  end
+  resources :miscincomes
 
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
     get :process_transfer, :on => :member
@@ -123,7 +121,7 @@ Mjbook::Engine.routes.draw do
 
   resources :expenses do 
     get :accept, :on => :member
-    get :reject, :on => :member 
+    get :reject, :on => :member
 
     get :pay, :on => :member
   end
@@ -146,38 +144,39 @@ Mjbook::Engine.routes.draw do
 
   resources :processinvoices, :only => [:index, :new] do
     get :payment, :on => :member
-    get :creditnote, :on => :member  
-    get :writeoff, :on => :member  
+    get :creditnote, :on => :member
+    get :writeoff, :on => :member
   end
 
   resources :payments do
-    get :email, :on => :member 
-    get :reconcile, :on => :member  
+    get :process_misc, :on => :member
+    get :email, :on => :member
+    get :reconcile, :on => :member
     get :unreconcile, :on => :member
   end
 
- 
+
   resources :products do 
-    get :quote_item_options, :on => :member 
-    get :invoice_item_options, :on => :member 
+    get :quote_item_options, :on => :member
+    get :invoice_item_options, :on => :member
     get :cat_item_options, :on => :member 
     get :print, :on => :member
   end
   
   resources :services do 
-    get :item_options, :on => :member 
-    get :cat_item_options, :on => :member 
+    get :item_options, :on => :member
+    get :cat_item_options, :on => :member
     get :print, :on => :member
   end
 
   resources :miscs do 
-    get :item_options, :on => :member 
-    get :cat_item_options, :on => :member 
+    get :item_options, :on => :member
+    get :cat_item_options, :on => :member
     get :print, :on => :member
   end
   
   resources :productcategories do
-    get :cat_options, :on => :member 
+    get :cat_options, :on => :member
   end
 
   resources :services
@@ -190,7 +189,7 @@ Mjbook::Engine.routes.draw do
   resources :misccategories
 
   resources :mileages do
-    get :add_to_expenses, :on => :member  
+    get :add_to_expenses, :on => :member
     get :print, :on => :member
   end
 
@@ -207,5 +206,5 @@ Mjbook::Engine.routes.draw do
   resources :projects do
     get :print, :on => :member
   end
-  
+
 end

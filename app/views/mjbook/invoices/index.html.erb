@@ -8,7 +8,7 @@
 
 
 <div class="row filter_band">
-    <%= form_tag invoices_path, method: :get do %>  
+    <%= form_tag invoices_path, method: :get do %>
         <div>
             <div>
                 <label class="select">Customer:</label>
@@ -19,10 +19,10 @@
                 <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
-        </div>        
-        <div class="float_right">   
+            </div>
+            <%= submit_tag 'Filter' %>
+        </div>
+        <div class="float_right">
             <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
         </div>  
     <% end %> 
@@ -32,7 +32,7 @@
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
+        <div class="border">
 
             <%= render :partial => "flash_notice" %>
 
@@ -44,7 +44,7 @@
                             <th class="invoice_ref">Ref</th>
                             <th class="invoice_title">Type</th>
                             <th class="invoice_project_ref">Job Ref</th>
-                            <th class="invoice_customer_ref">Cust. Ref</th>     
+                            <th class="invoice_customer_ref">Cust. Ref</th>
                             <th class="invoice_customer">Cust. Name</th>
                             <th class="invoice_company_name">Cust. Company</th>
                             <th class="invoice_date">Date</th>
@@ -59,7 +59,7 @@
 
                 <table>
                     <tbody>
-                          <% if @invoices %>            
+                          <% if @invoices %>
                             <% @invoices.each do |invoice| %>
                                 <tr>
                                     <td class="invoice_ref"><%= invoice.ref %></td>
@@ -74,31 +74,31 @@
                                     <td class="invoice_total"><%= pounds(invoice.total) %></td>
                                     <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.state %></td>
                                     <td id="<%= invoice.id %>_links" class="row_button no_buttons_4">
-                                        <% if invoice.draft? %>                
+                                        <% if invoice.draft? %>
                                             <%= row_delete_link(invoice, 'show') %>
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_show', title: "edit" %>
                                             <%= row_email_link(invoice, 'show') %>
                                         <% else %>
                                             <%= row_delete_link(invoice, 'hidden') %>
-                                            <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_hidden', title: "edit" %>                        
+                                            <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_hidden', title: "edit" %>
                                             <%= row_email_link(invoice, 'hidden') %>
                                         <% end %>
-                                        
+
                                             <%= row_print_link(invoice, 'show') %>
-                                        
-                                        <% if invoice.part_paid? || invoice.submitted? %>                
+
+                                        <% if invoice.part_paid? || invoice.submitted? %>
                                             <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
-                                        <% else %>    
+                                        <% else %>
                                             <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
                                         <% end %>
 
                                     </td)
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>

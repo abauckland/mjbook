@@ -11,17 +11,17 @@ module Mjbook
 
     aasm :column => 'state' do
 
-      state :submitted, :initial => true 
+      state :draft, :initial => true
       state :paid
 
-      event :paid do
-        transitions :from => :submitted, :to => :paid
+      event :pay do
+        transitions :from => :draft, :to => :paid
       end
-  
-      event :correct_transfer do
-        transitions :from => :paid, :to => :submitted
+
+      event :correct_payment do
+        transitions :from => :paid, :to => :draft
       end
-    end  
+    end
 
   end
 end

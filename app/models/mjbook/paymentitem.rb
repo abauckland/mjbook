@@ -5,7 +5,7 @@ module Mjbook
     belongs_to :inline
     belongs_to :transfer
 #    belongs_to :donation
-    belongs_to :misincome    
+    belongs_to :misincome
     
   end
 end

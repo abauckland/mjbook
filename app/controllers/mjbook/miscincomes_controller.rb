@@ -92,9 +92,6 @@ module Mjbook
       redirect_to miscincomes_url, notice: 'Misc income record successfully deleted.'
     end
 
-    def process_payment
-
-    end
 
     private
       # Use callbacks to share common setup or constraints between actions.

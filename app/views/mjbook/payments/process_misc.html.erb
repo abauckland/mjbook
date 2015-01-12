@@ -1,0 +1,104 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Record Reciept of Misc. Income</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
+
+<!-- error messages - associated with form start-->
+            <%= render :partial => "form_error", :locals => {:item => @payment} %>
+
+<!-- form column start-->
+            <div class="row">
+                <%= form_for(@payment) do |f| %>
+
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    <%= f.hidden_field :price, :value => @miscincome.price %>
+                    <%= f.hidden_field :vat, :value => @miscincome.vat %>
+                    <%= f.hidden_field :total, :value => @miscincome.total %>
+                    <%= f.hidden_field :inc_type, :value => 'misc' %>
+
+                    <%= hidden_field_tag :miscincome_id, @miscincome.id %>
+                    <fieldset>
+
+                        <!-- show text line -->
+                        <label class="label_80">Job:</label>
+                        <span><%= @miscincome.project.name %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_80">Reference:</label>
+                        <span><%= @miscincome.ref if @miscincome.ref %></span></br>
+    
+                        <!-- show text line -->
+                        <label class="label_80">Customer:</label>
+                        <span><%= @miscincome.customer.company_name %></span></br>
+    
+                        <!-- show text line -->
+                        <label class="label_80">Customer Ref:</label>
+                        <span><%= @miscincome.customer_ref %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_80">Price:</label>
+                        <span><%= pounds(@miscincome.price) %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_80">VAT:</label>
+                        <span><%= pounds(@miscincome.vat) %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_80">Total:</label>
+                        <span><%= pounds(@misceincome.total) %></span></br>
+
+
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="payexpense_paymethod"></div>
+                        <label class="label_80">Payment Method:*</label>
+                        <span>
+                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {selected: @expend.paymethod_id, :prompt => :true})%>
+                        </span></br>
+
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="payexpense_account"></div>
+                        <label class="label_80">Account Paid From:*</label>
+                        <span>
+                            <%= f.collection_select(:companyaccount_id, @companyaccounts, :id, :name, {selected: @expend.companyaccount_id, :prompt => :true})%>
+                        </span></br>
+
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="payexpense_date"></div>
+                        <div class="form_tooltip">Date:*</label>
+                        <span>
+                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
+                        </span></br>
+
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="payexpense_notes"></div>
+                        <label class="label_80">Notes:</label>
+                        <span>
+                            <%= f.text_field :note %>
+                        </span></br>
+
+                    </fieldset>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= f.submit "save"%>
+                    <%= link_to "cancel", miscincomes_path %>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
+</div>

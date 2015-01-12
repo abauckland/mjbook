@@ -3,8 +3,8 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class PaymentsController < ApplicationController
     before_action :set_payment, only: [:show, :edit, :update, :destroy, :reconcile, :unreconcile, :email]
-    before_action :set_accounts, only: [:new, :edit, :invoice_paid]
-    before_action :set_paymethods, only: [:new, :edit, :invoice_paid]
+    before_action :set_accounts, only: [:new, :edit, :invoice_paid, :process_misc]
+    before_action :set_paymethods, only: [:new, :edit, :invoice_paid. :process_misc]
 
     include PrintIndexes
     
@@ -89,7 +89,7 @@ module Mjbook
         if @payment.invoice?
           inlines = Mjbook::Inline.where(:id => params[:line_ids].to_a)
           invoice = Mjbook::Invoice.where(:id => params[:invoice_id]).first
-          
+
           inlines.each do |item|
             Mjbook::Paymentitem.create(:payment_id => @payment.id, :inline_id => item.id)
             item.pay!
@@ -108,15 +108,22 @@ module Mjbook
           check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id])
           if check_inlines.blank?
             invoice.pay!
-          else  
+          else
             invoice.part_pay!
-          end            
+          end
         end
-        
+
+        if @payment.misc?
+          miscincome = Mjbook::Miscincome.where(:id => params[:miscincome_id]).first
+          Mjbook::Paymentitem.create(:payment_id => @payment.id, :miscincome_id => miscincome.id)
+          miscincome.pay!
+          @payment.confirm!
+        end
+
         create_summary_record(@payment)
         add_summary_account_balance(@payment)
         add_summary_balance(@payment)
-        
+
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
         redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
@@ -145,14 +152,14 @@ module Mjbook
     def destroy
       authorize @payment
 
-      if payment.invoice?
+      if @payment.invoice?
         paymentitems = Mjbook::Paymentitem.where(:payment_id => @payment.id)
         paymentitems.each do |item|
           inline = Mjbook::Inline.where(:id => item.inline_id).first
           inline.rescind!
-          #paymentitems are destoyed when payments is deleted
+          #paymentitems are destroyed when payments is deleted
         end
-        
+
         invoice = Mjbook::Invoice.joins(:ingroup => [:inline => :paymentitems]).where('mjbooks_paymentitems.payment_id' => @payment.id).first
         check_inlines = Mjbook::Inline.paid.join(:ingroup).where('mjbooks_invoice_id' => invoice.id)
         if check_inlines.blank?
@@ -163,14 +170,20 @@ module Mjbook
       end
 
       if @payment.transfer?
-        #paymentitems are destoyed when payments is deleted
+        #paymentitems are destroyed when payments is deleted
         transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
         transfer.correct_transfer!
-          
-        #if transfer is destoyed also need to destroy record of payment
+
+        #if transfer is destroyed also need to destroy record of payment
         expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first
         expend.destroy
-        #expenditems are destoyed when payments is deleted
+        #expenditems are destroyed when payments is deleted
+      end
+
+      if @payment.misc?
+        #paymentitems are destroyed when payments is deleted
+        miscincome = Mjbook::Miscincome.where(:id => item.miscincome_id).first
+        miscincome.correct_payment!
       end
 
       delete_summary_record(@payment)
@@ -187,8 +200,8 @@ module Mjbook
       if @payment.reconcile!
         respond_to do |format|
           format.js   { render :reconcile, :layout => false }
-        end 
-      end 
+        end
+      end
     end
 
     def unreconcile
@@ -196,20 +209,24 @@ module Mjbook
       if @payment.unreconcile!
         respond_to do |format|
           format.js   { render :unreconcile, :layout => false }
-        end 
-      end 
+        end
+      end
     end
 
     def email
         authorize @payment
         print_receipt_document(@payment)
         PaymentMailer.receipt(@payment, @document, current_user).deliver
-        
+
         if @payment.confirm!
           respond_to do |format|
             format.js   { render :email, :layout => false }
-          end 
-        end         
+          end
+        end
+    end
+
+    def process_misc
+      @payment = Payment.new
     end
 
     private
@@ -239,17 +256,17 @@ module Mjbook
          else
            filter_group = "All Customers"
          end
-         
+
          filename = "Payments_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
-                 
+
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
-      
+
             table_indexes(payments, 'payment', filter_group, date_from, date_to, filename, pdf)
-      
+
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"
@@ -261,7 +278,7 @@ module Mjbook
                                               :margin => [5.mm, 10.mm, 5.mm, 10.mm],
                                               :info => {:title => payment.ref}
                                             ) do |pdf|
-                                              print_receipt(payment, pdf)       
+                                              print_receipt(payment, pdf)
                                             end
       end
 
@@ -317,7 +334,6 @@ module Mjbook
           transaction.update(:balance => new_balance)
         end
       end
-
 
   end
 end
