@@ -4,7 +4,7 @@ module Mjbook
   class PaymentsController < ApplicationController
     before_action :set_payment, only: [:show, :edit, :update, :destroy, :reconcile, :unreconcile, :email]
     before_action :set_accounts, only: [:new, :edit, :invoice_paid, :process_misc]
-    before_action :set_paymethods, only: [:new, :edit, :invoice_paid. :process_misc]
+    before_action :set_paymethods, only: [:new, :edit, :invoice_paid, :process_misc]
 
     include PrintIndexes
     
