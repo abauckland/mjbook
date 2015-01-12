@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class MiscexpensesController < ApplicationController
-    before_action :set_miscexpense, only: [:show, :edit, :update, :destroy]
+    before_action :set_miscexpense, only: [:show, :edit, :update, :destroy, :accept, :reject]
     before_action :set_suppliers, only: [:index, :new, :edit]
     before_action :set_projects, only: [:new, :edit]
     before_action :set_hmrcexpcats, only: [:new, :edit]
@@ -63,6 +63,7 @@ module Mjbook
 
     # GET /miscexpenses/1
     def show
+      authorize @miscexpense
     end
 
     # GET /miscexpenses/new
@@ -72,12 +73,13 @@ module Mjbook
 
     # GET /miscexpenses/1/edit
     def edit
+      authorize @miscexpense
     end
 
     # POST /miscexpenses
     def create
       @miscexpense = Miscexpense.new(miscexpense_params)
-
+      authorize @miscexpense
       if @miscexpense.save
         redirect_to miscexpenses_path, notice: 'Misc expense was successfully created.'
       else
@@ -87,6 +89,7 @@ module Mjbook
 
     # PATCH/PUT /miscexpenses/1
     def update
+      authorize @miscexpense
       if @miscexpense.update(miscexpense_params)
         redirect_to miscexpenses_path, notice: 'Misc expense was successfully updated.'
       else
@@ -96,6 +99,7 @@ module Mjbook
 
     # DELETE /miscexpenses/1
     def destroy
+      authorize @miscexpense
       @miscexpense.destroy
       redirect_to miscexpenses_path, notice: 'Misc expense was successfully destroyed.'
     end

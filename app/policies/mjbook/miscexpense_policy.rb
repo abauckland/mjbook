@@ -1,5 +1,5 @@
 module Mjbook
-  class SalaryPolicy < Struct.new(:user, :record)
+  class MiscexpensePolicy < Struct.new(:user, :record)
   
     class Scope < Struct.new(:user, :scope)
       def resolve

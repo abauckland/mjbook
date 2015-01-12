@@ -1,40 +1,40 @@
 <div class="row title_band">
     <div class="page_title">
         <h1>Miscillaneous Expenses</h1>
-    </div>      
+    </div>
     <div><%= link_to "+ expense", new_miscexpense_path, class: "title_button" %> </div>
 </div>
 
 <div class="row filter_band">
     <%= form_tag miscexpenses_path, method: :get do %>
-  
+
         <div>
-            <% if @projects %>  
+            <% if @projects %>
             <div>
                 <label class="select">Project:</label>
                 <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
-            </div>                
-            <% end %> 
+            </div>
+            <% end %>
             <div>
                 <label class="date">Date From:</label>
                 <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
+            </div>
+            <%= submit_tag 'Filter' %>
         </div>
-        
-        <div class="float_right">   
-            <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
-        </div>  
 
-    <% end %> 
+        <div class="float_right">
+            <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+        </div>
+
+    <% end %>
 </div>
 
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
+        <div class="border">
 
             <%= render :partial => "flash_notice" %>
 
@@ -63,7 +63,7 @@
 
                 <table>
                     <tbody>
-                        <% if @miscexpenses %>            
+                        <% if @miscexpenses %>
                             <% @miscexpenses.each do |expense| %>
                                 <tr>
                                         <td class="miscexpense_due_data"><%= expense.due_date.strftime("%d/%m/%y") %></td>
@@ -85,36 +85,36 @@
                                         <td id="<%= expense.id %>_status" class="miscexpense_status"><%= expense.state %></td>
                                         <td id="<%= expense.id %>_links" class="row_button no_buttons_5">
                                             <% if expense.submitted? || expense.rejected? %>
-                                                <%= link_to '', miscexpense_path(expense), method: :delete, class: 'line_delete_icon_show' , title: "delete" %>                 
+                                                <%= link_to '', miscexpense_path(expense), method: :delete, class: 'line_delete_icon_show' , title: "delete" %>
                                                 <%= link_to "", edit_miscexpense_path(expense), class: 'line_edit_icon_show', title: "edit" %>
                                                 <%= row_accept_link(expense, 'show') %>
                                             <% else %>
-                                                <%= link_to '', miscexpense_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>               
+                                                <%= link_to '', miscexpense_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>
                                                 <%= link_to "", edit_miscexpense_path(expense), class: 'line_edit_icon_hidden', title: "edit" %>
-                                                <%= row_accept_link(miscexpense, 'hidden') %> 
-                                            <% end %>                                
+                                                <%= row_accept_link(miscexpense, 'hidden') %>
+                                            <% end %>
 
                                             <% if expense.submitted? || expense.accepted? %>
-                                                <%= row_reject_link(miscexpense, 'show') %>                 
+                                                <%= row_reject_link(miscexpense, 'show') %>
                                             <% else %>
-                                                <%= row_reject_link(miscexpense, 'hidden') %>                 
-                                            <% end %> 
+                                                <%= row_reject_link(miscexpense, 'hidden') %>
+                                            <% end %>
 
-                                            <% if expense.accepted? %>                
+                                            <% if expense.accepted? %>
                                                 <%= link_to '', pay_miscexpense_expend_path(expense.id), class: 'line_payment_icon_show' , title: "record payment"  %>
                                             <% else %>
-                                                <%= link_to '', pay_miscexpense_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>                 
-                                            <% end %> 
+                                                <%= link_to '', pay_miscexpense_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
+                                            <% end %>
 
 
                                             <%= link_to '', miscexpense_path(expense), class: 'line_show_icon_show' , title: "show full details"  %>
-                                        </td>                
+                                        </td>
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>

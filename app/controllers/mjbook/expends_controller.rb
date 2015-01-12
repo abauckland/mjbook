@@ -100,6 +100,10 @@ module Mjbook
       @expend = Expend.new
     end
 
+    def pay_miscexpense
+      @miscexpense = Mjbook::Miscexpense.where(:id => params[:id]).first
+      @expend = Expend.new
+    end
 
     # GET /expends/1/edit
     def edit
@@ -131,6 +135,13 @@ module Mjbook
           salary = Mjbook::Salary.where(:id => params[:salary_id]).first
           Mjbook::Expenditem.create(:expend_id => @expend.id, :salary_id => salary.id)
           salary.pay!
+        end
+
+        if @expend.misc?
+          #need to pass in miscexpense id so correct record can be updated
+          miscexpense = Mjbook::Miscexpense.where(:id => params[:salary_id]).first
+          Mjbook::Expenditem.create(:expend_id => @expend.id, :miscexpense_id => miscexpense.id)
+          miscexpense.pay!
         end
 
         create_summary_record(@expend)
@@ -179,6 +190,11 @@ module Mjbook
           #if transfer is destoyed also need to destroy record of payment
           payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first           
           payment.destroy               
+        end
+
+        if @expend.exp_type == 'misc'
+          miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id)
+          miscexpense.correct_payment!               
         end
 
       end

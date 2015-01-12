@@ -5,6 +5,7 @@ module Mjbook
     belongs_to :expense
     belongs_to :salary
     belongs_to :transfer
+    belongs_to :miscexpense
     
   end
 end

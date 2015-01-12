@@ -5,6 +5,7 @@ class CreateMjbookExpenditems < ActiveRecord::Migration
       t.integer :expense_id
       t.integer :salary_id
       t.integer :transfer_id
+      t.integer :miscexpense_id
 
       t.timestamps
     end

@@ -138,7 +138,8 @@ Mjbook::Engine.routes.draw do
     get :pay_employee, :on => :member
     get :pay_business, :on => :member
     get :pay_salary, :on => :member
-    
+    get :pay_miscexpense, :on => :member
+
     get :reconcile, :on => :member
     get :unreconcile, :on => :member
   end

@@ -27,6 +27,14 @@ module Mjbook
         index?
       end
 
+      def pay_salary?
+        index?
+      end
+
+      def pay_miscexpense?
+        index?
+      end
+
       def create?
         index?
       end 

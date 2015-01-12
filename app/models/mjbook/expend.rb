@@ -10,7 +10,7 @@ module Mjbook
     has_many :summaries
 
 #    enum exp_status: [:paid, :reconciled]
-    enum exp_type: [:business, :personal, :salary, :transfer]
+    enum exp_type: [:business, :personal, :salary, :transfer, :misc]
 
 
     aasm :column => 'state' do
