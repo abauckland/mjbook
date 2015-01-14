@@ -28,6 +28,7 @@ $mob_menu: 520px;
 }
   
 @media screen and (max-width: $tab_sml_menu) {
+  .business_supplier{display: none}
   .business_supplier_ref{display: none}
   .business_price{display: none}
   .business_vat_due{display: none}
