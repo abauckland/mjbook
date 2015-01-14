@@ -29,6 +29,7 @@ $mob_menu: 520px;
 }
   
 @media screen and (max-width: $tab_sml_menu) {
+  .personal_supplier{display: none}
   .personal_supplier_ref{display: none}
   .personal_distance{display: none}
   .personal_price{display: none}
