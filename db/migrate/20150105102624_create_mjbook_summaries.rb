@@ -2,7 +2,7 @@ class CreateMjbookSummaries < ActiveRecord::Migration
   def change
     create_table :summaries do |t|
       t.integer :company_id
-      t.integer :account_id
+      t.integer :companyaccount_id
       t.integer :payment_id
       t.integer :expend_id
       t.decimal :amount_in, :precision => 8, :scale => 2, default: 0.00
