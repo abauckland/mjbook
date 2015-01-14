@@ -1,0 +1,39 @@
+@import "table_headers";
+
+$lrg_menu: 860px;
+$tab_lrg_menu: 720px;
+$tab_sml_menu: 540px;
+$mob_menu: 430px;
+
+//index table 
+.service_catetory_name{@include name}
+.service_item         {@include name}
+.service_quantity     {@include quantity}
+.service_unit         {@include unit}
+.service_rate         {@include pounds}
+.service_price        {@include pounds}
+.service_vat          {@include vat}
+.service_vat_due      {@include pounds}
+.service_total        {@include pounds}
+
+
+@media screen and (max-width: $lrg_menu) {
+  .service_price{display: none}
+  .service_catetory_name{display: none}
+  .service_vat_due{display: none}
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .service_rate{display: none}
+  .service_unit{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .service_quantity{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .service_vat{display: none}
+}
+
+.vat_note{font-size: 0.8rem; font-weight: normal;}
