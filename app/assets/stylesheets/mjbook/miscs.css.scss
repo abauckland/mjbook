@@ -1,0 +1,39 @@
+@import "table_headers";
+
+$lrg_menu: 860px;
+$tab_lrg_menu: 720px;
+$tab_sml_menu: 540px;
+$mob_menu: 430px;
+
+//index table 
+.misc_catetory_name{@include name}
+.misc_item         {@include name}
+.misc_quantity     {@include quantity}
+.misc_unit         {@include unit}
+.misc_rate         {@include pounds}
+.misc_price        {@include pounds}
+.misc_vat          {@include vat}
+.misc_vat_due      {@include pounds}
+.misc_total        {@include pounds}
+
+
+@media screen and (max-width: $lrg_menu) {
+  .misc_price{display: none}
+  .misc_catetory_name{display: none}
+  .misc_vat_due{display: none}
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+  .misc_rate{display: none}
+  .misc_unit{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+  .misc_quantity{display: none}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .misc_vat{display: none}
+}
+
+.vat_note{font-size: 0.8rem; font-weight: normal;}
