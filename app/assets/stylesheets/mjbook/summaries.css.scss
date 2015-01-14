@@ -1,0 +1,34 @@
+@import "table_headers";
+
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+
+.transaction_date   {display: table-cell; vertical-align: top;}
+.transaction_item   {@include name}
+.transaction_account{@include account}
+.transaction_type   {@include name}
+.transaction_status {@include state}
+.transaction_income {@include pounds}
+.transaction_expend {@include pounds}
+.transaction_balance{@include pounds}
+
+@media screen and (max-width: $lrg_menu) {
+
+}
+
+@media screen and (max-width: $tab_lrg_menu) {
+.transaction_type   {display: none;}
+.transaction_status {display: none;}
+}
+
+@media screen and (max-width: $tab_sml_menu) {
+.transaction_item   {display: none;}
+.transaction_account{display: none;}
+}
+
+@media screen and (max-width: $mob_menu) {
+  .transaction_balance{display: none;}
+}
