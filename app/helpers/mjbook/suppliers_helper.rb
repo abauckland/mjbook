@@ -3,8 +3,10 @@ module Mjbook
     
     def supplier_in_use(supplier)      
       supplier = Expense.where(:supplier_id => supplier.id).first      
-      if supplier.blank?
+      if !supplier.blank?
         false
+      else  
+        true
       end  
     end
          

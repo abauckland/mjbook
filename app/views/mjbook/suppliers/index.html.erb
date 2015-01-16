@@ -57,7 +57,7 @@
                                         <p class="table_address"><%= supplier.postcode %></p>
                                     </td>
                                     <td class="row_button no_buttons_3">
-                                        <% unless supplier_in_use(supplier) %>
+                                        <% if supplier_in_use(supplier) %>
                                             <%= row_delete_link(supplier, 'show') %>
                                         <% end %>
                                         <%= row_edit_link(supplier, 'show') %>
