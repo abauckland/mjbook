@@ -44,7 +44,7 @@ module Mjbook
         end
 
        else
-         @miscincomes = Miscincome.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+         @miscincomes = Miscincome.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
        end
   
        #selected parameters for filter form     
