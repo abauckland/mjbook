@@ -38,7 +38,7 @@
                         <div class="form_tooltip" id="mileage_mileagemethod"></div>
                         <label class="label_100">Mode:*</label>
                         <span>
-                            <%= f.collection_select(:mileagemode_id, Mjbook::Mileagemode.all, :id, :mode, {:selected => @mileage.mileagemode_id, :prompt => :true})%>
+                            <%= f.collection_select(:mileagemode_id, @mileagemodes, :id, :mode, {:selected => @mileage.mileagemode_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] -->
