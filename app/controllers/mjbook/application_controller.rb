@@ -2,12 +2,6 @@ module Mjbook
   class Mjbook::ApplicationController < ActionController::Base
       layout "mjbook/books"
    include Pundit
-   def current_user
-    @current_user = User.first    
-  end
-  
-  helper_method :current_user
-
             
       def clean_text(value)
         @value = value 
