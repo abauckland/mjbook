@@ -51,7 +51,7 @@
                         <div class="form_tooltip" id="quote_terms"></div>
                         <label class="label_110">Terms:*</label>
                         <span>
-                            <%= f.collection_select(:quoteterm_id, @quoteterms, :id, :period, {:selected => @quote.quoteterm_id, :prompt => :true})%>
+                            <%= f.collection_select(:quoteterm_id, @quoteterms, :id, :ref, {:selected => @quote.quoteterm_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] --> 
