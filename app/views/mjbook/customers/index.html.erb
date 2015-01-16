@@ -55,7 +55,7 @@
                                         <p class="table_address"><%= customer.postcode %></p>
                                     </td>
                                     <td class="row_button no_buttons_3">
-                                        <% unless customer_in_use(customer) %>
+                                        <% if customer_in_use(customer) %>
                                             <%= row_delete_link(customer, 'show') %>
                                         <% end %>
                                         <%= row_edit_link(customer, 'show') %>
