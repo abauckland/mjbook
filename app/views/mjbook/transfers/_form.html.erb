@@ -14,35 +14,35 @@
 
                        <!-- form input[select -->
                         <div class="form_tooltip" id="transfer_account_from"></div>
-                        <label class="label_80">From Account:*</label>
+                        <label class="label_100">From Account:*</label>
                         <span>
                             <%= f.collection_select(:account_from_id, @companyaccounts, :id, :name, {:selected => @transfer.account_from_id, :prompt => :true})%>
                         </span></br>
 
                        <!-- form input[select -->
                         <div class="form_tooltip" id="transfer_account_to"></div>
-                        <label class="label_80">To Account:*</label>
+                        <label class="label_100">To Account:*</label>
                         <span>
                             <%= f.collection_select(:account_to_id, @companyaccounts, :id, :name, {:selected => @transfer.account_from_id, :prompt => :true})%>
                         </span></br>
 
                        <!-- form input[select -->
                         <div class="form_tooltip" id="transfer_paymethod"></div>
-                        <label class="label_80">Transfer Method:*</label>
+                        <label class="label_100">Transfer Method:*</label>
                         <span>
                             <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {:selected => @transfer.paymethod_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] -->
                         <div class="form_tooltip" id="transfer_total"></div>
-                        <label class="label_80">Total:*</label>
+                        <label class="label_100">Total:*</label>
                         <span>
                             <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.total, :precision => 2)} %>
                         </span></br>
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="personalexpense_issue_date"></div>
-                        <label class="label_80">Date:*</label>
+                        <label class="label_100">Date:*</label>
                         <span>
                             <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
                         </span></br>
