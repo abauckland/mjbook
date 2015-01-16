@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	$('.ingroup_text').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('http://localhost:3000/mjbook/ingroups/'+line_id+'/update_text', {
+		$(this).editable('/mjbook/ingroups/'+line_id+'/update_text', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			onblur: 'submit',
