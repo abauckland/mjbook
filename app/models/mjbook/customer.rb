@@ -25,7 +25,7 @@ module Mjbook
 
     validates :address_1, :address_2,
       allow_blank: true,
-      format: { with: CITY_REGEXP, message: "please enter a valid city name" }
+      format: { with: ADDRESS_REGEXP, message: "please enter a valid city name" }
 
     validates :city, :county,
       allow_blank: true,
