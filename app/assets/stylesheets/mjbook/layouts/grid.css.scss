@@ -17,13 +17,6 @@
     clear:both;
 }
 
-.border:before, 
-.border:after {
-    content:"";
-    display: table ;
-    clear:both;
-}
-
 /*-- setting border box on all elements inside the grid --*/
 .grid-container *{
     box-sizing: border-box; 
@@ -67,6 +60,7 @@
 .border{
   border: solid 1px $column_border_colour;
   padding: 12px;
+  height: 100%;
   @include border-radius(0.5rem);
 }
 
