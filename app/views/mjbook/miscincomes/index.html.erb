@@ -72,8 +72,8 @@
                                         <td class="miscincome_vat_due"><%= pounds(miscincome.vat) %></td>
                                         <td class="miscincome_total"><%= pounds(miscincome.total) %></td>
                                         <td class="miscincome_note"><%= miscincome.note %></td>
-                                        <td id="<%= payment.id %>_status" class="miscincome_status"><%= miscincome.state %></td>
-                                        <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
+                                        <td id="<%= miscincome.id %>_status" class="miscincome_status"><%= miscincome.state %></td>
+                                        <td id="<%= miscincome.id %>_links" class="row_button no_buttons_4">
                                         <% if miscincome.draft? %>                
                                             <%= row_delete_link(miscincome, 'show') %>
                                             <%= link_to "", miscincome_path(miscincome), class: 'line_edit_icon_show', title: "edit" %>

@@ -18,7 +18,7 @@
                         <label class="label_100">Job Reference:*</label>
                         <% if @projects %>
                             <span>
-                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true})%>
+                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @miscexpense.project_id, :prompt => :true})%>
                             </span></br>
     
                             <!-- link button -->
@@ -33,7 +33,7 @@
                         <label class="label_100">Supplier:*</label>
                         <% if @suppliers %>
                             <span>
-                                <%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true})%>
+                                <%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @miscexpense.supplier_id, :prompt => :true})%>
                             </span></br>
     
                             <!-- link button -->
@@ -47,7 +47,7 @@
                         <div class="form_tooltip" id="miscexpense_hmrcexpcat"></div>
                         <label class="label_100">Expense Type:*</label>
                         <span>
-                            <%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true})%>
+                            <%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @miscexpense.hmrcexpcat_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] -->
@@ -67,7 +67,7 @@
                         <!-- form input[select -->
                         <div class="form_tooltip" id="miscexpense_receipt"></div>
                         <label class="label_100">Receipt Image:</label>
-                        <% if @expense.receipt? %>
+                        <% if @miscexpense.receipt? %>
                             <span>
                                 <%= image_tag(@miscexpense.receipt_url, {:height => "50px"}) %>
                             </span></br>
