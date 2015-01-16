@@ -17,7 +17,7 @@
                         <label class="label_100">Job Reference:*</label>
                         <% if @projects %>
                             <span>
-                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @income.project_id, :prompt => :true})%>
+                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @miscincome.project_id, :prompt => :true})%>
                             </span></br>
     
                             <!-- link button -->
@@ -32,7 +32,7 @@
                         <label class="label_100">Customer:*</label>
                         <% if @customers %>
                             <span>
-                                <%= f.collection_select(:customer_id, @customers, :id, :company_name, {:selected => @income.customer_id, :prompt => :true})%>
+                                <%= f.collection_select(:customer_id, @customers, :id, :company_name, {:selected => @miscincome.customer_id, :prompt => :true})%>
                             </span></br>
     
                             <!-- link button -->
