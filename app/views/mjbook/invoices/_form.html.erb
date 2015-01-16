@@ -51,7 +51,7 @@
                         <div class="form_tooltip" id="invoice_terms"></div>
                         <label class="label_80">Terms:*</label>
                         <span>
-                            <%= f.collection_select(:invoiceterm_id, @invoiceterms, :id, :period, {:selected => @invoice.invoiceterm_id, :prompt => :true})%>
+                            <%= f.collection_select(:invoiceterm_id, @invoiceterms, :id, :ref, {:selected => @invoice.invoiceterm_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] --> 
