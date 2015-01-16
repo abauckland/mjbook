@@ -34,7 +34,7 @@
                                     <td class="accounts_name"><%= account.name.titleize %></td> 
                                     <td class="accounts_provider"><%= account.provider.titleize %></td>
                                     <td class="accounts_code"><%= account.code %></td>
-                                    <td class="accounts_ref"><%= account.ref %></td>
+                                    <td class="accounts_ref"><%= account.number %></td>
                                     <td class="row_button no_buttons_2">
                                         <% if companyaccount_in_use(account) %>
                                             <%= link_to "", account, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete" %>                         
