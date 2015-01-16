@@ -227,6 +227,7 @@ module Mjbook
 
     def process_misc
       @payment = Payment.new
+      @miscincome = Mjbook::Miscincome.find(params[:id])
     end
 
     private
