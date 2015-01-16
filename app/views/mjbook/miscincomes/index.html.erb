@@ -61,27 +61,27 @@
                 <table>
                     <tbody>
                         <% if @miscincomes %>            
-                            <% @miscincomes.each do |payment| %>
+                            <% @miscincomes.each do |miscincome| %>
                                 <tr>
-                                        <td class="miscincome_job"><%= payment.project.ref %></td>
-                                        <td class="miscincome_ref"><%= payment.ref %></td>
-                                        <td class="miscincome_customer"><%= payment.customer.company_name.titleize %></td>
-                                        <td class="miscincome_customer_ref"><%= payment.customer_ref %></td>
-                                        <td class="miscincome_issue_date"><%= payment.date.strftime("%d/%m/%y") %></td>
-                                        <td class="miscincome_price"><%= pounds(payment.price) %></td>
-                                        <td class="miscincome_vat_due"><%= pounds(payment.vat) %></td>
-                                        <td class="miscincome_total"><%= pounds(payment.total) %></td>
-                                        <td class="miscincome_note"><%= payment.note %></td>
-                                        <td id="<%= payment.id %>_status" class="miscincome_status"><%= payment.state %></td>
+                                        <td class="miscincome_job"><%= miscincome.project.ref %></td>
+                                        <td class="miscincome_ref"><%= miscincome.ref %></td>
+                                        <td class="miscincome_customer"><%= miscincome.customer.company_name.titleize %></td>
+                                        <td class="miscincome_customer_ref"><%= miscincome.customer_ref %></td>
+                                        <td class="miscincome_issue_date"><%= miscincome.date.strftime("%d/%m/%y") %></td>
+                                        <td class="miscincome_price"><%= pounds(miscincome.price) %></td>
+                                        <td class="miscincome_vat_due"><%= pounds(miscincome.vat) %></td>
+                                        <td class="miscincome_total"><%= pounds(miscincome.total) %></td>
+                                        <td class="miscincome_note"><%= miscincome.note %></td>
+                                        <td id="<%= payment.id %>_status" class="miscincome_status"><%= miscincome.state %></td>
                                         <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
-                                        <% if payment.draft? %>                
+                                        <% if miscincome.draft? %>                
                                             <%= row_delete_link(miscincome, 'show') %>
-                                            <%= link_to "", miscincome_path(payment), class: 'line_edit_icon_show', title: "edit" %>
-                                        	<%= link_to "", process_misc_payment_path(payment.id), class: 'line_payment_icon_show', title: "record payment" %>
+                                            <%= link_to "", miscincome_path(miscincome), class: 'line_edit_icon_show', title: "edit" %>
+                                        	<%= link_to "", process_misc_payment_path(miscincome.id), class: 'line_payment_icon_show', title: "record payment" %>
                                         <% else %>
                                             <%= row_delete_link(miscincome, 'hidden') %>
-                                            <%= link_to "", miscincome_path(payment), class: 'line_edit_icon_hidden', title: "edit" %>
-                                            <%= link_to "", process_misc_payment_path(payment.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+                                            <%= link_to "", miscincome_path(miscincome), class: 'line_edit_icon_hidden', title: "edit" %>
+                                            <%= link_to "", process_misc_payment_path(miscincome.id), class: 'line_payment_icon_hidden', title: "record payment" %>
                                         <% end %>
                                         </td>
                                 </tr>
