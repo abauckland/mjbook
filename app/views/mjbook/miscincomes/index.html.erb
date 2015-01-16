@@ -76,11 +76,11 @@
                                         <td id="<%= miscincome.id %>_links" class="row_button no_buttons_4">
                                         <% if miscincome.draft? %>                
                                             <%= row_delete_link(miscincome, 'show') %>
-                                            <%= link_to "", miscincome_path(miscincome), class: 'line_edit_icon_show', title: "edit" %>
+                                            <%= link_to "", edit_miscincome_path(miscincome), class: 'line_edit_icon_show', title: "edit" %>
                                         	<%= link_to "", process_misc_payment_path(miscincome.id), class: 'line_payment_icon_show', title: "record payment" %>
                                         <% else %>
                                             <%= row_delete_link(miscincome, 'hidden') %>
-                                            <%= link_to "", miscincome_path(miscincome), class: 'line_edit_icon_hidden', title: "edit" %>
+                                            <%= link_to "", edit_miscincome_path(miscincome), class: 'line_edit_icon_hidden', title: "edit" %>
                                             <%= link_to "", process_misc_payment_path(miscincome.id), class: 'line_payment_icon_hidden', title: "record payment" %>
                                         <% end %>
                                         </td>
