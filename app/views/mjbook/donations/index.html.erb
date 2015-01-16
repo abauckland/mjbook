@@ -24,9 +24,6 @@
                             <th class="donation_total">Total</th>
                             <th class="donation_total">Status</th>
                             <th class="row_button no_buttons_5">
-                                <% if @donations %>
-                                    <%= link_to "", print_donation_path(current_user.company_id), class: 'table_pdf_icon', title: "download pdf" %>
-                                <% end %>
                             </th>
                         </tr>
                     </thead>
@@ -55,7 +52,6 @@
                                             <%= row_show_link(donation, 'show') %>
                                             <%= link_to "", process_payment_donation_path(donation.id), class: 'line_payment_icon_hidden', title: "record payment" %>
                                         <% end %>
-                                            <%= row_print_link(invoice, 'show') %> 
                                     </td>
                                 </tr>
                             <% end %>  
