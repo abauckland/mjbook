@@ -15,7 +15,7 @@ module Mjbook
 
     aasm :column => 'state' do
 
-      state :draft, :initial => true 
+      state :draft, :initial => true
       state :submitted
       state :rejected
       state :accepted
