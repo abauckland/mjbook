@@ -4,6 +4,7 @@ module Mjbook
   class MileagesController < ApplicationController
     before_action :set_mileage, only: [:show, :edit, :update, :destroy]
     before_action :set_projects, only: [:new, :edit]
+    before_action :set_mileagemodes, only: [:new, :edit]
 
     include PrintIndexes
     
@@ -83,6 +84,9 @@ module Mjbook
         @projects = policy_scope(Project)
       end
 
+      def set_mileagemodes
+        @mileagemodes = policy_scope(Mileagemode)
+      end
 
       # Only allow a trusted parameter "white list" through.
       def mileage_params
