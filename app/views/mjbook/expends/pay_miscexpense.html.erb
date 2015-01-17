@@ -82,7 +82,8 @@
                         <div class="form_tooltip" id="payexpense_notes"></div>
                         <label class="label_120">Notes:</label>
                         <span>
-                            <%= f.text_field :note %>
+                            <%= f.text_area :note, {rows: 2, maxlength: 200, class: "maxlength"} %>
+                            <p class="input_note">Maximum of 200 characters</p>
                         </span></br>
 
                     </fieldset>
