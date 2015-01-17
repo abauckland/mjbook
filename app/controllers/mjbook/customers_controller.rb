@@ -74,7 +74,7 @@ module Mjbook
       end
 
       def set_customers
-        @customers = policy_scope(Customer)
+        @customers = policy_scope(Customer).order(:company_name)
       end
 
       # Only allow a trusted parameter "white list" through.

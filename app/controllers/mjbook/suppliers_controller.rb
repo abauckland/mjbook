@@ -73,7 +73,7 @@ module Mjbook
       end
 
       def set_suppliers
-        @suppliers = policy_scope(Supplier)
+        @suppliers = policy_scope(Supplier).order(:company_name)
       end
 
       # Only allow a trusted parameter "white list" through.
