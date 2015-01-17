@@ -3,9 +3,9 @@ $(document).ready(function(){
 // update category
 	$('.inline_cat').mouseover(function(){
 	var line_id = $(this).attr('id');	
-		$(this).editable('inlines/'+line_id+'/update_cat', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_cat', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : 'productcategories/'+line_id+'/cat_options',
+			loadurl : 'https://www.myhq.org.uk/productcategories/'+line_id+'/cat_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -18,9 +18,9 @@ $(document).ready(function(){
 // update item	
 	$('.inline_item').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_item', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_item', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : 'products/'+line_id+'/invoice_item_options',
+			loadurl : 'https://www.myhq.org.uk/products/'+line_id+'/invoice_item_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -33,9 +33,9 @@ $(document).ready(function(){
 // update item	
 	$('.inline_cat_item').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_cat_item', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_cat_item', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : 'products/'+line_id+'/invoice_item_options',
+			loadurl : 'https://www.myhq.org.uk/products/'+line_id+'/invoice_item_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -49,7 +49,7 @@ $(document).ready(function(){
 // update quantity	
 	$('.inline_quantity').mouseover(function(){
 	var line_id = $(this).attr('id');	
-		$(this).editable('inlines/'+line_id+'/update_quantity', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_quantity', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			ajaxoptions: {dataType: 'script'},
@@ -63,9 +63,9 @@ $(document).ready(function(){
 // update unit	
 	$('.inline_unit').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_unit', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_unit', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl :'units/'+line_id+'/unit_options',
+			loadurl :'https://www.myhq.org.uk/units/'+line_id+'/unit_options',
 			type: 'select',
 			onblur: 'submit',
 			method: 'PUT',
@@ -77,7 +77,7 @@ $(document).ready(function(){
 // update rate	
 	$('.inline_rate').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_rate', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_rate', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			ajaxoptions: {dataType: 'script'},
@@ -91,9 +91,9 @@ $(document).ready(function(){
 // update vat rate	
 	$('.inline_vat_rate').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_vat_rate', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_vat_rate', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl :'vats/'+line_id+'/vat_options',
+			loadurl :'https://www.myhq.org.uk/vats/'+line_id+'/vat_options',
 			type: 'select',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -106,7 +106,7 @@ $(document).ready(function(){
 // update vat due	
 	$('.inline_vat_due').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_vat_due', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_vat_due', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			onblur: 'submit',
@@ -120,7 +120,7 @@ $(document).ready(function(){
 // update text	
 	$('.inline_text').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('inlines/'+line_id+'/update_text', {
+		$(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_text', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'autogrow',
 			onblur: 'submit',
