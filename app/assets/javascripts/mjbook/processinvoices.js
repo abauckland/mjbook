@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$('input:radio.process_select').on('click', function(){
 		var method = $(this).val();
 		var invoice_id = $(this).parent('span').attr('id');
-		$(location).attr('href', "/mjbook/processinvoices/"+invoice_id+"/"+method);
+		$(location).attr('href', "https://www.myhq.org.uk/mjbook/processinvoices/"+invoice_id+"/"+method);
 	});
 
 	
@@ -20,7 +20,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			//#{ Rails.root.to_s }
-			url: '/mjbook/processinvoices',
+			url: 'https://www.myhq.org.uk/mjbook/processinvoices',
 			type: 'get',
 			dataType: 'json',
 			data: 'checked_ids='+checked_ids +'',

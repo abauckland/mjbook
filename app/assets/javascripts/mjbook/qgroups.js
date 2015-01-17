@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	$('.qgroup_text').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qgroups/'+line_id+'/update_text', {
+		$(this).editable('https://www.myhq.org.uk/qgroups/'+line_id+'/update_text', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			onblur: 'submit',

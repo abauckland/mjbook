@@ -3,9 +3,9 @@ $(document).ready(function(){
 // update category
 	$('.qline_cat').mouseover(function(){
 	var line_id = $(this).attr('id');	
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_cat', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_cat', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : '/mjbook/productcategories/'+line_id+'/cat_options',
+			loadurl : 'https://www.myhq.org.uk/mjbook/productcategories/'+line_id+'/cat_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -18,9 +18,9 @@ $(document).ready(function(){
 // update item	
 	$('.qline_item').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_item', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_item', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : '/mjbook/products/'+line_id+'/quote_item_options',
+			loadurl : 'https://www.myhq.org.uk/mjbook/products/'+line_id+'/quote_item_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -33,9 +33,9 @@ $(document).ready(function(){
 // update item	
 	$('.qline_cat_item').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_cat_item', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_cat_item', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl : '/mjbook/products/'+line_id+'/quote_item_options',
+			loadurl : 'https://www.myhq.org.uk/mjbook/products/'+line_id+'/quote_item_options',
 			type: 'comboselect',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -49,7 +49,7 @@ $(document).ready(function(){
 // update quantity	
 	$('.qline_quantity').mouseover(function(){
 	var line_id = $(this).attr('id');	
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_quantity', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_quantity', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			ajaxoptions: {dataType: 'script'},
@@ -63,9 +63,9 @@ $(document).ready(function(){
 // update unit	
 	$('.qline_unit').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_unit', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_unit', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl :'/mjbook/units/'+line_id+'/unit_options',
+			loadurl :'https://www.myhq.org.uk/mjbook/units/'+line_id+'/unit_options',
 			type: 'select',
 			onblur: 'submit',
 			method: 'PUT',
@@ -77,7 +77,7 @@ $(document).ready(function(){
 // update rate	
 	$('.qline_rate').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_rate', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_rate', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			ajaxoptions: {dataType: 'script'},
@@ -91,9 +91,9 @@ $(document).ready(function(){
 // update vat rate	
 	$('.qline_vat_rate').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_vat_rate', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_vat_rate', {
 			id: line_id, width: ($(this).width() +10)+'px',
-			loadurl :'/mjbook/vats/'+line_id+'/vat_options',
+			loadurl :'https://www.myhq.org.uk/mjbook/vats/'+line_id+'/vat_options',
 			type: 'select',
 			ajaxoptions: {dataType: 'script'},
 			onblur: 'submit',
@@ -106,7 +106,7 @@ $(document).ready(function(){
 // update vat due	
 	$('.qline_vat_due').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_vat_due', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_vat_due', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'text',
 			onblur: 'submit',
@@ -120,7 +120,7 @@ $(document).ready(function(){
 // update text	
 	$('.qline_text').mouseover(function(){
 	var line_id = $(this).attr('id');
-		$(this).editable('/mjbook/qlines/'+line_id+'/update_text', {
+		$(this).editable('https://www.myhq.org.uk/mjbook/qlines/'+line_id+'/update_text', {
 			id: line_id, width: ($(this).width() +10)+'px',
 			type: 'autogrow',
 			onblur: 'submit',
