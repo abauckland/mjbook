@@ -154,21 +154,21 @@ module Mjbook
     end
     
     def print
-      
-        print_quote_document(@quote)        
-        filename = "#{@quote.project.ref}.pdf"   
 
-        send_data @document.render, filename: filename, :type => "application/pdf"      
+        print_quote_document(@quote)
+        filename = "#{@quote.project.ref}.pdf"
+
+        send_data @document.render, filename: filename, :type => "application/pdf"
     end
 
     def email
         print_quote_document(@quote)
         QuoteMailer.quote(@quote, @document, current_user).deliver
-        
+
         if @quote.submit!
           respond_to do |format|
             format.js { render :email, :layout => false, notice: 'Quote has been emailed to the customer.'}
-          end 
+          end
         end
     end
 
