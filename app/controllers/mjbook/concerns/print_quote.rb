@@ -18,7 +18,7 @@
       pdf.repeat(:all) do
         ##HEADERS
         company_header(pdf)
-        quote_header(quote, pdf)
+        quote_header(pdf)
         ##QUOTE DETAILS
         customer_details(quote.project.customer, pdf)
         quote_details(quote, pdf)
