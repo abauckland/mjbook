@@ -91,13 +91,13 @@
                                             <% else %>
                                                 <%= link_to '', miscexpense_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>
                                                 <%= link_to "", edit_miscexpense_path(expense), class: 'line_edit_icon_hidden', title: "edit" %>
-                                                <%= row_accept_link(miscexpense, 'hidden') %>
+                                                <%= row_accept_link(cexpense, 'hidden') %>
                                             <% end %>
 
                                             <% if expense.submitted? || expense.accepted? %>
-                                                <%= row_reject_link(miscexpense, 'show') %>
+                                                <%= row_reject_link(expense, 'show') %>
                                             <% else %>
-                                                <%= row_reject_link(miscexpense, 'hidden') %>
+                                                <%= row_reject_link(expense, 'hidden') %>
                                             <% end %>
 
                                             <% if expense.accepted? %>
