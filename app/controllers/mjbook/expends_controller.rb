@@ -3,8 +3,8 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class ExpendsController < ApplicationController
     before_action :set_expend, only: [:show, :edit, :update, :destroy, :reconcile, :unreconcile]
-    before_action :set_accounts, only: [:edit, :pay_employee, :pay_business, :pay_salary]
-    before_action :set_paymethods, only: [:edit, :pay_employee, :pay_business, :pay_salary]
+    before_action :set_accounts, only: [:edit, :pay_employee, :pay_business, :pay_salary, :pay_miscexpsense]
+    before_action :set_paymethods, only: [:edit, :pay_employee, :pay_business, :pay_salary, :pay_miscexpsense]
 
     # GET /expends
     def index
