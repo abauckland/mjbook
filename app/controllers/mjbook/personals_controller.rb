@@ -49,7 +49,7 @@ module Mjbook
         end
 
      else
-       @expenses = Expense.user(current_user).where(:exp_type => 'personal')
+       @expenses = Expense.user(current_user).personal
      end
 
      #selected parameters for filter form     
