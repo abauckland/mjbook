@@ -18,7 +18,7 @@ module Mjbook
         transitions :from => :drafted, :to => :transferred
       end
   
-      event :correct_transfer do
+      event :correct do
         transitions :from => :transferred, :to => :drafted
       end
     end  

@@ -38,7 +38,7 @@ module Mjbook
         transitions :from => :accepted, :to => :paid
       end
 
-      event :correct_payment do
+      event :correct do
         transitions :from => :paid, :to => :accepted
       end
     end
@@ -51,8 +51,14 @@ module Mjbook
   #  validates :vat, presence: true, numericality: true
  #   validates :total, presence: true, numericality: true
 #    validates :date, presence: true
+
+    scope :user, ->() { where(:user_id => current_user.id)}
+    scope :company, ->() { joins(:project).where('mjbook_projects.company_id' => current_user.company_id)}
   
     scope :business, ->() { where(:exp_type => :business).uniq }
-
+    scope :personal, ->() { where(:exp_type => :business).uniq }
+    scope :salary, ->() { where(:exp_type => :salary).uniq }
+    scope :transfer, ->() { where(:exp_type => :transfer).uniq }
+    
   end
 end

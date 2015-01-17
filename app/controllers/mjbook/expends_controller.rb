@@ -175,17 +175,17 @@ module Mjbook
 
         if @expend.exp_type == 'business' || @expend.exp_type == 'personal'
           expense = Mjbook::Expense.where(:id => item.expense_id)
-          expense.correct_payment!               
+          expense.correct!               
         end
 
         if @expend.exp_type == 'salary'
           salary = Mjbook::Salary.where(:id => item.salary_id)
-          salary.correct_payment!               
+          salary.correct!               
         end
 
         if @expend.exp_type == 'transfer'
           transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
-          transfer.correct_transfer!
+          transfer.correct!
 
           #if transfer is destoyed also need to destroy record of payment
           payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first           
@@ -194,7 +194,7 @@ module Mjbook
 
         if @expend.exp_type == 'misc'
           miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id)
-          miscexpense.correct_payment!               
+          miscexpense.correct!               
         end
 
       end
