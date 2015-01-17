@@ -18,39 +18,19 @@
 
                         <!-- show text line -->
                         <label class="label_80">Expenditure Type:</label>
-                        <span><%= @expense.exp_type %></span></br>
-                                
-                        <!-- show text line -->
-                        <label class="label_80">Job:</label>
-                        <span><%= @expense.project.name if @expense.project_id %></span></br>
-
-                        <!-- show text line -->
-                        <label class="label_80">Employee:</label>
-                        <span><%= @salary.user.name if @expense.user_id %></span></br>
-
-                        <!-- show text line -->
-                        <label class="label_80">Reference:</label>
-                        <span><%= @expense.ref if @expense.ref %></span></br>
-    
-                        <!-- show text line -->
-                        <label class="label_80">Supplier:</label>
-                        <span><%= @expense.supplier.company_name %></span></br>
-    
-                        <!-- show text line -->
-                        <label class="label_80">Supplier Ref:</label>
-                        <span><%= @expense.supplier_ref %></span></br>
+                        <span><%= @expend.exp_type %></span></br>
                             
                         <!-- show text line -->
                         <label class="label_80">Price:</label>
-                        <span><%= pounds(@expense.price) %></span></br>
+                        <span><%= pounds(@expend.price) %></span></br>
                                 
                         <!-- show text line -->
                         <label class="label_80">VAT:</label>
-                        <span><%= pounds(@expense.vat) %></span></br>
+                        <span><%= pounds(@expend.vat) %></span></br>
     
                         <!-- show text line -->
                         <label class="label_80">Total:</label>
-                        <span><%= pounds(@expense.total) %></span></br>
+                        <span><%= pounds(@expend.total) %></span></br>
 
 
                         <!-- form input[select -->
