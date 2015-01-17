@@ -9,6 +9,7 @@ module Mjbook
     before_action :set_projects, only: [:new, :create, :edit, :update]
 
     include PrintIndexes
+    include PrintInvoice
         
     # GET /invoice
     def index
