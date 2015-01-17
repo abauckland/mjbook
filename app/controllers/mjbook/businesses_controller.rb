@@ -18,27 +18,27 @@ module Mjbook
         if params[:supplier_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).business
+              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).company(current_user).business
             else
-              @expenses = Expense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).business
+              @expenses = Expense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).company(current_user).business
             end  
           else  
             if params[:date_to] != ""
-              @expenses = Expense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).business
+              @expenses = Expense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).company(current_user).business
             end
           end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id).business
+              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to]).company(current_user).business
             else
-              @expenses = Expense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id).business
+              @expenses = Expense.joins(:project).where('date > ?', params[:date_from]).company(current_user).business
             end
           else
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id).business
+              @expenses = Expense.joins(:project).where('date < ?', params[:date_to]).company(current_user).business
             else
-              @expenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+              @expenses = Expense.company(current_user).business
             end
           end
         end
@@ -48,7 +48,7 @@ module Mjbook
         end
 
      else
-       @expenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+       @expenses = Expense.company(current_user).business
      end
 
      #selected parameters for filter form     
