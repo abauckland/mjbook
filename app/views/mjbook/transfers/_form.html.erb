@@ -23,7 +23,7 @@
                         <div class="form_tooltip" id="transfer_account_to"></div>
                         <label class="label_100">To Account:*</label>
                         <span>
-                            <%= f.collection_select(:account_to_id, @companyaccounts, :id, :name, {:selected => @transfer.account_from_id, :prompt => :true})%>
+                            <%= f.collection_select(:account_to_id, @companyaccounts, :id, :name, {:selected => @transfer.account_to_id, :prompt => :true})%>
                         </span></br>
 
                        <!-- form input[select -->
@@ -44,7 +44,7 @@
                         <div class="form_tooltip" id="personalexpense_issue_date"></div>
                         <label class="label_100">Date:*</label>
                         <span>
-                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
+                            <%= f.date_field :date %>
                         </span></br>
 
                     </fieldset>
