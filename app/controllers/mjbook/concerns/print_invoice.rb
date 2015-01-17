@@ -3,7 +3,7 @@
     extend ActiveSupport::Concern
    
     include PrintHeader
-    include PrintFooter
+    include PrintCustomerDetail
     include PrintTable
     include PrintFooter
     include PrintPageNumbers
