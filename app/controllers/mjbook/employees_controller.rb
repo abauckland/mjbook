@@ -11,45 +11,45 @@ module Mjbook
          
     # GET /personal
     def index
-      
+
     if params[:user_id]
-  
+
         if params[:user_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :user_id => params[:user_id], :exp_type => 1)          
+              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :user_id => params[:user_id]).company.personal
             else
-              @expenses = Expense.where('date > ? AND user_id =?', params[:date_from], params[:user_id], :exp_type => 1) 
-            end  
-          else  
-            if params[:date_to] != ""
-              @expenses = Expense.where('date < ? AND user_id = ?', params[:date_to], params[:user_id], :exp_type => 1)            
+              @expenses = Expense.where('date > ? AND user_id =?', params[:date_from], params[:user_id]).company.personal
             end
-          end   
+          else
+            if params[:date_to] != ""
+              @expenses = Expense.where('date < ? AND user_id = ?', params[:date_to], params[:user_id]).company.personal
+            end
+          end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id, :exp_type => 1)          
+              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to]).company.personal
             else
-              @expenses = Expense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id, :exp_type => 1)  
-            end  
-          else  
+              @expenses = Expense.joins(:project).where('date > ?', params[:date_from], current_user.company_id).company.personal
+            end
+          else
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id, :exp_type => 1)            
+              @expenses = Expense.joins(:project).where('date < ?', params[:date_to], current_user.company_id).company.personal
             else
-              @expenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id, :exp_type => 1)
-            end     
+              @expenses = Expense.company.personal
+            end
           end
-        end   
-     
-        if params[:commit] == 'pdf'          
-          pdf_employee_index(@expenses, params[:user_id], params[:date_from], params[:date_to])      
         end
-            
-     else
-       @expenses = Expense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id, :exp_type => 1)       
-     end          
 
+        if params[:commit] == 'pdf'
+          pdf_employee_index(@expenses, params[:user_id], params[:date_from], params[:date_to])
+        end
+
+     else
+       @expenses = Expense.company.personal
+     end
+     
      #selected parameters for filter form     
      @user = params[:user_id]
      @date_from = params[:date_from]
