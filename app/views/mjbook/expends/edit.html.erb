@@ -9,7 +9,7 @@
         <div class="border">
 
 <!-- error messages - associated with form start--> 
-            <%= render :partial => "form_error" %>
+            <%= render :partial => "form_error", :locals => {:item => @expend} %>
 
 <!-- form column start-->
             <div class="row">
