@@ -58,14 +58,14 @@
                         <div class="form_tooltip" id="payexpense_paymethod"></div>
                         <label class="label_80">Payment Method:*</label>
                         <span>
-                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {selected: @expend.paymethod_id, :prompt => :true})%>
+                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {selected: @payment.paymethod_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[select -->
                         <div class="form_tooltip" id="payexpense_account"></div>
                         <label class="label_80">Account Paid From:*</label>
                         <span>
-                            <%= f.collection_select(:companyaccount_id, @companyaccounts, :id, :name, {selected: @expend.companyaccount_id, :prompt => :true})%>
+                            <%= f.collection_select(:companyaccount_id, @companyaccounts, :id, :name, {selected: @payment.companyaccount_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] -->
