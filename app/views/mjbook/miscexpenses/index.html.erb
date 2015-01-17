@@ -91,7 +91,7 @@
                                             <% else %>
                                                 <%= link_to '', miscexpense_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>
                                                 <%= link_to "", edit_miscexpense_path(expense), class: 'line_edit_icon_hidden', title: "edit" %>
-                                                <%= row_accept_link(cexpense, 'hidden') %>
+                                                <%= row_accept_link(expense, 'hidden') %>
                                             <% end %>
 
                                             <% if expense.submitted? || expense.accepted? %>
