@@ -3,7 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class QuotesController < ApplicationController
         
-    before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept, :email]
+    before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept, :email, :print]
     before_action :set_quotes, only: [:new, :create]
     before_action :set_quoteterms, only: [:new, :edit, :create, :update]
     before_action :set_projects, only: [:new, :edit, :create, :update]
@@ -111,7 +111,7 @@ module Mjbook
         @quote = Quote.new(quote_params)
         if @quote.save
           qgroup = Mjbook::Qgroup.create(:quote_id => @quote.id)
-          qline = Mjbook::Qline.create(:qgroup_id => qgroup.id)
+          qline = Mjbook::Qline.create(:qgroup_id => qgroup.id, :ref => '1', :text => 'Invoice section title')
           redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
         else
           render :new
