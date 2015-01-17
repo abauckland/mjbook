@@ -1,5 +1,5 @@
 
-  module PrintQuote
+  module PrintInvoice
     extend ActiveSupport::Concern
    
     include PrintHeader
