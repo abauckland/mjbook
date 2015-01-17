@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class InvoicesController < ApplicationController
-    before_action :set_invoice, only: [:show, :edit, :update, :destroy, :accept, :email]
+    before_action :set_invoice, only: [:show, :edit, :update, :destroy, :accept, :email, :print]
     before_action :set_invoices, only: [:new, :create]
     before_action :set_quotes, only: [:new, :create]
     before_action :set_invoiceterms, only: [:new, :create, :edit, :update]
@@ -131,7 +131,7 @@ module Mjbook
       if params[:invoice_content] == 'blank'     
         @invoice = Invoice.new(invoice_params)
         if @invoice.save
-          ingroup = Mjbook::Ingroup.create(:invoice_id => @invoice.id)
+          ingroup = Mjbook::Ingroup.create(:invoice_id => @invoice.id, :ref => '1', :text => 'Invoice section title')
           inline = Mjbook::Inline.create(:ingroup_id => ingroup.id)
           redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
         else

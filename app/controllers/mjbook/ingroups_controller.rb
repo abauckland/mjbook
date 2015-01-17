@@ -11,6 +11,8 @@ module Mjbook
       @new_group = @group.dup
       @new_group.group_order = @group.group_order + 1
       @new_group.save
+      
+      inline = Mjbook::Inline.create(:ingroup_id => @new_group.id)
 
       respond_to do |format|
         format.js {render :new_group, :layout => false }  
