@@ -77,14 +77,14 @@
                                         <% if invoice.draft? %>
                                             <%= row_delete_link(invoice, 'show') %>
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_show', title: "edit" %>
+                                            <%= row_print_link(invoice, 'show') %>
                                             <%= row_email_link(invoice, 'show') %>
                                         <% else %>
                                             <%= row_delete_link(invoice, 'hidden') %>
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_hidden', title: "edit" %>
-                                            <%= row_email_link(invoice, 'hidden') %>
-                                        <% end %>
-
                                             <%= row_print_link(invoice, 'show') %>
+                                            <%= row_email_link(invoice, 'hidden') %>
+                                        <% end %>                                           
 
                                         <% if invoice.part_paid? || invoice.submitted? %>
                                             <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
