@@ -68,7 +68,7 @@
                                     <td class="payment_vat_due"><%= pounds(payment.vat) %></td>
                                     <td class="payment_total"><%= pounds(payment.total) %></td>
                                     <td id="<%= payment.id %>_status" class="payment_status"><%= payment.state %></td>
-                                    <td class="payment_note"><%= payment.notes %></td> 
+                                    <td class="payment_note"><%= payment.note %></td> 
                                     <td id="<%= payment.id %>_links" class="row_button no_buttons_3">
                                         <% if payment.paid? %>
                                             <%= row_delete_link(payment, 'show') %>
