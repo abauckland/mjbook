@@ -56,7 +56,7 @@ module Mjbook
     scope :company, ->(current_user) { joins(:project).where('mjbook_projects.company_id' => current_user.company_id)}
   
     scope :business, ->() { where(:exp_type => :business).uniq }
-    scope :personal, ->() { where(:exp_type => :business).uniq }
+    scope :personal, ->() { where(:exp_type => :personal).uniq }
     scope :salary, ->() { where(:exp_type => :salary).uniq }
     scope :transfer, ->() { where(:exp_type => :transfer).uniq }
     
