@@ -41,7 +41,7 @@
                         <% if @expense.receipt %>
                         <!-- show text line -->
                         <label class="label_80">Receipt:</label>
-                        <span><%=link_to image_tag(@expense.receipt_url(:thumb), @expense.receipt_url, class: 'fancybox' %></span></br>
+                        <span><%=link_to image_tag(@expense.receipt_url(:thumb), @expense.receipt_url, class: 'fancybox' )%></span></br>
                         <% end %>
     
                         <!-- show text line -->

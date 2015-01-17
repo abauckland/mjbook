@@ -30,7 +30,7 @@
                             
                         <!-- show text line -->
                         <label class="label_80">Total (ex VAT):</label>
-                        <span><%= pounds(@expenses[:price]%></span></br>
+                        <span><%= pounds(@expenses[:price]) %></span></br>
                                 
                         <!-- show text line -->
                         <label class="label_80">VAT:</label>
@@ -56,7 +56,7 @@
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="payexpense_date"></div>
-                        <div class="form_tooltip">Date:*</label>
+                        <label class="label_80">Date:*</label>
                         <span>
                             <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d') %>
                         </span></br>
