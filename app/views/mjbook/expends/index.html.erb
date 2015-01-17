@@ -71,6 +71,9 @@
                                     <% if expend.salary? %>
                                         <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
                                     <% end %>
+                                    <% if expend.transfer? %>
+                                        <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
+                                    <% end %>
                                     <td class="expend_method"><%= expend.paymethod.text.titleize %></td>
                                     <td class="expend_account"><%= expend.companyaccount.name.titleize %></td>
                                     <td class="expend_receipt"><%= expend.expend_receipt %></td>
