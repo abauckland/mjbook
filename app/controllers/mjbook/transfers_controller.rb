@@ -51,7 +51,6 @@ module Mjbook
     end
 
     def process_transfer
-
       authorize @transfer
       #add expend record
       @expend = Mjbook::Expend.new(
@@ -80,10 +79,10 @@ module Mjbook
         
         if @payment.save
             Mjbook::Paymentitem.create(:payment_id => @payment.id, :transfer_id => @transfer.id)
-            @transfer.transfer!
+
         end
       end
-      
+      @transfer.transfer!      
       redirect_to transfers_url, notice: 'Transfer was successfully recorded.'
 
     end
