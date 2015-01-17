@@ -224,7 +224,7 @@ module Mjbook
                                         :page_size => "A4",
                                         :margin => [5.mm, 10.mm, 5.mm, 10.mm],
                                        ) do |pdf|
-                                        print_quote(quote, pdf)       
+                                        print_quote(quote, pdf)
                                        end
       end
 
