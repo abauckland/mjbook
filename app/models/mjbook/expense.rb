@@ -52,8 +52,8 @@ module Mjbook
  #   validates :total, presence: true, numericality: true
 #    validates :date, presence: true
 
-    scope :user, ->() { where(:user_id => current_user.id)}
-    scope :company, ->() { joins(:project).where('mjbook_projects.company_id' => current_user.company_id)}
+    scope :user, ->(current_user) {  joins(:project).where(:user_id => current_user.id, 'mjbook_projects.company_id' => current_user.company_id)}
+    scope :company, ->(current_user) { joins(:project).where('mjbook_projects.company_id' => current_user.company_id)}
   
     scope :business, ->() { where(:exp_type => :business).uniq }
     scope :personal, ->() { where(:exp_type => :business).uniq }

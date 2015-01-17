@@ -19,27 +19,27 @@ module Mjbook
         if params[:project_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :project_id => params[:project_id]).company.user.personal
+              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :project_id => params[:project_id]).user(current_user).personal
             else
-              @expenses = Expense.where('date > ? AND project_id =?', params[:date_from], params[:project_id]).company.user.personal
+              @expenses = Expense.where('date > ? AND project_id =?', params[:date_from], params[:project_id]).user(current_user).personal
             end
           else
             if params[:date_to] != ""
-              @expenses = Expense.where('date < ? AND project_id = ?', params[:date_to], params[:project_id]).company.user.personal
+              @expenses = Expense.where('date < ? AND project_id = ?', params[:date_to], params[:project_id]).user(current_user).personal
             end
           end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to]).company.user.personal
+              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to]).user(current_user).personal
             else
-              @expenses = Expense.joins(:project).where('date > ?', params[:date_from]).company.user.personal
+              @expenses = Expense.joins(:project).where('date > ?', params[:date_from]).user(current_user).personal
             end
           else
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where('date < ?', params[:date_to]).company.user.personal
+              @expenses = Expense.joins(:project).where('date < ?', params[:date_to]).user(current_user).personal
             else
-              @pexpenses = Expense.company.user.personal
+              @pexpenses = Expense.user(current_user).personal
             end
           end
         end
@@ -49,7 +49,7 @@ module Mjbook
         end
 
      else
-       @expenses = Expense.company.user.personal
+       @expenses = Expense.user(current_user).personal
      end
 
      #selected parameters for filter form     
