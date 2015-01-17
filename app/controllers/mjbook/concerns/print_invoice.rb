@@ -13,13 +13,12 @@
     include PrintInvoiceTable
     include PrintInvoiceFooter
         
-   def print_quote(invoice, pdf)
+   def print_invoice(invoice, pdf)
    
       pdf.repeat(:all) do
         ##HEADERS
         company_header(pdf)
-        invoice_header(pdf)
-        ##QUOTE DETAILS
+        #INVOICE DETAILS
         customer_details(invoice.project.customer, pdf)
         invoice_details(invoice, pdf)
         
@@ -27,7 +26,7 @@
         table_header(pdf)
       
       end
-      ##QUOTE_TABLE
+      ##INVOICE_TABLE
       table_header(pdf)
       invoice_table(invoice, pdf)
     
