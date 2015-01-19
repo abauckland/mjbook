@@ -41,7 +41,7 @@
                 <table>
                     <tbody>
                         <% if @transactions %>
-                            <% @transactions.each do |tranaction| %>
+                            <% @transactions.each do |transaction| %>
                                 <tr>                            
                                     <td class="transaction_date"><%= transaction.date %></td>
                                     <% if transaction.expend_id? %>
