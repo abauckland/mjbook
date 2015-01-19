@@ -17,6 +17,9 @@ module Mjbook
   
     end
 
+    private
+
+    default_scope { order('date DESC') }
 
   end
 end

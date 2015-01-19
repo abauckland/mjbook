@@ -4,6 +4,10 @@ module Mjbook
     
     validates :ref, :terms, presence: true     
     validates :period, presence: true, numericality: true
-    
+
+    private
+
+      default_scope { order('period ASC') }
+
   end
 end

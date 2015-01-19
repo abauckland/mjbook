@@ -18,34 +18,31 @@ module Mjbook
         if params[:customer_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @invoices = Invoice.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])          
+              @invoices = Invoice.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
             else
-              @invoices = Invoice.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id]) 
-            end  
-          else  
-            if params[:date_to] != ""
-              @invoices = Invoice.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])            
+              @invoices = Invoice.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
             end
-          end   
+          else
+            if params[:date_to] != ""
+              @invoices = Invoice.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+            end
+          end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              #@invoices = Invoice.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
               @invoices = policy_scope(Invoice).where(:date => params[:date_from]..params[:date_to])
             else
-              #@invoices = Invoice.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
               @invoices = policy_scope(Invoice).where('date > ?', params[:date_from])
-            end  
-          else  
+            end
+          else
             if params[:date_to] != ""
-              #@invoices = Invoice.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
               @invoices = policy_scope(Invoice).where('date < ?', params[:date_to])
             else
-              @invoices = policy_scope(Invoice) 
-            end     
+              @invoices = policy_scope(Invoice)
+            end
           end
-        end   
-     
+        end
+
         if params[:commit] == 'pdf'
           pdf_invoice_index(invoices, params[:customer_id], params[:date_from], params[:date_to])
         end
@@ -55,7 +52,7 @@ module Mjbook
      end
 
      #selected parameters for filter form
-     all_invoices = policy_scope(Invoice)        
+     all_invoices = policy_scope(Invoice)
      @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
      @customer = params[:customer_id]
      @date_from = params[:date_from]

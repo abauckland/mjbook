@@ -2,14 +2,14 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class BusinessesController < ApplicationController
-    
+
     before_action :set_expense, only: [:show, :edit, :update, :destroy]
     before_action :set_suppliers, only: [:index, :new, :edit]
     before_action :set_projects, only: [:new, :edit]
     before_action :set_hmrcexpcats, only: [:new, :edit]
 
     include PrintIndexes
-             
+
     # GET /business
     def index
 
@@ -21,8 +21,8 @@ module Mjbook
               @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).company(current_user).business
             else
               @expenses = Expense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).company(current_user).business
-            end  
-          else  
+            end
+          else
             if params[:date_to] != ""
               @expenses = Expense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).company(current_user).business
             end
@@ -44,14 +44,18 @@ module Mjbook
         end
 
         if params[:commit] == 'pdf'          
-          pdf_business_index(@expenses, params[:supplier_id], params[:date_from], params[:date_to])      
+          pdf_business_index(@expenses, params[:supplier_id], params[:date_from], params[:date_to])
         end
 
      else
        @expenses = Expense.company(current_user).business
      end
 
-     #selected parameters for filter form     
+     @sum_price = @expenses.price.sum
+     @sum_vat = @expenses.vat.sum
+     @sum_total = @expenses.total.sum
+
+     #selected parameters for filter form
      @suppliers = Supplier.joins(:expenses => :project).where('mjbook_projects.company_id' => current_user.company_id)
      @supplier = params[:supplier_id]
      @date_from = params[:date_from]

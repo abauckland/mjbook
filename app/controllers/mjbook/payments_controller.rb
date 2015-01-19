@@ -10,58 +10,54 @@ module Mjbook
     
     # GET /payments
     def index
-    
+
       if params[:customer_id]
-    
+
           if params[:customer_id] != ""
             if params[:date_from] != ""
               if params[:date_to] != ""
-                @payments = Payment.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])          
+                @payments = Payment.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
               else
-                @payments = Payment.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id]) 
-              end  
-            else  
-              if params[:date_to] != ""
-                @payments = Payment.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])            
+                @payments = Payment.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
               end
-            end   
+            else
+              if params[:date_to] != ""
+                @payments = Payment.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+              end
+            end
           else
             if params[:date_from] != ""
               if params[:date_to] != ""
-               # @payments = Payment.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
-                @payments = policy_scope(Payment).where(:date => params[:date_from]..params[:date_to])          
+                @payments = policy_scope(Payment).where(:date => params[:date_from]..params[:date_to])
               else
-                #@payments = Payment.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
-                @payments = policy_scope(Payment).where('date > ?', params[:date_from])  
-              end  
-            else  
+                @payments = policy_scope(Payment).where('date > ?', params[:date_from])
+              end
+            else
               if params[:date_to] != ""
-                #@payments = Payment.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
-                @payments = policy_scope(Payment).where('date < ?', params[:date_to])            
+                @payments = policy_scope(Payment).where('date < ?', params[:date_to])
               else
-                #@payments = Payment.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
-                @payments = policy_scope(Payment) 
-              end     
+                @payments = policy_scope(Payment)
+              end
             end
-          end   
-       
-          if params[:commit] == 'pdf'          
-            pdf_payment_index(payments, params[:customer_id], params[:date_from], params[:date_to])      
           end
-              
+
+          if params[:commit] == 'pdf'
+            pdf_payment_index(payments, params[:customer_id], params[:date_from], params[:date_to])
+          end
+
        else
-         @payments = policy_scope(Payment)     
-       end          
-  
+         @payments = policy_scope(Payment)
+       end
+
        #selected parameters for filter form
-       all_invoices = policy_scope(Invoice)     
+       all_invoices = policy_scope(Invoice)
        @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
 
 
-      authorize @payments      
+      authorize @payments
     end
 
     # GET /payments/1

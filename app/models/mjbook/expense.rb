@@ -14,7 +14,7 @@ module Mjbook
 
     mount_uploader :receipt, ReceiptUploader
 
-    enum exp_type: [:business, :personal, :salary, :transfer]
+    enum exp_type: [:business, :personal]
 #    enum status: [:submitted, :rejected, :accepted, :paid]
 
     aasm :column => 'state' do
@@ -52,6 +52,7 @@ module Mjbook
  #   validates :total, presence: true, numericality: true
 #    validates :date, presence: true
 
+
     scope :user, ->(current_user) {  joins(:project).where(:user_id => current_user.id, 'mjbook_projects.company_id' => current_user.company_id)}
     scope :company, ->(current_user) { joins(:project).where('mjbook_projects.company_id' => current_user.company_id)}
   
@@ -59,6 +60,8 @@ module Mjbook
     scope :personal, ->() { where(:exp_type => 1).uniq }
     scope :salary, ->() { where(:exp_type => 2).uniq }
     scope :transfer, ->() { where(:exp_type => 3).uniq }
-    
+    private
+
+    default_scope { order('date DESC') }
   end
 end

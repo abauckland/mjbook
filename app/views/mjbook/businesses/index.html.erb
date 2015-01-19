@@ -1,40 +1,40 @@
 <div class="row title_band">
     <div class="page_title">
         <h1>Business Expenses</h1>
-    </div>      
+    </div>
     <div><%= link_to "+ expense", new_business_path, class: "title_button" %> </div>
 </div>
 
 <div class="row filter_band">
     <%= form_tag businesses_path, method: :get do %>
-  
+
         <div>
-            <% if @projects %>  
+            <% if @projects %>
             <div>
                 <label class="select">Project:</label>
                 <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
-            </div>                
-            <% end %> 
+            </div>
+            <% end %>
             <div>
                 <label class="date">Date From:</label>
                 <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
+            </div>
+            <%= submit_tag 'Filter' %>
         </div>
         
-        <div class="float_right">   
+        <div class="float_right">
             <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
-        </div>  
+        </div>
 
-    <% end %> 
+    <% end %>
 </div>
 
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
+        <div class="border">
 
             <%= render :partial => "flash_notice" %>
 
@@ -63,7 +63,7 @@
 
                 <table>
                     <tbody>
-                        <% if @expenses %>            
+                        <% if @expenses %>
                             <% @expenses.each do |expense| %>
                                 <tr>
                                         <td class="business_due_data"><%= expense.due_date.strftime("%d/%m/%y") %></td>
@@ -90,32 +90,54 @@
                                             <% else %>
                                                 <%= link_to '', business_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>               
                                                 <%= link_to "", edit_business_path(expense), class: 'line_edit_icon_hidden', title: "edit" %>
-                                                <%= row_accept_link(expense, 'hidden') %> 
-                                            <% end %>                                
-                             
+                                                <%= row_accept_link(expense, 'hidden') %>
+                                            <% end %>
+
                                             <% if expense.submitted? || expense.accepted? %>
-                                                <%= row_reject_link(expense, 'show') %>                 
+                                                <%= row_reject_link(expense, 'show') %>
                                             <% else %>
-                                                <%= row_reject_link(expense, 'hidden') %>                 
-                                            <% end %> 
-                                        
-                                            <% if expense.accepted? %>                
+                                                <%= row_reject_link(expense, 'hidden') %>
+                                            <% end %>
+
+                                            <% if expense.accepted? %>
                                                 <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_show' , title: "record payment"  %>
                                             <% else %>
-                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>                 
-                                            <% end %> 
-                            
-                            
+                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
+                                            <% end %>
+
                                             <%= link_to '', business_path(expense), class: 'line_show_icon_show' , title: "show full details"  %>
-                                        </td>                
+                                        </td>
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>
 
 </div>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+            <div class="row">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="business_index_total"></th>
+                            <th class="business_price"><%= @sum_price %></th>
+                            <th class="business_vat_due"><%= @sum_vat %></th>
+                            <th class="business_total"><%= @sum_total %></th>
+                            <th class="business_status"></th>
+                            <th class="row_button no_buttons_5"></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>            	

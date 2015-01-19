@@ -6,58 +6,54 @@ module Mjbook
 
     # GET /creditnotes
     def index
-    
+
       if params[:customer_id]
-    
+
           if params[:customer_id] != ""
             if params[:date_from] != ""
               if params[:date_to] != ""
-                @creditnotes = Creditnote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])          
+                @creditnotes = Creditnote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
               else
-                @creditnotes = Creditnote.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id]) 
-              end  
-            else  
-              if params[:date_to] != ""
-                @creditnotes = Creditnote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])            
+                @creditnotes = Creditnote.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
               end
-            end   
+            else
+              if params[:date_to] != ""
+                @creditnotes = Creditnote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+              end
+            end
           else
             if params[:date_from] != ""
               if params[:date_to] != ""
-               # @creditnotes = Creditnote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
-                @creditnotes = policy_scope(Creditnote).where(:date => params[:date_from]..params[:date_to])          
+                @creditnotes = policy_scope(Creditnote).where(:date => params[:date_from]..params[:date_to])
               else
-                #@creditnotes = Creditnote.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
-                @creditnotes = policy_scope(Creditnote).where('date > ?', params[:date_from])  
+                @creditnotes = policy_scope(Creditnote).where('date > ?', params[:date_from])
               end  
             else  
               if params[:date_to] != ""
-                #@creditnotes = Creditnote.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
-                @creditnotes = policy_scope(Creditnote).where('date < ?', params[:date_to])            
+                @creditnotes = policy_scope(Creditnote).where('date < ?', params[:date_to])
               else
-                #@creditnotes = Creditnote.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
                 @creditnotes = policy_scope(Creditnote) 
-              end     
+              end
             end
-          end   
-       
-          if params[:commit] == 'pdf'          
-            pdf_creditnote_index(creditnotes, params[:customer_id], params[:date_from], params[:date_to])      
           end
-              
+
+          if params[:commit] == 'pdf'          
+            pdf_creditnote_index(creditnotes, params[:customer_id], params[:date_from], params[:date_to])
+          end
+
        else
-         @creditnotes = policy_scope(Creditnote)     
-       end          
+         @creditnotes = policy_scope(Creditnote)
+       end
   
        #selected parameters for filter form
-       all_invoices = policy_scope(Invoice)     
+       all_invoices = policy_scope(Invoice)
        @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
 
 
-      authorize @creditnotes 
+      authorize @creditnotes
     end
 
     # GET /creditnotes/1

@@ -5,9 +5,9 @@ module Mjbook
 
     validates :text, presence: true, uniqueness: {:scope => [:company_id]}
 
-    def text=(text)
-      super(text.downcase)
-    end
+    private
+
+      default_scope { order('text ASC') }
 
   end
 end

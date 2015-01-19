@@ -18,5 +18,9 @@ module Mjbook
       super(text.downcase)
     end
 
+    private
+
+    default_scope { order('name ASC') }
+
   end
 end

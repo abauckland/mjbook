@@ -14,27 +14,27 @@ module Mjbook
         if params[:supplier_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @miscincomes = Miscincome.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).business
+              @miscincomes = policy_scope(Miscincome).where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id])
             else
-              @miscincomes = Miscincome.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).business
-            end  
-          else  
+              @miscincomes = policy_scope(Miscincome).where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id])
+            end
+          else
             if params[:date_to] != ""
-              @miscincomes = Miscincome.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).business
+              @miscincomes = policy_scope(Miscincome).where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id])
             end
           end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @miscincomes = Miscincome.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id).business
+              @miscincomes = policy_scope(Miscincome).where(:date => params[:date_from]..params[:date_to])
             else
-              @miscincomes = Miscincome.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id).business
+              @miscincomes = policy_scope(Miscincome).where('date > ?', params[:date_from])
             end
           else
             if params[:date_to] != ""
-              @miscincomes = Miscincome.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id).business
+              @miscincomes = policy_scope(Miscincome).where('date < ?', params[:date_to])
             else
-              @miscincomes = Miscincome.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+              @miscincomes = policy_scope(Miscincome)
             end
           end
         end
@@ -44,10 +44,10 @@ module Mjbook
         end
 
        else
-         @miscincomes = Miscincome.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
+         @miscincomes = policy_scope(Miscincome)
        end
   
-       #selected parameters for filter form     
+       #selected parameters for filter form
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]

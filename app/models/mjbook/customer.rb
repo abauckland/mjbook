@@ -43,55 +43,13 @@ module Mjbook
       allow_blank: true,
       format: { with: EMAIL_REGEXP, message: "please enter a email address" }
 
-
-    def company_name=(text)
-      super(text.downcase)
-    end
-
-    def title=(text)
-      super(text.downcase)
-    end
-
-    def first_name=(text)
-      super(text.downcase)
-    end
-
-    def surname=(text)
-      super(text.downcase)
-    end
-
-    def position=(text)
-      super(text.downcase)
-    end
-
-    def address_1=(text)
-      super(text.downcase)
-    end
-
-    def address_2=(text)
-      super(text.downcase)
-    end
-
-    def city=(text)
-      super(text.downcase)
-    end
-
-    def county=(text)
-      super(text.downcase)
-    end
-
-    def country=(text)
-      super(text.downcase)
-    end
-
-    def email=(text)
-      super(text.downcase)
-    end
-
-   
     def name
       return title+' '+first_name+' '+surname
     end
-      
+    
+    private
+
+      default_scope { order('company_name ASC') }
+
   end
 end

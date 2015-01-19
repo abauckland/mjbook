@@ -14,9 +14,9 @@ module Mjbook
       format: { with: ADDRESS_REGEXP, message: "please enter a valid name" },
       uniqueness: {:scope => [:company_id, :hmrcgroup_id]}
 
-    def category=(text)
-      super(text.downcase)
-    end
+    private
+
+      default_scope { order('category ASC') }
 
   end
 end

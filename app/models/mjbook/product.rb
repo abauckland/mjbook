@@ -11,9 +11,11 @@ module Mjbook
 
     enum linetype: [:product, :service, :misc]
 
-    def item=(text)
-      super(text.downcase)
-    end
+
+    private
+
+      default_scope { order('item ASC') }
+
 
   end
 end

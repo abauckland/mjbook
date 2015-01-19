@@ -28,6 +28,10 @@ module Mjbook
     validates :date,
       presence: true,
       format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }
-    
+
+    private
+
+    default_scope { order('date DESC') }
+
   end
 end

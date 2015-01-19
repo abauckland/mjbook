@@ -13,10 +13,11 @@ $mob_menu: 520px;
 .business_supplier    {display: table-cell;}
 .business_supplier_ref{@include ref}        
 .business_issue_date  {@include date}    
-.business_price        {@include pounds}
-.business_vat_due      {@include pounds}
-.business_total        {@include pounds}
+.business_price       {@include pounds}
+.business_vat_due     {@include pounds}
+.business_total       {@include pounds}
 .business_status      {@include state}
+.business_index_total {}
 
 
 @media screen and (max-width: $lrg_menu) {

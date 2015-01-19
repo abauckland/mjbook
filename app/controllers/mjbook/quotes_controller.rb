@@ -12,53 +12,50 @@ module Mjbook
     include PrintQuote
 
     # GET /quotes
-    def index      
+    def index
     if params[:customer_id]
-  
+
         if params[:customer_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @quotes = Quote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])          
+              @quotes = Quote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
             else
-              @quotes = Quote.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id]) 
-            end  
-          else  
-            if params[:date_to] != ""
-              @quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])                      
+              @quotes = Quote.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
             end
-          end   
+          else
+            if params[:date_to] != ""
+              @quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+            end
+          end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              #@quotes = Quote.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)          
-              @quotes = policy_scope(Quote).where(:date => params[:date_from]..params[:date_to])          
+              @quotes = policy_scope(Quote).where(:date => params[:date_from]..params[:date_to])
 
             else
-              #@quotes = Quote.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)  
-              @quotes = policy_scope(Quote).where('date > ?', params[:date_from])  
+              @quotes = policy_scope(Quote).where('date > ?', params[:date_from])
 
-            end  
-          else  
+            end
+          else
             if params[:date_to] != ""
-              #@quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)            
-              @quotes = policy_scope(Quote).where('date < ?', params[:date_to])            
+              @quotes = policy_scope(Quote).where('date < ?', params[:date_to])
  
             else
               @quotes = policy_scope(Quote)
-            end     
+            end
           end
-        end   
-     
-        if params[:commit] == 'pdf'          
-          pdf_quote_index(@quotes, params[:customer_id], params[:date_from], params[:date_to])      
         end
-            
+
+        if params[:commit] == 'pdf'          
+          pdf_quote_index(@quotes, params[:customer_id], params[:date_from], params[:date_to])
+        end
+
      else
-       @quotes = policy_scope(Quote)     
-     end          
+       @quotes = policy_scope(Quote)
+     end
 
      #selected parameters for filter form
-     all_quotes = policy_scope(Quote)     
+     all_quotes = policy_scope(Quote)
      @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_quotes.ids)
      @customer = params[:customer_id]
      @date_from = params[:date_from]

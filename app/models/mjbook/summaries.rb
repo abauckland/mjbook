@@ -12,5 +12,9 @@ module Mjbook
                                                                        ).where('date > ?', date)
                                                                  }
 
+    private
+
+      default_scope { order('date ASC') }
+
   end
 end

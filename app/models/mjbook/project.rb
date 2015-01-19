@@ -26,5 +26,10 @@ module Mjbook
     def name
       return ref+' '+title
     end    
+
+    private
+
+    default_scope { order('date DESC') }
+
   end
 end

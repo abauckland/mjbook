@@ -16,40 +16,40 @@ module Mjbook
         if params[:supplier_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @miscexpenses = Miscexpense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).business
+              @miscexpenses = Miscexpense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id])
             else
-              @miscexpenses = Miscexpense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).business
+              @miscexpenses = Miscexpense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id])
             end  
           else  
             if params[:date_to] != ""
-              @miscexpenses = Miscexpense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).business
+              @miscexpenses = Miscexpense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id])
             end
           end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @miscexpenses = Miscexpense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id).business
+              @miscexpenses = Miscexpense.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.company_id' => current_user.company_id)
             else
-              @miscexpenses = Miscexpense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id).business
+              @miscexpenses = Miscexpense.joins(:project).where('date > ? AND mjbook_projects.company_id = ?', params[:date_from], current_user.company_id)
             end
           else
             if params[:date_to] != ""
-              @miscexpenses = Miscexpense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id).business
+              @miscexpenses = Miscexpense.joins(:project).where('date < ? AND mjbook_projects.company_id = ?', params[:date_to], current_user.company_id)
             else
-              @miscexpenses = Miscexpense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+              @miscexpenses = Miscexpense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
             end
           end
         end
 
         if params[:commit] == 'pdf'          
-          pdf_miscexpense_index(@miscexpenses, params[:supplier_id], params[:date_from], params[:date_to])      
+          pdf_miscexpense_index(@miscexpenses, params[:supplier_id], params[:date_from], params[:date_to])
         end
 
      else
-       @miscexpenses = Miscexpense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id).business
+       @miscexpenses = Miscexpense.joins(:project).where('mjbook_projects.company_id' => current_user.company_id)
      end
 
-     #selected parameters for filter form     
+     #selected parameters for filter form
      @suppliers = Supplier.joins(:expenses => :project).where('mjbook_projects.company_id' => current_user.company_id)
      @supplier = params[:supplier_id]
      @date_from = params[:date_from]

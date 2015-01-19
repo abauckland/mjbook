@@ -15,42 +15,39 @@ module Mjbook
           if params[:user_id] != ""
             if params[:date_from] != ""
               if params[:date_to] != ""
-                @salaries = Salary.where(:date => params[:date_from]..params[:date_to], :user_id => params[:user_id])          
+                @salaries = Salary.where(:date => params[:date_from]..params[:date_to], :user_id => params[:user_id])
               else
                 @salaries = Salary.where('date > ? AND user_id =?', params[:date_from], params[:user_id]) 
-              end  
-            else  
+              end
+            else
               if params[:date_to] != ""
-                @salaries = Salary.where('date < ? AND user_id = ?', params[:date_to], params[:user_id])            
+                @salaries = Salary.where('date < ? AND user_id = ?', params[:date_to], params[:user_id])
               end
             end
           else
             if params[:date_from] != ""
               if params[:date_to] != ""
-               # @salaries = Salary.joins(:user).where(:date => params[:date_from]..params[:date_to], 'users.company_id' => current_user.company_id)          
-                @salaries = policy_scope(Salary).where(:date => params[:date_from]..params[:date_to])          
+                @salaries = policy_scope(Salary).where(:date => params[:date_from]..params[:date_to])
               else
-                #@salaries = Salary.joins(:user).where('date > ? AND users.company_id = ?', params[:date_from], current_user.company_id)  
                 @salaries = policy_scope(Salary).where('date > ?', params[:date_from])
               end
             else
               if params[:date_to] != ""
-                #@salaries = Salary.joins(:user).where('date < ? AND users.company_id = ?', params[:date_to], current_user.company_id)
-                @salaries = policy_scope(Salary).where('date < ?', params[:date_to])            
+                @salaries = policy_scope(Salary).where('date < ?', params[:date_to])
               else
-                @salaries = policy_scope(Salary)#Salary.joins(:user).where('users.company_id' => current_user.company_id)
+                @salaries = policy_scope(Salary)
               end
             end
           end
 
           if params[:commit] == 'pdf'          
-            pdf_salary_index(@salaries, params[:user_id], params[:date_from], params[:date_to])      
+            pdf_salary_index(@salaries, params[:user_id], params[:date_from], params[:date_to])
           end
 
        else
-         @salaries = policy_scope(Salary)#Salary.joins(:user).where('users.company_id' => current_user.company_id)       
+         @salaries = policy_scope(Salary)
        end
-       
+
 
        #selected parameters for filter form
        @user = params[:user_id]
