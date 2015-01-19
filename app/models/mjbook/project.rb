@@ -29,7 +29,7 @@ module Mjbook
 
     private
 
-    default_scope { order('update_at DESC') }
+    default_scope { order('updated_at DESC') }
 
   end
 end
