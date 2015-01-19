@@ -28,8 +28,8 @@
                     <thead>
                         <tr>
                             <th class="transaction_date">Date</th>
-                            <th class="transaction_item">Item</th>
                             <th class="transaction_account">Account</th>
+                            <th class="transaction_item">Item</th>
                             <th class="transaction_type">Type</th>
                             <th class="transaction_status">Status</th>
                             <th class="transaction_income">Income</th>
@@ -44,15 +44,14 @@
                             <% @transactions.each do |transaction| %>
                                 <tr>                            
                                     <td class="transaction_date"><%= transaction.date %></td>
+                                        <td class="transaction_account"><%= transaction.companyaccount.name %></td>
                                     <% if transaction.expend_id? %>
-	                                    <td class="transaction_ref"><%= transaction.expend.ref %></td>
-	                                    <td class="transaction_account"><%= transaction.expend.account_name %></td>           
+	                                    <td class="transaction_ref"><%= transaction.expend.ref %></td>           
 	                                    <td class="transaction_type"><%= transaction.expend.exp_type %></td>
 										<td class="transaction_status"><%= transaction.expend.state %></td>
 									<% end %>
                                     <% if transaction.payment_id? %>
-	                                    <td class="transaction_ref"><%= transaction.payment.ref %></td>
-	                                    <td class="transaction_account"><%= transaction.payment.account_name %></td>           
+	                                    <td class="transaction_ref"><%= transaction.payment.ref %></td>           
 	                                    <td class="transaction_type"><%= transaction.payment.inc_type %></td>
 										<td class="transaction_status"><%= transaction.payment.state %></td>
 									<% end %>
