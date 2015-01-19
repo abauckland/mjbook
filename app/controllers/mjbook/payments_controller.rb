@@ -285,8 +285,13 @@ module Mjbook
       def create_summary_record(payment)
         last_transaction = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date).order('date').last
         
-        new_balance = last_transaction.balance + payment.total
-        new_account_balance = last_transaction.account_balance + payment.total
+        if last_transaction.blank?
+          new_balance = payment.total
+          new_account_balance = payment.total
+        else
+          new_balance = last_transaction.balance + payment.total
+          new_account_balance = last_transaction.account_balance + payment.total
+        end
         
         Mjbook::Summaries.create(:date => payment.date,
                                   :company_id => payment.company_id,
@@ -298,17 +303,21 @@ module Mjbook
 
       def add_summary_account_balance(payment)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date)
-        account_transactions.each do |account_transaction|
-          new_account_balance = transaction.account_balance + payment.total
-          account_transaction.update(:balance => new_account_balance)
+        unless account_transactions.blank?
+          account_transactions.each do |account_transaction|
+            new_account_balance = transaction.account_balance + payment.total
+            account_transaction.update(:balance => new_account_balance)
+          end
         end
       end
 
       def add_summary_balance(payment)
         transactions = policy_scope(Summary).subsequent_transactions(payment.date)
-        transactions.each do |transaction|
-          new_balance = transaction.balance + payment.total
-          transaction.update(:balance => new_balance)
+        unless transactions.blank?
+          transactions.each do |transaction|
+            new_balance = transaction.balance + payment.total
+            transaction.update(:balance => new_balance)
+          end
         end
       end
 
