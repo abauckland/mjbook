@@ -273,9 +273,14 @@ module Mjbook
 
       def create_summary_record(expend)
         last_transaction = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date).order('date').last
-        
-        new_balance = last_transaction.balance - expend.total
-        new_account_balance = last_transaction.account_balance - expend.total
+
+        if last_transaction.blank?
+          new_balance = 0-payment.total
+          new_account_balance = 0-payment.total
+        else
+          new_balance = last_transaction.balance - payment.total
+          new_account_balance = last_transaction.account_balance - payment.total
+        end
         
         Mjbook::Summaries.create(:date => expend.date,
                                   :company_id => expend.company_id,
