@@ -43,7 +43,7 @@
                         <% if @transactions %>
                             <% @transactions.each do |transaction| %>
                                 <tr>                            
-                                    <td class="transaction_date"><%= transaction.date %></td>
+                                    <td class="transaction_date"><%= transaction.date.strftime("%d/%m/%y") %></td>
                                         <td class="transaction_account"><%= transaction.companyaccount.name %></td>
                                     <% if transaction.expend_id? %>
 	                                    <td class="transaction_ref"><%= transaction.expend.ref %></td>           
