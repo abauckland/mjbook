@@ -11,6 +11,8 @@ module Mjbook
     scope :subsequent_account_transactions, ->(account_id, date) {where(:companyaccount_id => account_id
                                                                        ).where('date > ?', date)
                                                                  }
+    private
 
+      default_scope { order('date ASC') }
   end
 end
