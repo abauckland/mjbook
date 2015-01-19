@@ -22,6 +22,8 @@ module Mjbook
             else
               if params[:date_to] != ""
                 @salaries = Salary.where('date < ? AND user_id = ?', params[:date_to], params[:user_id])
+              else  
+                @salaries = Salary.where(:user_id => params[:user_id])                
               end
             end
           else
