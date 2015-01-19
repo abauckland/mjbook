@@ -51,9 +51,9 @@ module Mjbook
        @expenses = Expense.company(current_user).business
      end
 
-     @sum_price = @expenses.price.sum
-     @sum_vat = @expenses.vat.sum
-     @sum_total = @expenses.total.sum
+     @sum_price = @expenses.pluck(:price).sum
+     @sum_vat = @expenses.pluck(:vat).sum
+     @sum_total = @expenses.pluck(:total).sum
 
      #selected parameters for filter form
      @suppliers = Supplier.joins(:expenses => :project).where('mjbook_projects.company_id' => current_user.company_id)
