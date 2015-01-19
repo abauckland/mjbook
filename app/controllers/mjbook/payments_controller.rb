@@ -295,6 +295,7 @@ module Mjbook
         
         Mjbook::Summaries.create(:date => payment.date,
                                   :company_id => payment.company_id,
+                                  :companyaccount_id => payment.companyaccount_id,
                                   :payment_id => payment.id,
                                   :amount_out => payment.total,
                                   :balance => new_balance,

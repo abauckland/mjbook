@@ -284,6 +284,7 @@ module Mjbook
         
         Mjbook::Summaries.create(:date => expend.date,
                                   :company_id => expend.company_id,
+                                  :companyaccount_id => expend.companyaccount_id,
                                   :expend_id => expend.id,
                                   :amount_out => expend.total,
                                   :balance => new_balance,
