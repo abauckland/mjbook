@@ -127,10 +127,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="business_index_total"></th>
-                            <th class="business_price"><%= @sum_price %></th>
-                            <th class="business_vat_due"><%= @sum_vat %></th>
-                            <th class="business_total"><%= @sum_total %></th>
+                            <th class="business_index_total">Total</th>
+                            <th class="business_price"><%= pounds(@sum_price) %></th>
+                            <th class="business_vat_due"><%= pounds(@sum_vat) %></th>
+                            <th class="business_total"><%= pounds(@sum_total) %></th>
                             <th class="business_status"></th>
                             <th class="row_button no_buttons_5"></th>
                         </tr>
