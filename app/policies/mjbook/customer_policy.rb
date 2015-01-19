@@ -1,18 +1,22 @@
 module Mjbook
   class CustomerPolicy < Struct.new(:user, :record)
-  
+
     class Scope < Struct.new(:user, :scope)
       def resolve
-          scope.where(:company_id => user.company_id) 
+          scope.where(:company_id => user.company_id)
       end
     end
-            
+
+    def owned
+      record.company_id == user.company_id
+    end
+
     def index?
       true
     end
-  
+
     def show?
-      index?
+      owned
     end
 
     def new?
@@ -20,7 +24,7 @@ module Mjbook
     end
 
     def edit?
-      index?
+      owned
     end
 
     def create?
@@ -28,11 +32,11 @@ module Mjbook
     end
 
     def update?
-      index?
+      owned
     end
 
     def destroy?
-      index?
+      owned
     end
 
   end

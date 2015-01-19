@@ -13,6 +13,7 @@ module Mjbook
 
     # GET /suppliers/1
     def show
+      authorize @supplier
     end
 
     # GET /suppliers/new
@@ -22,6 +23,7 @@ module Mjbook
 
     # GET /suppliers/1/edit
     def edit
+      authorize @supplier
     end
 
     # POST /suppliers
@@ -37,6 +39,7 @@ module Mjbook
 
     # PATCH/PUT /suppliers/1
     def update
+      authorize @supplier
       if @supplier.update(supplier_params)
         redirect_to suppliers_path, notice: 'Supplier was successfully updated.'
       else
@@ -46,20 +49,21 @@ module Mjbook
 
     # DELETE /suppliers/1
     def destroy
+      authorize @supplier
       @supplier.destroy
       redirect_to suppliers_path, notice: 'Supplier was successfully destroyed.'
     end
 
     def print
-         
+
       filename = "Suppliers.pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
       ) do |pdf|      
-        table_indexes(@suppliers, 'supplier', nil, nil, nil, filename, pdf)      
+        table_indexes(@suppliers, 'supplier', nil, nil, nil, filename, pdf)
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -73,7 +77,7 @@ module Mjbook
       end
 
       def set_suppliers
-        @suppliers = policy_scope(Supplier).order(:company_name)
+        @suppliers = policy_scope(Supplier)
       end
 
       # Only allow a trusted parameter "white list" through.

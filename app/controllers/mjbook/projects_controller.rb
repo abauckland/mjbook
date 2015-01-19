@@ -3,8 +3,8 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class ProjectsController < ApplicationController
     before_action :set_project, only: [:show, :edit, :update, :destroy]
-    before_action :set_projects, only: [:index, :print]    
-    before_action :set_customers, only: [:new, :edit]
+    before_action :set_projects, only: [:index, :print]
+    before_action :set_customers, only: [:new, :edit, :update, :create]
 
     include PrintIndexes
     
@@ -14,6 +14,7 @@ module Mjbook
 
     # GET /projects/1
     def show
+      authorize @project
     end
 
     # GET /projects/new
@@ -23,6 +24,7 @@ module Mjbook
 
     # GET /projects/1/edit
     def edit
+      authorize @project
     end
 
     # POST /projects
@@ -39,6 +41,7 @@ module Mjbook
 
     # PATCH/PUT /projects/1
     def update
+      authorize @project
       if @project.update(project_params)
         redirect_to projects_path, notice: 'Project was successfully updated.'
       else
@@ -48,6 +51,7 @@ module Mjbook
 
     # DELETE /projects/1
     def destroy
+      authorize @project
       @project.destroy
       redirect_to projects_path, notice: 'Project was successfully destroyed.'
     end

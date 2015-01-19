@@ -8,13 +8,19 @@ module Mjbook
         end
       end
     end
-            
+
+    def owned
+      record.company_id == user.company_id
+    end
+
     def edit?
-      user.owner? || user.admin?
+      if owned
+        user.owner? || user.admin?
+      end
     end
   
     def update?
-      user.owner? || user.admin?
+      edit?
     end
 
   end

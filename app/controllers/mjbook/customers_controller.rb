@@ -6,13 +6,14 @@ module Mjbook
     before_action :set_customers, only: [:index, :print]
 
     include PrintIndexes
-    
+
     # GET /customers
     def index
     end
 
     # GET /customers/1
     def show
+      authorize @customer
     end
 
     # GET /customers/new
@@ -22,6 +23,7 @@ module Mjbook
 
     # GET /customers/1/edit
     def edit
+      authorize @customer
     end
 
     # POST /customers
@@ -37,6 +39,7 @@ module Mjbook
 
     # PATCH/PUT /customers/1
     def update
+      authorize @customer
       if @customer.update(customer_params)
         redirect_to customers_path, notice: 'Customer was successfully updated.'
       else
@@ -46,21 +49,22 @@ module Mjbook
 
     # DELETE /customers/1
     def destroy
+      authorize @customer
       @customer.destroy
       redirect_to customers_path, notice: 'Customer was successfully destroyed.'
     end
 
 
     def print
-        
+
       filename = "Customers.pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
       ) do |pdf|      
-        table_indexes(@customers, 'customer', nil, nil, nil, filename, pdf)      
+        table_indexes(@customers, 'customer', nil, nil, nil, filename, pdf)
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -74,7 +78,7 @@ module Mjbook
       end
 
       def set_customers
-        @customers = policy_scope(Customer).order(:company_name)
+        @customers = policy_scope(Customer)
       end
 
       # Only allow a trusted parameter "white list" through.
