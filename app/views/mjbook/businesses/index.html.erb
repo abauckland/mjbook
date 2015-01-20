@@ -9,10 +9,10 @@
     <%= form_tag businesses_path, method: :get do %>
 
         <div>
-            <% if @projects %>
+            <% if @suppliers %>
             <div>
-                <label class="select">Project:</label>
-                <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
+                <label class="select">Supplier:</label>
+                <%= select_tag 'project_id', options_from_collection_for_select(@suppliers, :id, :name, @supplier), prompt: "Select something" %>
             </div>
             <% end %>
             <div>
