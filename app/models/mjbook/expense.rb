@@ -38,7 +38,7 @@ module Mjbook
         transitions :from => :accepted, :to => :paid
       end
 
-      event :correct do
+      event :unpay do
         transitions :from => :paid, :to => :accepted
       end
     end
