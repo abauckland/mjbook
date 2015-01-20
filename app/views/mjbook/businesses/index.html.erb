@@ -12,7 +12,7 @@
             <% if @suppliers %>
             <div>
                 <label class="select">Supplier:</label>
-                <%= select_tag 'project_id', options_from_collection_for_select(@suppliers, :id, :name, @supplier), prompt: "Select something" %>
+                <%= select_tag 'project_id', options_from_collection_for_select(@suppliers, :id, :company_name, @supplier), prompt: "Select something" %>
             </div>
             <% end %>
             <div>
