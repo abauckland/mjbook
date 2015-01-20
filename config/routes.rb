@@ -1,6 +1,6 @@
 Mjbook::Engine.routes.draw do
   
-  resources :settings
+  resources :settings, :only => [:edit, :update]
 
   resources :participants
 
