@@ -63,7 +63,7 @@ module Mjbook
 
      #selected parameters for filter form
      all_expenses = policy_scope(Expense).business
-     @suppliers = Supplier.joins(:expenses).where('mjbook_expenses.id' => all_expenses.ids)
+     @suppliers = Supplier.joins(:expenses).where('mjbook_expenses.id' => all_expenses.ids.uniq)
      @supplier = params[:supplier_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]
