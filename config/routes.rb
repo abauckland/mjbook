@@ -1,5 +1,7 @@
 Mjbook::Engine.routes.draw do
   
+  resources :settings
+
   resources :participants
 
   resources :donations

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 1
+  email_domain: MyString
+  email_username: MyString
+  email_password: MyString
+  yearend: 2015-01-20 13:03:08
+
+two:
+  company_id: 1
+  email_domain: MyString
+  email_username: MyString
+  email_password: MyString
+  yearend: 2015-01-20 13:03:08
