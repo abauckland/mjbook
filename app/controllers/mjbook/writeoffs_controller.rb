@@ -22,7 +22,7 @@ module Mjbook
           end
 
           if params[:commit] == 'pdf'
-            pdf_writeoff_index(writeoffs, params[:customer_id], params[:date_from], params[:date_to])
+            pdf_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
           end
 
        @sum_price = @writeoffs.pluck(:price).sum
@@ -105,5 +105,23 @@ module Mjbook
       def writeoff_params
         params.require(:writeoff).permit(:company_id, :ref, :price, :vat, :total, :date, :notes)
       end
+
+      def pdf_writeoff_index(data, date_from, date_to)
+
+         filter_group = "all"
+
+         filename = "Written_off_debt_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+                 
+         document = Prawn::Document.new(
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|      
+            table_indexes(data, 'writeoff', filter_group, date_from, date_to, filename, pdf)      
+          end
+
+          send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
   end
 end

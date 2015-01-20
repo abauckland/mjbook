@@ -23,7 +23,7 @@ module Mjbook
 
 
        if params[:commit] == 'pdf'
-         pdf_creditnote_index(creditnotes, params[:customer_id], params[:date_from], params[:date_to])
+         pdf_creditnote_index(@creditnotes, params[:date_from], params[:date_to])
        end
 
        @sum_price = @creditnotes.pluck(:price).sum
@@ -101,13 +101,31 @@ module Mjbook
         params.require(:creditnote).permit(:company_id, :ref, :price, :vat, :total, :date, :notes, :state)
       end
 
+      def pdf_creditnote_index(expenses, date_from, date_to)
+
+         filter_group = "all"
+
+         filename = "Creditnotes_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+                 
+         document = Prawn::Document.new(
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|      
+            table_indexes(expenses, 'creditnote', filter_group, date_from, date_to, filename, pdf)      
+          end
+
+          send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+
       def print_creditnote_document(creditnote)  
        @document = Prawn::Document.new(
                                              :page_size => "A4",
                                               :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-                                              :info => {:title => creditnote.ref}        
+                                              :info => {:title => creditnote.ref}
                                             ) do |pdf|
-                                              print_creditnote(creditnote, pdf)       
+                                              print_creditnote(creditnote, pdf)
                                             end
       end
 

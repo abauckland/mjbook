@@ -11,8 +11,8 @@
         <div>
             <% if @projects %>  
             <div>
-                <label class="select">Project:</label>
-                <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
+                <label class="select">Customer:</label>
+                <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), prompt: "Select something" %>
             </div>                
             <% end %> 
             <div>

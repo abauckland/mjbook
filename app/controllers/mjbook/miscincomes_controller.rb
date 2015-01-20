@@ -4,25 +4,25 @@ module Mjbook
   class MiscincomesController < ApplicationController
     before_action :set_miscincome, only: [:show, :edit, :update, :destroy, :accept, :email]
     before_action :set_projects, only: [:new, :create, :edit, :update]
-    before_action :set_customers, only: [:index, :new, :edit]
+    before_action :set_customers, only: [:new, :edit]
 
     # GET /miscincomes
     def index
 
-    if params[:supplier_id]
+    if params[:customer_id]
 
-        if params[:supplier_id] != ""
+        if params[:customer_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @miscincomes = policy_scope(Miscincome).where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id])
+              @miscincomes = policy_scope(Miscincome).where(:date => params[:date_from]..params[:date_to], :customer_id => params[:customer_id])
             else
-              @miscincomes = policy_scope(Miscincome).where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id])
+              @miscincomes = policy_scope(Miscincome).where('date > ? AND customer_id =?', params[:date_from], params[:customer_id])
             end
           else
             if params[:date_to] != ""
-              @miscincomes = policy_scope(Miscincome).where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id])
+              @miscincomes = policy_scope(Miscincome).where('date < ? AND customer_id = ?', params[:date_to], params[:customer_id])
             else
-              @miscincomes = policy_scope(Miscincome).where(:supplier_id => params[:supplier_id])
+              @miscincomes = policy_scope(Miscincome).where(:customer_id => params[:customer_id])
             end
           end
         else
@@ -42,7 +42,7 @@ module Mjbook
         end
 
         if params[:commit] == 'pdf'          
-          pdf_miscincome_index(@miscincomes, params[:supplier_id], params[:date_from], params[:date_to])      
+          pdf_miscincome_index(@miscincomes, params[:customer_id], params[:date_from], params[:date_to])      
         end
 
        else
@@ -120,13 +120,13 @@ module Mjbook
         params.require(:miscincome).permit(:company_id, :ref, :project_id, :date, :price, :vat, :total, :item, :customer_id, :customer_ref, :note, :state)
       end
 
-      def pdf_miscincome_index(incomes, customer_id, date_from, date_to)
+      def pdf_miscincome_index(miscincomes, customer_id, date_from, date_to)
          customer = Customer.where(:id => customer_id).first if customer_id
 
          if supplier
            filter_group = customer.company_name
          else
-           filter_group = "All Payees"
+           filter_group = "All Customers"
          end
 
          filename = "Misc_income_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
@@ -136,7 +136,7 @@ module Mjbook
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|      
-            table_indexes(incomes, 'misc', filter_group, date_from, date_to, filename, pdf)
+            table_indexes(miscincomes, 'miscincome', filter_group, date_from, date_to, filename, pdf)
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"        

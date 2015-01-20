@@ -46,7 +46,7 @@ module Mjbook
         end
 
         if params[:commit] == 'pdf'
-          pdf_invoice_index(invoices, params[:customer_id], params[:date_from], params[:date_to])
+          pdf_invoice_index(@invoices, params[:customer_id], params[:date_from], params[:date_to])
         end
 
      else
