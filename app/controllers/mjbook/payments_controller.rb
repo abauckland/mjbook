@@ -172,7 +172,7 @@ module Mjbook
 
       if @payment.transfer?
         #paymentitems are destroyed when payments is deleted
-        item = Mjbook::Paymentitem.where(:payment_id => @payment.id)
+        item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
         transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
         transfer.correct_transfer!
 
@@ -184,7 +184,7 @@ module Mjbook
 
       if @payment.misc?
         #paymentitems are destroyed when payments is deleted
-        item = Mjbook::Paymentitem.where(:payment_id => @payment.id)
+        item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
         miscincome = Mjbook::Miscincome.where(:id => item.miscincome_id).first
         miscincome.correct_payment!
       end
