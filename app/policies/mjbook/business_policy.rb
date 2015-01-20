@@ -1,5 +1,5 @@
 module Mjbook
-  class BusinessesPolicy < Struct.new(:user, :business)
+  class BusinessPolicy < Struct.new(:user, :business)
 
     def index?
       true

@@ -73,7 +73,7 @@ module Mjbook
     # GET /expenses/1
     def show
       authorize @expense
-      authorize(:businesses, :show?)
+      authorize(:business, :show?)
     end
 
     # GET /new_personal
