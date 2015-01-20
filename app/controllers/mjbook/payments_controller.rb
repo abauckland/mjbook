@@ -174,7 +174,7 @@ module Mjbook
         #paymentitems are destroyed when payments is deleted
         item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
         transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
-        transfer.correct_transfer!
+        transfer.correct!
 
         #if transfer is destroyed also need to destroy record of payment
         expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first
@@ -186,7 +186,7 @@ module Mjbook
         #paymentitems are destroyed when payments is deleted
         item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
         miscincome = Mjbook::Miscincome.where(:id => item.miscincome_id).first
-        miscincome.correct_payment!
+        miscincome.correct!
       end
 
       delete_summary_record(@payment)
@@ -298,7 +298,7 @@ module Mjbook
           new_account_balance = last_transaction.account_balance + payment.total
         end
         
-        Mjbook::Summaries.create(:date => payment.date,
+        Mjbook::Summary.create(:date => payment.date,
                                   :company_id => payment.company_id,
                                   :companyaccount_id => payment.companyaccount_id,
                                   :payment_id => payment.id,

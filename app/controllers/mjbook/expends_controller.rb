@@ -181,12 +181,12 @@ module Mjbook
       expenditems.each do |item|
 
         if @expend.exp_type == 'business' || @expend.exp_type == 'personal'
-          expense = Mjbook::Expense.where(:id => item.expense_id)
-          expense.unpay!               
+          expense = Mjbook::Expense.where(:id => item.expense_id).first
+          expense.correct!             
         end
 
         if @expend.exp_type == 'salary'
-          salary = Mjbook::Salary.where(:id => item.salary_id)
+          salary = Mjbook::Salary.where(:id => item.salary_id).first
           salary.correct!               
         end
 
@@ -200,7 +200,7 @@ module Mjbook
         end
 
         if @expend.exp_type == 'misc'
-          miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id)
+          miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id).first
           miscexpense.correct!               
         end
 
@@ -282,14 +282,14 @@ module Mjbook
         last_transaction = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date).order('date').last
 
         if last_transaction.blank?
-          new_balance = 0-payment.total
-          new_account_balance = 0-payment.total
+          new_balance = 0-expend.total
+          new_account_balance = 0-expend.total
         else
-          new_balance = last_transaction.balance - payment.total
-          new_account_balance = last_transaction.account_balance - payment.total
+          new_balance = last_transaction.balance - expend.total
+          new_account_balance = last_transaction.account_balance - expend.total
         end
         
-        Mjbook::Summaries.create(:date => expend.date,
+        Mjbook::Summary.create(:date => expend.date,
                                   :company_id => expend.company_id,
                                   :companyaccount_id => expend.companyaccount_id,
                                   :expend_id => expend.id,
