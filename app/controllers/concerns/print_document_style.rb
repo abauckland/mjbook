@@ -1,11 +1,19 @@
 module PrintDocumentStyle
 
+    def customer_style
+    #font styles for page
+      customer_style = {:size => 8}
+    #formating for lines
+      customer_format = customer_style.merge(:align => :left)
+    end
+
     def company_style
     #font styles for page
       company_style = {:size => 8}
     #formating for lines
       company_format = company_style.merge(:align => :left)
     end
+
     
     def price_array(pdf)
     price_array = pdf.make_table([["Price"], ["(ex VAT)"]],

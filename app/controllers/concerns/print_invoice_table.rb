@@ -3,7 +3,7 @@ module PrintInvoiceTable
   include PrintTableGroup
   include PrintTableLine
 
-  def invoice_table(quote, pdf)   
+  def invoice_table(invoice, pdf)   
     pdf.line_width(0.1)
     ingroups = Mjbook::Ingroup.where(:invoice_id => invoice.id)         
 
@@ -27,7 +27,7 @@ module PrintInvoiceTable
     
       lines = Mjbook::Inline.where(:ingroup_id => group.id)
       lines.each do |line|       
-        print_table_item_line(line) 
+        print_table_item_line(line, sub_price, sub_vat, sub_total, pdf)
       end
       group_subtotal_table(group, pdf)
     end    
@@ -55,7 +55,7 @@ module PrintInvoiceTable
 
 
   
-  def group_total_data(qgroup) 
+  def group_total_data(ingroup) 
     [["", "Subtotal", number_to_currency(ingroup.price, :unit => "£"), "", number_to_currency(ingroup.vat_due, :unit => "£"), number_to_currency(ingroup.total, :unit => "£")]]
   end  
   

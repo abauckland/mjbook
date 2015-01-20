@@ -27,7 +27,7 @@ module PrintQuoteTable
     
       lines = Mjbook::Qline.where(:qgroup_id => group.id)
       lines.each do |line|       
-        print_table_item_line(line) 
+        print_table_item_line(line, sub_price, sub_vat, sub_total, pdf) 
       end
       group_subtotal_table(group, pdf)
     end    

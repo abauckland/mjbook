@@ -2,9 +2,9 @@ module PrintTableLine
   # HACK the helper is included in order to allow the formatting of data for processing by prawn
   include ActionView::Helpers::NumberHelper 
 
-  def print_table_item_line(line)
+  def print_table_item_line(line, sub_price, sub_vat, sub_total, pdf)
     #draft line table & get new location
-    draft_line_item_table(line, pdf)
+    draft_line_item_table(line,pdf)
     current_location = pdf.y - @draft_line_table.height
     
     if current_location >= 50.mm        

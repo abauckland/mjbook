@@ -6,7 +6,7 @@ module PrintTable
 
   def table_header(pdf)
 
-    data = [["Category", "Item", "Quantity", "Unit", "Unit Rate", price_array, "VAT(%)", "VAT", total_array]]
+    data = [["Category", "Item", "Quantity", "Unit", "Unit Rate", price_array(pdf), "VAT(%)", "VAT", total_array(pdf)]]
     column_widths = [29.mm, 50.mm, 13.mm, 12.mm, 18.mm, 18.mm, 14.mm, 18.mm, 18.mm]
       
     pdf.table(data, 

@@ -1,5 +1,5 @@
 
-  module PrintQuote
+  module PrintPageNumbers
     extend ActiveSupport::Concern
     
     def index_table_page_numbers(pdf)

@@ -1,39 +1,39 @@
-
-  module PrintInvoice
+  module PrintQuote
     extend ActiveSupport::Concern
    
     include PrintHeader
     include PrintCustomerDetail
+    include PrintFooter
     include PrintTable
     include PrintFooter
     include PrintPageNumbers
                  
-    include PrintInvoiceHeader
-    include PrintInvoiceDetail
-    include PrintInvoiceTable
-    include PrintInvoiceFooter
+    include PrintQuoteHeader
+    include PrintQuoteDetail
+    include PrintQuoteTable
+    include PrintQuoteFooter
         
-   def print_invoice(invoice, pdf)
+   def print_quote(quote, pdf)
    
       pdf.repeat(:all) do
         ##HEADERS
         company_header(pdf)
-        #INVOICE DETAILS
-        customer_details(invoice.project.customer, pdf)
-        invoice_details(invoice, pdf)
+        quote_header(pdf)
+        ##QUOTE DETAILS
+        customer_details(quote.project.customer, pdf)
+        quote_details(quote, pdf)
         
         pdf.y = 192.mm
         table_header(pdf)
       
       end
-      ##INVOICE_TABLE
-      table_header(pdf)
-      invoice_table(invoice, pdf)
+      ##QUOTE_TABLE
+      quote_table(quote, pdf)
     
       ##FOOTERS
-      invoice_total_footer(invoice, pdf)
+      quote_total_footer(quote, pdf)
       
-      invoice_terms_footer(invoice, pdf)
+      quote_terms_footer(quote, pdf)
       
       pdf.repeat(:all) do
         company_footer(pdf)        
