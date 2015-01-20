@@ -182,7 +182,7 @@ module Mjbook
 
         if @expend.exp_type == 'business' || @expend.exp_type == 'personal'
           expense = Mjbook::Expense.where(:id => item.expense_id)
-          expense.correct!               
+          expense.unpay!               
         end
 
         if @expend.exp_type == 'salary'
