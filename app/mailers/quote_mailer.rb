@@ -24,11 +24,6 @@ class QuoteMailer < ActionMailer::Base
   end
 end
 
-#in controller
-#QuoteMailer.quote(@quote, @document, current_user).deliver
-#
-
-
 #  config.action_mailer.delivery_method = :smtp
 
 #  config.action_mailer.smtp_settings = {
@@ -44,6 +39,3 @@ end
 #msg = MyMailer.some_message
 #msg.delivery_method.settings.merge!(@user.mail_settings)
 #msg.deliver
-
-#msg = QuoteMailer.quote(@quote, @document, current_user)
-#msg.smtp_settings.merge!(:domain => @company.domain, :user_name => @company.user_name, :password => @company.password)
