@@ -49,6 +49,10 @@ module Mjbook
           pdf_business_index(@expenses, params[:supplier_id], params[:date_from], params[:date_to])
         end
 
+        if params[:commit] == 'csv'          
+          csv_business_index(@expenses, params[:supplier_id], params[:date_from], params[:date_to])
+        end
+
      else
        @expenses = policy_scope(Expense).business
      end
@@ -154,6 +158,20 @@ module Mjbook
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+      def csv_business_index(expenses, supplier_id, date_from, date_to)
+         supplier = Supplier.where(:id => supplier_id).first if supplier_id
+
+         if supplier
+           filter_group = supplier.company_name
+         else
+           filter_group = "All Suppliers"
+         end
+         
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+
+         send_data expenses.to_csv, filename: filename, :type => "text/csv"
       end
 
       
