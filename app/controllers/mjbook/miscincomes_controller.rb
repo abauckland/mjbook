@@ -21,6 +21,8 @@ module Mjbook
           else
             if params[:date_to] != ""
               @miscincomes = policy_scope(Miscincome).where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id])
+            else
+              @miscincomes = policy_scope(Miscincome).where(:supplier_id => params[:supplier_id])
             end
           end
         else
@@ -46,8 +48,14 @@ module Mjbook
        else
          @miscincomes = policy_scope(Miscincome)
        end
-  
+
+     @sum_price = @miscincomes.pluck(:price).sum
+     @sum_vat = @miscincomes.pluck(:vat).sum
+     @sum_total = @miscincomes.pluck(:total).sum
+
        #selected parameters for filter form
+       all_miscincomes = policy_scope(Miscincome)
+       @customers = Customer.joins(:projects => :miscincomes).where('mjbook_miscincomes.id' => all_miscincomes.ids)
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]

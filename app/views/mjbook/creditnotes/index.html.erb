@@ -8,10 +8,6 @@
     <%= form_tag creditnotes_path, method: :get do %>  
         <div>
             <div>
-                <label class="select">Customer:</label>
-                <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), :prompt => 'all customers' %>
-            </div>
-            <div>
                 <label class="date">Date From:</label>
                 <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
                 <label class="date">Date To:</label>

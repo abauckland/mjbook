@@ -7,33 +7,17 @@ module Mjbook
     # GET /writeoffs
     def index
 
-      if params[:customer_id]
-
-          if params[:customer_id] != ""
-            if params[:date_from] != ""
-              if params[:date_to] != ""
-                @writeoffs = Writeoff.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
-              else
-                @writeoffs = Writeoff.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
-              end
+          if params[:date_from] != ""
+            if params[:date_to] != ""
+              @writeoffs = policy_scope(Writeoff).where(:date => params[:date_from]..params[:date_to])
             else
-              if params[:date_to] != ""
-                @writeoffs = Writeoff.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
-              end
+              @writeoffs = policy_scope(Writeoff).where('date > ?', params[:date_from])
             end
           else
-            if params[:date_from] != ""
-              if params[:date_to] != ""
-                @writeoffs = policy_scope(Writeoff).where(:date => params[:date_from]..params[:date_to])
-              else
-                @writeoffs = policy_scope(Writeoff).where('date > ?', params[:date_from])
-              end
+            if params[:date_to] != ""
+              @writeoffs = policy_scope(Writeoff).where('date < ?', params[:date_to])
             else
-              if params[:date_to] != ""
-                @writeoffs = policy_scope(Writeoff).where('date < ?', params[:date_to])
-              else
-                @writeoffs = policy_scope(Writeoff)
-              end
+              @writeoffs = policy_scope(Writeoff)
             end
           end
 
@@ -41,14 +25,10 @@ module Mjbook
             pdf_writeoff_index(writeoffs, params[:customer_id], params[:date_from], params[:date_to])
           end
 
-       else
-         @writeoffs = policy_scope(Writeoff)
-       end
+       @sum_price = @writeoffs.pluck(:price).sum
+       @sum_vat = @writeoffs.pluck(:vat).sum
+       @sum_total = @writeoffs.pluck(:total).sum
 
-       #selected parameters for filter form
-       all_invoices = policy_scope(Invoice)
-       @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_invoices.ids)
-       @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
 

@@ -18,13 +18,15 @@ module Mjbook
         if params[:customer_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @invoices = Invoice.joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
+              @invoices = policy_scope(Invoice).joins(:project).where(:date => params[:date_from]..params[:date_to], 'mjbook_projects.customer_id' => params[:customer_id])
             else
-              @invoices = Invoice.joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
+              @invoices = policy_scope(Invoice).joins(:project).where('date > ? AND mjbook_projects.customer_id =?', params[:date_from], params[:customer_id])
             end
           else
             if params[:date_to] != ""
-              @invoices = Invoice.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+              @invoices = policy_scope(Invoice).joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+            else
+              @invoices = policy_scope(Invoice).joins(:project).where('mjbook_projects.customer_id' =>params[:customer_id])
             end
           end
         else

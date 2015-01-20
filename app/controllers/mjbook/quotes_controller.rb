@@ -25,6 +25,8 @@ module Mjbook
           else
             if params[:date_to] != ""
               @quotes = Quote.joins(:project).where('date < ? AND mjbook_projects.customer_id = ?', params[:date_to], params[:customer_id])
+            else
+              @quotes = Quote.joins(:project).where('mjbook_projects.customer_id = ?', params[:customer_id])
             end
           end
         else

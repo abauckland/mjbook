@@ -20,6 +20,8 @@ module Mjbook
           else
             if params[:date_to] != ""
               @expends = policy_scope(Expend).where('date < ? AND companyaccount_id = ?', params[:date_to], params[:companyaccount_id])
+            else
+              @expends = policy_scope(Expend).where(:companyaccount_id => params[:companyaccount_id])
             end
           end
         else
@@ -46,8 +48,13 @@ module Mjbook
        @expends = policy_scope(Expend)
      end
 
+     @sum_price = @expends.pluck(:price).sum
+     @sum_vat = @expends.pluck(:vat).sum
+     @sum_total = @expends.pluck(:total).sum
+
      #selected parameters for filter form
-     @companyaccounts = policy_scope(Companyaccount)
+     all_expends = policy_scope(Expend)
+     @companyaccounts = Companyaccount.joins(:expends).where('mjbook_expends.id' => all_expends.ids)
      @companyaccount = params[:companyaccount_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]

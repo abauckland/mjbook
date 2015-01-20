@@ -3,7 +3,7 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class SalariesController < ApplicationController
     before_action :set_salary, only: [:show, :edit, :update, :destroy, :accept, :reject]
-    before_action :set_users, only: [:index, :new, :edit, :update, :create]
+    before_action :set_users, only: [:new, :edit, :update, :create]
 
     include PrintIndexes
 
@@ -23,7 +23,7 @@ module Mjbook
               if params[:date_to] != ""
                 @salaries = Salary.where('date < ? AND user_id = ?', params[:date_to], params[:user_id])
               else  
-                @salaries = Salary.where(:user_id => params[:user_id])                
+                @salaries = Salary.where(:user_id => params[:user_id])
               end
             end
           else
@@ -50,8 +50,13 @@ module Mjbook
          @salaries = policy_scope(Salary)
        end
 
+       @sum_price = @salaries.pluck(:price).sum
+       @sum_vat = @salaries.pluck(:vat).sum
+       @sum_total = @salaries.pluck(:total).sum
 
        #selected parameters for filter form
+       all_salaries = policy_scope(Salary)
+       @users = User.joins(:salaries).where('mjbook_salaries.id' => all_salaries.ids)
        @user = params[:user_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]

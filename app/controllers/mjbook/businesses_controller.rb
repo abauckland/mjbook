@@ -18,27 +18,29 @@ module Mjbook
         if params[:supplier_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).company(current_user).business
+              @expenses = policy_scope(Expense).where(:date => params[:date_from]..params[:date_to], :supplier_id => params[:supplier_id]).business
             else
-              @expenses = Expense.where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).company(current_user).business
+              @expenses = policy_scope(Expense).where('date > ? AND supplier_id =?', params[:date_from], params[:supplier_id]).business
             end
           else
             if params[:date_to] != ""
-              @expenses = Expense.where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).company(current_user).business
+              @expenses = policy_scope(Expense).where('date < ? AND supplier_id = ?', params[:date_to], params[:supplier_id]).business
+            else
+              @expenses = policy_scope(Expense).where(:supplier_id => params[:supplier_id]).business
             end
           end
         else
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where(:date => params[:date_from]..params[:date_to]).company(current_user).business
+              @expenses = policy_scope(Expense).where(:date => params[:date_from]..params[:date_to]).business
             else
-              @expenses = Expense.joins(:project).where('date > ?', params[:date_from]).company(current_user).business
+              @expenses = policy_scope(Expense).where('date > ?', params[:date_from]).business
             end
           else
             if params[:date_to] != ""
-              @expenses = Expense.joins(:project).where('date < ?', params[:date_to]).company(current_user).business
+              @expenses = policy_scope(Expense).where('date < ?', params[:date_to]).business
             else
-              @expenses = Expense.company(current_user).business
+              @expenses = policy_scope(Expense).business
             end
           end
         end
@@ -48,7 +50,7 @@ module Mjbook
         end
 
      else
-       @expenses = Expense.company(current_user).business
+       @expenses = policy_scope(Expense).business
      end
 
      @sum_price = @expenses.pluck(:price).sum
@@ -56,7 +58,8 @@ module Mjbook
      @sum_total = @expenses.pluck(:total).sum
 
      #selected parameters for filter form
-     @suppliers = Supplier.joins(:expenses => :project).where('mjbook_projects.company_id' => current_user.company_id)
+     all_expenses = policy_scope(Expense).business
+     @suppliers = Supplier.joins(:expenses).where('mjbook_expenses.id' => all_expenses.ids)
      @supplier = params[:supplier_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]
@@ -65,6 +68,8 @@ module Mjbook
 
     # GET /expenses/1
     def show
+      authorize @expense
+      authorize(:business, :show?)
     end
 
     # GET /new_personal
@@ -74,6 +79,7 @@ module Mjbook
 
     # GET /expenses/1/edit
     def edit
+      authorize @expense
     end
 
     # POST /expenses
@@ -89,6 +95,7 @@ module Mjbook
 
     # PATCH/PUT /expenses/1
     def update
+      authorize @expense
       if @expense.update(expense_params)
         redirect_to businesses_path, notice: 'Expense was successfully updated.'
       else
@@ -98,6 +105,7 @@ module Mjbook
 
     # DELETE /expenses/1
     def destroy
+      authorize @expense
       @expense.destroy
       redirect_to businesses_path, notice: 'Expense was successfully destroyed.'
     end

@@ -2,14 +2,14 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class PersonalsController < ApplicationController
-    
+
     before_action :set_expense, only: [:show, :edit, :update, :destroy]
     before_action :set_suppliers, only: [:new, :edit]
-    before_action :set_projects, only: [:index, :new, :edit]
+    before_action :set_projects, only: [:new, :edit]
     before_action :set_hmrcexpcats, only: [:new, :edit]
 
     include PrintIndexes
-    
+
 
     # GET /personal
     def index
@@ -26,6 +26,8 @@ module Mjbook
           else
             if params[:date_to] != ""
               @expenses = Expense.where('date < ? AND project_id = ?', params[:date_to], params[:project_id]).user(current_user).personal
+            else
+              @expenses = Expense.where(:project_id => params[:project_id]).user(current_user).personal
             end
           end
         else
@@ -43,7 +45,7 @@ module Mjbook
             end
           end
         end
-     
+
         if params[:commit] == 'pdf'
           pdf_personal_index(@expenses, params[:project_id], params[:date_from], params[:date_to])
         end
@@ -52,7 +54,14 @@ module Mjbook
        @expenses = Expense.user(current_user).personal
      end
 
-     #selected parameters for filter form     
+     @sum_price = @expenses.pluck(:price).sum
+     @sum_vat = @expenses.pluck(:vat).sum
+     @sum_total = @expenses.pluck(:total).sum
+
+     #selected parameters for filter form
+     all_expenses = Expense.user(current_user).personal
+     @projects = Project.joins(:expenses).where('mjbook_expenses.id' => all_expenses.ids)
+     @projects = params[:project_id]
      @project = params[:project_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to] 
