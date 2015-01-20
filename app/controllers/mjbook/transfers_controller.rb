@@ -74,7 +74,7 @@ module Mjbook
                           :paymethod_id => @transfer.paymethod_id,
                           :total => @transfer.total,
                           :inc_type => 'transfer',
-                          :state => 'confirmed'
+                          :state => 'paid'
         )
         
         if @payment.save

@@ -15,19 +15,14 @@ module Mjbook
     aasm :column => 'state' do
 
       state :paid, :initial => true
-      state :confirmed
       state :reconciled
 
-      event :confirm do
-        transitions :from => :paid, :to => :confirmed
-      end
-  
       event :reconcile do
-        transitions :from => :confirmed, :to => :reconciled
+        transitions :from => :paid, :to => :reconciled
       end
-  
+
       event :unreconcile do
-        transitions :from => :reconciled, :to => :confirmed
+        transitions :from => :reconciled, :to => :paid
       end
   
     end

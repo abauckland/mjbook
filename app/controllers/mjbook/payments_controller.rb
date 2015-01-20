@@ -119,7 +119,6 @@ module Mjbook
           miscincome = Mjbook::Miscincome.where(:id => params[:miscincome_id]).first
           Mjbook::Paymentitem.create(:payment_id => @payment.id, :miscincome_id => miscincome.id)
           miscincome.pay!
-          @payment.confirm!
         end
 
         create_summary_record(@payment)
