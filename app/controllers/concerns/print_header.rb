@@ -4,6 +4,12 @@ module PrintHeader
 
   def company_header(pdf)
     
+#    require 'open-uri'    
+#    if current_user.company.logo?
+#      pdf.text "logo"
+#      pdf.image open(current_user.company.logo_url), :vposition => 100.mm, :fit => [350,250]
+#    end
+    
     pdf.bounding_box([0.mm, 265.mm], :width => 95.mm, :height => 20.mm) do
         pdf.text current_user.company.name, company_style unless current_user.company.name.blank?
         pdf.text current_user.company.address_1, company_style unless current_user.company.address_1.blank?
