@@ -50,13 +50,11 @@ module Mjbook
          @salaries = policy_scope(Salary)
        end
 
-       @sum_price = @salaries.pluck(:price).sum
-       @sum_vat = @salaries.pluck(:vat).sum
        @sum_total = @salaries.pluck(:total).sum
 
        #selected parameters for filter form
-       all_salaries = policy_scope(Salary)
-       @users = User.joins(:salaries).where('mjbook_salaries.id' => all_salaries.ids)
+       user_id_array = policy_scope(Salary).pluck(:user_id).uniq    
+       @users = User.where(:id => user_id_array) 
        @user = params[:user_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
