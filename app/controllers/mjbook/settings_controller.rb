@@ -14,7 +14,7 @@ module Mjbook
     def update
       authorize @setting
       if @setting.update(setting_params)
-        redirect_to @setting, notice: 'Setting was successfully updated.'
+        redirect_to edit_setting_path(@setting), notice: 'Setting was successfully updated.'
       else
         render :edit
       end
