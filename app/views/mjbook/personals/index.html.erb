@@ -75,7 +75,7 @@
                                         <td class="personal_supplier"></td>
                                         <td class="personal_supplier_ref"></td>
                                         <td class="personal_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
-                                        <td width="20px" class="row_button"></td>
+                                        <td class="row_button no_buttons_1"></td>
                                         <td class="personal_distance"><%= expense.mileage.distance if expense.mileage %></td>
                                         <td class="personal_price"></td>
                                         <td class="personal_vat_due"></td>
@@ -94,7 +94,7 @@
                                         <td class="personal_supplier"><%= expense.supplier.name.titleize %></td>
                                         <td class="personal_supplier_ref"><%= expense.supplier_ref %></td>
                                         <td class="personal_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
-                                        <td width="20px" class="row_button>
+                                        <td class="row_button no_buttons_1">
                                             <% if expense.receipt %>
                                                 <%= link_to "", expense.receipt_url, class: 'line_view_icon', title: "view receipt" %>
                                             <% end %>
