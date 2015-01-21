@@ -44,7 +44,11 @@ module Mjbook
           end
 
           if params[:commit] == 'pdf'
-            pdf_payment_index(payments, params[:customer_id], params[:date_from], params[:date_to])
+            pdf_payment_index(@payments, params[:companyaccount_id], params[:date_from], params[:date_to])
+          end
+
+          if params[:commit] == 'csv'          
+            csv_payment_index(@payments, params[:companyaccount_id], params[:date_from], params[:date_to])
           end
 
        else
@@ -252,7 +256,7 @@ module Mjbook
         params.require(:payment).permit(:ref, :company_id, :user_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :inc_type, :notes, :state)
       end
 
-      def pdf_quote_index(payments, customer_id, date_from, date_to)
+      def pdf_payment_index(payments, customer_id, date_from, date_to)
          customer = Customer.where(:id => customer_id).first if customer_id
 
          if customer
@@ -276,6 +280,20 @@ module Mjbook
           send_data document.render, filename: filename, :type => "application/pdf"
       end 
 
+      def csv_payment_index(payments, companyaccount_id, date_from, date_to)
+         account = Mjbook::Companyaccount.where(:id => companyaccount_id).first if companyaccount_id
+
+         if account
+           filter_group = account.name
+         else
+           filter_group = "All Accounts"
+         end
+         
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data payments.to_csv, filename: filename, :type => "text/csv"
+      end
+
       def print_receipt_document(payment)  
               @document = Prawn::Document.new(
                                              :page_size => "A4",
@@ -285,7 +303,6 @@ module Mjbook
                                               print_receipt(payment, pdf)
                                             end
       end
-
 
       def create_summary_record(payment)
         last_transaction = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date).order('date').last
