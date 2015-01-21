@@ -9,7 +9,7 @@
         <div>
             <div>
                 <label class="select">Account:</label>
-                <%= select_tag 'customer_id', options_from_collection_for_select(@companyaccounts, :id, :name, @companyaccount), :prompt => 'all accounts' %>
+                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@companyaccounts, :id, :name, @companyaccount), :prompt => 'all accounts' %>
             </div>
             <div>
                 <label class="date">Date From:</label>
@@ -21,6 +21,7 @@
         </div>
         <div class="float_right">
             <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+            <div><%= submit_tag 'csv', :class => "options_csv_icon"%></div>
         </div>  
     <% end %> 
 </div>
@@ -48,7 +49,7 @@
                             <th class="payment_total">Total</br><span>(Inc VAT)</span></th>
                             <th class="payment_status">Status</th>
                             <th class="payment_note">Note</th>
-                            <th class="row_button no_buttons_3"></th>
+                            <th class="row_button no_buttons_4"></th>
                         </tr>
                     </thead>
                 </table>
@@ -69,7 +70,7 @@
                                     <td class="payment_total"><%= pounds(payment.total) %></td>
                                     <td id="<%= payment.id %>_status" class="payment_status"><%= payment.state %></td>
                                     <td class="payment_note"><%= payment.note %></td> 
-                                    <td id="<%= payment.id %>_links" class="row_button no_buttons_3">
+                                    <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
                                         <% unless payment.reconciled? %>
                                             <%= row_delete_link(payment, 'show') %>
                                             <!-- transfers cannot be edited -->
