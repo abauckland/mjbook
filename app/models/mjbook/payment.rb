@@ -27,6 +27,18 @@ module Mjbook
   
     end
 
+    def self.to_csv
+      
+      require 'csv'
+      
+      CSV.generate do |csv|
+        csv << column_names
+        all.each do |product|
+          csv << product.attributes.values_at(*column_names)
+        end
+      end
+    end
+
     private
 
     default_scope { order('date DESC') }
