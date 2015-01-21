@@ -1,44 +1,44 @@
 <div class="row title_band">
     <div class="page_title">
         <h1><%= current_user.first_name.capitalize %>'s Expenses</h1>
-    </div>      
+    </div>
     <div><%= link_to "+ expense", new_personal_path, class: "title_button" %> </div>
     <div><%= link_to "+ mileage", new_mileage_path, class: "title_button" %> </div>
 </div>
 
 <div class="row filter_band">
     <%= form_tag personals_path, method: :get do %>
-  
+
         <div>
-            <% if @projects %>  
+            <% if @projects %>
             <div>
                 <label class="select">Project:</label>
                 <%= select_tag 'project_id', options_from_collection_for_select(@projects, :id, :name, @project), prompt: "Select something" %>
-            </div>                
-            <% end %> 
+            </div>
+            <% end %>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
+            </div>
+            <%= submit_tag 'Filter' %>
         </div>
-        
-        <div class="float_right">   
-            <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
-        </div>  
 
-    <% end %> 
+        <div class="float_right">
+            <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
+        </div>
+
+    <% end %>
 </div>
 
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
+        <div class="border">
 
             <%= render :partial => "flash_notice" %>
-            
+
             <div class="row">
 
                 <table>
@@ -49,8 +49,9 @@
                             <th class="personal_category">Category</th>
                             <th class="personal_ref">Reference</th>
                             <th class="personal_supplier">Supplier</th>
-                            <th class="personal_supplier_ref">Supplier Ref</th>    
+                            <th class="personal_supplier_ref">Supplier Ref</th>
                             <th class="personal_issue_date">Issue Date</th>
+                            <th class="row_button no_buttons_1"></th>
                             <th width="personal_distance">Distance</th>
                             <th class="personal_price">Price</br><span>(ex VAT)</span></th>
                             <th class="personal_vat_due">Vat</th>
@@ -63,7 +64,7 @@
 
                 <table>
                     <tbody>
-                        <% if @expenses %>            
+                        <% if @expenses %>
                             <% @expenses.each do |expense| %>
                                 <tr>
                                     <td class="personal_due_date"><%= expense.due_date.strftime("%d/%m/%y") %></td>
@@ -95,7 +96,7 @@
                                         <td class="personal_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
                                         <td width="20px" class="row_button>
                                             <% if expense.receipt %>
-                                                <%= link_to "", expense.receipt_url, class: 'line_view_icon fancybox', title: "view receipt" %>
+                                                <%= link_to "", expense.receipt_url, class: 'line_view_icon', title: "view receipt" %>
                                             <% end %>
                                         </td>
                                         <td class="personal_distance"></td>
@@ -111,14 +112,14 @@
                                             <%= link_to '', personal_path(expense), method: :delete, class: 'line_delete_icon_show' , title: "delete" %>                      
                                             <%= link_to "", edit_personal_path(expense), class: 'line_edit_icon_show', title: "edit" %>
                                         <% end %>
-                                        </td>                
+                                        </td>
                                     <% end %>
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>
