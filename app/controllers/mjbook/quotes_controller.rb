@@ -162,15 +162,15 @@ module Mjbook
 
     def email
         print_quote_document(@quote)
-#        QuoteMailer.quote(@quote, @document, current_user).deliver
 
-msg = QuoteMailer.quote(@quote, @document, current_user)
-settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
-if !settings.blank?
- user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
- msg.smtp_settings.merge!(user_mail_setting)
-end
-msg.deliver
+        settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
+
+        msg = QuoteMailer.quote(@quote, @document, current_user, settings)
+        if !settings.blank?
+          user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
+          msg.delivery_method.settings.merge!(user_mail_setting)
+        end
+        msg.deliver
 
         if @quote.submit!
           respond_to do |format|

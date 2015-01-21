@@ -80,9 +80,16 @@ module Mjbook
       #change state of payment to show receipt has been emailed?
         authorize @creditnote
         print_creditnote_document(@creditnote)
-        CreditnoteMailer.creditnote(@creditnote, @document, current_user).deliver
-        @creditnote.confirm!
-        
+
+        settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
+
+        msg = CreditnoteMailer.creditnote(@creditnote, @document, current_user, settings)        
+        if !settings.blank?
+          user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
+          msg.delivery_method.settings.merge!(user_mail_setting)
+        end
+        msg.deliver
+
         if @creditnote.confirm!
           respond_to do |format|
             format.js   { render :email, :layout => false }

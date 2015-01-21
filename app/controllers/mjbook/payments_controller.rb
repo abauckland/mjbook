@@ -223,7 +223,15 @@ module Mjbook
     def email
         authorize @payment
         print_receipt_document(@payment)
-        PaymentMailer.receipt(@payment, @document, current_user).deliver
+
+        settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
+
+        msg = PaymentMailer.receipt(@payment, @document, current_user, settings)
+        if !settings.blank?
+          user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
+          msg.delivery_method.settings.merge!(user_mail_setting)
+        end
+        msg.deliver
 
         if @payment.confirm!
           respond_to do |format|

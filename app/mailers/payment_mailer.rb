@@ -1,6 +1,6 @@
 class PaymentMailer < ActionMailer::Base
 
-  def receipt(payment, document, current_user)
+  def receipt(payment, document, current_user, settings)
     
     @payment = payment
     @customer = Mjbook::Customer.joins(:project => [:invoice => [:ingroup => [:inline => :paymentitems]]]).where('mjbook_paymentitems.payment_id' => payment.id).first
@@ -17,7 +17,7 @@ class PaymentMailer < ActionMailer::Base
     
     attachments[file_name] = document.render
        
-    mail(to: email_address, subject: email_subject, cc: current_user.email ) do |format|
+    mail(to: email_address, subject: email_subject, cc: current_user.email, from: settings.email_username ) do |format|
      # format.html { render 'another_template' }
       format.text
     end

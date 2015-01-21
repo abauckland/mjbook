@@ -165,7 +165,15 @@ module Mjbook
     
     def email
         print_invoice_document(@invoice)
-        InvoiceMailer.invoice(@invoice, @document, current_user).deliver
+
+        settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
+
+        msg = InvoiceMailer.invoice(@invoice, @document, current_user, settings)
+        if !settings.blank?
+          user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
+          msg.delivery_method.settings.merge!(user_mail_setting)
+        end
+        msg.deliver
         
         if @invoice.submit!
           respond_to do |format|

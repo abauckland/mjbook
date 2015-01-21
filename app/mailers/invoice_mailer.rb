@@ -1,6 +1,6 @@
 class InvoiceMailer < ActionMailer::Base
 
-  def invoice(invoice, document, current_user)
+  def invoice(invoice, document, current_user, settings)
     
     @invoice = invoice
     @customer = Mjbook::Customer.joins(:project => :invoice).where('mjbook_invoices.payment_id' => invoice.id).first    
@@ -17,7 +17,7 @@ class InvoiceMailer < ActionMailer::Base
     
     attachments[file_name] = document.render
    
-    mail(to: email_address, subject: email_subject, cc: current_user.email ) do |format|
+    mail(to: email_address, subject: email_subject, cc: current_user.email, from: settings.email_username ) do |format|
     #  format.html { render 'another_template' }
       format.text
     end
