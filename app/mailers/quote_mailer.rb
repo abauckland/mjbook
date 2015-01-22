@@ -23,19 +23,3 @@ class QuoteMailer < ActionMailer::Base
     end
   end
 end
-
-#  config.action_mailer.delivery_method = :smtp
-
-#  config.action_mailer.smtp_settings = {
-#    :tls => true,
-#    :address => "secure.emailsrvr.com",
-#    :port => 465,
-##    :domain => "myhq.org.uk",
-##    :user_name => "admin@myhq.org.uk",
-##    :password => "bubble",
-#    :authentication => :login
-# }
-
-#msg = MyMailer.some_message
-#msg.delivery_method.settings.merge!(@user.mail_settings)
-#msg.deliver

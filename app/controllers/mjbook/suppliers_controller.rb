@@ -9,6 +9,7 @@ module Mjbook
     
     # GET /suppliers
     def index
+      authorize @suppliers
     end
 
     # GET /suppliers/1
@@ -29,7 +30,7 @@ module Mjbook
     # POST /suppliers
     def create
       @supplier = Supplier.new(supplier_params)
-
+      authorize @supplier
       if @supplier.save
         redirect_to suppliers_path, notice: 'Supplier was successfully created.'
       else

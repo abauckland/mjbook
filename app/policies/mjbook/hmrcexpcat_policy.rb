@@ -10,7 +10,7 @@ module Mjbook
     end
             
     def index?
-      user.owner? || user.admin? 
+      user.owner? || user.admin?
     end
 
     def new?

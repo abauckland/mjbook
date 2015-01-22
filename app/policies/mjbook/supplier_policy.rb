@@ -16,7 +16,7 @@ module Mjbook
     end
 
     def show?
-      owned
+      index?
     end
 
     def new?
@@ -24,7 +24,7 @@ module Mjbook
     end
 
     def edit?
-      owned
+      index?
     end
 
     def create?
@@ -32,11 +32,15 @@ module Mjbook
     end
 
     def update?
-      owned
+      index?
     end
 
     def destroy?
-      owned
+      index?
+    end
+
+    def print?
+      index?
     end
 
   end

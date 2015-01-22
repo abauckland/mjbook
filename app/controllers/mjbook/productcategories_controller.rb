@@ -7,6 +7,7 @@ module Mjbook
 
     # GET /productcategories
     def index
+      authorize @productcategories
     end
     
     def cat_options
@@ -32,12 +33,13 @@ module Mjbook
 
     # GET /productcategories/1/edit
     def edit
+      authorize @productcategory
     end
 
     # POST /productcategories
     def create
       @productcategory = Productcategory.new(productcategory_params)
-
+      authorize @productcategory
       if @productcategory.save
         redirect_to productcategories_path, notice: 'Productcategory was successfully created.'
       else
@@ -47,6 +49,7 @@ module Mjbook
 
     # PATCH/PUT /productcategories/1
     def update
+      authorize @productcategory
       if @productcategory.update(productcategory_params)
         redirect_to productcategories_path, notice: 'Productcategory was successfully updated.'
       else
@@ -56,6 +59,7 @@ module Mjbook
 
     # DELETE /productcategories/1
     def destroy
+      authorize @productcategory
       @productcategory.destroy
       redirect_to productcategories_path, notice: 'Productcategory was successfully destroyed.'
     end

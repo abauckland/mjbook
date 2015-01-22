@@ -9,12 +9,12 @@ module Mjbook
     # GET /transfers
     def index
       @transfers = policy_scope(Transfer)
+      authorize @transfers
     end
 
     # GET /transfers/new
     def new
       @transfer = Transfer.new
-      authorize @transfer
     end
 
     # GET /transfers/1/edit

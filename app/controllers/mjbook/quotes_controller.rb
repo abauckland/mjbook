@@ -67,6 +67,7 @@ module Mjbook
 
     # GET /quotes/1
     def show
+      authorize @quote
     end
 
     # GET /quotes/new
@@ -77,7 +78,7 @@ module Mjbook
 
     # GET /quotes/1/edit
     def edit
-
+      authorize @quote
     end
 
     # POST /quotes
@@ -98,6 +99,8 @@ module Mjbook
                           :total => clone_quote.total
                           }
         @quote = Quote.new(new_quote_hash)
+
+      authorize @quote
         if @quote.save          
           create_quote_content(@quote, clone_quote)
           redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
@@ -120,6 +123,7 @@ module Mjbook
 
     # PATCH/PUT /quotes/1
     def update
+      authorize @quote
       if @quote.update(quote_params)
         @quote.draft!
         redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully updated.'
@@ -130,11 +134,13 @@ module Mjbook
 
     # DELETE /quotes/1
     def destroy
+      authorize @quote
       @quote.destroy
       redirect_to quotes_url, notice: 'Quote was successfully destroyed.'
     end
     
     def accept
+      authorize @quote
       #mark expense ready for payment
       if @quote.accept!       
         respond_to do |format|
@@ -144,6 +150,7 @@ module Mjbook
     end 
 
     def reject
+      authorize @quote
       #mark expense as rejected
       if @quote.reject!
         respond_to do |format|
@@ -153,7 +160,7 @@ module Mjbook
     end
     
     def print
-
+      authorize @quote
         print_quote_document(@quote)
         filename = "#{@quote.project.ref}.pdf"
 
@@ -161,6 +168,7 @@ module Mjbook
     end
 
     def email
+      authorize @quote
         print_quote_document(@quote)
 
         settings = Mjbook::Setting.where(:company_id => current_user.company_id).first

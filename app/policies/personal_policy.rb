@@ -1,4 +1,4 @@
-class BusinessPolicy < Struct.new(:user, :business)
+class PersonalPolicy < Struct.new(:user, :personal)
 
     def index?
       true

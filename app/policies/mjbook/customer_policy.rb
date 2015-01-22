@@ -7,16 +7,12 @@ module Mjbook
       end
     end
 
-    def owned
-      record.company_id == user.company_id
-    end
-
     def index?
       true
     end
 
     def show?
-      owned
+      index?
     end
 
     def new?
@@ -24,7 +20,7 @@ module Mjbook
     end
 
     def edit?
-      owned
+      index?
     end
 
     def create?
@@ -32,11 +28,15 @@ module Mjbook
     end
 
     def update?
-      owned
+      index?
     end
 
     def destroy?
-      owned
+      index?
+    end
+
+    def print?
+      index?
     end
 
   end

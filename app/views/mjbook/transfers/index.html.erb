@@ -42,12 +42,17 @@
                                         <% if transfer.transferred? %>
                                             <%= row_delete_link(transfer, 'hidden') %>
                                             <%= row_edit_link(transfer, 'hidden') %>
-                                            <%= row_transfer_link(transfer, 'hidden') %> 
                                         <% else %>
                                             <%= row_delete_link(transfer, 'show') %>
                                             <%= row_edit_link(transfer, 'show') %>
-                                            <%= row_transfer_link(transfer, 'show')  %> 
-                                        <% end %>                                         
+                                        <% end %>
+										<% if current_user.owner? || current_user.admin? %>
+	                                        <% if transfer.transferred? %>
+	                                            <%= row_transfer_link(transfer, 'hidden') %>
+	                                        <% else %>
+	                                            <%= row_transfer_link(transfer, 'show')  %>
+	                                        <% end %>
+										<% end %>
                                     </td>
                                 </tr>
                             <% end %>  

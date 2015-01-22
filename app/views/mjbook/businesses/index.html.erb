@@ -87,25 +87,27 @@
                                             <% if expense.submitted? || expense.rejected? %>
                                                 <%= link_to '', business_path(expense), method: :delete, class: 'line_delete_icon_show' , title: "delete" %>                 
                                                 <%= link_to "", edit_business_path(expense), class: 'line_edit_icon_show', title: "edit" %>
-                                                <%= row_accept_link(expense, 'show') %>
                                             <% else %>
                                                 <%= link_to '', business_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>               
                                                 <%= link_to "", edit_business_path(expense), class: 'line_edit_icon_hidden', title: "edit" %>
-                                                <%= row_accept_link(expense, 'hidden') %>
                                             <% end %>
-
-                                            <% if expense.submitted? || expense.accepted? %>
-                                                <%= row_reject_link(expense, 'show') %>
-                                            <% else %>
-                                                <%= row_reject_link(expense, 'hidden') %>
-                                            <% end %>
-
-                                            <% if expense.accepted? %>
-                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_show' , title: "record payment"  %>
-                                            <% else %>
-                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
-                                            <% end %>
-
+											<% if current_user.owner? || current_user.admin? %>
+	                                            <% if expense.submitted? || expense.rejected? %>
+	                                                <%= row_accept_link(expense, 'show') %>
+	                                            <% else %>
+	                                                <%= row_accept_link(expense, 'hidden') %>
+	                                            <% end %>
+	                                            <% if expense.submitted? || expense.accepted? %>
+	                                                <%= row_reject_link(expense, 'show') %>
+	                                            <% else %>
+	                                                <%= row_reject_link(expense, 'hidden') %>
+	                                            <% end %>
+	                                            <% if expense.accepted? %>
+	                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_show' , title: "record payment"  %>
+	                                            <% else %>
+	                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
+	                                            <% end %>
+											<% end %>
                                             <%= link_to '', business_path(expense), class: 'line_show_icon_show' , title: "show full details"  %>
                                         </td>
                                 </tr>
