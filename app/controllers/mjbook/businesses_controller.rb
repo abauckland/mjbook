@@ -79,15 +79,18 @@ module Mjbook
     # GET /new_personal
     def new
       @expense = Expense.new
+      authorize(:business, :new?)
     end
 
     # GET /expenses/1/edit
     def edit
       authorize @expense
+      authorize(:business, :edit?)
     end
 
     # POST /expenses
     def create
+      authorize(:business, :create?)
       @expense = Expense.new(expense_params)
      # @expense.due_date = Time.now.utc.end_of_month
       if @expense.save
@@ -100,6 +103,7 @@ module Mjbook
     # PATCH/PUT /expenses/1
     def update
       authorize @expense
+      authorize(:business, :update?)
       if @expense.update(expense_params)
         redirect_to businesses_path, notice: 'Expense was successfully updated.'
       else
@@ -110,6 +114,7 @@ module Mjbook
     # DELETE /expenses/1
     def destroy
       authorize @expense
+      authorize(:business, :destroy?)
       @expense.destroy
       redirect_to businesses_path, notice: 'Expense was successfully destroyed.'
     end

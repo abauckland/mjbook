@@ -9,6 +9,7 @@ module Mjbook
 
     # GET /customers
     def index
+      authorize @customers
     end
 
     # GET /customers/1
@@ -56,7 +57,7 @@ module Mjbook
 
 
     def print
-
+      authorize @customers
       filename = "Customers.pdf"
 
       document = Prawn::Document.new(

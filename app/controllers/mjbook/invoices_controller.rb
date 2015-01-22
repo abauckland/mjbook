@@ -10,11 +10,11 @@ module Mjbook
 
     include PrintIndexes
     include PrintInvoice
-        
+
     # GET /invoice
     def index
     if params[:customer_id]
-  
+
         if params[:customer_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
@@ -63,6 +63,7 @@ module Mjbook
 
     # GET /invoice/1
     def show
+      authorize @invoice
     end
 
     # GET /invoice/new
@@ -72,11 +73,12 @@ module Mjbook
 
     # GET /invoice/1/edit
     def edit
+      authorize @invoice
     end
 
     # POST /invoice
     def create
-
+      authorize @invoice
       if params[:invoice_content] == 'clone_quote'
         
        clone_quote = Quote.where(:id => params[:clone_quote]).first
@@ -91,20 +93,20 @@ module Mjbook
                           :price => clone_quote.price,
                           :vat_due => clone_quote.vat_due,
                           :total => clone_quote.total
-                          }                                  
+                          }
         @invoice = Invoice.new(new_invoice_hash)
         if @invoice.save
-          
+
           create_quote_content(@invoice, clone_quote)
-          
+
           redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
         else
           render :new
         end
-      end  
+      end
 
       if params[:invoice_content] == 'clone_invoice'
-        
+
        clone_invoice = Invoice.where(:id => params[:clone_invoice]).first
 
        new_invoice_hash = {
@@ -117,18 +119,18 @@ module Mjbook
                           :price => clone_invoice.price,
                           :vat_due => clone_invoice.vat_due,
                           :total => clone_invoice.total
-                          }                                  
+                          }
         @invoice = Invoice.new(new_invoice_hash)
-        if @invoice.save          
-          create_invoice_content(@invoice, clone_invoice)          
+        if @invoice.save
+          create_invoice_content(@invoice, clone_invoice)
           redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully created.'
         else
           render :new
         end
-      end 
+      end
 
-        
-      if params[:invoice_content] == 'blank'     
+
+      if params[:invoice_content] == 'blank'
         @invoice = Invoice.new(invoice_params)
         if @invoice.save
           ingroup = Mjbook::Ingroup.create(:invoice_id => @invoice.id, :ref => '1', :text => 'Invoice section title')
@@ -142,6 +144,7 @@ module Mjbook
 
     # PATCH/PUT /invoice/1
     def update
+      authorize @invoice
       if @invoice.update(invoice_params)
         @invoice.draft!
         redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully updated.'
@@ -152,34 +155,37 @@ module Mjbook
 
     # DELETE /invoice/1
     def destroy
+      authorize @invoice
       @invoice.destroy
       redirect_to invoices_path, notice: 'Invoice was successfully deleted.'
     end
 
-    def print      
-        print_invoice_document(@invoice)      
-        filename = "#{@invoice.project.ref}.pdf"   
+    def print
+      authorize @invoice
+      print_invoice_document(@invoice)
+      filename = "#{@invoice.project.ref}.pdf"
 
         send_data @document.render, filename: filename, :type => "application/pdf"      
     end
-    
+
     def email
-        print_invoice_document(@invoice)
+      authorize @invoice
+      print_invoice_document(@invoice)
 
-        settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
+      settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
 
-        msg = InvoiceMailer.invoice(@invoice, @document, current_user, settings)
-        if !settings.blank?
-          user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
-          msg.delivery_method.settings.merge!(user_mail_setting)
+      msg = InvoiceMailer.invoice(@invoice, @document, current_user, settings)
+      if !settings.blank?
+        user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
+        msg.delivery_method.settings.merge!(user_mail_setting)
+      end
+      msg.deliver
+
+      if @invoice.submit!
+        respond_to do |format|
+          format.js   { render :email, :layout => false }
         end
-        msg.deliver
-        
-        if @invoice.submit!
-          respond_to do |format|
-            format.js   { render :email, :layout => false }
-          end 
-        end
+      end
     end
 
     private
@@ -201,7 +207,7 @@ module Mjbook
       end
       
       def set_invoiceterms
-        @invoiceterms = policy_scope(Invoiceterm)        
+        @invoiceterms = policy_scope(Invoiceterm)
       end
 
       # Only allow a trusted parameter "white list" through.
@@ -225,25 +231,25 @@ module Mjbook
             :page_layout => :landscape,
             :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
-      
+
             table_indexes(invoices, 'invoice', filter_group, date_from, date_to, filename, pdf)
-      
+
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"
-      end 
+      end
 
-      def print_invoice_document(invoice)  
+      def print_invoice_document(invoice)
             @document = Prawn::Document.new(
                                             :page_size => "A4",
                                             :margin => [5.mm, 10.mm, 5.mm, 10.mm],
                                             :info => {:title => invoice.project.title}
                                             ) do |pdf|
-                                              print_invoice(invoice, pdf)       
+                                              print_invoice(invoice, pdf)
                                             end
       end
 
-      def create_invoice_content(invoice, clone_invoice)     
+      def create_invoice_content(invoice, clone_invoice)
 
         clone_group = Mjbook::Ingroup.where(:invoice_id => clone_invoice.id)
         clone_group.each do |ingroup|          
@@ -255,16 +261,16 @@ module Mjbook
           clone_line.each do |inline|
             new_inline = inline.dup
             new_inline.save
-            new_inline.update(:ingroup_id => new_ingroup.id)           
+            new_inline.update(:ingroup_id => new_ingroup.id)
           end
         end
       end
 
-      def create_quote_content(invoice, clone_quote)     
+      def create_quote_content(invoice, clone_quote)
         
         clone_group = Mjbook::Qgroup.where(:quote_id => clone_quote.id)
         clone_group.each do |qgroup| 
-                    
+
           new_ingroup = Mjbook::Ingroup.create(
                                               :invoice_id => invoice.id,
                                               :ref => qgroup.ref,

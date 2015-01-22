@@ -10,6 +10,7 @@ module Mjbook
     
     # GET /products
     def index
+      authorize @products
     end
     
     def quote_item_options
@@ -74,11 +75,13 @@ module Mjbook
 
     # GET /products/1/edit
     def edit
+      authorize @product
     end
 
     # POST /products
     def create
       @product = Product.new(product_params)
+      authorize @product
       #calculate cost field for product
       vat = Mjbook::Vat.where(:id => product_params[:vat_id]).first
       quantity = product_params[:quantity].to_d
@@ -101,6 +104,7 @@ module Mjbook
 
     # PATCH/PUT /products/1
     def update      
+      authorize @product
       if @product.update(product_params)
 
         #calculate cost field for product and update
@@ -122,6 +126,7 @@ module Mjbook
 
     # DELETE /products/1
     def destroy
+      authorize @product
       @product.destroy
       redirect_to products_path, notice: 'Product was successfully destroyed.'
     end

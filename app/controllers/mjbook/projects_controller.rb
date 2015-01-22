@@ -10,6 +10,7 @@ module Mjbook
     
     # GET /projects
     def index
+      authorize @projects
     end
 
     # GET /projects/1

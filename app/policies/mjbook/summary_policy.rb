@@ -7,6 +7,13 @@ module Mjbook
       end
     end
 
+    def index?
+      user.owner? || user.admin?
+    end
+
+    def charts?
+      index?
+    end
 
   end
 end

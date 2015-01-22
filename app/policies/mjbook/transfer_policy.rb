@@ -8,7 +8,7 @@ module Mjbook
     end
             
     def index?
-      user.owner? || user.admin? || user.employee? 
+      true
     end
   
     def show?
@@ -36,7 +36,7 @@ module Mjbook
     end
 
     def process_transfer?
-      index?
+      user.owner? || user.admin?
     end
 
   end
