@@ -28,13 +28,22 @@ module Mjbook
     end
 
     def self.to_csv
-      
+
       require 'csv'
-      
+
       CSV.generate do |csv|
-        csv << column_names
-        all.each do |product|
-          csv << product.attributes.values_at(*column_names)
+        csv << ["Ref", "Invoice Ref", "Paid Into", "Date", "Price", "VAT", "Total", "Notes"]
+        all.each do |set|
+          csv << [set.ref,
+                  set.invoice.ref,
+                  set.paymethod.text,
+                  set.companyaccount.name,
+                  set.date.strftime("%d/%m/%y"),
+                  number_to_currency(set.price, :unit => "£"),
+                  number_to_currency(set.vat_due, :unit => "£"),
+                  number_to_currency(set.total, :unit => "£"),
+                  set.note]
+
         end
       end
     end
