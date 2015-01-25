@@ -92,3 +92,22 @@
   font-size: 0px;
 }
 
+.float_right input[type="submit"].table_pdf_icon {  
+  float: right;
+  @include menu_icons(-1000px);
+  border: 0px;
+  margin: 1px 0px 0px 5px;
+  padding: 0px 0px 0px 0px;
+  cursor: pointer;
+  font-size: 0px;
+}
+
+.float_right input[type="submit"].table_csv_icon  {  
+  float: right;
+  @include menu_icons(-960px);
+  border: 0px;
+  margin: 1px 0px 0px 5px;
+  padding: 0px 0px 0px 0px;
+  cursor: pointer;
+  font-size: 0px;
+}
