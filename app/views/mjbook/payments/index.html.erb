@@ -74,18 +74,18 @@
                                         <% unless payment.reconciled? %>
                                             <%= row_delete_link(payment, 'show') %>
                                             <!-- transfers cannot be edited -->
-                                            <% unless payment.transfer? %>                                        
+                                            <% unless payment.transfer? %>
                                                 <%= row_edit_link(payment, 'show') %>
+                                                <%= row_email_link(payment, 'show') %>
                                             <% else %>
                                                 <%= row_edit_link(payment, 'hidden') %>
-                                            <% end %> 
-                                            <%= row_email_link(payment, 'show') %>
+                                                <%= row_email_link(payment, 'hidden') %>
+                                            <% end %>
                                             <%= row_reconcile_link(payment, 'show') %>
                                             <%= row_unreconcile_link(payment, 'hidden') %>
                                         <% else %>
-                                            <%= row_delete_link(payment, 'hidden') %>                                        
-                                            <%= row_edit_link(payment, 'hidden') %>                                        
-                                            <%= row_email_link(payment, 'hidden') %>
+                                            <%= row_delete_link(payment, 'hidden') %>
+                                            <%= row_edit_link(payment, 'hidden') %>
                                             <%= row_reconcile_link(payment, 'hidden') %> 
                                             <%= row_unreconcile_link(payment, 'show') %> 
                                         <% end %>
