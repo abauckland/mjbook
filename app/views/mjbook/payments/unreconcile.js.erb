@@ -1,6 +1,7 @@
-$('td#'+<%= @payment.id %>+'_status').html('confirmed');
+$('td#'+<%= @payment.id %>+'_status').html('paid');
 
 $('td#'+<%= @payment.id %>+'_links').children('a.line_reconcile_icon_hidden').attr('class', 'line_reconcile_icon_show');
+$('td#'+<%= @payment.id %>+'_links').children('a.line_email_icon_hidden').attr('class', 'line_email_icon_show');
 
 $('td#'+<%= @payment.id %>+'_links').children('a.line_unreconcile_icon_show').attr('class', 'line_unreconcile_icon_hidden');
 <% if @payment.transfer? %>
