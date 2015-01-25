@@ -66,7 +66,7 @@ module Mjbook
 
     # GET /expenses/1
     def show
-      authorize @expense
+#      authorize @expense
 #      authorize(:employee, :show?) # throws error
     end
 

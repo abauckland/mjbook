@@ -91,7 +91,7 @@ module Mjbook
     def create
       @expense = Expense.new(expense_params)
       @expense.due_date = Time.now.utc.end_of_month
-      authorize @expense
+#      authorize @expense
 #      authorize(:personal, :create?)
       if @expense.save
           redirect_to personals_path, notice: 'Expense was successfully created.'            
