@@ -7,7 +7,7 @@ module Mjbook
     before_action :set_paymethods, only: [:new, :edit, :invoice_paid, :process_misc]
 
     include PrintIndexes
-    
+
     # GET /payments
     def index
 
@@ -109,7 +109,7 @@ module Mjbook
 #  line.pay!
 #end
 #end 
-          
+
           #check if all the inlines for the invoice have been paid          
           check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id])
           if check_inlines.blank?
@@ -313,8 +313,9 @@ module Mjbook
       end
 
       def create_summary_record(payment)
-        last_transaction = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date).order('date').last
-        
+        last_transaction = policy_scope(Summary).where('date =< ?', expend.date).order('created_at').last
+        last_account_transaction = policy_scope(Summary).where('companyaccount_id = ? AND date =< ?', expend.account_id, expend.date).order('created_at').last
+
         if last_transaction.blank?
           new_balance = payment.total
           new_account_balance = payment.total
@@ -322,7 +323,7 @@ module Mjbook
           new_balance = last_transaction.balance + payment.total
           new_account_balance = last_transaction.account_balance + payment.total
         end
-        
+
         Mjbook::Summary.create(:date => payment.date,
                                   :company_id => payment.company_id,
                                   :companyaccount_id => payment.companyaccount_id,
@@ -334,17 +335,17 @@ module Mjbook
 
       def add_summary_account_balance(payment)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date)
-        unless account_transactions.blank?
-          account_transactions.each do |account_transaction|
+        if !account_transactions.blank?
+          account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance + payment.total
-            account_transaction.update(:balance => new_account_balance)
+            transaction.update(:balance => new_account_balance)
           end
         end
       end
 
       def add_summary_balance(payment)
         transactions = policy_scope(Summary).subsequent_transactions(payment.date)
-        unless transactions.blank?
+        if !transactions.blank?
           transactions.each do |transaction|
             new_balance = transaction.balance + payment.total
             transaction.update(:balance => new_balance)
@@ -360,17 +361,21 @@ module Mjbook
 
       def delete_summary_account_balance(payment)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date)
-        account_transactions.each do |account_transaction|
-          new_account_balance = transaction.account_balance - payment.total
-          account_transaction.update(:balance => new_account_balance)
+        if !account_transactions.blank?
+          account_transactions.each do |transaction|
+            new_account_balance = transaction.account_balance - payment.total
+            transaction.update(:balance => new_account_balance)
+          end
         end
       end
 
       def delete_summary_balance(expend)
         transactions = policy_scope(Summary).subsequent_transactions(payment.date)
-        transactions.each do |transaction|
-          new_balance = transaction.balance - payment.total
-          transaction.update(:balance => new_balance)
+        if !transactions.blank?
+          transactions.each do |transaction|
+            new_balance = transaction.balance - payment.total
+            transaction.update(:balance => new_balance)
+          end
         end
       end
 

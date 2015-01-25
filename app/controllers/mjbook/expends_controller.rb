@@ -92,7 +92,7 @@ module Mjbook
       @expenses[:price] = expenses.sum(:price)
       @expenses[:vat] = expenses.sum(:vat)
       @expenses[:total] = expenses.sum(:total)
-            
+
       @expend = Expend.new
 
     end
@@ -122,7 +122,7 @@ module Mjbook
       @expend = Expend.new(expend_params)
       authorize @expend
       if @expend.save
-        
+
         if @expend.business?
           expense = Mjbook::Expense.where(:id => params[:expense_id]).first
           Mjbook::Expenditem.create(:expend_id => @expend.id, :expense_id => expense.id)
@@ -182,12 +182,12 @@ module Mjbook
 
         if @expend.exp_type == 'business' || @expend.exp_type == 'personal'
           expense = Mjbook::Expense.where(:id => item.expense_id).first
-          expense.correct!             
+          expense.correct!
         end
 
         if @expend.exp_type == 'salary'
           salary = Mjbook::Salary.where(:id => item.salary_id).first
-          salary.correct!               
+          salary.correct!
         end
 
         if @expend.exp_type == 'transfer'
@@ -195,13 +195,13 @@ module Mjbook
           transfer.correct!
 
           #if transfer is destoyed also need to destroy record of payment
-          payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first           
-          payment.destroy               
+          payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first
+          payment.destroy
         end
 
         if @expend.exp_type == 'misc'
           miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id).first
-          miscexpense.correct!               
+          miscexpense.correct!
         end
 
       end
@@ -271,15 +271,17 @@ module Mjbook
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|      
-            table_indexes(expends, 'expend', filter_group, date_from, date_to, filename, pdf)      
+            table_indexes(expends, 'expend', filter_group, date_from, date_to, filename, pdf)
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"        
+          send_data document.render, filename: filename, :type => "application/pdf"
       end
 
 
       def create_summary_record(expend)
-        last_transaction = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date).order('date').last
+
+        last_transaction = policy_scope(Summary).where('date =< ?', expend.date).order('created_at').last
+        last_account_transaction = policy_scope(Summary).where('companyaccount_id = ? AND date =< ?', expend.account_id, expend.date).order('created_at').last
 
         if last_transaction.blank?
           new_balance = 0-expend.total
@@ -288,7 +290,7 @@ module Mjbook
           new_balance = last_transaction.balance - expend.total
           new_account_balance = last_transaction.account_balance - expend.total
         end
-        
+
         Mjbook::Summary.create(:date => expend.date,
                                   :company_id => expend.company_id,
                                   :companyaccount_id => expend.companyaccount_id,
@@ -300,17 +302,21 @@ module Mjbook
 
       def add_summary_account_balance(expend)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
-        account_transactions.each do |account_transaction|
-          new_account_balance = transaction.account_balance - expend.total
-          account_transaction.update(:balance => new_account_balance)
+        if !account_transactions?
+          account_transactions.each do |transaction|
+            new_account_balance = transaction.account_balance - expend.total
+            transaction.update(:balance => new_account_balance)
+          end
         end
       end
 
       def add_summary_balance(expend)
         transactions = policy_scope(Summary).subsequent_transactions(expend.date)
-        transactions.each do |transaction|
-          new_balance = transaction.balance - expend.total
-          transaction.update(:balance => new_balance)
+        if !transactions.blank?
+          transactions.each do |transaction|
+            new_balance = transaction.balance - expend.total
+            transaction.update(:balance => new_balance)
+          end
         end
       end
 
@@ -322,17 +328,21 @@ module Mjbook
 
       def delete_summary_account_balance(expend)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
-        account_transactions.each do |account_transaction|
-          new_account_balance = transaction.account_balance + expend.total
-          account_transaction.update(:balance => new_account_balance)
+        if !account_transactions.blank?
+          account_transactions.each do |transaction|
+            new_account_balance = transaction.account_balance + expend.total
+            transaction.update(:balance => new_account_balance)
+          end
         end
       end
 
       def delete_summary_balance(expend)
         transactions = policy_scope(Summary).subsequent_transactions(expend.date)
-        transactions.each do |transaction|
-          new_balance = transaction.balance + expend.total
-          transaction.update(:balance => new_balance)
+        if !transactions.blank?
+          transactions.each do |transaction|
+            new_balance = transaction.balance + expend.total
+            transaction.update(:balance => new_balance)
+          end
         end
       end
 
