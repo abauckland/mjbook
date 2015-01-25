@@ -18,7 +18,7 @@ module Mjbook
           @date_to = params[:date_to]
         end
 
-        @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
+        @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", @date_from, @date_to).order(:date)
 
       end
 
