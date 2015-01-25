@@ -71,8 +71,8 @@ module Mjbook
 
     # GET /expenses/1
     def show
-      authorize @expense
-      authorize(:personal, :show?)
+#      authorize @expense
+#      authorize(:personal, :show?)
     end
 
     # GET /new_personal
@@ -82,7 +82,7 @@ module Mjbook
 
     # GET /expenses/1/edit
     def edit
-      authorize @expense
+#      authorize @expense
 #      authorize(:personal, :show?)
     end
 
@@ -113,7 +113,7 @@ module Mjbook
 
     # DELETE /expenses/1
     def destroy
-      authorize @expense
+#      authorize @expense
 #      authorize(:personal, :destroy?)
       @expense.destroy
       redirect_to personals_path, notice: 'Expense was successfully destroyed.'
