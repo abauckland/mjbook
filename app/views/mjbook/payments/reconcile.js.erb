@@ -1,10 +1,11 @@
 $('td#'+<%= @payment.id %>+'_status').html('reconciled');
 
-$('td#'+<%= @payment.id %>+'_links').children('a.line_reconcile_icon_show').attr('class', 'line_reconcile_icon_hidden');
-$('td#'+<%= @payment.id %>+'_links').children('a.line_email_icon_show').attr('class', 'line_email_icon_hidden');
-
-$('td#'+<%= @payment.id %>+'_links').children('a.line_unreconcile_icon_hidden').attr('class', 'line_unreconcile_icon_show');
-
-<% if @payment.transfer? %>
+<% if @payment.transfer?%>
+    $('td#'+<%= @payment.id %>+'_links').children('a.line_delete_icon_show').attr('class', 'line_delete_icon_hidden');
+<% else %>
+    $('td#'+<%= @payment.id %>+'_links').children('a.line_email_icon_show').attr('class', 'line_email_icon_hidden');
+    $('td#'+<%= @payment.id %>+'_links').children('a.line_edit_icon_show').attr('class', 'line_edit_icon_hidden');
     $('td#'+<%= @payment.id %>+'_links').children('a.line_delete_icon_show').attr('class', 'line_delete_icon_hidden');
 <% end %>
+$('td#'+<%= @payment.id %>+'_links').children('a.line_reconcile_icon_show').attr('class', 'line_reconcile_icon_hidden');
+$('td#'+<%= @payment.id %>+'_links').children('a.line_unreconcile_icon_hidden').attr('class', 'line_unreconcile_icon_show');
