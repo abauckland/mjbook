@@ -302,7 +302,7 @@ module Mjbook
 
       def add_summary_account_balance(expend)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
-        if !account_transactions?
+        if !account_transactions.blank?
           account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance - expend.total
             transaction.update(:balance => new_account_balance)
