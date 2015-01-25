@@ -102,7 +102,7 @@ module Mjbook
 
     # PATCH/PUT /expenses/1
     def update
-      authorize @expense
+#      authorize @expense
 #      authorize(:personal, :update?)
       if @expense.update(expense_params)
         redirect_to personals_path, notice: 'Expense was successfully updated.'
