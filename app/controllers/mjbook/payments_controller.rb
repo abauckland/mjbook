@@ -313,7 +313,7 @@ module Mjbook
       end
 
       def create_summary_record(payment)
-        last_transaction = policy_scope(Summary).where('date =< ?', expend.date).order('created_at').last
+        last_transaction = policy_scope(Summary).where('date <= ?', expend.date).order('created_at').last
         last_account_transaction = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', expend.account_id, expend.date).order('created_at').last
 
         if last_transaction.blank?
