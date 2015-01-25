@@ -79,7 +79,7 @@
                                         <td class="personal_distance"><%= expense.mileage.distance if expense.mileage %></td>
                                         <td class="personal_price"></td>
                                         <td class="personal_vat_due"></td>
-                                        <td class="personal_total"><%= expense.total %></td>
+                                        <td class="personal_total"><%= pounds(expense.total) %></td>
                                         <td id="<%= expense.id %>_status" class="personal_status"><%= expense.state %></td>
                                         <td id="<%= expense.id %>_links" class="row_button no_buttons_2">
                                         <% if expense.paid? || expense.accepted? %>
@@ -95,7 +95,7 @@
                                         <td class="personal_supplier_ref"><%= expense.supplier_ref %></td>
                                         <td class="personal_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
                                         <td class="row_button no_buttons_1">
-                                            <% if expense.receipt %>
+                                            <% if expense.receipt_url %>
                                                 <%= link_to "", expense.receipt_url, class: 'line_view_icon', title: "view receipt" %>
                                             <% end %>
                                         </td>
