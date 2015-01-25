@@ -9,9 +9,9 @@
         <div>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from) %>
+                <%= date_field_tag( 'date_from', :value => @date_from.strftime("%Y-%m-%d")) %>
                 <label class="date">Date To:</label>
-                <%= date_field_tag( 'date_to', value = @date_to) %>
+                <%= date_field_tag( 'date_to', :value => @date_to.strftime("%Y-%m-%d")) %>
             </div>
             <%= submit_tag 'Filter' %>
         </div> 
