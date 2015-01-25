@@ -7,15 +7,15 @@ module Mjbook
 
         #filter by date and account
         unless params[:date_from]
-          date_from = 1.month.ago
+          @date_from = 1.month.ago
         else
-          date_from = params[:date_from]
+          @date_from = params[:date_from]
         end
 
         unless params[:date_to]
-          date_to = Time.now
+          @date_to = Time.now
         else
-          date_to = params[:date_to]
+          @date_to = params[:date_to]
         end
 
         @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
