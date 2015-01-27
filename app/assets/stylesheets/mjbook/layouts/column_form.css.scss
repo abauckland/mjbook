@@ -14,6 +14,8 @@ form label{
     padding-top: 3px;
 }
 
+form label.label_40 {width: 60px;}
+form label.label_50 {width: 70px;}
 form label.label_60 {width: 60px;}
 form label.label_70 {width: 70px;}
 form label.label_80 {width: 80px;}
@@ -48,6 +50,13 @@ form a.form_button{
   margin: 0px 0px 4px 0px;
   width: auto;
   @include title-button-grey;
+}
+
+form a.form_button_full{
+  float: left;
+  margin: 0px 0px 4px 0px;
+  width: 100%;
+  @include title-button-green;
 }
 
 
@@ -131,6 +140,16 @@ div.label_90{width: 90px;}
   @include form-button;
   padding-left: 0px; //override default settings
 }
+
+
+//image drop down select
+.form_image_select {
+    content:"";
+    height: 60px;
+    clear:both;
+    padding-bottom: 10px;
+}
+
 
 
 .blank_select{}
