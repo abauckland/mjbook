@@ -257,7 +257,7 @@ module Mjbook
           new_ingroup.save
           new_ingroup.update(:invoice_id => invoice.id)
           
-          clone_line = Mjbook::Inline.where(:ingroup_id => ingroup.id)
+          clone_line = Mjbook::Inline.where(:ingroup_id => new_ingroup.id)
           clone_line.each do |inline|
             new_inline = inline.dup
             new_inline.save
@@ -284,7 +284,7 @@ module Mjbook
           clone_line = Mjbook::Qline.where(:qgroup_id => qgroup.id)
           clone_line.each do |qline|
 
-          new_inline = Mjbook::Inline.create(
+            new_inline = Mjbook::Inline.create(
                                               :ingroup_id => new_ingroup.id,
                                               :cat => qline.cat,
                                               :item => qline.item,

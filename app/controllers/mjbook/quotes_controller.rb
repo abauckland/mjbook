@@ -252,7 +252,7 @@ module Mjbook
           new_qgroup.save
           new_qgroup.update(:quote_id => quote.id)
           
-          clone_line = Mjbook::Qline.where(:qgroup_id => qgroup.id)
+          clone_line = Mjbook::Qline.where(:qgroup_id => new_qgroup.id)
           clone_line.each do |qline|
             new_qline = qline.dup
             new_qline.save
