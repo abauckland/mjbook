@@ -11,6 +11,28 @@ module Mjbook
 
     enum linetype: [:product, :service, :misc]
 
+    def self.to_csv
+
+      require 'csv'
+
+      CSV.generate do |csv|
+        csv << ["Category", "Item", "Quantity", "Unit", "Rate", "Price", "VAT Rate", "VAT", "Total"]
+        all.each do |set|
+          csv << [
+                 set.productcategory.text,
+                 set.item,
+                 set.quantity,
+                 set.unit.text,
+                 number_to_currency(set.rate, :unit => "£"),
+                 number_to_currency(set.price, :unit => "£"),
+                 set.vat.cat,
+                 number_to_currency(set.vat_due, :unit => "£"),
+                 number_to_currency(set.total, :unit => "£"),
+                 ]
+
+        end
+      end
+    end
 
     private
 

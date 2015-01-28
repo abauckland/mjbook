@@ -51,6 +51,32 @@ module Mjbook
       presence: true,
       format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }  
 
+    def self.to_csv
+
+      require 'csv'
+
+      CSV.generate do |csv|
+        csv << ["Job Ref", "Quote Ref", "Quote Title", "Cust. Ref", "Customer Name", "Customer Company", "Date", "Price", "VAT", "Total", "Status"]
+        all.each do |set|
+          csv << [
+                 set.project.ref,
+                 set.ref,
+                 set.title,
+                 set.customer_ref,
+                 set.project.customer.name,
+                 set.project.customer.company_name,
+                 set.date.strftime("%d/%m/%y"),
+                 number_to_currency(set.price, :unit => "£"),
+                 number_to_currency(set.vat_due, :unit => "£"),
+                 number_to_currency(set.total, :unit => "£"),
+                 set.status
+                 ]
+
+        end
+      end
+    end
+
+
     private
 
     default_scope { order('date DESC') }

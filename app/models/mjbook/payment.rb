@@ -34,7 +34,8 @@ module Mjbook
       CSV.generate do |csv|
         csv << ["Ref", "Invoice Ref", "Paid Into", "Date", "Price", "VAT", "Total", "Notes"]
         all.each do |set|
-          csv << [set.ref,
+          csv << [
+                  set.ref,
                   set.invoice.ref,
                   set.paymethod.text,
                   set.companyaccount.name,
@@ -42,7 +43,8 @@ module Mjbook
                   number_to_currency(set.price, :unit => "£"),
                   number_to_currency(set.vat_due, :unit => "£"),
                   number_to_currency(set.total, :unit => "£"),
-                  set.note]
+                  set.note
+                  ]
 
         end
       end

@@ -63,11 +63,29 @@ module Mjbook
 
     default_scope { order('date DESC') }
 
+
     def self.to_csv
+
+      require 'csv'
+
       CSV.generate do |csv|
-        csv << column_names
-        all.each do |product|
-          csv << product.attributes.values_at(*column_names)
+        csv << ["Ref", "Due Date", "Job", "Expenditure Category", "Supplier", "Supplier Ref:", "Issued Date", "Mileage", "Reciept", "Price", "VAT", "Total", "Status"]
+        all.each do |set|
+          csv << [
+                  set.ref,
+                   set.due_date.strftime("%d/%m/%y"),
+                   set.project.ref,
+                   set.hmrcexpcat.category,
+                   set.supplier.company_name,
+                   set.supplier_ref,
+                   set.date.strftime("%d/%m/%y"),
+                   set.mileage.distance,
+                   set.receipt,
+                   number_to_currency(set.price, :unit => "£"),
+                   number_to_currency(set.vat, :unit => "£"),
+                   number_to_currency(set.total, :unit => "£"),
+                   set.status
+                   ]
         end
       end
     end

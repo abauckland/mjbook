@@ -48,8 +48,12 @@ module Mjbook
           end
         end
 
-        if params[:commit] == 'pdf'          
+        if params[:commit] == 'pdf'
           pdf_quote_index(@quotes, params[:customer_id], params[:date_from], params[:date_to])
+        end
+
+        if params[:commit] == 'csv'
+          csv_quote_index(@quotes, params[:customer_id], params[:date_from], params[:date_to])
         end
 
      else
@@ -232,7 +236,21 @@ module Mjbook
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"
-      end  
+      end
+
+      def csv_quote_index(quotes, customer_id, date_from, date_to)
+         customer = Customer.where(:id => customer_id).first if customer_id
+
+         if customer
+           filter_group = customer.name
+         else
+           filter_group = "All Customers"
+         end
+         
+         filename = "Quotes_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data quotes.to_csv, filename: filename, :type => "text/csv"
+      end
 
       def print_quote_document(quote)  
         @document= Prawn::Document.new(

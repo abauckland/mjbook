@@ -8,16 +8,16 @@ module Mjbook
     belongs_to :project
     belongs_to :invoiceterm
     belongs_to :invoicetype
-    
+
     accepts_nested_attributes_for :ingroups
-    
+
 #   after_create :create_nested_records
 
     aasm :column => 'state' do
 
       state :draft, :initial => true
       state :submitted
-      state :part_paid      
+      state :part_paid
       state :paid
 
       event :submit do
@@ -48,8 +48,33 @@ module Mjbook
     validates :project_id, :invoiceterm_id, :invoicetype_id, :ref, presence: true
     validates :date,
       presence: true,
-      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }  
-  
+      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }
+
+
+    def self.to_csv
+
+      require 'csv'
+
+      CSV.generate do |csv|
+        csv << ["Invoice Ref", "Job Ref", "Invoice Type", "Cust. Ref", "Customer Name", "Customer Company", "Date", "Paid Into", "Date", "Price", "VAT", "Total", "Status"]
+        all.each do |set|
+          csv << [
+                 set.ref,
+                 set.project.ref,
+                 set.invoicetype.text,
+                 set.customer_ref,
+                 set.project.customer.name,
+                 set.project.customer.company_name,
+                 set.date.strftime("%d/%m/%y"),
+                 number_to_currency(set.price, :unit => "£"),
+                 number_to_currency(set.vat_due, :unit => "£"),
+                 number_to_currency(set.total, :unit => "£"),
+                 set.status
+                 ]
+
+        end
+      end
+    end
 
     private
 

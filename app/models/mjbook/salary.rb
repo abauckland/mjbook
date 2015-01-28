@@ -9,7 +9,7 @@ module Mjbook
 
     aasm :column => 'state' do
 
-      state :submitted, :initial => true 
+      state :submitted, :initial => true
       state :rejected
       state :accepted
       state :paid
@@ -31,13 +31,31 @@ module Mjbook
       event :correct do
         transitions :from => :paid, :to => :accepted
       end
-    end  
+    end
 
     validates :user_id, presence: true 
     validates :total, presence: true, numericality: true
     validates :date,
       presence: true,
-      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }    
+      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }
+
+    def self.to_csv
+
+      require 'csv'
+
+      CSV.generate do |csv|
+        csv << ["Employee", "Amount Paid", "Date"]
+        all.each do |set|
+          csv << [
+                 set.user.name,
+                 number_to_currency(set.total, :unit => "£"),
+                 set.date.strftime("%d/%m/%y")
+                  ]
+
+        end
+      end
+    end
+
 
     private
 

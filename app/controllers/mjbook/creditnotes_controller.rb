@@ -26,6 +26,10 @@ module Mjbook
          pdf_creditnote_index(@creditnotes, params[:date_from], params[:date_to])
        end
 
+        if params[:commit] == 'csv'          
+          csv_creditnote_index(@creditnotes, params[:date_from], params[:date_to])
+        end
+
        @sum_price = @creditnotes.pluck(:price).sum
        @sum_vat = @creditnotes.pluck(:vat).sum
        @sum_total = @creditnotes.pluck(:total).sum
@@ -123,6 +127,13 @@ module Mjbook
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+      def csv_creditnote_index(creditnotes, date_from, date_to)
+
+         filename = "Credit_Notes_#{ date_from }_#{ date_to }.pdf"
+
+         send_data creditnotes.to_csv, filename: filename, :type => "text/csv"
       end
 
 

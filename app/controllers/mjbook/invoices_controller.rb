@@ -49,6 +49,10 @@ module Mjbook
           pdf_invoice_index(@invoices, params[:customer_id], params[:date_from], params[:date_to])
         end
 
+        if params[:commit] == 'csv'
+          csv_invoice_index(@invoices, params[:customer_id], params[:date_from], params[:date_to])
+        end
+
      else
        @invoices = policy_scope(Invoice)
      end
@@ -238,6 +242,21 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"
       end
+
+      def csv_invoice_index(invoices, customer_id, date_from, date_to)
+         customer = Customer.where(:id => customer_id).first if customer_id
+
+         if customer
+           filter_group = customer.name
+         else
+           filter_group = "All Customers"
+         end
+
+         filename = "Invoices_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data invoices.to_csv, filename: filename, :type => "text/csv"
+      end
+
 
       def print_invoice_document(invoice)
             @document = Prawn::Document.new(

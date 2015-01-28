@@ -47,6 +47,10 @@ module Mjbook
           pdf_employee_index(@expenses, params[:user_id], params[:date_from], params[:date_to])
         end
 
+        if params[:commit] == 'csv'          
+          csv_employee_index(@expenses, params[:user_id], params[:date_from], params[:date_to])
+        end
+
      else
        @expenses = policy_scope(Expense).personal
      end
@@ -86,17 +90,32 @@ module Mjbook
          end
 
          filename = "Employee_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
-                 
+
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
-            table_indexes(expenses, 'employee', filter_group, date_from, date_to, filename, pdf)      
+          ) do |pdf|
+            table_indexes(expenses, 'employee', filter_group, date_from, date_to, filename, pdf)
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"
       end
-      
+
+      def csv_employee_index(expenses, user_id, date_from, date_to)
+         user = User.where(:id => user_id).first if user_id
+
+         if user
+           filter_group =user.name
+         else
+           filter_group = "All Employees"
+         end
+
+         filename = "Employee_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data expenses.to_csv, filename: filename, :type => "text/csv"
+      end
+
+
   end
 end
