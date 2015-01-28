@@ -46,7 +46,28 @@ module Mjbook
     def name
       return title+' '+first_name+' '+surname
     end
-    
+
+    def self.to_csv
+
+      require 'csv'
+
+      CSV.generate do |csv|
+        csv << ["Name", "Position", "Address", "Tel", "Alt Tel", "Email", "Company", "Notes"]
+        all.each do |set|
+          csv << [
+                 set.name,
+                 set.position,
+                 [set.address_1, set.address_2, set.city, set.county, set.country, set.postcode],
+                 set.phone,
+                 set.alt_phone,
+                 set.email,
+                 set.company_name,
+                 set.notes
+                 ]
+        end
+      end
+    end
+
     private
 
       default_scope { order('company_name ASC') }

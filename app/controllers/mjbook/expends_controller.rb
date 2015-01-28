@@ -44,6 +44,10 @@ module Mjbook
           pdf_expend_index(@expends, params[:companyaccount_id], params[:date_from], params[:date_to])      
         end
 
+        if params[:commit] == 'csv'
+          csv_expend_index(@expends, params[:companyaccount_id], params[:date_from], params[:date_to])      
+        end
+
      else
        @expends = policy_scope(Expend)
      end
@@ -277,6 +281,19 @@ module Mjbook
           send_data document.render, filename: filename, :type => "application/pdf"
       end
 
+      def csv_expend_index(expends, account_id, date_from, date_to)
+
+         if account_id
+           companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
+           filter_group = companyaccount.company_name
+         else
+           filter_group = "All Accounts"
+         end
+
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data expends.to_csv, filename: filename, :type => "text/csv"
+      end
 
       def create_summary_record(expend)
 

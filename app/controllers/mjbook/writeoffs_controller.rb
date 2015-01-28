@@ -25,6 +25,11 @@ module Mjbook
             pdf_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
           end
 
+          if params[:commit] == 'csv'          
+            csv_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
+          end
+
+
        @sum_price = @writeoffs.pluck(:price).sum
        @sum_vat = @writeoffs.pluck(:vat).sum
        @sum_total = @writeoffs.pluck(:total).sum
@@ -122,6 +127,14 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"        
       end
+
+      def csv_writeoff_index(writeoffs, date_from, date_to)
+
+         filename = "Write_Offs_#{ date_from }_#{ date_to }.pdf"
+
+         send_data writeoffs.to_csv, filename: filename, :type => "text/csv"
+      end
+
 
   end
 end

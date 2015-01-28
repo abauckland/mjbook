@@ -7,7 +7,7 @@
 </div>
 
 <div class="row filter_band">
-    <%= form_tag quotes_path, method: :get do %>  
+    <%= form_tag quotes_path, method: :get do %>
         <div>
             <div>
                 <label class="select">Customer:</label>
@@ -15,15 +15,16 @@
             </div>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
+            </div>
+            <%= submit_tag 'Filter' %>
         </div>        
         <div class="float_right">   
             <div><%= submit_tag 'pdf', :class => "options_pdf_icon"%></div>
-        </div>  
+            <div><%= submit_tag 'csv', :class => "options_csv_icon"%></div>
+        </div>
     <% end %> 
 </div>
 
@@ -39,16 +40,16 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="quote_ref">Ref</th> 
+                            <th class="quote_ref">Ref</th>
                             <th class="quote_title">Title</th>
                             <th class="quote_project_ref">Job Ref</th>
-                            <th class="quote_customer_ref">Cust. Ref</th>          
+                            <th class="quote_customer_ref">Cust. Ref</th>
                             <th class="quote_customer">Cust. Name</th> 
-                            <th class="quote_company_name">Cust. Company</th> 
+                            <th class="quote_company_name">Cust. Company</th>
                             <th class="quote_date">Date</th>
-                            <th class="quote_price">Price</br><span>(ex VAT)</span></th>          
-                            <th class="quote_vat_due">Vat</th>         
-                            <th class="quote_total">Total</br><span>(Inc VAT)</span></th>          
+                            <th class="quote_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="quote_vat_due">Vat</th>
+                            <th class="quote_total">Total</br><span>(Inc VAT)</span></th>
                             <th class="quote_status">Status</th>
                             <th class="row_button no_buttons_4"></th>
                         </tr>
@@ -57,55 +58,55 @@
 
                 <table>
                     <tbody>
-                          <% if @quotes %>            
+                          <% if @quotes %>
                             <% @quotes.each do |quote| %>
                                 <tr>
-                                    <td class="quote_ref"><%= quote.ref %></td> 
+                                    <td class="quote_ref"><%= quote.ref %></td>
                                     <td class="quote_title"><%= quote.title.titleize %></td> 
                                     <td class="quote_project_ref"><%= quote.project.ref %></td>
-                                    <td class="quote_customer_ref"><%= quote.customer_ref %></td> 
+                                    <td class="quote_customer_ref"><%= quote.customer_ref %></td>
                                     <td class="quote_customer"><%= quote.project.customer.name.titleize %></td>
                                     <td class="quote_company_name"><%= quote.project.customer.company_name.titleize %></td>
                                     <td class="quote_date"><%= quote.date.strftime("%d/%m/%y") %></td>
                                     <td class="quote_price"><%= pounds(quote.price) %></td> 
-                                    <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>         
-                                    <td class="quote_total"><%= pounds(quote.total) %></td>          
+                                    <td class="quote_vat_due"><%= pounds(quote.vat_due) %></td>
+                                    <td class="quote_total"><%= pounds(quote.total) %></td>
                                     <td id="<%= quote.id %>_status" class="quote_status"><%= quote.state %></td> 
                                     <td id="<%= quote.id %>_links" class="row_button no_buttons_4">
-                                        <% if quote.rejected? || quote.draft? %>                
+                                        <% if quote.rejected? || quote.draft? %>
                                             <%= row_delete_link(quote, 'show') %>
                                             <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
-                                        <% else %>    
+                                        <% else %>
                                             <%= row_delete_link(quote, 'hidden') %>
                                             <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_hidden', title: "edit" %>                        
                                         <% end %>
-                                        
+
                                             <%= row_print_link(quote, 'show') %>
-                                        
+
                                         <% if quote.submitted? || quote.accepted? %>
-                                            <%= row_reject_link(quote, 'show') %>               
+                                            <%= row_reject_link(quote, 'show') %>
                                         <% else %> 
                                             <%= row_reject_link(quote, 'hidden') %>
                                         <% end %>
-                                        
+
                                         <% if quote.submitted? || quote.rejected?  %>
                                             <%= row_accept_link(quote, 'show') %>
-                                        <% else %>    
+                                        <% else %>
                                             <%= row_accept_link(quote, 'hidden') %>
-                                        <% end %>                
+                                        <% end %>
 
-                                        <% if quote.draft? %> 
+                                        <% if quote.draft? %>
                                             <%= row_email_link(quote, 'show') %>
                                         <% else %> 
                                             <%= row_email_link(quote, 'hidden') %>
-                                        <% end %>  
+                                        <% end %>
                                     </td)
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>

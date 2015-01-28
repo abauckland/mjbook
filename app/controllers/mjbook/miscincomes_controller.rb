@@ -41,8 +41,12 @@ module Mjbook
           end
         end
 
-        if params[:commit] == 'pdf'          
-          pdf_miscincome_index(@miscincomes, params[:customer_id], params[:date_from], params[:date_to])      
+        if params[:commit] == 'pdf'
+          pdf_miscincome_index(@miscincomes, params[:customer_id], params[:date_from], params[:date_to])
+        end
+
+        if params[:commit] == 'csv'
+          csv_miscincome_index(@miscincomes, params[:customer_id], params[:date_from], params[:date_to])
         end
 
        else
@@ -139,7 +143,21 @@ module Mjbook
             table_indexes(miscincomes, 'miscincome', filter_group, date_from, date_to, filename, pdf)
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"        
+          send_data document.render, filename: filename, :type => "application/pdf"
+      end
+
+      def csv_miscincome_index(miscincomes, customer_id, date_from, date_to)
+         customer = Customer.where(:id => customer_id).first if customer_id
+
+         if supplier
+           filter_group = customer.company_name
+         else
+           filter_group = "All Customers"
+         end
+
+         filename = "Misc_income_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data miscincomes.to_csv, filename: filename, :type => "text/csv"
       end
 
   end

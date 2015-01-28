@@ -9,9 +9,9 @@
         <div>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from') %>
+                <%= date_field_tag( 'date_from', {placeholder: 'dd/mm/yyyy'}) %>
                 <label class="date">Date To:</label>
-                <%= date_field_tag( 'date_to') %>
+                <%= date_field_tag( 'date_to', {placeholder: 'dd/mm/yyyy'}) %>
             </div>
             <%= submit_tag 'Filter' %>
         </div> 

@@ -49,6 +49,10 @@ module Mjbook
           pdf_invoice_index(@invoices, params[:customer_id], params[:date_from], params[:date_to])
         end
 
+        if params[:commit] == 'csv'
+          csv_invoice_index(@invoices, params[:customer_id], params[:date_from], params[:date_to])
+        end
+
      else
        @invoices = policy_scope(Invoice)
      end
@@ -239,6 +243,21 @@ module Mjbook
           send_data document.render, filename: filename, :type => "application/pdf"
       end
 
+      def csv_invoice_index(invoices, customer_id, date_from, date_to)
+         customer = Customer.where(:id => customer_id).first if customer_id
+
+         if customer
+           filter_group = customer.name
+         else
+           filter_group = "All Customers"
+         end
+
+         filename = "Invoices_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data invoices.to_csv, filename: filename, :type => "text/csv"
+      end
+
+
       def print_invoice_document(invoice)
             @document = Prawn::Document.new(
                                             :page_size => "A4",
@@ -257,7 +276,7 @@ module Mjbook
           new_ingroup.save
           new_ingroup.update(:invoice_id => invoice.id)
           
-          clone_line = Mjbook::Inline.where(:ingroup_id => ingroup.id)
+          clone_line = Mjbook::Inline.where(:ingroup_id => new_ingroup.id)
           clone_line.each do |inline|
             new_inline = inline.dup
             new_inline.save
@@ -284,7 +303,7 @@ module Mjbook
           clone_line = Mjbook::Qline.where(:qgroup_id => qgroup.id)
           clone_line.each do |qline|
 
-          new_inline = Mjbook::Inline.create(
+            new_inline = Mjbook::Inline.create(
                                               :ingroup_id => new_ingroup.id,
                                               :cat => qline.cat,
                                               :item => qline.item,

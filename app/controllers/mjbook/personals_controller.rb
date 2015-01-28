@@ -50,6 +50,10 @@ module Mjbook
           pdf_personal_index(@expenses, params[:project_id], params[:date_from], params[:date_to])
         end
 
+        if params[:commit] == 'csv'
+          csv_personal_index(@expenses, params[:project_id], params[:date_from], params[:date_to])
+        end
+
      else
        @expenses = Expense.user(current_user).personal
      end
@@ -164,6 +168,21 @@ module Mjbook
 
           send_data document.render, filename: filename, :type => "application/pdf"        
       end
-      
+
+      def csv_personal_index(expenses, project_id, date_from, date_to)
+         project = User.where(:id => user_id).first if user_id
+
+         if project
+           filter_group = project.name
+         else
+           filter_group = "All Employees"
+         end
+         
+         filename = "Personal_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+
+         send_data expenses.to_csv, filename: filename, :type => "text/csv"
+      end
+
+
   end
 end

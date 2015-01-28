@@ -42,8 +42,12 @@ module Mjbook
             end
           end
 
-          if params[:commit] == 'pdf'          
+          if params[:commit] == 'pdf'
             pdf_salary_index(@salaries, params[:user_id], params[:date_from], params[:date_to])
+          end
+
+          if params[:commit] == 'csv'
+            csv_salary_index(@salaries, params[:user_id], params[:date_from], params[:date_to])
           end
 
        else
@@ -149,16 +153,30 @@ module Mjbook
         end
 
         filename = "#{ filter_group }_salary_payments_#{ date_from }_#{ date_to }.pdf"
-                   
+
         document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
         ) do |pdf|      
-          table_indexes(salaries, 'salary', nil, nil, nil, filename, pdf)      
+          table_indexes(salaries, 'salary', nil, nil, nil, filename, pdf)
         end
-  
-        send_data document.render, filename: filename, :type => "application/pdf"        
+
+        send_data document.render, filename: filename, :type => "application/pdf"
+      end
+
+      def csv_salary_index(salaries, user_id, date_from, date_to)
+         user = User.where(:id => user_id).first if user_id
+
+        if user
+          filter_group =user.name
+        else
+          filter_group = "All Employees"
+        end
+
+        filename = "#{ filter_group }_salary_payments_#{ date_from }_#{ date_to }.csv"
+
+         send_data salaries.to_csv, filename: filename, :type => "text/csv"
       end
 
   end
