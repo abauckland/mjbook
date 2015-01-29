@@ -12,27 +12,27 @@ module Mjbook
     end
 
     def new?
-      index
+      index?
     end
 
     def edit?
-      index
+      index?
     end
 
     def create?
-      index
+      index?
     end
 
     def update?
-      index
+      index?
     end
 
     def destroy?
-      index
+      index?
     end
 
     def print?
-      index
+      index?
     end
 
   end
