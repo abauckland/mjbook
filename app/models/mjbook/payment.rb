@@ -36,7 +36,7 @@ module Mjbook
         all.each do |set|
           csv << [
                   set.ref,
-                  set.invoice.ref,
+                  payment_invoice(set),
                   set.paymethod.text,
                   set.companyaccount.name,
                   set.date.strftime("%d/%m/%y"),
@@ -47,6 +47,13 @@ module Mjbook
                   ]
 
         end
+      end
+    end
+
+    def payment_invoice(set)
+      invoice = Mjbook::Invoice.joins(:ingroups => [:inlines => :paymentitems]).where('mjbook_paymentitems.payment_id' => set.id).first
+      if invoice
+        invoice.ref
       end
     end
 
