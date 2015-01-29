@@ -78,7 +78,7 @@ module Mjbook
 
     # GET /new_personal
     def new
-#      @expense = Expense.new
+      @expense = Expense.new
 #      authorize(:business, :new?)
     end
 
