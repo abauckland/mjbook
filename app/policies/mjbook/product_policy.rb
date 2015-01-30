@@ -12,31 +12,31 @@ module Mjbook
     end
   
     def cat_item_options?
-      index
+      index?
     end
 
     def item_options?
-      index
+      index?
     end
 
     def new?
-      index
+      index?
     end
 
     def edit?
-      index
+      index?
     end
 
     def create?
-      index
+      index?
     end
 
     def update?
-      index
+      index?
     end
 
     def destroy?
-      index
+      index?
     end
 
   end

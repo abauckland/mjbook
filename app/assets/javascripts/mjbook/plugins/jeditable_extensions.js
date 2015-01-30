@@ -14,6 +14,7 @@ $.editable.addInputType('autogrow', {
                     return(textarea);
                 },
     			plugin : function(settings, original) {
+        			$('textarea', this).symbols();
         			$('textarea', this).autogrow();
     			},
 });

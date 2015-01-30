@@ -69,7 +69,7 @@ module Mjbook
                  number_to_currency(set.price, :unit => "£"),
                  number_to_currency(set.vat_due, :unit => "£"),
                  number_to_currency(set.total, :unit => "£"),
-                 set.status
+                 set.state
                  ]
 
         end

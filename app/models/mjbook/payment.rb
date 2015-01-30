@@ -45,8 +45,12 @@ module Mjbook
 
           csv << [
                   set.ref,
+<<<<<<< HEAD
                   set.inc_type,
                   income_ref,
+=======
+                  payment_invoice(set),
+>>>>>>> d2e8a2a007bc01e123c4319a7632df214f34f5b8
                   set.paymethod.text,
                   set.companyaccount.name,
                   set.date.strftime("%d/%m/%y"),
@@ -57,6 +61,13 @@ module Mjbook
                   set.note
                   ]
         end
+      end
+    end
+
+    def payment_invoice(set)
+      invoice = Mjbook::Invoice.joins(:ingroups => [:inlines => :paymentitems]).where('mjbook_paymentitems.payment_id' => set.id).first
+      if invoice
+        invoice.ref
       end
     end
 
