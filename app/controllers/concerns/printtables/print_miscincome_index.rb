@@ -15,7 +15,6 @@ module Printtables
     def miscincome_data(data, rows)
         data.each_with_index do |set, i|
           rows[i+1] = [
-<<<<<<< HEAD
                  set.ref,
                  set.project.ref,
                  set.project.customer.company_name,
@@ -25,20 +24,7 @@ module Printtables
                  set.date.strftime("%d/%m/%y"),
                  set.state,
                  set.notes
-=======
-                       set.ref,
-                       set.customer.company_name,
-                       set.customer_ref,
-                       set.paymethod.text,
-                       set.project.name,
-                       set.date.strftime("%d/%m/%y"),
-                       number_to_currency(set.price, :unit => "£"),
-                       number_to_currency(set.vat_due, :unit => "£"),
-                       number_to_currency(set.total, :unit => "£"),
-                       set.state,
-                       set.note
->>>>>>> d2e8a2a007bc01e123c4319a7632df214f34f5b8
-                       ]
+                ]
 
         end 
     end

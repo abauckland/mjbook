@@ -80,7 +80,6 @@ module Mjbook
 
           csv << [
                   set.ref,
-<<<<<<< HEAD
                   set.exp_type,
                   set.project.ref,
                   set.hmrcexpcat.category,
@@ -95,21 +94,7 @@ module Mjbook
                   receipt_confirm,
                   set.state
                   ]
-=======
-                   set.due_date.strftime("%d/%m/%y"),
-                   set.project.ref,
-                   set.hmrcexpcat.category,
-                   set.supplier.company_name,
-                   set.supplier_ref,
-                   set.date.strftime("%d/%m/%y"),
-                   set.mileage.distance,
-                   set.receipt,
-                   number_to_currency(set.price, :unit => "£"),
-                   number_to_currency(set.vat, :unit => "£"),
-                   number_to_currency(set.total, :unit => "£"),
-                   set.state
-                   ]
->>>>>>> d2e8a2a007bc01e123c4319a7632df214f34f5b8
+
         end
       end
     end

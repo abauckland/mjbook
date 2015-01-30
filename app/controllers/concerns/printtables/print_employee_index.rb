@@ -34,10 +34,7 @@ module Printtables
                        number_to_currency(set.price, :unit => "£"),
                        number_to_currency(set.vat, :unit => "£"),
                        number_to_currency(set.total, :unit => "£"),
-<<<<<<< HEAD
                        receipt_confirm,
-=======
->>>>>>> d2e8a2a007bc01e123c4319a7632df214f34f5b8
                        set.state
                        ]
         end 
