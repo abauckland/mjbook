@@ -69,23 +69,31 @@ module Mjbook
       require 'csv'
 
       CSV.generate do |csv|
-        csv << ["Ref", "Due Date", "Job", "Expenditure Category", "Supplier", "Supplier Ref:", "Issued Date", "Mileage", "Reciept", "Price", "VAT", "Total", "Status"]
+        csv << ["Reference", "Expense Type", "Job Reference", "Expenditure Category", "Supplier", "Supplier Ref:", "Issued Date", "Due Date", "Mileage", "Price", "VAT", "Total", "Receipt", "Status"]
         all.each do |set|
+
+          if set.receipt
+            receipt_confirm = "yes"
+          else
+            receipt_confirm = ""
+          end
+
           csv << [
                   set.ref,
-                   set.due_date.strftime("%d/%m/%y"),
-                   set.project.ref,
-                   set.hmrcexpcat.category,
-                   set.supplier.company_name,
-                   set.supplier_ref,
-                   set.date.strftime("%d/%m/%y"),
-                   set.mileage.distance,
-                   set.receipt,
-                   number_to_currency(set.price, :unit => "£"),
-                   number_to_currency(set.vat, :unit => "£"),
-                   number_to_currency(set.total, :unit => "£"),
-                   set.status
-                   ]
+                  set.exp_type,
+                  set.project.ref,
+                  set.hmrcexpcat.category,
+                  set.supplier.company_name,
+                  set.supplier_ref,
+                  set.date.strftime("%d/%m/%y"),
+                  set.due_date.strftime("%d/%m/%y"),
+                  set.mileage.distance,
+                  number_to_currency(set.price, :unit => "£"),
+                  number_to_currency(set.vat, :unit => "£"),
+                  number_to_currency(set.total, :unit => "£"),
+                  receipt_confirm,
+                  set.state
+                  ]
         end
       end
     end

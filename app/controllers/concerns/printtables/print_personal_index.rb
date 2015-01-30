@@ -5,30 +5,37 @@ module Printtables
     include ActionView::Helpers::NumberHelper
       
     def personal_column_widths
-      [17.mm, 17.mm, 17.mm, 36.mm, 36.mm, 36.mm, 18.mm, 18.mm, 10.mm, 18.mm, 18.mm, 18.mm, 18.mm]
+      [17.mm, 17.mm, 17.mm, 36.mm, 36.mm, 18.mm, 18.mm, 18.mm, 18.mm, 18.mm, 18.mm, 18.mm, 10.mm, 18.mm]
     end
   
     def personal_headers(price_array, total_array)
-      ["Ref", "Due Date", "Job", "Expenditure Category", "Supplier", "Supplier Ref:", "Issued Date", "Reciept",
-        "Distance", price_array, "VAT", total_array, "Status"]
+      ["Ref", "Type", "Job", "Expend. Category", "Supplier", "Supplier Ref:", "Issued Date", "Due Date", "Distance", price_array, "VAT", total_array, "Reciept", "Status"]
     end
   
     def personal_data(data, rows)
         data.each_with_index do |set, i|
+
+          if !set.receipt.blank?
+            receipt_confirm = "yes"
+          else
+            receipt_confirm = ""
+          end
+
           rows[i+1] = [
                        set.ref,
-                       set.due_date.strftime("%d/%m/%y"),
+                       set.exp_type,
                        set.project.ref,
                        set.hmrcexpcat.category,
                        set.supplier.company_name,
                        set.supplier_ref,
                        set.date.strftime("%d/%m/%y"),
-                       set.receipt,
+                       set.due_date.strftime("%d/%m/%y"),
                        set.mileage.distance,
                        number_to_currency(set.price, :unit => "£"),
                        number_to_currency(set.vat, :unit => "£"),
                        number_to_currency(set.total, :unit => "£"),
-                       set.status
+                       receipt_confirm,
+                       set.state
                        ]
         end 
     end

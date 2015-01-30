@@ -32,20 +32,30 @@ module Mjbook
       require 'csv'
 
       CSV.generate do |csv|
-        csv << ["Ref", "Invoice Ref", "Paid Into", "Date", "Price", "VAT", "Total", "Notes"]
+        csv << ["Ref", "Income Type", "Income Ref", "Payment Method", "Paid Into", "Date", "Price", "VAT", "Total", "State", "Notes"]
         all.each do |set|
+
+          if set.invoice?
+            income_ref = set.paymentitem.inline.ingroup.invoice.ref
+          elsif set.transfer?
+            income_ref = set.paymentitem.transfer.ref
+          else
+            income_ref = set.paymentitem.miscincome.ref
+          end
+
           csv << [
                   set.ref,
-                  set.invoice.ref,
+                  set.inc_type,
+                  income_ref,
                   set.paymethod.text,
                   set.companyaccount.name,
                   set.date.strftime("%d/%m/%y"),
                   number_to_currency(set.price, :unit => "£"),
                   number_to_currency(set.vat_due, :unit => "£"),
                   number_to_currency(set.total, :unit => "£"),
+                  set.state,
                   set.note
                   ]
-
         end
       end
     end

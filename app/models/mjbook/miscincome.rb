@@ -23,6 +23,29 @@ module Mjbook
       end
     end
 
+
+    def self.to_csv
+
+      require 'csv'
+
+      CSV.generate do |csv|
+        csv << ["Reference","Job Reference", "Customer", "Price", "VAT", "Total", "Date", "State", "Notes"]
+        all.each do |set|
+          csv << [
+                 set.ref,
+                 set.project.ref,
+                 set.project.customer.company_name,
+                 number_to_currency(set.price, :unit => "£"),
+                 number_to_currency(set.vat, :unit => "£"),
+                 number_to_currency(set.total, :unit => "£"),
+                 set.date.strftime("%d/%m/%y"),
+                 set.state,
+                 set.notes
+                 ]
+        end
+      end
+    end
+
     private
 
     default_scope { order('date DESC') }

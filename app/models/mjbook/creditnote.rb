@@ -26,11 +26,12 @@ module Mjbook
         all.each do |set|
           csv << [
                  set.ref,
+                 #set.creditnoteitem.inline.ingroup.invoice.ref
+                 #set.creditnoteitem.inline.ingroup.invoice.project.customer.company_name
                  number_to_currency(set.price, :unit => "£"),
                  number_to_currency(set.vat, :unit => "£"),
                  number_to_currency(set.total, :unit => "£"),
                  set.date.strftime("%d/%m/%y"),
-                 set.state,
                  set.notes
                  ]
         end
