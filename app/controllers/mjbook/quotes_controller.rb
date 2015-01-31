@@ -116,8 +116,8 @@ module Mjbook
       if params[:quote_content] == 'blank'
         @quote = Quote.new(quote_params)
         if @quote.save
-          qgroup = Mjbook::Qgroup.create(:quote_id => @quote.id)
-          qline = Mjbook::Qline.create(:qgroup_id => qgroup.id, :ref => '1', :text => 'Invoice section title')
+          qgroup = Mjbook::Qgroup.create(:quote_id => @quote.id, :ref => '1', :text => 'Invoice section title')
+          qline = Mjbook::Qline.create(:qgroup_id => qgroup.id)
           redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
         else
           render :new
