@@ -66,9 +66,9 @@ module Mjbook
                  set.project.customer.name,
                  set.project.customer.company_name,
                  set.date.strftime("%d/%m/%y"),
-                 set.price
-                 set.vat_due
-                 set.total
+                 set.price,
+                 set.vat_due,
+                 set.total,
                  set.state
                  ]
 
