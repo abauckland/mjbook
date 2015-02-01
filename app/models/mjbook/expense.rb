@@ -94,9 +94,9 @@ module Mjbook
                   set.date.strftime("%d/%m/%y"),
                   set.due_date.strftime("%d/%m/%y"),
                   mileage_distance,
-                  number_to_currency(set.price, :unit => "£"),
-                  number_to_currency(set.vat, :unit => "£"),
-                  number_to_currency(set.total, :unit => "£"),
+                  set.price,
+                  set.vat,
+                  set.total,
                   receipt_confirm,
                   set.state
                   ]

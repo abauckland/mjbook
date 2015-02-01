@@ -48,7 +48,7 @@ module Mjbook
         all.each do |set|
           csv << [
                  set.user.name,
-                 number_to_currency(set.total, :unit => "£"),
+                 set.total,
                  set.date.strftime("%d/%m/%y")
                   ]
 

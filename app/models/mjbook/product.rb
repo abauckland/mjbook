@@ -23,11 +23,11 @@ module Mjbook
                  set.item,
                  set.quantity,
                  set.unit.text,
-                 number_to_currency(set.rate, :unit => "£"),
-                 number_to_currency(set.price, :unit => "£"),
+                 set.rate,
+                 set.price,
                  set.vat.cat,
-                 number_to_currency(set.vat_due, :unit => "£"),
-                 number_to_currency(set.total, :unit => "£"),
+                 set.vat_due,
+                 set.total,
                  ]
 
         end

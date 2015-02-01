@@ -66,9 +66,9 @@ module Mjbook
                  set.project.customer.name,
                  set.project.customer.company_name,
                  set.date.strftime("%d/%m/%y"),
-                 number_to_currency(set.price, :unit => "£"),
-                 number_to_currency(set.vat_due, :unit => "£"),
-                 number_to_currency(set.total, :unit => "£"),
+                 set.price,
+                 set.vat_due,
+                 set.total,
                  set.state
                  ]
 

@@ -28,9 +28,9 @@ module Mjbook
                  set.ref,
                  #set.creditnoteitem.inline.ingroup.invoice.ref
                  #set.creditnoteitem.inline.ingroup.invoice.project.customer.company_name
-                 number_to_currency(set.price, :unit => "£"),
-                 number_to_currency(set.vat, :unit => "£"),
-                 number_to_currency(set.total, :unit => "£"),
+                 set.price,
+                 set.vat,
+                 set.total,
                  set.date.strftime("%d/%m/%y"),
                  set.notes
                  ]

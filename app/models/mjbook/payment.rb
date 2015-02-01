@@ -50,9 +50,9 @@ module Mjbook
                   set.paymethod.text,
                   set.companyaccount.name,
                   set.date.strftime("%d/%m/%y"),
-                  number_to_currency(set.price, :unit => "£"),
-                  number_to_currency(set.vat_due, :unit => "£"),
-                  number_to_currency(set.total, :unit => "£"),
+                  set.price,
+                  set.vat_due,
+                  set.total,
                   set.state,
                   set.note
                   ]
