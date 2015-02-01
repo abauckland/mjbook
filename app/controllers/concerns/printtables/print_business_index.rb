@@ -20,6 +20,12 @@ module Printtables
             receipt_confirm = ""
           end
 
+          if !set.mileage.blank?
+            mileage_distance = set.mileage.distance.to_s
+          else
+            mileage_distance = ""
+          end
+
           rows[i+1] = [
                        set.ref,
                        set.exp_type,
@@ -29,7 +35,7 @@ module Printtables
                        set.supplier_ref,
                        set.date.strftime("%d/%m/%y"),
                        set.due_date.strftime("%d/%m/%y"),
-                       set.mileage.distance,
+                       mileage_distance,
                        number_to_currency(set.price, :unit => "£"),
                        number_to_currency(set.vat, :unit => "£"),
                        number_to_currency(set.total, :unit => "£"),
