@@ -285,7 +285,7 @@ module Mjbook
 
          if account_id
            companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
-           filter_group = companyaccount.company_name
+           filter_group = companyaccount.name
          else
            filter_group = "All Accounts"
          end
