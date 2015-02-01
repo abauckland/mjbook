@@ -72,10 +72,16 @@ module Mjbook
         csv << ["Reference", "Expense Type", "Job Reference", "Expenditure Category", "Supplier", "Supplier Ref:", "Issued Date", "Due Date", "Mileage", "Price", "VAT", "Total", "Receipt", "Status"]
         all.each do |set|
 
-          if set.receipt
+          if !set.receipt.blank?
             receipt_confirm = "yes"
           else
             receipt_confirm = ""
+          end
+          
+          if !set.mileage.blank?
+            mileage_distance = set.mileage.distance.to_s
+          else
+            mileage_distance = ""
           end
 
           csv << [
@@ -87,7 +93,7 @@ module Mjbook
                   set.supplier_ref,
                   set.date.strftime("%d/%m/%y"),
                   set.due_date.strftime("%d/%m/%y"),
-                  set.mileage.distance,
+                  mileage_distance,
                   number_to_currency(set.price, :unit => "£"),
                   number_to_currency(set.vat, :unit => "£"),
                   number_to_currency(set.total, :unit => "£"),
