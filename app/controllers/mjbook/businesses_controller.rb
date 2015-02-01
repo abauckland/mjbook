@@ -174,7 +174,7 @@ module Mjbook
            filter_group = "All Suppliers"
          end
          
-         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
 
          send_data expenses.to_csv, filename: filename, :type => "text/csv"
       end
