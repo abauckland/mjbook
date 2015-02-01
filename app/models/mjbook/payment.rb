@@ -36,11 +36,11 @@ module Mjbook
         all.each do |set|
 
           if set.invoice?
-            income_ref = set.paymentitem.inline.ingroup.invoice.ref
+            income_ref = set.paymentitems.inline.ingroup.invoice.ref
           elsif set.transfer?
-            income_ref = set.paymentitem.transfer.ref
+            income_ref = set.paymentitems.transfer.ref
           else
-            income_ref = set.paymentitem.miscincome.ref
+            income_ref = set.paymentitems.miscincome.ref
           end
 
           csv << [
