@@ -82,7 +82,7 @@ module Mjbook
 
     # POST /invoice
     def create
-      authorize @invoice
+
       if params[:invoice_content] == 'clone_quote'
         
        clone_quote = Quote.where(:id => params[:clone_quote]).first
@@ -99,6 +99,7 @@ module Mjbook
                           :total => clone_quote.total
                           }
         @invoice = Invoice.new(new_invoice_hash)
+      authorize @invoice
         if @invoice.save
 
           create_quote_content(@invoice, clone_quote)
