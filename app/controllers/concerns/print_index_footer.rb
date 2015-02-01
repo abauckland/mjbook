@@ -26,7 +26,7 @@ module PrintIndexFooter
     pdf.text_box "File: #{ filename }" , footer_format.merge(:at =>[0.mm, pdf.bounds.bottom + 8.mm])
     pdf.text_box "Created: #{ reformated_date }", footer_format.merge(:at =>[0.mm, pdf.bounds.bottom + 4.mm])
     
-    pdf.image "#{Rails.root}/app/assets/images/myhq_logo.png", :position => :right, :vposition => 187.mm, :align => :right, :fit => [20,20]        
+#    pdf.image "#{Rails.root}/app/assets/images/myhq_logo.png", :position => :right, :vposition => 187.mm, :align => :right, :fit => [20,20]        
   end
 
 end
