@@ -54,3 +54,62 @@
 
 <!-- mob menu select -->
 <nav class="left_menu_mob_select">MENU</nav>
+
+<ul class="left_menu_mob">
+    <li><p class="mob_menu">Dashboard</p>
+        <ul class="sub_menu_mob">
+            <li><%= link_to "Dashboard", main_app.dashboards_path, :class => 'left_menu_blue' %></li>
+        </ul>
+    </li>
+    <% if current_user.owner? || current_user.admin? %>
+	    <li><p class="mob_menu">Reports</p>
+	        <ul class="sub_menu_mob">
+	            <li><%= link_to "Summary", summaries_path %>
+	            <li><%= link_to "Income", payments_path %> </li>
+	            <li><%= link_to "Expenditure", expends_path %> </li>
+	            <li><%= link_to "Credit Notes", creditnotes_path %> </li>
+	            <li><%= link_to "Written Off Debt", writeoffs_path %> </li>
+	        </ul>
+	    </li>
+    <% end %>
+    <li><p class="mob_menu">Income</p>
+        <ul class="sub_menu_mob">
+            <li><%= link_to "Quotes", quotes_path %> </li>
+            <li><%= link_to "Invoices", invoices_path  %> </li>
+            <li><%= link_to "Misc. Income", miscincomes_path %> </li>
+        </ul>
+    </li>
+    <li><p class="mob_menu">Transfers</p>
+        <ul class="sub_menu_mob">
+            <li><%= link_to "Transfers", transfers_path %> </li>
+        </ul>
+    </li>
+    <li><p class="mob_menu">Expenditure</p>
+        <ul class="sub_menu_mob">
+            <li><%= link_to "Business Expense", businesses_path %> </li>
+            <% if current_user.owner? || current_user.admin? %>
+	            <li><%= link_to "Employee Expenses", employees_path %> </li>
+	            <li><%= link_to "Salaries", salaries_path %> </li>
+            <% end %>
+        </ul>
+    </li>
+    <li><p class="mob_menu">Settings</p>
+        <ul class="sub_menu_mob">
+            <li><%= link_to "Business Expense", businesses_path %> </li>
+            <li><%= link_to "Jobs", projects_path %> </li>
+            <li><%= link_to "Customers", customers_path %> </li>
+            <li><%= link_to "Suppliers", suppliers_path %> </li>
+            <li><%= link_to "Products", products_path %> </li>
+            <li><%= link_to "Services (Lump Sum)", services_path %> </li>
+            <li><%= link_to "Misc Items", miscs_path %> </li>
+                <% if current_user.owner? || current_user.admin? %>
+                    <li><%= link_to "Mileage Allowances", edit_mileagemode_path(current_user.company_id) %></li>
+                    <li><%= link_to "Expense Categories", hmrcexpcats_path %> </li>
+                    <li><%= link_to "Quote Terms", quoteterms_path %> </li>
+                    <li><%= link_to "Invoice Terms", invoiceterms_path %> </li>
+                    <li><%= link_to "Company Accounts", companyaccounts_path %> </li>
+                    <li><%= link_to "Settings", edit_setting_path(current_user.company_id) %> </li>
+                <% end %>
+        </ul>
+    </li>
+</ul>
