@@ -59,7 +59,7 @@ module Mjbook
 
        #selected parameters for filter form
        all_miscincomes = policy_scope(Miscincome)
-       @customers = Customer.joins(:projects => :miscincomes).where('mjbook_miscincomes.id' => all_miscincomes.ids)
+       @customers = Mjbook::Customer.joins(:projects => :miscincomes).where('mjbook_miscincomes.id' => all_miscincomes.ids)
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
