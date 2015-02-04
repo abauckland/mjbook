@@ -1,9 +1,10 @@
+module Mjbook
 class InvoiceMailer < ActionMailer::Base
 
   def invoice(invoice, document, current_user, settings)
     
     @invoice = invoice
-    @customer = Mjbook::Customer.joins(:project => :invoice).where('mjbook_invoices.payment_id' => invoice.id).first    
+    @customer = Mjbook::Customer.joins(:projects => :invoice).where('mjbook_invoices.payment_id' => invoice.id).first    
     @user = current_user
         
     if @customer
@@ -22,4 +23,5 @@ class InvoiceMailer < ActionMailer::Base
       format.text
     end
   end
+end
 end

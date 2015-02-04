@@ -1,3 +1,4 @@
+module Mjbook
 class QuoteMailer < ActionMailer::Base
 
   def quote(quote, document, current_user, settings)
@@ -22,4 +23,5 @@ class QuoteMailer < ActionMailer::Base
       format.text# { render text: 'Render text' }
     end
   end
+end
 end

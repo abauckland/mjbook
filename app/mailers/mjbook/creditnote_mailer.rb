@@ -1,3 +1,4 @@
+module Mjbook
 class CreditnoteMailer < ActionMailer::Base
   
   def creditnote(creditnote, document, current_user, settings)
@@ -5,7 +6,7 @@ class CreditnoteMailer < ActionMailer::Base
     @creditnote = creditnote
     @user = current_user
 
-    @customer = Mjbook::Customer.joins(:project => [:invoice => [:ingroup => [:inline => :creditnoteitems]]]).where('mjbook_creditnoteitems.payment_id' => creditnote.id).first
+    @customer = Mjbook::Customer.joins(:projects => [:invoice => [:ingroup => [:inline => :creditnoteitems]]]).where('mjbook_creditnoteitems.payment_id' => creditnote.id).first
     #add default email so that if customer doees not have an email address this action can complete and state of quote updated
     if @customer
       email_address = @customer.email
@@ -23,4 +24,5 @@ class CreditnoteMailer < ActionMailer::Base
       format.text
     end
   end
+end
 end
