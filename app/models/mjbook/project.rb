@@ -10,7 +10,8 @@ module Mjbook
     has_many :quotes
     has_many :invoices
     has_many :payments
-
+    has_many :miscincomes
+    
     belongs_to :customer
 
     validates :customer_id, :invoicemethod_id, presence: true
