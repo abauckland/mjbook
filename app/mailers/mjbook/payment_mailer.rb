@@ -4,7 +4,7 @@ class PaymentMailer < ActionMailer::Base
   def receipt(payment, document, current_user, settings)
     
     @payment = payment
-    @customer = Mjbook::Customer.joins(:projects => [:invoice => [:ingroup => [:inline => :paymentitems]]]).where('mjbook_paymentitems.payment_id' => payment.id).first
+    @customer = Mjbook::Customer.joins(:projects => [:invoices => [:ingroup => [:inline => :paymentitems]]]).where('mjbook_paymentitems.payment_id' => payment.id).first
     @user = current_user
     #add default email so that if customer doees not have an email address this action can complete and state of quote updated
     if @customer
