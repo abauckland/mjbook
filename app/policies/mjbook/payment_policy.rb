@@ -43,5 +43,9 @@ module Mjbook
         index?
       end  
 
+      def email?
+        index?
+      end 
+
   end
 end
