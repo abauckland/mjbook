@@ -7,7 +7,8 @@ module Mjbook
     before_action :set_paymethods, only: [:new, :edit, :invoice_paid, :process_misc]
 
     include PrintIndexes
-
+    include PrintReceipt
+    
     # GET /payments
     def index
 
