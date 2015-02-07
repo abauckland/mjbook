@@ -24,14 +24,14 @@
                         <div class="form_tooltip" id="invoice_paymethod"></div>
                         <label class="label_120">Transfer Method:*</label>
                         <span>
-                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {:selected => @transfer.paymethod_id, :prompt => :true})%>
+                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {:selected => @payment.paymethod_id, :prompt => :true})%>
                         </span></br>
 
                        <!-- form input[select -->
                         <div class="form_tooltip" id="invoice_account"></div>
                         <label class="label_120">To Account:*</label>
                         <span>
-                            <%= f.collection_select(:account_id, @companyaccounts, :id, :name, {:selected => @transfer.account_from_id, :prompt => :true})%>
+                            <%= f.collection_select(:account_id, @companyaccounts, :id, :name, {:selected => @payment.account_from_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] --> 
@@ -59,14 +59,14 @@
                         <div class="form_tooltip" id="invoice_date"></div>
                         <label class="label_120">Date:*</label>
                         <span>
-                            <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d')%>
+                            <%= f.date_field :date %>
                         </span></br>
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="invoice_note"></div>
                         <label class="label_120">Notes:</label>
                         <span>
-                            <%= f.date_field :note, :value => Time.now.strftime('%Y/%m/%d') %>
+                            <%= f.date_field :note %>
                         </span></br>
                         
                     </fieldset>
