@@ -1,4 +1,6 @@
-Company Name: <%= @customer.commpany_name %>
+<% if @company %>
+    Company Name: <%= @customer.commpany_name %>
+<% end %>
 Quote Ref: <%= @quote.ref %>
 Project Ref: <%= @quote.project.ref %>
 Quote Date: <%= @quote.date.strftime("%d/%m/%y") %>
