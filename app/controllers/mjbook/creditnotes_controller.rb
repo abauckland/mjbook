@@ -4,6 +4,10 @@ module Mjbook
   class CreditnotesController < ApplicationController
     before_action :set_creditnote, only: [:show, :destroy, :email]
 
+    include PrintIndexes
+    include PrintCredit
+
+
     # GET /creditnotes
     def index
 
