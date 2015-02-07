@@ -31,7 +31,7 @@
                         <div class="form_tooltip" id="invoice_account"></div>
                         <label class="label_120">To Account:*</label>
                         <span>
-                            <%= f.collection_select(:account_id, @companyaccounts, :id, :name, {:selected => @payment.account_from_id, :prompt => :true})%>
+                            <%= f.collection_select(:account_id, @companyaccounts, :id, :name, {:selected => @payment.account_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] --> 
