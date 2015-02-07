@@ -1,4 +1,6 @@
-Company Name: <%= @customer.commpany_name %>
+<% if @company %>
+    Company Name: <%= @customer.commpany_name %>
+<% end %>
 Invoice Ref: <%= @invoice.ref %>
 Project Ref: <%= @invoice.project.ref %>
 Customer Ref <%= @invoice.project.customer_ref %>
