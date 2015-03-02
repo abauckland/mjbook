@@ -17,8 +17,10 @@ class QuoteMailer < ActionMailer::Base
     file_name = current_user.company.name + "_" + @quote.ref + "_" + @quote.date.strftime("%d-%m-%y") + ".pdf"
 
     attachments[file_name] = document.render
+    
+    user_from_email = settings.email_username + '@' + settings.email_domain
 
-    mail(to: email_address, subject: email_subject, cc: current_user.email, from: settings.email_username) do |format|
+    mail(to: email_address, subject: email_subject, cc: current_user.email, from: user_from_email) do |format|
     #  format.html { render 'another_template' }
       format.text# { render text: 'Render text' }
     end
