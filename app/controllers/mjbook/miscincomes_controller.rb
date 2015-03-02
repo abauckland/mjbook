@@ -127,7 +127,7 @@ module Mjbook
       def pdf_miscincome_index(miscincomes, customer_id, date_from, date_to)
          customer = Customer.where(:id => customer_id).first if customer_id
 
-         if supplier
+         if customer
            filter_group = customer.company_name
          else
            filter_group = "All Customers"
@@ -149,7 +149,7 @@ module Mjbook
       def csv_miscincome_index(miscincomes, customer_id, date_from, date_to)
          customer = Customer.where(:id => customer_id).first if customer_id
 
-         if supplier
+         if customer
            filter_group = customer.company_name
          else
            filter_group = "All Customers"
