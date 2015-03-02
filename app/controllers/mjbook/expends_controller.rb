@@ -261,7 +261,7 @@ module Mjbook
 
       def pdf_expend_index(expends, account_id, date_from, date_to)
 
-         if account_id
+         if account_id != ""
            companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
            filter_group = companyaccount.company_name
          else
@@ -283,7 +283,7 @@ module Mjbook
 
       def csv_expend_index(expends, account_id, date_from, date_to)
 
-         if account_id
+         if account_id != ""
            companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
            filter_group = companyaccount.name
          else
