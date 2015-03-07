@@ -76,18 +76,19 @@
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_show', title: "edit" %>
                                             <%= row_print_link(invoice, 'show') %>
                                             <%= row_email_link(invoice, 'show') %>
+                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
                                         <% else %>
                                             <%= row_delete_link(invoice, 'hidden') %>
                                             <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_hidden', title: "edit" %>
                                             <%= row_print_link(invoice, 'show') %>
                                             <%= row_email_link(invoice, 'hidden') %>
-                                        <% end %>
-										<% if current_user.owner? || current_user.admin? %>
-	                                        <% if invoice.part_paid? || invoice.submitted? %>
-	                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
-	                                        <% else %>
-	                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
-	                                        <% end %>
+    										<% if current_user.owner? || current_user.admin? %>
+    	                                        <% if invoice.part_paid? || invoice.submitted? %>
+    	                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
+    	                                        <% else %>
+    	                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+    	                                        <% end %>
+                                            <% end %>
                                         <% end %>
                                     </td)
                                 </tr>
