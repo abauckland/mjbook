@@ -44,13 +44,13 @@ module Mjbook
     end
 
 
-   # validates :project_id, presence: true
-#    validates :supplier_id, presence: true
-   # validates :hmrcexpcat_id, presence: true
-   # validates :price, presence: true, numericality: true
-  #  validates :vat, presence: true, numericality: true
- #   validates :total, presence: true, numericality: true
-#    validates :date, presence: true
+    validates :project_id, presence: true
+    validates :supplier_id, presence: true
+    validates :hmrcexpcat_id, presence: true
+    validates :price, presence: true, numericality: true
+    validates :vat, presence: true, numericality: true
+    validates :total, presence: true, numericality: true
+    validates :date, presence: true
 
 
     scope :user, ->(current_user) {  joins(:project).where(:user_id => current_user.id, 'mjbook_projects.company_id' => current_user.company_id)}
