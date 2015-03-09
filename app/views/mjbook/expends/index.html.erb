@@ -13,17 +13,17 @@
             </div>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
-        </div>        
-        <div class="float_right">   
+            </div>
+            <%= submit_tag 'Filter' %>
+        </div>
+        <div class="float_right">
             <div><%= submit_tag 'pdf', :class => "table_pdf_icon"%></div>
             <div><%= submit_tag 'csv', :class => "table_csv_icon"%></div>
-        </div>  
-    <% end %> 
+        </div>
+    <% end %>
 </div>
 
 
@@ -58,7 +58,7 @@
 
                 <table>
                     <tbody>
-                        <% if @expends %>            
+                        <% if @expends %>
                             <% @expends.each do |expend| %>
                                 <tr>
                                     <td class="expend_ref"><%= expend.ref %></td>
@@ -67,7 +67,7 @@
                                         <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
                                     <% end %>
                                     <% if expend.business? %>
-                                        <td class="expend_paid"><%= expend_expenses(expend.id) %></td>                
+                                        <td class="expend_paid"><%= expend_expenses(expend.id) %></td>
                                     <% end %>
                                     <% if expend.salary? %>
                                         <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
@@ -84,30 +84,30 @@
                                     <td class="expend_total"><%= pounds(expend.total) %></td>
                                     <td id="<%= expend.id %>_status" class="expend_status"><%= expend.state %></td>
                                     <td class="expend_note"><%= expend.note %></td>
-                                    <td id="<%= expend.id %>_links" class="row_button no_buttons_3">                                        
+                                    <td id="<%= expend.id %>_links" class="row_button no_buttons_3">
                                         <% unless expend.reconciled? %>
                                             <%= row_delete_link(expend, 'show') %>
                                             <!-- transfers cannot be edited -->
-                                            <% unless expend.transfer? %>                                        
+                                            <% unless expend.transfer? %>
                                                 <%= row_edit_link(expend, 'show') %>
                                             <% else %>
                                                 <%= row_edit_link(expend, 'hidden') %>
-                                            <% end %>                                                                                    
+                                            <% end %>
                                             <%= row_reconcile_link(expend, 'show') %> 
-                                            <%= row_unreconcile_link(expend, 'hidden') %>                                        
+                                            <%= row_unreconcile_link(expend, 'hidden') %>
                                         <% else %>
-                                            <%= row_delete_link(expend, 'hidden') %>                                        
-                                            <%= row_edit_link(expend, 'hidden') %>                                        
+                                            <%= row_delete_link(expend, 'hidden') %>
+                                            <%= row_edit_link(expend, 'hidden') %>
                                             <%= row_reconcile_link(expend, 'hidden') %> 
                                             <%= row_unreconcile_link(expend, 'show') %> 
-                                        <% end %>                                                      
+                                        <% end %>
                                     </td)
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>
@@ -127,6 +127,7 @@
                             <td class="expend_vat_due"><%= pounds(@sum_vat) %></td>
                             <td class="expend_total"><%= pounds(@sum_total) %></td>
                             <td class="expend_status"></th>
+                            <td class="expend_note"></td>
                             <td class="row_button no_buttons_5"></td>
                         </tr>
                     </tbody>
