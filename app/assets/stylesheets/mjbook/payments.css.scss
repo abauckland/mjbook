@@ -5,22 +5,23 @@ $tab_lrg_menu: 940px;
 $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
-//index table 
-.payment_ref {display: table-cell; width: 50px; text-align: left;}
+//index table
+.payment_ref     {@include ref}
 .payment_invoice {display: table-cell}
-.payment_account{display: table-cell; width: 100px}
-.payment_date{display: table-cell; width: 80px}
-.payment_price{display: table-cell; width: 80px; text-align: right;}
-.payment_vat_due{display: table-cell; width: 80px; text-align: right;}
-.payment_total{display: table-cell; width: 80px; text-align: right;}
-.payment_note{display: table-cell; width: 300px; text-align: right;}
+.payment_account {@include account}
+.payment_data    {@include date}
+.payment_price   {@include pounds}
+.payment_vat_due {@include pounds}
+.payment_total   {@include pounds}
+.payment_status  {@include state}
+.payment_note    {@include note}
 
 
 @media screen and (max-width: $lrg_menu) {
 
 }
 
-@media screen and (max-width: $tab_lrg_menu) {
+@media screen and  (max-width: $tab_lrg_menu) {
   .payment_note{display: none}
 }
   
@@ -31,7 +32,7 @@ $mob_menu: 520px;
 @media screen and (max-width: $mob_menu) {
   .payment_account{display: none} 
   .payment_price{display: none}
-  .payment_vat_due{display: none}
+  .payment_vat_due{display: none} 
 }
 
 .vat_note{font-size: 0.8rem; font-weight: normal;}
