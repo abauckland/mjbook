@@ -151,7 +151,6 @@ module Mjbook
     def update
       authorize @invoice
       if @invoice.update(invoice_params)
-        @invoice.draft!
         redirect_to invoicecontent_path(:id => @invoice.id), notice: 'Invoice was successfully updated.'
       else
         render :edit
