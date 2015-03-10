@@ -7,7 +7,7 @@ module Mjbook
 
     def new_line
 
-      update_line_order(@line, 'new')  
+      update_line_order(@line, 'new')
  
       @new_line = @line.dup
       @new_line.line_order = @line.line_order + 1
@@ -18,51 +18,51 @@ module Mjbook
 
       respond_to do |format|
         format.js {render :new_line, :layout => false }
-      end      
+      end
     end
 
 
     def edit_line
-      
+
       @linetypes = [['1','product item'],['2','service item (fixed price)'],['3','misc item']]
-      
+
       respond_to do |format|
-        format.js {render :edit_line, :layout => false }  
-      end            
+        format.js {render :edit_line, :layout => false }
+      end
     end
 
 
     def update
       # changes format of line by inserting new line then delete old line 
-      @old_line = Inline.find(params[:id])     
+      @old_line = Inline.find(params[:id])
       @old_line_id = @old_line.id
-           
+
       @line = Inline.create(:ingroup_id => @old_line.ingroup_id,
                             :line_order => @old_line.line_order,
-                            :linetype => params[:inline][:linetype]) 
-     
-      @old_line.destroy      
+                            :linetype => params[:inline][:linetype])
+
+      @old_line.destroy
       update_totals(@line.ingroup_id)
-                
+
       respond_to do |format|
-        format.js {render :update_line, :layout => false }  
-      end      
+        format.js {render :update_line, :layout => false }
+      end
     end
 
 
     def delete_line
 
       @deleted_line_id = @line.id
-      line_dup = @line.dup 
-         
+      line_dup = @line.dup
+
       @line.destroy
-      
-      update_line_order(line_dup, 'delete') 
+
+      update_line_order(line_dup, 'delete')
       update_totals(line_dup.ingroup_id)
-                   
+
       respond_to do |format|
-        format.js {render :delete_line, :layout => false }  
-      end          
+        format.js {render :delete_line, :layout => false }
+      end 
     end
 
 
@@ -70,29 +70,29 @@ module Mjbook
     def update_cat
       
       if params[:value] == "Add new..."
-        #render option for inputting new category      
-        respond_to do |format|      
-          format.js {render :change_cat_input, :layout => false }        
-        end        
-      else  
+        #render option for inputting new category
+        respond_to do |format|
+          format.js {render :change_cat_input, :layout => false }
+        end
+      else
 
-        old_line = Inline.find(params[:id])        
+        old_line = Inline.find(params[:id])
         @old_line_id = old_line.id 
 
-        cat = Mjbook::Productcategory.where(:id => params[:value]).first        
-        
+        cat = Mjbook::Productcategory.where(:id => params[:value]).first
+
         @line = Inline.create(:cat => cat.text,
                              :ingroup_id => old_line.ingroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)        
+                             :linetype => old_line.linetype)
 
         old_line.destroy
         update_totals(@line.ingroup_id)
 
-        respond_to do |format|      
-          format.js {render :update_line, :layout => false }        
+        respond_to do |format|
+          format.js {render :update_line, :layout => false }
         end
-      end         
+      end
     end
 
 
@@ -100,13 +100,13 @@ module Mjbook
       
       if params[:value] == "Add new..."
         #render option for inputting new category      
-        respond_to do |format|      
-          format.js {render :update_product_new, :layout => false }        
-        end         
-      else  
+        respond_to do |format|
+          format.js {render :update_product_new, :layout => false }
+        end
+      else
 
         old_line = Inline.find(params[:id])
-        item = Product.where(:id => params[:value]).first                
+        item = Product.where(:id => params[:value]).first
         cat = Productcategory.where(:id => item.productcategory_id).first
 
         if old_line.linetype == 1
@@ -118,7 +118,7 @@ module Mjbook
                              :price => item.price, 
                              :vat_id => item.vat_id,
                              :vat_due => item.vat_due,
-                             :total=> item.price,     
+                             :total=> item.total,
                              :ingroup_id => old_line.ingroup_id,
                              :line_order => old_line.line_order,
                              :linetype => old_line.linetype)  
@@ -133,10 +133,10 @@ module Mjbook
                              :price => item.price, 
                              :vat_id => item.vat_id,
                              :vat_due => item.vat_due,
-                             :total=> item.price,     
+                             :total=> item.total,
                              :ingroup_id => old_line.ingroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)          
+                             :linetype => old_line.linetype)
         end
 
         if old_line.linetype == 3
@@ -151,18 +151,18 @@ module Mjbook
                              :total=> 0,     
                              :ingroup_id => old_line.ingroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)          
-        end        
+                             :linetype => old_line.linetype)
+        end
       
         @old_line_id = old_line.id 
         old_line.destroy
 
         update_totals(@line.ingroup_id)
 
-        respond_to do |format|      
-          format.js {render :update_line, :layout => false }        
+        respond_to do |format|
+          format.js {render :update_line, :layout => false }
         end
-      end         
+      end
     end
 
       
@@ -170,17 +170,17 @@ module Mjbook
 
       clean_number(params[:value])
 
-      price = (@line.rate*@value)             
+      price = (@line.rate*@value)
       vat_due = (@line.rate*@value*(@line.vat.rate/100))
       total = (@line.rate*@value)+(@line.rate*@value*(@line.vat.rate/100))
-    
-      @line.update(:quantity => @value, :price => price, :vat_due => vat_due, :total => total)            
+
+      @line.update(:quantity => @value, :price => price, :vat_due => vat_due, :total => total)
 
       update_totals(@line.ingroup_id)
-      
-      respond_to do |format|      
-        format.js {render :update_quantity, :layout => false }        
-      end  
+
+      respond_to do |format|
+        format.js {render :update_quantity, :layout => false }
+      end
     end
 
 
@@ -188,47 +188,47 @@ module Mjbook
 
       clean_number(params[:value])
 
-      price = (@line.quantity*@value)            
+      price = (@line.quantity*@value)
       vat_due = (@line.quantity*@value*(@line.vat.rate/100))
-      total = (@line.quantity*@value*(@line.vat.rate/100))+(@line.quantity*@value)   
-      
-      @line.update(:rate => @value, :price => price, :vat_due => vat_due, :total => total)            
-      
+      total = (@line.quantity*@value*(@line.vat.rate/100))+(@line.quantity*@value)
+
+      @line.update(:rate => @value, :price => price, :vat_due => vat_due, :total => total)
+
       update_totals(@line.ingroup_id)
-      
-      respond_to do |format|      
-        format.js {render :update_rate, :layout => false }        
+
+      respond_to do |format|
+        format.js {render :update_rate, :layout => false }
       end
     end
 
-      
+
     def update_vat_rate
 
       vat = Vat.where(:id => params[:value]).first 
       
       vat_due = (@line.rate*(vat.rate/100))
-      total = (@line.rate + vat_due)*@line.quantity   
+      total = (@line.rate + vat_due)*@line.quantity
       #update line, group and invoice totals
-      @line.update(:total =>total, :vat_id => params[:value], :vat_due => vat_due)            
-      
+      @line.update(:total =>total, :vat_id => params[:value], :vat_due => vat_due)
+
       update_totals(@line.ingroup_id)
-    
-      respond_to do |format|      
-        format.js {render :update_vat_rate, :layout => false }        
+
+      respond_to do |format|
+        format.js {render :update_vat_rate, :layout => false }
       end
     end
 
     def update_price
  
       clean_number(params[:value])
-            
+
       vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
       rate = @value-vat_due
       #update line, group and invoice totals      
-      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)            
+      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)
       
       update_totals(@line.ingroup_id)
-    
+
       render :update_line, :layout => false 
     end
 
@@ -249,18 +249,18 @@ module Mjbook
 
     def update_unit  
       #save changes
-      @line.update(:unit_id => params[:value])     
+      @line.update(:unit_id => params[:value])
       #render text only      
-      render :text=> @line.unit.text         
+      render :text=> @line.unit.text
     end
 
     def update_text
       #removes white space and punctuation from end of text
-      clean_text(params[:value])         
+      clean_text(params[:value])
       #save changes
-      @line.update(:text => @value)     
+      @line.update(:text => @value)
       #render text only      
-      render :text=> params[:value]          
+      render :text=> params[:value]
     end
 
 
@@ -293,9 +293,9 @@ module Mjbook
         #update invoice
         @invoice = Invoice.where(:id => @ingroup.invoice_id).first
         @invoice.update(:vat_due => vat_due, :total => total, :price => price)
-                   
-      end      
-     
+
+      end
+
       def update_line_order(selected_line, action) 
         subsequent_lines = Inline.where('ingroup_id = ? AND line_order > ?', selected_line.ingroup_id, selected_line.line_order)
         
@@ -306,8 +306,8 @@ module Mjbook
           if action == 'delete'
             line.update(:line_order => selected_line.line_order + i)
           end
-        end       
+        end
       end
-      
+
   end
 end
