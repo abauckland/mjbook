@@ -71,9 +71,13 @@
                                     <td id="<%= quote.id %>_links" class="row_button no_buttons_4">
                                         <% if quote.rejected? || quote.draft? %>
                                             <%= row_delete_link(quote, 'show') %>
-                                            <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
                                         <% else %>
                                             <%= row_delete_link(quote, 'hidden') %>
+                                        <% end %>
+
+                                        <% if quote.draft? %>
+                                            <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_show', title: "edit" %>
+                                        <% else %>
                                             <%= link_to "", quotecontent_path(quote), class: 'line_edit_icon_hidden', title: "edit" %>                        
                                         <% end %>
 
