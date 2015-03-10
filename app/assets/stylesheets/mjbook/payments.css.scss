@@ -7,15 +7,16 @@ $mob_menu: 520px;
 
 //index table
 .payment_ref     {@include ref}
-.payment_invoice {display: table-cell}
+.payment_inc_type{@include method}
+.payment_invoice {@include ref}
+.payment_method  {@include method}
 .payment_account {@include account}
-.payment_data    {@include date}
+.payment_date    {@include date}
 .payment_price   {@include pounds}
 .payment_vat_due {@include pounds}
 .payment_total   {@include pounds}
 .payment_status  {@include state}
-.payment_note    {@include note}
-
+.payment_note    {display: table-cell}
 
 @media screen and (max-width: $lrg_menu) {
 

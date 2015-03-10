@@ -39,7 +39,7 @@
                     <thead>
                         <tr>
                             <th class="payment_ref">Ref</th>
-                            <th class="payment_inc_type"></td>Payment Type</th>
+                            <th class="payment_inc_type">Payment Type</th>
                             <th class="payment_invoice">Invoice Ref</th>
                             <th class="payment_method">Payment Method</th>
                             <th class="payment_account">Account</th>
@@ -110,11 +110,17 @@
                 <table class="index_totals">
                     <tbody>
                         <tr>
-                            <td class="payment_index_total">Total</th>
+                            <td class="payment_ref">Total</td>
+                            <td class="payment_inc_type"></td>
+                            <td class="payment_invoice"></td>
+                            <td class="payment_method"></td>
+                            <td class="payment_account"></td>
+                            <td class="payment_date"></td>
                             <td class="payment_price"><%= pounds(@sum_price) %></td>
                             <td class="payment_vat_due"><%= pounds(@sum_vat) %></td>
                             <td class="payment_total"><%= pounds(@sum_total) %></td>
-                            <td class="payment_status"></th>
+                            <td class="payment_status"></td>
+                            <td class="payment_note"></td>
                             <td class="row_button no_buttons_5"></td>
                         </tr>
                     </tbody>
