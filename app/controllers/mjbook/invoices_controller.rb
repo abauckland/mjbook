@@ -271,12 +271,12 @@ module Mjbook
       def create_invoice_content(invoice, clone_invoice)
 
         clone_group = Mjbook::Ingroup.where(:invoice_id => clone_invoice.id)
-        clone_group.each do |ingroup|          
+        clone_group.each do |ingroup| 
           new_ingroup = ingroup.dup
           new_ingroup.save
           new_ingroup.update(:invoice_id => invoice.id)
           
-          clone_line = Mjbook::Inline.where(:ingroup_id => new_ingroup.id)
+          clone_line = Mjbook::Inline.where(:ingroup_id => ingroup.id)
           clone_line.each do |inline|
             new_inline = inline.dup
             new_inline.save
