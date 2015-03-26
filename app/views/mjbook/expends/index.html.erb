@@ -44,7 +44,6 @@
                             <th class="expend_paid">Paid to</th>
                             <th class="expend_method">Payment Method</th>
                             <th class="expend_account">Account</th>
-                            <th class="expend_receipt">Receipt</th>
                             <th class="expend_date">Date</th>
                             <th class="expend_price">Price</br><span>(ex VAT)</span></th>
                             <th class="expend_vat">Vat</th>
@@ -77,7 +76,6 @@
                                     <% end %>
                                     <td class="expend_method"><%= expend.paymethod.text.titleize %></td>
                                     <td class="expend_account"><%= expend.companyaccount.name.titleize %></td>
-                                    <td class="expend_receipt"><%= expend.expend_receipt %></td>
                                     <td class="expend_date"><%= expend.date.strftime("%d/%m/%y") %></td>
                                     <td class="expend_price"><%= pounds(expend.price) %></td>
                                     <td class="expend_vat"><%= pounds(expend.vat) %></td>
@@ -122,13 +120,18 @@
                 <table class="index_totals">
                     <tbody>
                         <tr>
-                            <td class="expend_index_total">Total</th>
+                            <td class="expend_ref">Total</td>
+                            <td class="expend_exp_type"></td>
+                            <td class="expend_paid"></td>
+                            <td class="expend_method"></td>
+                            <td class="expend_account"></td>
+                            <td class="expend_date"></td>
                             <td class="expend_price"><%= pounds(@sum_price) %></td>
-                            <td class="expend_vat_due"><%= pounds(@sum_vat) %></td>
+                            <td class="expend_vat"><%= pounds(@sum_vat) %></td>
                             <td class="expend_total"><%= pounds(@sum_total) %></td>
-                            <td class="expend_status"></th>
+                            <td class="expend_status"></td>
                             <td class="expend_note"></td>
-                            <td class="row_button no_buttons_5"></td>
+                            <td class="row_button no_buttons_3"></td>
                         </tr>
                     </tbody>
                 </table>

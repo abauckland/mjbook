@@ -9,8 +9,8 @@ $mob_menu: 520px;
 .transfer_from  {@include account}
 .transfer_to    {@include account}
 .transfer_total {@include pounds}
-.transfer_date  {display: table-cell; vertical-align: top;}
-.transfer_status{@include state}
+.transfer_date  {@include date}
+.transfer_status{display: table-cell}
 
 @media screen and (max-width: $lrg_menu) {
 

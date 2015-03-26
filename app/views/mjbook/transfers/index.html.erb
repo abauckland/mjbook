@@ -20,8 +20,8 @@
                         <tr>
                             <th class="transfer_from">Account From</th>
                             <th class="transfer_to">Account To</th>
-                            <th class="transfer_total">Total</th>
                             <th class="transfer_date">Date</th>
+                            <th class="transfer_total">Total</th>
                             <th class="transfer_status">Status</th>
                             <th class="row_button no_buttons_3"></th>
                         </tr>
@@ -35,8 +35,8 @@
                                 <tr>
                                     <td class="transfer_from"><%= transfer.account_from.name.titleize %></td>
                                     <td class="transfer_to"><%= transfer.account_to.name.titleize %></td>
-                                    <td class="transfer_total"><%= transfer.total %></td>
                                     <td class="transfer_date"><%= transfer.date.strftime("%d/%m/%y") %></td>
+                                    <td class="transfer_total"><%= pounds(transfer.total) %></td>
                                     <td class="transfer_status"><%= transfer.state %></td>
                                     <td id="<%= transfer.id %>_links" class="row_button no_buttons_3">
                                         <% if transfer.transferred? %>

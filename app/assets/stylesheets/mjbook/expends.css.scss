@@ -7,16 +7,17 @@ $mob_menu: 520px;
 
 //index table 
 .expend_ref     {@include ref}
-.expend_paid    {display: table-cell}
+.expend_exp_type{@include method}
+.expend_paid    {@include account}
 .expend_method  {@include method}
 .expend_account {@include account}
 .expend_receipt {@include receipt}    
-.expend_data    {@include date}
+.expend_date    {@include date}
 .expend_price   {@include pounds}
-.expend_vat_due {@include pounds}
+.expend_vat     {@include pounds}
 .expend_total   {@include pounds}
 .expend_status  {@include state}
-.expend_note    {@include note}
+.expend_note    {display: table-cell}
 
 
 @media screen and (max-width: $lrg_menu) {

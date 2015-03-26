@@ -2,12 +2,12 @@
     <div class="page_title">
         <h1>Salary Payments</h1>
     </div>
-    <div class="title_help" id="salary_index"></div>       
+    <div class="title_help" id="salary_index"></div>
     <div><%= link_to '+ payment', new_salary_path, class: "title_button" %></div>
 </div>
 
 <div class="row filter_band">
-    <%= form_tag salaries_path, method: :get do %>  
+    <%= form_tag salaries_path, method: :get do %>
         <div>
             <div>
                 <label class="select">Employee:</label>
@@ -15,11 +15,11 @@
             </div>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
                 <label class="date">Date To:</label>
                 <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>                                    
-            <%= submit_tag 'Filter' %>     
+            </div>
+            <%= submit_tag 'Filter' %>
         </div>        
         <div class="float_right">   
             <div><%= submit_tag 'pdf', :class => "table_pdf_icon"%></div>
@@ -31,7 +31,7 @@
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
+        <div class="border">
 
             <%= render :partial => "flash_notice" %>
             
@@ -41,8 +41,8 @@
                     <thead>
                         <tr>
                             <th class="salary_employee">Employee</th>
+                            <th class="salary_date">Date</th>
                             <th class="salary_paid">Paid</th>
-                            <th class="salary_date">Date</th>          
                             <th class="salary_status">Status</th>
                             <th class="row_button no_buttons_4"></th>
                         </tr>
@@ -51,12 +51,12 @@
 
                 <table>
                     <tbody>
-                        <% if @salaries %>            
+                        <% if @salaries %>
                             <% @salaries.each do |salary| %>
                                 <tr>
                                     <td class="salary_employee"><%= salary.user.name.titleize %></td> 
-                                    <td class="salary_paid"><%= pounds(salary.total) %></td> 
                                     <td class="salary_date"><%= salary.date.strftime("%d/%m/%y") %></td>
+                                    <td class="salary_paid"><%= pounds(salary.total) %></td> 
                                     <td  id="<%= salary.id %>_status" class="salary_status"><%= salary.state %></td>
                                     <td id="<%= salary.id %>_links"class="row_button no_buttons_4">
                                         <% if salary.submitted? || salary.rejected? %>
@@ -68,7 +68,7 @@
                                             <%= link_to "", edit_salary_path(salary), class: 'line_edit_icon_hidden', title: "edit" %>
                                             <%= row_accept_link(salary, 'hidden') %>
                                         <% end %>
-                         
+
                                         <% if salary.submitted? || salary.accepted? %>
                                             <%= row_reject_link(salary, 'show') %>
                                         <% else %>
@@ -82,11 +82,11 @@
                                         <% end %>
                                     </td>
                                 </tr>
-                            <% end %>  
+                            <% end %>
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>
@@ -101,12 +101,11 @@
                 <table class="index_totals">
                     <tbody>
                         <tr>
-                            <td class="salary_index_total">Total</th>
-                            <td class="salary_price"></td>
-                            <td class="salary_vat_due"></td>
-                            <td class="salary_total"><%= pounds(@sum_total) %></td>
+                            <td class="salary_employee">Total</th>
+                            <td class="salary_date"></td>
+                            <td class="salary_paid"><%= pounds(@sum_total) %></td>
                             <td class="salary_status"></th>
-                            <td class="row_button no_buttons_5"></td>
+                            <td class="row_button no_buttons_4"></td>
                         </tr>
                     </tbody>
                 </table>
