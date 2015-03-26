@@ -35,8 +35,10 @@ module Mjbook
         csv << ["Ref", "Income Type", "Income Ref", "Payment Method", "Paid Into", "Date", "Price", "VAT", "Total", "State", "Notes"]
         all.each do |set|
 
+          invoice = Invoice.joins(:ingroups => [:inlines => :paymentitems]).where('mjbook_paymentitems.payment_id' => set.id).first
+
           if set.invoice?
-            income_ref = set.paymentitems.inline.ingroup.invoice.ref
+            income_ref = invoice.ref
           elsif set.transfer?
             income_ref = set.paymentitems.transfer.ref
           else
@@ -51,7 +53,7 @@ module Mjbook
                   set.companyaccount.name,
                   set.date.strftime("%d/%m/%y"),
                   set.price,
-                  set.vat_due,
+                  set.vat,
                   set.total,
                   set.state,
                   set.note
