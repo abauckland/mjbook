@@ -23,7 +23,7 @@
 
                         <div class="row">
                             <div class="column_title">
-                                <h3>Process Method<span class="form_tooltip"></span></h3>
+                                <h3>Process Method<span class="form_tooltip" id="process_method"></span></h3>
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                     <fieldset>
                         <div class="row">
                             <div class="column_title">
-                                <h3>Items Paid<span class="form_tooltip"></span></h3>
+                                <h3>Items Paid<span class="form_tooltip" id="process_items_paid"></span></h3>
                             </div>
                         </div>
 
@@ -63,8 +63,7 @@
                         <% @ingroups.each do |group| %>
                             
                             <%= group_info(group) %>
-                                                     
-                            
+
                             <% group.inlines.due.each do |line| %>
                                 <div class="line_info">
                                     <div class="right">
@@ -91,7 +90,7 @@
                                         Total Recieved:
                                     </div>
                                 </div>
-                    </fieldset>                                        
+                    </fieldset>
                 </div>
                 <div class="sub-1-3 column_3">
                     <fieldset>
@@ -99,7 +98,7 @@
 
                         <div class="row">
                             <div class="column_title">
-                                <h3>Payment Record<span class="form_tooltip"></span></h3>
+                                <h3>Payment Record<span class="form_tooltip" id="process_payment_record"></span></h3>
                             </div>
                         </div>
 
@@ -110,7 +109,7 @@
                         <!-- show text line -->
                         <label class="label_110">Project Title:</label>
                         <span><%= @invoice.project.title if @invoice.project.title %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_110">Customer:</label>
                         <span><%= @invoice.project.customer.company_name %></span></br>
@@ -119,11 +118,11 @@
                         <!-- show text line -->
                         <label class="label_110">Price:</label>
                         <span class="payment_scope_price"><%= pounds(@invoice_price) %></span></br>
-                                
+
                         <!-- show text line -->
                         <label class="label_110">VAT:</label>
                         <span class="payment_scope_vat_due"><%= pounds(@invoice_vat_due) %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_110">Total:</label>
                         <span class="payment_scope_total"><%= pounds(@invoice_total) %></span></br>

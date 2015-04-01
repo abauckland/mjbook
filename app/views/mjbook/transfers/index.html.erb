@@ -2,7 +2,7 @@
     <div class="page_title">
         <h1>List of Transfers</h1>
     </div>
-    <div class="title_help" id="transfer_index"></div>       
+    <div class="title_help" id="transfer_index"></div>
     <div><%= link_to '+ Transfer', new_transfer_path, class: "title_button" %></div>
 </div>
 
@@ -30,7 +30,7 @@
 
                 <table>
                     <tbody>
-                        <% if @transfers %>            
+                        <% if @transfers %>
                             <% @transfers.each do |transfer| %>
                                 <tr>
                                     <td class="transfer_from"><%= transfer.account_from.name.titleize %></td>

@@ -2,6 +2,7 @@
     <div class="page_title">
         <h1>Quote Build Up</h1>
     </div>
+    <div class="title_help" id="quotecontent_index"></div>
     <%= link_to "quote list", quotes_path, class: "title_button_orange" %>
     <%= link_to "edit references", edit_quote_path(@quote), class: "title_button" %>
 </div>
@@ -19,11 +20,11 @@
 
     <div class="col-1-1 column_1">
         <div class="border">
-                                
-            <%= render :partial => "flash_notice" %>                 
-                
+
+            <%= render :partial => "flash_notice" %>
+
             <div class="row">
-                
+
                 <table class="table_header_with_info">
                 <tr class='line_row'>
                     <td class='quote_line_prefix'></td>
@@ -36,16 +37,16 @@
                     <td class='quote_line_rate'>Price/Unit</td> 
                     <td class='quote_line_price'>Price</td>
                     <td class='quote_line_vat_rate'>VAT (%)</td> 
-                    <td class='quote_line_vat'>VAT</td>  
+                    <td class='quote_line_vat'>VAT</td>
                     <td class='quote_line_total'>Total</td>
                     <td class='line_menu'></td> 
                  </tr>
                 </table>
-                <% @qgroups.each do |group| %>    
-                    <%= render :partial => 'group_row', locals: { group: group } %>  
+                <% @qgroups.each do |group| %>
+                    <%= render :partial => 'group_row', locals: { group: group } %>
                     <% group.qlines.each do |line| %>
-                        <%= render :partial => 'line_row', locals: { line: line } %>    
-                    <% end %>        
+                        <%= render :partial => 'line_row', locals: { line: line } %>
+                    <% end %>
                     <%= render :partial => 'group_total', locals: { group: group } %>
                 <% end %>
                 <%= render :partial => 'quote_total', locals: { qgroups: @qgroups } %>

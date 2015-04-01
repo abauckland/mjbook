@@ -2,6 +2,7 @@
     <div class="page_title">
         <h1>Payable Mileage Rates</h1>
     </div>
+    <div class="title_help" id="mileagemode_edit"></div>
 </div> 
 
 
@@ -22,14 +23,14 @@
                 </div>
 
                 <div class="row">
-                    <% @mileagemodes.each do |mode| %>                    
+                    <% @mileagemodes.each do |mode| %>
                     <div class="column_inline_form">
                         <%= form_for(mode) do |f| %>
                             <fieldset>
                                 <!-- form input[password] -->
                                 <%= f.submit ""%>
-                                <div class="label_80"><%= mode.mode %>:</div>
-                                <div class="label_80"><%= pounds(mode.hmrc_rate) %></div>
+                                <div class="label_100"><%= mode.mode %>:</div>
+                                <div class="label_100"><%= pounds(mode.hmrc_rate) %></div>
                                 <span>
                                    <%= f.text_field :rate, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
                                 </span></br>

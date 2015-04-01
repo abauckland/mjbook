@@ -17,7 +17,7 @@
                    
                     <fieldset>
 
-                        <!-- form input[radio] -->                        
+                        <!-- form input[radio] -->
                         <div class="form_tooltip" id="invoice_blank"></div>
                         <label class="label_120">Invoice Content:</label>
                         <span>
@@ -25,15 +25,15 @@
                             <span>Create blank invoice</span>
                         </span></br>
 
-                        <!-- form input[radio] -->                        
-                        <div class="form_tooltip" id="invoice_clone_quote"></div>
+                        <!-- form input[radio] -->
+                        <div class="form_tooltip" id="invoice_clone_invoice"></div>
                         <label class="label_120"></label>
                         <span>
                             <%= radio_button_tag :invoice_content, 'clone_invoice'%> 
                             <span>Clone existing invoice</span>
                         </span></br>
-                                                
-                        <!-- form input[radio] -->                        
+
+                        <!-- form input[radio] -->
                         <div class="form_tooltip" id="invoice_clone_quote"></div>
                         <label class="label_120"></label>
                         <span>
@@ -46,14 +46,14 @@
                 </div>
 
                         <!-- form input[select -->
-                        <div class="form_tooltip" id="invoice_clone_quote"></div>
+                        <div class="form_tooltip" id="invoice_quote"></div>
                         <label class="label_120">Clone Quote:</label>
                         <span>
                             <%= select_tag "clone_quote", options_from_collection_for_select(@quotes, "id", "ref"), {prompt: 'Select quote', disabled: :true, class: 'clone_select_quote'} %>
                         </span></br>
 
                         <!-- form input[select -->
-                        <div class="form_tooltip" id="invoice_clone"></div>
+                        <div class="form_tooltip" id="invoice_invoice"></div>
                         <label class="label_120">Clone Invoice:</label>
                         <span>
                             <%= select_tag "clone_invoice", options_from_collection_for_select(@invoices, "id", "ref"), {prompt: 'Select Inovice', disabled: :true, class: 'clone_select_invoice'} %>
@@ -103,14 +103,13 @@
                         </span></br>
 
                         <!-- form input[text] --> 
-                        <div class="form_tooltip" id="personalexpense_issue_date"></div>
+                        <div class="form_tooltip" id="invoice_date"></div>
                         <label class="label_120">Date:*</label>
                         <span>
                             <%= f.date_field :date, :value => Time.now.strftime('%Y/%m/%d')%>
                         </span></br>
 
 
-                        
                     </fieldset>
             </div>
 <!-- column footer start--> 
