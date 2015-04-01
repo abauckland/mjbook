@@ -16,9 +16,9 @@
 <!-- form column start-->
                 <div class="row">
                     <div class="column_inline_form">
-                        <div class="header_80">Mode</div>
-                        <div class="header_80">HMRC (£/ml)</div>
-                        <div class="header_90">Company  (£/ml)</div>
+                        <div class="header_90">Mode</div>
+                        <div class="header_90">HMRC (£/ml)</div>
+                        <div class="header_70">Company (£/ml)</div>
                     </div>
                 </div>
 
@@ -29,8 +29,8 @@
                             <fieldset>
                                 <!-- form input[password] -->
                                 <%= f.submit ""%>
-                                <div class="label_100"><%= mode.mode %>:</div>
-                                <div class="label_100"><%= pounds(mode.hmrc_rate) %></div>
+                                <div class="label_90"><%= mode.mode %>:</div>
+                                <div class="label_90"><%= pounds(mode.hmrc_rate) %></div>
                                 <span>
                                    <%= f.text_field :rate, {:placeholder => "0.00", :value => number_with_precision(f.object.rate, :precision => 2)} %>
                                 </span></br>
