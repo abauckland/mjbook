@@ -2,6 +2,7 @@
     <div class="page_title">
         <h1><%= current_user.first_name.capitalize %>'s Expenses</h1>
     </div>
+    <div class="title_help" id="personals_index"></div>
     <div><%= link_to "+ expense", new_personal_path, class: "title_button" %> </div>
     <div><%= link_to "+ mileage", new_mileage_path, class: "title_button" %> </div>
 </div>

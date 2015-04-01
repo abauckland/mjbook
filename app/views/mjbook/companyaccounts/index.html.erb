@@ -2,18 +2,18 @@
     <div class="page_title">
         <h1>Company Accounts</h1>
     </div>
-    <div class="title_help" id="companyaccounts_index"></div>       
+    <div class="title_help" id="companyaccounts_index"></div>
     <div><%= link_to '+ account', new_companyaccount_path, class: "title_button" %></div>
 </div>
 
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
-                
+        <div class="border">
+
             <%= render :partial => "flash_notice" %>
 
-            <div class="row">                
+            <div class="row">
                 <table>
                     <thead>
                         <tr>
@@ -26,23 +26,23 @@
 
                 <table>
                     <tbody>
-                        <% if @companyaccounts %>            
+                        <% if @companyaccounts %>
                             <% @companyaccounts.each do |account| %>
                                 <tr>
                                     <td class="accounts_name"><%= account.name.titleize %></td> 
                                     <td class="accounts_provider"><%= account.provider.titleize %></td>
                                     <td class="row_button no_buttons_2">
                                         <% if companyaccount_in_use(account) %>
-                                            <%= link_to "", account, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete" %>                         
+                                            <%= link_to "", account, method: :delete, data: { confirm: 'Are you sure?' }, class: 'line_delete_icon', title: "delete" %>
                                             <%= link_to "", edit_companyaccount_path(account), class: 'line_edit_icon', title: "edit" %>
-                                        <% end %>                                         
+                                        <% end %>
                                     </td>
                                 </tr>
                             <% end %>  
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>
