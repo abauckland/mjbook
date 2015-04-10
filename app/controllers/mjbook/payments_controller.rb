@@ -394,6 +394,11 @@ module Mjbook
       #determine year record to update based on date of transaction
 #      year_record = policy_scope(Yearend).where("year_end >= ? AND year_end <= ?", current, current.plus_a_year)
 
+#if year_record not found create
+#year_start = yearstart change to year of current_date 
+#year_record = Yearend.create(:company_id = > current_user.company_id, year_start => ????, :balance => 0)
+#end
+
 #      if action == "add" || action == "change"
 #        year_record.update(:retained => (year_record.retained + amount))
 #      end
