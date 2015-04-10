@@ -6,19 +6,76 @@ module Mjbook
       def index
 
         #filter by date and account
-        unless params[:date_from]
-          date_from = 1.month.ago
-        else
-          date_from = params[:date_from]
-        end
+#        unless params[:date_from]
+#          date_from = 1.month.ago
+#        else
+#          date_from = params[:date_from]
+#        end
 
-        unless params[:date_to]
-          date_to = Time.now
-        else
-          date_to = params[:date_to]
-        end
+#        unless params[:date_to]
+#          date_to = Time.now
+#        else
+#          date_to = params[:date_to]
+#        end
 
-        @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
+#        @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
+
+
+
+#INCOME SUMMARY
+
+  @income_summary = policy_scope(Payment).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                                        ).where.not(:type => "transfer"
+                                        ).paid.pluck(:total).sum
+
+#EXPEND SUMMARY
+
+  @expend_summary = policy_scope(Expend).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                                       ).where.not(:type => "transfer"
+                                       ).paid.pluck(:total).sum
+
+#ASSETS - CASH
+#balance of all company accounts
+#place starting amount in each account when created?
+
+#ACCOUNTS: RECEIVABLE
+
+#no payment items
+invoices = policy_scope(Invoice).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                               ).accepted.pluck(:total).sum
+
+#part paid items
+array_inlines_paid = Paymentitem.joins(:inline => [:ingroup => :invoice]
+                               ).where("invoices.state" => :partpaid, "invoices.company_id" => current_user.company_id
+                               ).pluck(:inline_id)
+
+part_paid = Inline.joins(:ingroup => :invoice
+                 ).where("invoices.state" => :partpaid, "invoices.company_id" => current_user.company_id
+                 ).where.not(:id => array_inlines_paid
+                 ).pluck(:total).sum
+
+#miscincome
+miscincome = policy_scope(Miscincome).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                                    ).accepted.pluck(:total).sum
+
+  @receivable_summary = invoices + miscincome + part_paid
+
+#ACCOUNTS: PAYABLE
+
+  @payable_summary = policy_scope(Expense).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                                         ).accepted.pluck(:total).sum
+
+#OPENING EQUITY
+#opening equity at beginning of the year
+#initial sum for first year should be total of initial accounts
+
+#RETAINED EARNINGS
+#year end table - company_id, year, amount
+
+
+
+
+
 
       end
 
