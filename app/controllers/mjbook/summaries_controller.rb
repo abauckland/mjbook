@@ -37,6 +37,15 @@ module Mjbook
 #ASSETS - CASH
 #balance of all company accounts
 #place starting amount in each account when created?
+#for each company_accout
+#get last balance
+
+@assets_cash = 0
+company_accounts = policy_scope(Companyaccount)
+company_accounts.each do |account|
+  amount = policy_scope(Summary).where(:account_id => account.id).last.pluck(:account_balance)
+  @assets_cash = @assets_cash + amount
+end
 
 #ACCOUNTS: RECEIVABLE
 
@@ -75,7 +84,7 @@ miscincome = policy_scope(Miscincome).where("date >= ? AND date <= ?", params[:d
 #year end table - company_id, year, amount
 
 
-@debit_total = @income_summary + @receivable_summary
+@debit_total = @income_summary + @receivable_summary + @assets_cash
 @credit_total = @expend_summary + @payable_summary
 
 

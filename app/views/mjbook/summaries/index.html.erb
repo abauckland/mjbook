@@ -28,7 +28,7 @@
 						<%= render 'summary_item', :locals => {:item => Expense:, :debit => @expend_summary, :credit => nil, :model => "Expend"} %>
 						<%= render 'summary_item', :locals => {:item => Receivable:, :debit => nil, :credit => @receivable_summary, :model => "Invoice"} %>
 						<%= render 'summary_item', :locals => {:item => Payable:, :debit => @payable_summary, :credit => nil, :model => "Expense"} %>
-						<%= render 'summary_item', :locals => {:item => Assets (Cash):, :debit => nil, :credit => nil, :model => "Expense"} %>
+						<%= render 'summary_item', :locals => {:item => Assets (Cash):, :debit => nil, :credit => @assets_cash, :model => "Summary"} %>
 					</tbody>
 				</table>
 

@@ -3,7 +3,6 @@ class CreateMjbookYearends < ActiveRecord::Migration
     create_table :mjbook_yearends do |t|
       t.integer :company_id
       t.timestamp :year_start
-      t.timestamp :year_end
       t.decimal :amount
 
       t.timestamps
