@@ -1,6 +1,6 @@
 module Mjbook
   class Mjbook::ApplicationController < ActionController::Base
-      layout "mjbook/books"
+   layout "mjbook/books"
    include Pundit
             
       def clean_text(value)
@@ -22,9 +22,10 @@ module Mjbook
         @value.chomp   
         while [".", ",", ";", "!", "?"].include?(value.last)
           @value.chop!
-        end                
+        end
         @value = @value.to_d
       end
+
 
   end
 end
