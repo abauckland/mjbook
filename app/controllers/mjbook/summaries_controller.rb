@@ -69,11 +69,14 @@ miscincome = policy_scope(Miscincome).where("date >= ? AND date <= ?", params[:d
 #opening equity at beginning of the year
 #initial sum for first year should be total of initial accounts
 
+
+
 #RETAINED EARNINGS
 #year end table - company_id, year, amount
 
 
-
+@debit_total = @income_summary + @receivable_summary
+@credit_total = @expend_summary + @payable_summary
 
 
 
