@@ -158,6 +158,9 @@ module Mjbook
         create_summary_record(@expend)
         add_summary_account_balance(@expend)
         add_summary_balance(@expend)
+        #update year end total
+        #update_expend_year_end("add", @expend.total, @expend.date)
+
 
         redirect_to expends_path, notice: 'Expend was successfully created.'
 
@@ -168,8 +171,11 @@ module Mjbook
 
     # PATCH/PUT /expends/1
     def update
+      #old_amount = @expend.dup
       authorize @expend
       if @expend.update(expend_params)
+        #update year end total
+        #update_expend_year_end("change", (old_amount.total - @expend.total), @expend.date)
         redirect_to expends_path, notice: 'Expend was successfully updated.'
       else
         render :edit
@@ -213,6 +219,8 @@ module Mjbook
       delete_summary_record(@expend)
       delete_summary_account_balance(@expend)
       delete_summary_balance(@expend)
+      #update year end total
+      #update_expend_year_end("delete", @expend.total, @expend.date)
 
       @expend.destroy #also destroys expenditem 
       redirect_to expends_path, notice: 'Expend was successfully deleted.'
@@ -362,6 +370,25 @@ module Mjbook
           end
         end
       end
+
+
+    def update_expend_year_end(action, amount, date)
+      #on create, update or delete expend item
+      #on create, update or delete payment item
+
+      #determine year record to update based on date of transaction
+#      year_record = policy_scope(Yearend).where("year_end >= ? AND year_end <= ?", current, current.plus_a_year)
+
+#      if action == "add" || action == "change"
+#        year_record.update(:retained => (year_record.retained + amount))
+#      end
+
+#      if action == "delete"
+#        year_record.update(:retained => (year_record.retained - amount))
+#      end
+
+    end
+
 
   end
 end
