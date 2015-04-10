@@ -129,7 +129,9 @@ module Mjbook
         create_summary_record(@payment)
         add_summary_account_balance(@payment)
         add_summary_balance(@payment)
-
+        #update year end total
+        #update_payment_year_end("add", @payment.total, @payment.date)
+        
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
         redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
@@ -145,8 +147,11 @@ module Mjbook
 
     # PATCH/PUT /payments/1
     def update
+      #old_amount = @payment.dup
       authorize @payment
       if @payment.update(payment_params)
+        #update year end total
+        #update_payment_year_end("change", (old_amount.total - @payment.total), @payment.date)
         redirect_to @payment, notice: 'Payment was successfully updated.'
       else
         render :edit
@@ -197,6 +202,8 @@ module Mjbook
       delete_summary_record(@payment)
       delete_summary_account_balance(@payment)
       delete_summary_balance(@payment)
+      #update year end total
+      #update_expend_year_end("delete", @payment.total, @payment.date)
 
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully deleted.'
@@ -379,6 +386,24 @@ module Mjbook
           end
         end
       end
+
+    def update_payment_year_end(action, amount, date)
+      #on create, update or delete expend item
+      #on create, update or delete payment item
+
+      #determine year record to update based on date of transaction
+#      year_record = policy_scope(Yearend).where("year_end >= ? AND year_end <= ?", current, current.plus_a_year)
+
+#      if action == "add" || action == "change"
+#        year_record.update(:retained => (year_record.retained + amount))
+#      end
+
+#      if action == "delete"
+#        year_record.update(:retained => (year_record.retained - amount))
+#      end
+
+    end
+
 
   end
 end
