@@ -155,9 +155,7 @@ module Mjbook
           miscexpense.pay!
         end
 
-        create_summary_record(@expend)
-        add_summary_account_balance(@expend)
-        add_summary_balance(@expend)
+        add_account_expend_record(@expend)
         #update year end total
         #update_expend_year_end("add", @expend.total, @expend.date)
 
@@ -174,6 +172,7 @@ module Mjbook
       #old_amount = @expend.dup
       authorize @expend
       if @expend.update(expend_params)
+        update_account_expend_record(@expend)
         #update year end total
         #update_expend_year_end("change", (old_amount.total - @expend.total), @expend.date)
         redirect_to expends_path, notice: 'Expend was successfully updated.'
@@ -200,14 +199,14 @@ module Mjbook
           salary.correct!
         end
 
-        if @expend.exp_type == 'transfer'
-          transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
-          transfer.correct!
+#        if @expend.exp_type == 'transfer'
+#          transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
+#          transfer.correct!
 
-          #if transfer is destoyed also need to destroy record of payment
-          payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first
-          payment.destroy
-        end
+#          #if transfer is destoyed also need to destroy record of payment
+#          payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first
+#          payment.destroy
+#        end
 
         if @expend.exp_type == 'misc'
           miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id).first
@@ -216,9 +215,7 @@ module Mjbook
 
       end
 
-      delete_summary_record(@expend)
-      delete_summary_account_balance(@expend)
-      delete_summary_balance(@expend)
+      delete_account_expend_record(@expend)
       #update year end total
       #update_expend_year_end("delete", @expend.total, @expend.date)
 
@@ -303,90 +300,72 @@ module Mjbook
          send_data expends.to_csv, filename: filename, :type => "text/csv"
       end
 
-      def create_summary_record(expend)
 
-        last_transaction = policy_scope(Summary).where('date <= ?', expend.date).order('created_at').last
-        last_account_transaction = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', expend.companyaccount_id, expend.date).order('created_at').last
+      def add_account_expend_record(expend)
 
-        if last_transaction.blank?
-          new_balance = 0-expend.total
-          new_account_balance = 0-expend.total
-        else
-          new_balance = last_transaction.balance - expend.total
-          new_account_balance = last_transaction.account_balance - expend.total
-        end
+        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', expend.companyaccount_id, expend.date).order('created_at').last
+
+        new_account_balance = last_account_record.account_balance - expend.total
 
         Mjbook::Summary.create(:date => expend.date,
-                                  :company_id => expend.company_id,
-                                  :companyaccount_id => expend.companyaccount_id,
-                                  :expend_id => expend.id,
-                                  :amount_out => expend.total,
-                                  :balance => new_balance,
-                                  :account_balance => new_account_balance)
+                               :companyaccount_id => expend.companyaccount_id,
+                               :expend_id => expend.id,
+                               :amount_out => expend.total,
+                               :account_balance => new_account_balance)
+
+        update_subsequent_expend_balances(expend, expend.total)
+
       end
 
-      def add_summary_account_balance(expend)
+
+      def update_account_expend_record(expend)
+        
+        account_record = Summary.where(:expend_id => expend.id).first
+
+        variation = expend.total - account_record.amount_out
+        record_balance = account_balance + variation
+        account_record.update(:amount_out => expend.total, :account_balance => record_balance)
+
+        update_subsequent_expend_balances(expend, variation)
+
+      end
+
+
+      def delete_account_expend_record(expend)
+        #update subsequent totals
+        variation = expend.total
+        update_subsequent_expend_balances(expend, variation)
+
+        #find account record to delete
+        account_record = Summary.where(:expend_id => expend.id).first
+        account_record.destroy
+      end
+
+
+      def update_subsequent_expend_balances(expend, variation)
         account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
         if !account_transactions.blank?
           account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance - expend.total
+            new_account_balance = transaction.account_balance + variation
             transaction.update(:balance => new_account_balance)
           end
         end
       end
 
-      def add_summary_balance(expend)
-        transactions = policy_scope(Summary).subsequent_transactions(expend.date)
-        if !transactions.blank?
-          transactions.each do |transaction|
-            new_balance = transaction.balance - expend.total
-            transaction.update(:balance => new_balance)
-          end
-        end
-      end
-
-
-      def delete_summary_record(expend)
-        transaction = policy_scope(Summary).where(:expend_id => expend.id).first
-        transaction.destroy
-      end
-
-      def delete_summary_account_balance(expend)
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
-        if !account_transactions.blank?
-          account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance + expend.total
-            transaction.update(:balance => new_account_balance)
-          end
-        end
-      end
-
-      def delete_summary_balance(expend)
-        transactions = policy_scope(Summary).subsequent_transactions(expend.date)
-        if !transactions.blank?
-          transactions.each do |transaction|
-            new_balance = transaction.balance + expend.total
-            transaction.update(:balance => new_balance)
-          end
-        end
-      end
 
 
     def update_expend_year_end(action, amount, date)
       #on create, update or delete expend item
-      #on create, update or delete payment item
-
       #determine year record to update based on date of transaction
-#      year_record = policy_scope(Yearend).where("year_end >= ? AND year_end <= ?", current, current.plus_a_year)
+      accounting_period(date)
 
-#      if action == "add" || action == "change"
-#        year_record.update(:retained => (year_record.retained + amount))
-#      end
+      if action == "add" || action == "change"
+        period.update(:retained => (period.retained + amount))
+      end
 
-#      if action == "delete"
-#        year_record.update(:retained => (year_record.retained - amount))
-#      end
-
+      if action == "delete"
+        period.update(:retained => (period.retained - amount))
+      end
     end
 
 
