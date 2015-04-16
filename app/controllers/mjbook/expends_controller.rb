@@ -3,25 +3,25 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class ExpendsController < ApplicationController
     before_action :set_expend, only: [:show, :edit, :update, :destroy, :reconcile, :unreconcile]
-    before_action :set_accounts, only: [:edit, :pay_employee, :pay_business, :pay_salary, :pay_miscexpense]
-    before_action :set_paymethods, only: [:edit, :pay_employee, :pay_business, :pay_salary, :pay_miscexpense]
+    before_action :set_accounts, only: [:edit, :pay_employee, :pay_business, :pay_salary]
+    before_action :set_paymethods, only: [:edit, :pay_employee, :pay_business, :pay_salary]
 
     # GET /expends
     def index
-    if params[:companyaccount_id]
+    if params[:hmrcexpcat_id]
 
-        if params[:companyaccount_id] != ""
+        if params[:hmrcexpcat_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expends = policy_scope(Expend).where(:date => params[:date_from]..params[:date_to], :companyaccount_id => params[:companyaccount_id])
+              @expends = policy_scope(Expend).joins(:expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where(:date => params[:date_from]..params[:date_to])
             else
-              @expends = policy_scope(Expend).where('date > ? AND companyaccount_id =?', params[:date_from], params[:companyaccount_id])
+              @expends = policy_scope(Expend).joins(:expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where('date > ?', params[:date_from])
             end
           else
             if params[:date_to] != ""
-              @expends = policy_scope(Expend).where('date < ? AND companyaccount_id = ?', params[:date_to], params[:companyaccount_id])
+              @expends = policy_scope(Expend).joins(:expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where('date < ?', params[:date_to])
             else
-              @expends = policy_scope(Expend).where(:companyaccount_id => params[:companyaccount_id])
+              @expends = policy_scope(Expend).joins(:expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id])
             end
           end
         else
@@ -40,26 +40,28 @@ module Mjbook
           end
         end
 
-        if params[:commit] == 'pdf'
-          pdf_expend_index(@expends, params[:companyaccount_id], params[:date_from], params[:date_to])      
-        end
-
-        if params[:commit] == 'csv'
-          csv_expend_index(@expends, params[:companyaccount_id], params[:date_from], params[:date_to])      
-        end
-
      else
        @expends = policy_scope(Expend)
      end
+
+     if params[:commit] == 'pdf'
+       pdf_expend_index(@expends, params[:hmrcexpcat_id], params[:date_from], params[:date_to])
+     end
+
+     if params[:commit] == 'csv'
+       csv_expend_index(@expends, params[:hmrcexpcat_id])
+     end
+
+
 
      @sum_price = @expends.pluck(:price).sum
      @sum_vat = @expends.pluck(:vat).sum
      @sum_total = @expends.pluck(:total).sum
 
      #selected parameters for filter form
-     all_expends = policy_scope(Expend)
-     @companyaccounts = Companyaccount.joins(:expends).where('mjbook_expends.id' => all_expends.ids)
-     @companyaccount = params[:companyaccount_id]
+     hmrcexpcats_ids = policy_scope(Expense).joins(:expends).where('mjbook_expend.company_id =?', current_user.company_id).pluck(:hmrcexpcats_id).uniq
+     @hmrcexpcats = policy_scope(Hmrcexpcat).where(:id => hmrcexpcats_ids)
+     @hmrcexpcat = params[:hmrcexpcat_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]
 
@@ -111,11 +113,6 @@ module Mjbook
       @expend = Expend.new
     end
 
-    def pay_miscexpense
-      @miscexpense = Mjbook::Miscexpense.where(:id => params[:id]).first
-      @expend = Expend.new
-    end
-
     # GET /expends/1/edit
     def edit
       authorize @expend
@@ -148,19 +145,11 @@ module Mjbook
           salary.pay!
         end
 
-        if @expend.misc?
-          #need to pass in miscexpense id so correct record can be updated
-          miscexpense = Mjbook::Miscexpense.where(:id => params[:salary_id]).first
-          Mjbook::Expenditem.create(:expend_id => @expend.id, :miscexpense_id => miscexpense.id)
-          miscexpense.pay!
-        end
-
         add_account_expend_record(@expend)
-        #update year end total
-        #update_expend_year_end("add", @expend.total, @expend.date)
+        update_expend_year_end("add", @expend.total, @expend.date)
 
 
-        redirect_to expends_path, notice: 'Expend was successfully created.'
+        redirect_to expends_path, notice: 'Expenditure record was successfully created.'
 
       else
         render :new
@@ -169,13 +158,14 @@ module Mjbook
 
     # PATCH/PUT /expends/1
     def update
-      #old_amount = @expend.dup
       authorize @expend
+      old_amount = @expend.dup
       if @expend.update(expend_params)
         update_account_expend_record(@expend)
-        #update year end total
-        #update_expend_year_end("change", (old_amount.total - @expend.total), @expend.date)
-        redirect_to expends_path, notice: 'Expend was successfully updated.'
+        new_ammount = old_amount.total - @expend.total
+        update_expend_year_end("change", new_ammount, @expend.date)
+
+        redirect_to expends_path, notice: 'Expenditure was successfully updated.'
       else
         render :edit
       end
@@ -199,28 +189,13 @@ module Mjbook
           salary.correct!
         end
 
-#        if @expend.exp_type == 'transfer'
-#          transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
-#          transfer.correct!
-
-#          #if transfer is destoyed also need to destroy record of payment
-#          payment = Mjbook::Payment.joins(:paymentitems).where('mjbook_paymentitems.transfer_id' => transfer.id).first
-#          payment.destroy
-#        end
-
-        if @expend.exp_type == 'misc'
-          miscxexpense = Mjbook::Miscexpense.where(:id => item.miscexpense_id).first
-          miscexpense.correct!
-        end
-
       end
 
       delete_account_expend_record(@expend)
-      #update year end total
-      #update_expend_year_end("delete", @expend.total, @expend.date)
+      update_expend_year_end("delete", @expend.total, @expend.date)
 
       @expend.destroy #also destroys expenditem 
-      redirect_to expends_path, notice: 'Expend was successfully deleted.'
+      redirect_to expends_path, notice: 'Expenditure record was successfully deleted.'
     end
 
     def reconcile
@@ -264,30 +239,27 @@ module Mjbook
         params.require(:expend).permit(:company_id, :exp_type, :user_id, :paymethod_id, :companyaccount_id, :expend_receipt, :date, :ref, :price, :vat, :total, :state, :note)
       end
 
-      def pdf_expend_index(expends, account_id, date_from, date_to)
 
-         if account_id != ""
-           companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
-           filter_group = companyaccount.company_name
-         else
-           filter_group = "All Accounts"
-         end
-
-         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
+      def pdf_expend_index(expends, hmrcexpcat_id, date_from, date_to)
+         download_filename(hmrcexpcat_id)
 
          document = Prawn::Document.new(
-          :page_size => "A4",
-          :page_layout => :landscape,
-          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
-            table_indexes(expends, 'expend', filter_group, date_from, date_to, filename, pdf)
-          end
+                    :page_size => "A4",
+                    :page_layout => :landscape,
+                    :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+                    ) do |pdf|
+                      table_indexes(expends, 'expend', filter_group, date_from, date_to, filename, pdf)
+                    end
 
-          send_data document.render, filename: filename, :type => "application/pdf"
+          send_data document.render, filename: (filename+".pdf"), :type => "application/pdf"
       end
 
-      def csv_expend_index(expends, account_id, date_from, date_to)
+      def csv_expend_index(expends, hmrcexpcat_id)
+         download_filename(hmrcexpcat_id)
+         send_data expends.to_csv, filename: (filename+".csv"), :type => "text/csv"
+      end
 
+      def download_filename(hmrcexpcat_id)
          if account_id != ""
            companyaccount = Mjbook::Companyaccount.where(:id => account_id).first
            filter_group = companyaccount.name
@@ -295,9 +267,7 @@ module Mjbook
            filter_group = "All Accounts"
          end
 
-         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
-
-         send_data expends.to_csv, filename: filename, :type => "text/csv"
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }"
       end
 
 
@@ -319,7 +289,7 @@ module Mjbook
 
 
       def update_account_expend_record(expend)
-        
+
         account_record = Summary.where(:expend_id => expend.id).first
 
         variation = expend.total - account_record.amount_out
@@ -333,8 +303,7 @@ module Mjbook
 
       def delete_account_expend_record(expend)
         #update subsequent totals
-        variation = expend.total
-        update_subsequent_expend_balances(expend, variation)
+        update_subsequent_expend_balances(expend, expend.total)
 
         #find account record to delete
         account_record = Summary.where(:expend_id => expend.id).first

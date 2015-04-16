@@ -16,11 +16,6 @@ Mjbook::Engine.routes.draw do
     get :email, :on => :member 
   end
 
-  resources :miscexpenses do
-    get :accept, :on => :member
-    get :reject, :on => :member
-  end
-
   resources :miscincomes
 
   resources :transfers, :only => [:index, :edit, :new, :create, :update, :destroy] do
@@ -140,7 +135,6 @@ Mjbook::Engine.routes.draw do
     get :pay_employee, :on => :member
     get :pay_business, :on => :member
     get :pay_salary, :on => :member
-    get :pay_miscexpense, :on => :member
 
     get :reconcile, :on => :member
     get :unreconcile, :on => :member
@@ -153,7 +147,6 @@ Mjbook::Engine.routes.draw do
   end
 
   resources :payments do
-    get :process_misc, :on => :member
     get :email, :on => :member
     get :reconcile, :on => :member
     get :unreconcile, :on => :member
