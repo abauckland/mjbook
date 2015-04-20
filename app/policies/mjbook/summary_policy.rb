@@ -11,6 +11,14 @@ module Mjbook
       user.owner? || user.admin?
     end
 
+    def show?
+      index?
+    end
+
+    def print?
+      index?
+    end
+
     def charts?
       index?
     end
