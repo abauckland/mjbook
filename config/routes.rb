@@ -1,5 +1,8 @@
 Mjbook::Engine.routes.draw do
   
+
+  resources :setups, :only => [:index]
+
   resources :settings
 
   resources :participants
@@ -115,6 +118,7 @@ Mjbook::Engine.routes.draw do
   resources :quotecontents, :only => [:show]
 
   resources :summaries, :only => [:index, :show] do
+    get :setup, :on => :member
     get :charts, :on => :member
   end
 

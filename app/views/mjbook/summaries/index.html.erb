@@ -10,7 +10,7 @@
         <div>
             <div>
                 <label class="select">Period:</label>
-                <%= select_tag 'period_name', options_from_collection_for_select(@periods, :id, :name, @period)%>
+                <%= select_tag 'period_name', options_from_collection_for_select(@periods, :id, :period, @period)%>
             </div>
             <%= submit_tag 'Select' %>
         </div> 
@@ -71,36 +71,26 @@
                             </td>
                         </tr>
 
-					<!-- if current period selected show account details and current total-->
-					<%if current period show account details %>
+                        <tr>
+                            <td class="summary_item">Assets (Cash)</td> 
+                            <td class="summary_debit"></td>
+                            <td class="summary_credit"><%= pounds(@assets_cash) %></td> 
+                            <td class="row_button no_buttons_1">
+                            </td>
+                        </tr>
 
-	                    <% @company_accounts.each do |account| %>
-	                        <tr>
-	                            <td class="summary_item"><%= account.name %></td> 
+                    <%if @company_accounts %>
+                        <% @company_accounts.each do |account| %>
+                            <tr>
+                                <td class="summary_item"><%= account.name %></td> 
                                 <td class="summary_debit"></td>
-	                            <td class="summary_credit"><%= pounds(account_balance(account)) %></td>
-	                            <td class="row_button no_buttons_1">
-	                                <%= link_to '', summary_path(account.id), class: 'line_show_icon_show' , title: "show transactions"  %>
-	                            </td>
-	                        </tr>
-	                     <% end %>
-                        <tr>
-                            <td class="summary_item">Assets (Cash)</td> 
-                            <td class="summary_debit"></td>
-                            <td class="summary_credit"><%= pounds(@assets_cash) %></td> 
-                            <td class="row_button no_buttons_1">
-                            </td>
-                        </tr>
-					<!-- show total balance at end of the year -->
-					<% else %>
-                        <tr>
-                            <td class="summary_item">Assets (Cash)</td> 
-                            <td class="summary_debit"></td>
-                            <td class="summary_credit"><%= pounds(@assets_cash) %></td> 
-                            <td class="row_button no_buttons_1">
-                            </td>
-                        </tr>
-					<% end %>
+                                <td class="summary_credit"><%= pounds(account_balance(account)) %></td>
+                                <td class="row_button no_buttons_1">
+                                    <%= link_to '', summary_path(:id => account.id, :period_id => @period.id), class: 'line_show_icon_show' , title: "show transactions"  %>
+                                </td>
+                            </tr>
+                         <% end %>
+                     <% end %>
 
 					</tbody>
 				</table>

@@ -32,13 +32,20 @@
                             <%= f.text_field :balance, {:placeholder => "0.00", :value => number_with_precision(f.object.balance, :precision => 2)}  %>
                         </span></br>
 
+                        <!-- form input[text] --> 
+                        <div class="form_tooltip" id="companyaccount_date"></div>
+                        <label class="label_110">Date of Balance:*</label>
+                        <span>
+                            <%= f.date_field :date, {placeholder: 'dd/mm/yyyy'}  %>
+                        </span></br>
+
                     </fieldset>
             </div>
 <!-- column footer start--> 
             <div class="row">
                 <div class="form_footer">
                     <%= f.submit "save"%>
-                    <%= link_to "cancel", companyaccounts_path %>
+                    <%= companyaccount_cancel %>
                 </div>
                 <% end %>
             </div>

@@ -5,6 +5,7 @@ module Mjbook
     belongs_to :companyaccount
     belongs_to :expend
     belongs_to :payment
+    belongs_to :transfer
 
     scope :subsequent_transactions, ->(date) {where('date > ?', date)}
 
