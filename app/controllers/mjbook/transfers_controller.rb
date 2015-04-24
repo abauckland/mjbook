@@ -2,7 +2,7 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class TransfersController < ApplicationController
-    before_action :set_transfer, only: [:show, :edit, :update, :destroy, :process_transfer]
+    before_action :set_transfer, only: [:show, :edit, :update, :destroy, :process_transfer, :rescind_transfer]
     before_action :set_companyaccounts, only: [:new, :edit]
     before_action :set_paymethods, only: [:new, :edit]
     
@@ -61,6 +61,7 @@ module Mjbook
       redirect_to transfers_url, notice: 'Transfer was successfully recorded.'
 
     end
+
 
     private
       # Use callbacks to share common setup or constraints between actions.
