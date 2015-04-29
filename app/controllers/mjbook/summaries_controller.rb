@@ -20,31 +20,31 @@ module Mjbook
         end
       end
 
+
       def show
 
-        @period = Period.where(:id => params[:period_id]).first
-
-        start_time = @period.year_start
-        end_time = 1.year.from_now(@period.year_start)
-        @summaries = policy_scope(Summary).where(:date => start_time..end_time).where(:companyaccount_id => params[:id]).order(:date)
+        @summaries = policy_scope(Summary).where('date > ?', params[:date_from]
+                                         ).where('date < ?', params[:date_to]
+                                         ).where(:companyaccount_id => params[:id])
         @summary = @summaries.first
         authorize @summaries
 
+        @companyaccount = Mjbook::Companyaccount.find(params[:id])
+        @companyaccounts = policy_scope(Companyaccount)
+
         if params[:commit] == 'pdf'
-          pdf_business_index(@summaries, params[:id], date_from, date_to)
+          pdf_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
         end
 
         if params[:commit] == 'csv'
-          csv_business_index(@summaries, params[:id], date_from, date_to)
+          csv_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
         end
-
-        #list of periods for select filter
-        @periods = policy_scope(Period)
 
       end
 
+
       def reconcile
-        
+
         authorize @summary
         if @summary.reconcile!
           respond_to do |format|
@@ -52,9 +52,9 @@ module Mjbook
           end
         end
       end
-  
+
       def unreconcile
-        
+
         authorize @summary
         if @summary.unreconcile!
           respond_to do |format|
@@ -195,50 +195,60 @@ private
 
 
       #INCOME SUMMARY
-        @income_summary = policy_scope(Payment).where("date >= ? AND date <= ?", date_from, date_to
+        @income_summary = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
                                               ).paid.pluck(:total).sum
 
       #EXPEND SUMMARY
-        @expend_summary = policy_scope(Expend).where("date >= ? AND date <= ?", date_from, date_to
+        @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => "transfer"
                                              ).paid.pluck(:total).sum
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
-        invoices = policy_scope(Invoice).where("date >= ? AND date <= ?", date_from, date_to
+        invoices = policy_scope(Invoice).where(:date => date_from..date_to
                                        ).submitted.pluck(:total).sum
 
         #part paid items
-#date range?
         array_inlines_paid = Paymentitem.joins(:inline => [:ingroup => [:invoice => :project]]
                                        ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
                                        ).pluck(:inline_id)
 
-#date range?
         part_paid = Inline.joins(:ingroup => [:invoice => :project]
                          ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
+                         ).where("mjbook_invoices.date" => date_from..date_to
                          ).where.not(:id => array_inlines_paid
                          ).pluck(:total).sum
 
         #miscincome
-        miscincome = policy_scope(Miscincome).where("date >= ? AND date <= ?", date_from, date_to
+        miscincome = policy_scope(Miscincome).where(:date => date_from..date_to
                                             ).draft.pluck(:total).sum
 
-        @receivable_summary = invoices + miscincome + part_paid
+        #creditnote
+        creditnote = policy_scope(Creditnote).where(:date => date_from..date_to
+                                            ).confirmed.pluck(:total).sum
+        #writeoff
+        writeoff = policy_scope(Writeoff).where(:date => date_from..date_to
+                                        ).pluck(:total).sum
+                                            
+        @receivable_summary = invoices + miscincome + part_paid - creditnote - writeoff
 
       #ACCOUNTS: PAYABLE
-        #  @payable_business_summary = policy_scope(Expense).where("date >= ? AND date <= ?", date_from, date_to
+        #  @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
         #                                                  ).where(:exp_type => "business"
         #                                                  ).accepted.pluck(:total).sum
 
-        #  @payable_employee_summary = policy_scope(Expense).where("date >= ? AND date <= ?", date_from, date_to
+        #  @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
         #                                                  ).where(:exp_type => "personal"
         #                                                  ).accepted.pluck(:total).sum
 
       #OPENING BALANCE
         #opening equity at beginning of the year
         #@period
+        if current_period != true
+          @retained_amount = @period.retained
+        end
+
 
       #SUMMARY BALANCE
         @debit_total = @income_summary + @receivable_summary + @assets_cash

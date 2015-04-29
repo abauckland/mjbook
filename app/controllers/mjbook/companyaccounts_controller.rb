@@ -29,9 +29,9 @@ module Mjbook
         add_account_expend_record(@companyaccount)
         add_to_payment_year_end("add", @companyaccount.balance, @companyaccount.date)
         if policy_scope(Companyaccount).count == 1
-          redirect_to summaries_path, notice: 'Companyaccount was successfully created.'
+          redirect_to summaries_path, notice: 'Company account was successfully created.'
         else
-          redirect_to companyaccounts_path, notice: 'Companyaccount was successfully created.'
+          redirect_to companyaccounts_path, notice: 'Company account was successfully created.'
         end
       else
         render :new
@@ -44,7 +44,7 @@ module Mjbook
       old_settings = @companyaccount.dup
       if @companyaccount.update(companyaccount_params)
         update_account_expend_record(old_settings, @companyaccount)
-        redirect_to companyaccounts_path, notice: 'Companyaccount was successfully updated.'
+        redirect_to companyaccounts_path, notice: 'Company account was successfully updated.'
       else
         render :edit
       end
@@ -54,7 +54,7 @@ module Mjbook
     def destroy
       authorize @companyaccount
       @companyaccount.destroy
-      redirect_to companyaccounts_url, notice: 'Companyaccount was successfully destroyed.'
+      redirect_to companyaccounts_url, notice: 'Company account was successfully destroyed.'
     end
 
     private
@@ -67,8 +67,8 @@ module Mjbook
       def companyaccount_params
         params.require(:companyaccount).permit(:company_id, :name, :provider, :code, :ref, :balance, :date)
       end
-      
-      
+
+
       def add_account_expend_record(account)
         Mjbook::Summary.create(:date => account.date,
                                :company_id => current_user.company.id,
@@ -77,7 +77,9 @@ module Mjbook
       end
 
       def update_account_expend_record(old_settings, companyaccount)
-        #update subsequent
+
+        #update records before account creation date
+        #update records after account creation date
         account_transactions = policy_scope(Summary).where(:companyaccount_id => companyaccount.id)
         balance_variation = companyaccount.balance - old_settings.balance
         if !account_transactions.blank?
