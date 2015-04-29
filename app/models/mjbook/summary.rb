@@ -1,5 +1,7 @@
 module Mjbook
   class Summary < ActiveRecord::Base
+
+    include AASM
     
     belongs_to :company
     belongs_to :companyaccount
@@ -7,13 +9,24 @@ module Mjbook
     belongs_to :payment
     belongs_to :transfer
 
+    aasm :column => 'state' do
+      state :unreconciled, :initial => true
+      state :reconciled
+
+      event :reconcile do
+        transitions :from => :unreconciled, :to => :reconciled
+      end
+
+      event :unreconcile do
+        transitions :from => :reconciled, :to => :unreconciled
+      end
+    end
+
     scope :subsequent_transactions, ->(date) {where('date > ?', date)}
 
-    scope :subsequent_account_transactions, ->(account_id, date) {where(:companyaccount_id => account_id
+    scope :subsequent_account_transactions, ->(account_id, date, account_date) {where(:companyaccount_id => account_id
                                                                        ).where('date > ?', date)
                                                                  }
-
-
 
     private
 

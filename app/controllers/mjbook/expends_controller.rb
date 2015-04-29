@@ -273,11 +273,24 @@ module Mjbook
 
       def add_account_expend_record(expend)
 
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', expend.companyaccount_id, expend.date).order('created_at').last
+        #CHECK ACCOUNTING PERIOD
+        #returns period
+        accounting_period(expend.date)
 
-        new_account_balance = last_account_record.account_balance - expend.total
+        #SUBSTRACT AMOUNT
+        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', expend.companyaccount_id, expend.date).order(:date, :id).last
+        #if prior record does not exist        
+        if last_account_record.blank?
+        #if prior record does not exist
+          account_record = policy_scope(Summary).where('companyaccount_id = ? AND date > ?', expend.companyaccount_id, expend.date).order(:date).first
+          first_account_record = account_record.order(:id).last
+          new_account_balance = first_account_record.account_balance + expend.total
+        else
+          new_account_balance = last_account_record.account_balance - expend.total
+        end
 
-        Mjbook::Summary.create(:date => expend.date,
+        Mjbook::Summary.create(:company_id=> current_user.company_id,
+                               :date => expend.date,
                                :companyaccount_id => expend.companyaccount_id,
                                :expend_id => expend.id,
                                :amount_out => expend.total,
@@ -312,11 +325,20 @@ module Mjbook
 
 
       def update_subsequent_expend_balances(expend, variation)
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(expend.companyaccount_id, expend.date)
+        #transactions upto opening balance only
+        #get date of account
+        if expend.date >= expend.companyaccount.date        
+          account_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id).where('date > ?', expend.date)
+        else
+          #exclude transaction on the same day
+          from_date = 1.day.from_now(expend.date)
+          account_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id).where(:date => from_date..expend.companyaccount.date)
+        end
+
         if !account_transactions.blank?
           account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance + variation
-            transaction.update(:balance => new_account_balance)
+            new_account_balance = transaction.account_balance - variation
+            transaction.update(:account_balance => new_account_balance)
           end
         end
       end
@@ -329,11 +351,11 @@ module Mjbook
       accounting_period(date)
 
       if action == "add" || action == "change"
-        period.update(:retained => (period.retained + amount))
+        @period.update(:retained => (@period.retained + amount))
       end
 
       if action == "delete"
-        period.update(:retained => (period.retained - amount))
+        @period.update(:retained => (@period.retained - amount))
       end
     end
 

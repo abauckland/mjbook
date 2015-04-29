@@ -86,10 +86,22 @@ module Mjbook
 
 
       def create_account_transfer_record(transfer)
-        #add amount
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_to_id, transfer.date).order(:date).last
 
-        new_account_balance = last_account_record.account_balance + transfer.total
+        #CHECK ACCOUNTING PERIOD
+        #returns period
+        accounting_period(transfer.date)
+
+        #ADD AMOUNT
+        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_to_id, transfer.date).order(:date, :id).last
+        #if prior record does not exist        
+        if last_account_record.blank?
+        #if prior record does not exist
+          account_record = policy_scope(Summary).where('companyaccount_id = ? AND date > ?', transfer.account_to_id, transfer.date).order(:date).first
+          first_account_record = account_record.order(:id).last
+          new_account_balance = first_account_record.account_balance - transfer.total
+        else
+          new_account_balance = last_account_record.account_balance + transfer.total 
+        end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
                                :date => transfer.date,
@@ -98,19 +110,26 @@ module Mjbook
                                :amount_in => transfer.total,
                                :account_balance => new_account_balance)
 
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(transfer.account_to_id, transfer.date)
+        subsequent_transactions(transfer.account_to_id, transfer)       
         if !account_transactions.blank?
           account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance + variation
+            new_account_balance = transaction.account_balance + transfer.total
             transaction.update(:account_balance => new_account_balance)
           end
         end
 
 
-        #subtract_amount
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_from_id, transfer.date).order(:date).last
-
-        new_account_balance = last_account_record.account_balance - transfer.total
+        #SUBTRACT AMOUNT
+        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_from_id, transfer.date).order(:date, :id).last
+        #if prior record does not exist        
+        if last_account_record.blank?
+        #if prior record does not exist
+          account_record = policy_scope(Summary).where('companyaccount_id = ? AND date > ?', transfer.account_from_id, transfer.date).order(:date).first
+          first_account_record = account_record.order(:id).last
+          new_account_balance = first_account_record.account_balance + transfer.total
+        else
+          new_account_balance = last_account_record.account_balance - transfer.total 
+        end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
                                :date => transfer.date,
@@ -119,10 +138,10 @@ module Mjbook
                                :amount_out => transfer.total,
                                :account_balance => new_account_balance)
 
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(transfer.account_from_id, transfer.date)
+        subsequent_transactions(transfer.account_from_id, transfer)
         if !account_transactions.blank?
           account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance - variation
+            new_account_balance = transaction.account_balance - transfer.total
             transaction.update(:account_balance => new_account_balance)
           end
         end
@@ -132,21 +151,23 @@ module Mjbook
       def delete_account_transfer_record(transfer)
         #delete add record
         variation = (0 - transfer.total)
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(transfer.account_to_id, transfer.date)
+
+        subsequent_transactions(transfer.account_to_id, transfer)
         if !account_transactions.blank?
           account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance - variation
-            transaction.update(:balance => new_account_balance)
+            transaction.update(:account_balance => new_account_balance)
           end
         end
 
         #delete subtract record
         variation = transfer.total
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(transfer.account_from_id, transfer.date)
+
+        subsequent_transactions(transfer.account_from_id, transfer)
         if !account_transactions.blank?
           account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance + variation
-            transaction.update(:balance => new_account_balance)
+            transaction.update(:account_balance => new_account_balance)
           end
         end
 
@@ -157,6 +178,17 @@ module Mjbook
 
       end
 
+
+      def subsequent_transactions(account_id, transfer)
+        account = Mjbook::Companyaccount.find(account_id)
+        if transfer.date >= account.date        
+          account_transactions = policy_scope(Summary).where(:companyaccount_id => account_id).where('date > ?', transfer.date)
+        else
+          #exclude transaction on the same day
+          from_date = 1.day.from_now(transfer.date)
+          account_transactions = policy_scope(Summary).where(:companyaccount_id => account_id).where(:date => from_date..account.date)
+        end        
+      end
 
   end
 end

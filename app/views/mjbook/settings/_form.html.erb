@@ -35,7 +35,7 @@
 
                         <!-- form input[date] -->
                         <label class="label_120">Start of Accounting Year:</label>
-                        <span><%= @setting.year_start %></span></br>
+                        <span><%= @setting.year_start.strftime("%d/%m/%y") %></span></br>
 
                     </fieldset>
             </div>

@@ -82,6 +82,11 @@ module Mjbook
       @payment = Payment.new
     end
 
+    def process_misc
+      @payment = Payment.new
+      @miscincome = Mjbook::Miscincome.where(:id => params[:id]).first
+    end
+
     # GET /payments/1/edit
     def edit
       authorize @payment
@@ -123,12 +128,12 @@ module Mjbook
 
         if @payment.misc?
           miscincome = Mjbook::Miscincome.where(:id => params[:miscincome_id]).first
-          Mjbook::Paymentitem.create(:payment_id => @payment.id, :miscincome_id => miscincome.id)
+          Mjbook::Paymentitem.create(:payment_id => @payment.id, :miscpayment_id => miscincome.id)
           miscincome.pay!
         end
 
         add_account_payment_record(@payment)
-        update_expend_year_end("add", @payment.total, @payment.date)
+        update_payment_year_end("add", @payment.total, @payment.date)
         
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
@@ -151,7 +156,7 @@ module Mjbook
       if @payment.update(payment_params)
         update_account_payment_record(@payment)
         new_ammount = old_amount.total - @expend.total
-        update_expend_year_end("change", new_ammount, @payment.date)
+        update_payment_year_end("change", new_ammount, @payment.date)
 
         redirect_to @payment, notice: 'Payment was successfully updated.'
       else
@@ -184,12 +189,12 @@ module Mjbook
       if @payment.misc?
         #paymentitems are destroyed when payments is deleted
         item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
-        miscincome = Mjbook::Miscincome.where(:id => item.miscincome_id).first
+        miscincome = Mjbook::Miscincome.where(:id => item.miscpayment_id).first
         miscincome.correct!
       end
 
       delete_account_payment_record(@payment)
-      update_expend_year_end("delete", @payment.total, @payment.date)
+      update_payment_year_end("delete", @payment.total, @payment.date)
 
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully deleted.'
@@ -246,7 +251,7 @@ module Mjbook
       end
       
       def set_paymethods
-        @paymethods = Mjbook::Paymethod.all        
+        @paymethods = Mjbook::Paymethod.all
       end
 
       # Only allow a trusted parameter "white list" through.
@@ -306,71 +311,170 @@ module Mjbook
 
       def add_account_payment_record(payment)
 
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', payment.companyaccount_id, payment.date).order('created_at').last
+        #CHECK ACCOUNTING PERIOD
+        #returns period
+        accounting_period(payment.date)
 
-        new_account_balance = last_account_record.account_balance - payment.total
+        #if payment date before account create date
+        if payment.date < payment.companyaccount.date
+          #get next payment for account in date order
+          #exclude transaction on the same day
+          from_date = 1.day.from_now(payment.date)
+          to_date = 1.day.ago(payment.companyaccount.date)
+          next_record = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                            ).where(:date => from_date..to_date
+                                            ).order(:date, :id).first
+          #if exists
+          if !next_record.blank?
+            #new value =  next value - subtract payment value
+            new_account_balance = next_record.account_balance - payment.total
+          else
+            new_account_balance = payment.companyaccount.balance - payment.total
+          end
 
-        Mjbook::Summary.create(:date => expend.date,
-                               :companyaccount_id => payment.companyaccount_id,
-                               :payment_id => payment.id,
-                               :amount_out => payment.total,
-                               :account_balance => new_account_balance)
+          #update records before current date
+          #find records to update
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                   ).where('date < ?', payment.date)
+          #update prior balances
+          if !prior_transactions.blank?
+            subtract_amount_from(prior_transactions, payment.total)
+          end
 
-        update_subsequent_balances(payment, payment.total)
+        #if payment date after account create date 
+        else
+          #get last payment before
+          to_date = 1.day.ago(payment.date)
+          from_date = payment.companyaccount.date
+          previous_record = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                ).where(:date => to_date..from_date
+                                                ).order(:date, :id).last
+
+          new_account_balance = next_record.account_balance + payment.total
+
+          #update subsequent payment records
+          #find records to update
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                        ).where('date > ?', payment.date)
+          #update prior balances
+          if !subsequent_transactions.blank? 
+            add_amount_to(subsequent_transactions, payment.total)
+          end
+
+          Mjbook::Summary.create(:company_id => current_user.company_id,
+                                 :date => payment.date,
+                                 :companyaccount_id => payment.companyaccount_id,
+                                 :payment_id => payment.id,
+                                 :amount_in => payment.total,
+                                 :account_balance => new_account_balance)
+        end
+
+        #get applicable accounting period
+        #update retained value in period
+        update_payment_year_end("add", payment.total, payment.date)
 
       end
 
 
       def update_account_payment_record(payment)
-
         account_record = Summary.where(:payment_id => payment.id).first
-
         variation = payment.total - account_record.amount_out
+        #if payment date before account create date
+        if payment.date < payment.companyaccount.date
+          #update records before current date
+          #find records to update
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                   ).where('date < ?', payment.date)
+          #update prior balances
+          if !prior_transactions.blank?
+            subtract_amount_from(prior_transactions, variation)
+          end
+        else
+          #update subsequent payment records
+          #find records to update
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                        ).where('date > ?', payment.date)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            add_amount_to(subsequent_transactions, variation)
+          end
+        end
+
         record_balance = account_balance + variation
         account_record.update(:amount_out => payment.total, :account_balance => record_balance)
 
-        update_subsequent_balances(payment, variation)
+        #get applicable accounting period
+        #update retained value in period
+        update_payment_year_end("change", payment.total, payment.date)
 
       end
 
 
       def delete_account_payment_record(payment)
-        #update subsequent totals
-        variation = (0 - payment.total)
-        update_subsequent_balances(payment, variation)
+
+        #if payment date before account create date
+        if payment.date < payment.companyaccount.date
+          #update records before current date
+          #find records to update
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                   ).where('date < ?', payment.date)
+          #update prior balances
+          if !prior_transactions.blank?
+            add_amount_to(prior_transactions, payment.total)
+          end
+        else
+          #update subsequent payment records
+          #find records to update
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                        ).where('date > ?', payment.date)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            subtract_amount_from(subsequent_transactions, payment.total)
+          end
+        end
+
+        #get applicable accounting period
+        #update retained value in period
+        update_payment_year_end("delete", payment.total, payment.date)
 
         #find account record to delete
         account_record = Summary.where(:payment_id => payment.id).first
         account_record.destroy
+
       end
 
 
-      def update_subsequent_balances(payment, variation)
-        account_transactions = policy_scope(Summary).subsequent_account_transactions(payment.companyaccount_id, payment.date)
-        if !account_transactions.blank?
-          account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance + variation
-            transaction.update(:balance => new_account_balance)
-          end
+      #add to all transaction amounts value
+      def add_amount_to(transactions, value) 
+        transactions.each do |transaction|
+          new_balance = transaction.account_balance + value
+          transaction.update(:account_balance => new_balance)
+        end
+      end
+
+      #subtract from all transaction amounts value
+      def subtract_amount_from(transactions, value)
+        transactions.each do |transaction|
+          new_balance = transaction.account_balance - value
+          transaction.update(:account_balance => new_balance)
         end
       end
 
 
-    def update_payment_year_end(action, amount, date)
-      #on create, update or delete payment item
-      #determine year record to update based on date of transaction
-      accounting_period(date)
+      def update_payment_year_end(action, amount, date)
+        #on create, update or delete payment item
+        #determine year record to update based on date of transaction
+        accounting_period(date)
 
-      if action == "add" || action == "change"
-        year_record.update(:retained => (year_record.retained + amount))
+        if action == "add" || action == "change"
+          @period.update(:retained => (@period.retained + amount))
+        end
+
+        if action == "delete"
+          @period.update(:retained => (@period.retained - amount))
+        end
+
       end
-
-      if action == "delete"
-        year_record.update(:retained => (year_record.retained - amount))
-      end
-
-    end
-
 
   end
 end
