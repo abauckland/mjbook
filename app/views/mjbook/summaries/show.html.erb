@@ -11,7 +11,7 @@
         <div>
             <div>
                 <label class="select">Account:</label>
-                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@companyaccounts, :id, :company_name, @companyaccount.id), prompt: "Select something" %>
+                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@companyaccounts, :id, :name, @companyaccount.id), prompt: "Select something" %>
             </div>
             <div>
                 <label class="date">Date From:</label>
@@ -46,7 +46,7 @@
                             <th class="transaction_expend">Expenditure</th>
                             <th class="transaction_balance">Balance</th>
                             <th class="transaction_status">Status</th>
-                            <th class="row_button no_buttons_1"></th>
+                            <th class="row_button no_buttons_2"></th>
                         </tr>
                     </thead>
                 </table>
@@ -73,7 +73,7 @@
                                     <td class="transaction_expend"><%= summary.amount_out %></td>
                                     <td class="transaction_balance"><%= pounds(summary.account_balance) %></td>
                                     <td id="<%= summary.id %>_status"  class="transaction_status"><%= summary.state %></td>
-                                    <td id="<%= summary.id %>_links" class="row_button no_buttons_1">
+                                    <td id="<%= summary.id %>_links" class="row_button no_buttons_2">
                                         <% unless summary.reconciled? %>
                                             <%= row_reconcile_link(summary, 'show') %>
                                             <%= row_unreconcile_link(summary, 'hidden') %>

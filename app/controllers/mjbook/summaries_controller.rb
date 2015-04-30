@@ -23,13 +23,20 @@ module Mjbook
 
       def show
 
-        @summaries = policy_scope(Summary).where('date > ?', params[:date_from]
-                                         ).where('date < ?', params[:date_to]
-                                         ).where(:companyaccount_id => params[:id])
+        @summaries = policy_scope(Summary).where(:companyaccount_id => params[:companyaccount_id])
+
+        if params[:date_from] !=""
+          @summaries = @summaries.where('date >= ?', params[:date_from])
+        end
+
+        if params[:date_to] !=""
+          @summaries = @summaries.where('date <= ?', params[:date_to])
+        end
+
         @summary = @summaries.first
         authorize @summaries
 
-        @companyaccount = Mjbook::Companyaccount.find(params[:id])
+        @companyaccount = Mjbook::Companyaccount.find(params[:companyaccount_id])
         @companyaccounts = policy_scope(Companyaccount)
 
         if params[:commit] == 'pdf'
@@ -47,6 +54,11 @@ module Mjbook
 
         authorize @summary
         if @summary.reconcile!
+          
+          if @summary.payment_id?
+            @summary.payment.reconcile!
+          end
+          
           respond_to do |format|
             format.js   { render :reconcile, :layout => false }
           end
@@ -57,6 +69,11 @@ module Mjbook
 
         authorize @summary
         if @summary.unreconcile!
+
+          if @summary.payment_id?
+            @summary.payment.unreconcile!
+          end
+
           respond_to do |format|
             format.js   { render :unreconcile, :layout => false }
           end
@@ -152,7 +169,7 @@ private
 
         if period_name
           if period_name != ""
-            @period = policy_scope(Period).where(:name => period_name).first
+            @period = policy_scope(Period).where(:id => period_name).first
           else
             #get current period
             start_time = 1.year.ago(Time.now)

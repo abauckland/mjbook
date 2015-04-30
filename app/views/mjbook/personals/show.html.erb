@@ -9,7 +9,6 @@
         <div class="border">
 
             <%= render :partial => "flash_notice" %>
-            
 <!-- column start-->
             <div class="row">
                 <article>
@@ -18,12 +17,12 @@
                         <!-- show text line -->
                         <label class="label_80">Reference:</label>
                         <span><%= @expense.ref if @expense.ref %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Issue date:</label>
                         <span><%= @expense.date.strftime("%d/%m/%y") %></span></br>
 
-                        <% if @expense.user_id %>    
+                        <% if @expense.user_id %>
                         <!-- show text line -->
                         <label class="label_80">Employee:</label>
                         <span><%= @expense.user.name.titleize %></span></br>
@@ -32,7 +31,7 @@
                         <!-- show text line -->
                         <label class="label_80">Project:</label>
                         <span><%= @expense.project.name.titleize %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Supplier:</label>
                         <span><%= @expense.supplier.company_name.titleize %></span></br>
@@ -43,26 +42,26 @@
 
                         <% if @expense.receipt %>
                         <!-- show text line -->
-                        <label class="label_80">Receipt:</label>                        
+                        <label class="label_80">Receipt:</label>
                         <span><%=link_to image_tag(@expense.receipt_url(:thumb), class: 'fancybox' )%></span></br>
                         <% end %>
-                                
+
                         <!-- show text line -->
                         <label class="label_80">Due Date:</label>
                         <span><%= @expense.due_date.strftime("%d/%m/%y") %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Price:</label>
                         <span><%= pounds(@expense.price) %></span></br>
-                                
+
                         <!-- show text line -->
                         <label class="label_80">VAT:</label>
                         <span><%= pounds(@expense.vat) %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Total:</label>
                         <span><%= pounds(@expense.total) %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Status:</label>
                         <span><%= @expense.state %></span></br>
@@ -70,7 +69,7 @@
                     </div>
                 </article>
             </div>
-<!-- column footer start--> 
+<!-- column footer start-->
             <div class="row">
                 <div class="form_footer">
                     <%= link_to "back", personals_path %>
