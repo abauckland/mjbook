@@ -91,85 +91,114 @@ module Mjbook
         #returns period
         accounting_period(transfer.date)
 
+
         #ADD AMOUNT
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_to_id, transfer.date).order(:date, :id).last
-        #if prior record does not exist        
-        if last_account_record.blank?
-        #if prior record does not exist
-          account_record = policy_scope(Summary).where('companyaccount_id = ? AND date > ?', transfer.account_to_id, transfer.date).order(:date).first
-          first_account_record = account_record.order(:id).last
-          new_account_balance = first_account_record.account_balance - transfer.total
+        #if transfer date before account create date
+        if transfer.date < transfer.companyaccount.date
+          #get next transfer for account in date order
+          next_record(transfer.account_to_id, transfer.date, transfer.account_to.date)
+
+          #if exists
+          if !next_record.blank?
+            #new value =  next value - subtract payment value
+            new_account_balance = next_record.account_balance - transfer.total
+          else
+            new_account_balance = transfer.companyaccount.balance - transfer.total
+          end
+
+          #update subsequent transfer records
+          subtract_from_subsequent_transactions(transfer)
+
+        #if payment date after account create date 
         else
-          new_account_balance = last_account_record.account_balance + transfer.total 
+          #get last payment before
+          previous_record(transfer.account_to_id, transfer.date, transfer.account_to.date)
+
+          if !previous_record.blank?
+            new_account_balance = previous_record.account_balance + transfer.total
+          else
+            new_account_balance = transfer.companyaccount.balance + transfer.total
+          end
+
+          #update subsequent payment records
+          add_to_prior_transactions(transfer)
+
         end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
                                :date => transfer.date,
-                               :companyaccount_id => transfer.account_to_id,
-                               :transfer_id => transfer.id,
+                               :companyaccount_id => transfer.companyaccount_id,
+                               :payment_id => transfer.id,
                                :amount_in => transfer.total,
                                :account_balance => new_account_balance)
 
-        subsequent_transactions(transfer.account_to_id, transfer)       
-        if !account_transactions.blank?
-          account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance + transfer.total
-            transaction.update(:account_balance => new_account_balance)
-          end
-        end
-
 
         #SUBTRACT AMOUNT
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_from_id, transfer.date).order(:date, :id).last
-        #if prior record does not exist        
-        if last_account_record.blank?
-        #if prior record does not exist
-          account_record = policy_scope(Summary).where('companyaccount_id = ? AND date > ?', transfer.account_from_id, transfer.date).order(:date).first
-          first_account_record = account_record.order(:id).last
-          new_account_balance = first_account_record.account_balance + transfer.total
+        #if expend date before account create date
+        if transfer.date < transfer.companyaccount.date
+          #get next expend for account in date order
+          account_from_next_record(transfer.account_from_id, transfer.date, transfer.account_from.date)
+
+          #if exists
+          if !next_record.blank?
+            #new value =  next value - subtract transfer value
+            new_account_balance = next_record.account_balance + transfer.total
+          else
+            new_account_balance = transfer.companyaccount.balance + transfer.total
+          end
+
+          #update records before current date
+          subtract_from_prior_transactions(transfer)
+
+        #if expend date after account create date 
         else
-          new_account_balance = last_account_record.account_balance - transfer.total 
+          #get last expend before
+          account_from_previous_record(transfer.account_from_id, transfer.date, transfer.account_from.date)
+
+          if !previous_record.blank?
+            new_account_balance = previous_record.account_balance - transfer.total
+          else
+            new_account_balance = transfer.companyaccount.balance - transfer.total
+          end
+
+          #update subsequent expend records
+          add_to_subsequent_transactions(transfer)
+
         end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
                                :date => transfer.date,
-                               :companyaccount_id => transfer.account_from_id,
-                               :transfer_id => transfer.id,
-                               :amount_out => transfer.total,
+                               :companyaccount_id => transfer.companyaccount_id,
+                               :payment_id => transfer.id,
+                               :amount_in => transfer.total,
                                :account_balance => new_account_balance)
 
-        subsequent_transactions(transfer.account_from_id, transfer)
-        if !account_transactions.blank?
-          account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance - transfer.total
-            transaction.update(:account_balance => new_account_balance)
-          end
-        end
       end
 
 
       def delete_account_transfer_record(transfer)
-        #delete add record
-        variation = (0 - transfer.total)
 
-        subsequent_transactions(transfer.account_to_id, transfer)
-        if !account_transactions.blank?
-          account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance - variation
-            transaction.update(:account_balance => new_account_balance)
-          end
+        #delete add record
+        #if transfer date before account create date
+        if transfer.date < transfer.companyaccount.date
+          #update records before current date
+          add_to_prior_transactions(transfer)
+        else
+          #update subsequent transfer records
+          subtract_from_subsequent_transactions(payment)
         end
+
 
         #delete subtract record
-        variation = transfer.total
-
-        subsequent_transactions(transfer.account_from_id, transfer)
-        if !account_transactions.blank?
-          account_transactions.each do |transaction|
-            new_account_balance = transaction.account_balance + variation
-            transaction.update(:account_balance => new_account_balance)
-          end
+        #if transfer date before account create date
+        if transfer.date < transfer.companyaccount.date
+          #update records before current date
+          subtract_from_prior_transactions(transfer)
+        else
+          #update subsequent transfer records
+          add_to_subsequent_transactions(transfer)
         end
+
 
         account_record = Summary.where(:transfer_id => transfer.id)
         account_record.each do |record|
@@ -179,16 +208,54 @@ module Mjbook
       end
 
 
-      def subsequent_transactions(account_id, transfer)
-        account = Mjbook::Companyaccount.find(account_id)
-        if transfer.date >= account.date        
-          account_transactions = policy_scope(Summary).where(:companyaccount_id => account_id).where('date > ?', transfer.date)
-        else
-          #exclude transaction on the same day
-          from_date = 1.day.from_now(transfer.date)
-          account_transactions = policy_scope(Summary).where(:companyaccount_id => account_id).where(:date => from_date..account.date)
-        end        
+      def add_to_prior_transactions(transfer)
+          #find records to update
+          prior_transactions(transfer.account_to_id, transfer.date)
+          #update prior balances
+          if !prior_transactions.blank?
+            add_amount_to(prior_transactions, transfer.total)
+          end
       end
+
+      def add_to_subsequent_transactions(transfer)
+          #find records to update
+          subsequent_transactions(transfer.account_to_id, transfer.date)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            add_amount_to(subsequent_transactions, transfer.total)
+          end
+      end
+
+
+      def subtract_from_prior_transactions(transfer)
+          #find records to update
+          prior_transactions(transfer.account_from_id, transfer.date)
+          #update prior balances
+          if !prior_transactions.blank?
+            subtract_amount_from(prior_transactions, transfer.total)
+          end
+      end
+
+      def subtract_from_subsequent_transactions(transfer)
+          #find records to update
+          subsequent_transactions(transfer.account_from_id, transfer.date)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            subtract_amount_from(subsequent_transactions, transfer.total)
+          end
+      end
+
+
+      def prior_transactions(account_id, date)
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => account_id
+                                                   ).where('date < ?', date)
+      end
+
+      def subsequent_transactions(account_id, date)
+        subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => account_id
+                                                        ).where('date > ?', date)
+      end
+
 
   end
 end

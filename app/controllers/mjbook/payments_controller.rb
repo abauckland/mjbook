@@ -309,12 +309,8 @@ module Mjbook
         #if payment date before account create date
         if payment.date < payment.companyaccount.date
           #get next payment for account in date order
-          #exclude transaction on the same day
-          from_date = 1.day.from_now(payment.date)
-          to_date = 1.day.ago(payment.companyaccount.date)
-          next_record = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                            ).where(:date => from_date..to_date
-                                            ).order(:date, :id).first
+          next_record(payment.companyaccount_id, payment.date, payment.companyaccount.date)
+
           #if exists
           if !next_record.blank?
             #new value =  next value - subtract payment value
@@ -323,23 +319,13 @@ module Mjbook
             new_account_balance = payment.companyaccount.balance - payment.total
           end
 
-          #update records before current date
-          #find records to update
-          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                   ).where('date < ?', payment.date)
-          #update prior balances
-          if !prior_transactions.blank?
-            subtract_amount_from(prior_transactions, payment.total)
-          end
+          #update subsequent payment records
+          subtract_from_subsequent_transactions(payment)
 
         #if payment date after account create date 
         else
           #get last payment before
-          to_date = 1.day.ago(payment.date)
-          from_date = payment.companyaccount.date
-          previous_record = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                ).where(:date => to_date..from_date
-                                                ).order(:date, :id).last
+          previous_record(payment.companyaccount_id, payment.date, payment.companyaccount.date)
 
           if !previous_record.blank?
             new_account_balance = previous_record.account_balance + payment.total
@@ -348,13 +334,7 @@ module Mjbook
           end
 
           #update subsequent payment records
-          #find records to update
-          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                        ).where('date > ?', payment.date)
-          #update prior balances
-          if !subsequent_transactions.blank? 
-            add_amount_to(subsequent_transactions, payment.total)
-          end
+          add_to_prior_transactions(payment)
 
         end
 
@@ -367,7 +347,7 @@ module Mjbook
 
         #get applicable accounting period
         #update retained value in period
-        update_payment_year_end("add", payment.total, payment.date)
+        update_year_end("add", payment.total, payment.date)
 
       end
 
@@ -378,30 +358,17 @@ module Mjbook
         #if payment date before account create date
         if payment.date < payment.companyaccount.date
           #update records before current date
-          #find records to update
-          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                   ).where('date < ?', payment.date)
-          #update prior balances
-          if !prior_transactions.blank?
-            subtract_amount_from(prior_transactions, variation)
-          end
+          add_to_prior_transactions(payment)
         else
           #update subsequent payment records
-          #find records to update
-          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                        ).where('date > ?', payment.date)
-          #update prior balances
-          if !subsequent_transactions.blank?
-            add_amount_to(subsequent_transactions, variation)
-          end
+          subtract_from_subsequent_transactions(payment)
         end
 
         record_balance = account_balance + variation
         account_record.update(:amount_out => payment.total, :account_balance => record_balance)
 
-        #get applicable accounting period
         #update retained value in period
-        update_payment_year_end("change", payment.total, payment.date)
+        update_year_end("change", payment.total, payment.date)
 
       end
 
@@ -411,27 +378,14 @@ module Mjbook
         #if payment date before account create date
         if payment.date < payment.companyaccount.date
           #update records before current date
-          #find records to update
-          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                   ).where('date < ?', payment.date)
-          #update prior balances
-          if !prior_transactions.blank?
-            add_amount_to(prior_transactions, payment.total)
-          end
+          add_to_prior_transactions(payment)
         else
           #update subsequent payment records
-          #find records to update
-          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                        ).where('date > ?', payment.date)
-          #update prior balances
-          if !subsequent_transactions.blank?
-            subtract_amount_from(subsequent_transactions, payment.total)
-          end
+          subtract_from_subsequent_transactions(payment)
         end
 
-        #get applicable accounting period
         #update retained value in period
-        update_payment_year_end("delete", payment.total, payment.date)
+        update_year_end("delete", payment.total, payment.date)
 
         #find account record to delete
         account_record = Summary.where(:payment_id => payment.id).first
@@ -440,37 +394,35 @@ module Mjbook
       end
 
 
-      #add to all transaction amounts value
-      def add_amount_to(transactions, value) 
-        transactions.each do |transaction|
-          new_balance = transaction.account_balance + value
-          transaction.update(:account_balance => new_balance)
-        end
+      def add_to_prior_transactions(payment)
+          #find records to update
+          prior_transactions(payment)
+          #update prior balances
+          if !prior_transactions.blank?
+            add_amount_to(prior_transactions, payment.total)
+          end
       end
 
-      #subtract from all transaction amounts value
-      def subtract_amount_from(transactions, value)
-        transactions.each do |transaction|
-          new_balance = transaction.account_balance - value
-          transaction.update(:account_balance => new_balance)
-        end
+      def subtract_from_subsequent_transactions(payment)
+          #find records to update
+          subsequent_transactions(payment)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            subtract_amount_from(subsequent_transactions, payment.total)
+          end
       end
 
 
-      def update_payment_year_end(action, amount, date)
-        #on create, update or delete payment item
-        #determine year record to update based on date of transaction
-        accounting_period(date)
-
-        if action == "add" || action == "change"
-          @period.update(:retained => (@period.retained + amount))
-        end
-
-        if action == "delete"
-          @period.update(:retained => (@period.retained - amount))
-        end
-
+      def prior_transactions(payment)
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                   ).where('date < ?', payment.date)
       end
+
+      def subsequent_transactions(payment)
+        subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                        ).where('date > ?', payment.date)
+      end
+
 
   end
 end

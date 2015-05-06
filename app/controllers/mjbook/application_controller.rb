@@ -65,5 +65,56 @@ module Mjbook
         end
       end
 
+
+      def next_record(account_id, date, account_date)
+          #exclude transaction on the same day
+          rom_date = 1.day.from_now(date)
+          to_date = 1.day.ago(account_date)
+          next_record = policy_scope(Summary).where(:companyaccount_id => account_id
+                                            ).where(:date => from_date..to_date
+                                            ).order(:date, :id).first
+      end
+
+      def previous_record(account_id, date, account_date)
+          to_date = 1.day.ago(date)
+          from_date = account_date
+          previous_record = policy_scope(Summary).where(:companyaccount_id => account_id
+                                                ).where(:date => to_date..from_date
+                                                ).order(:date, :id).last
+      end
+
+      #add to all transaction amounts value
+      def add_amount_to(transactions, value) 
+        transactions.each do |transaction|
+          new_balance = transaction.account_balance + value
+          transaction.update(:account_balance => new_balance)
+        end
+      end
+
+      #subtract from all transaction amounts value
+      def subtract_amount_from(transactions, value)
+        transactions.each do |transaction|
+          new_balance = transaction.account_balance - value
+          transaction.update(:account_balance => new_balance)
+        end
+      end
+
+
+      def update_year_end(action, amount, date)
+        #on create, update or delete payment item
+        #determine year record to update based on date of transaction
+        accounting_period(date)
+
+        if action == "add" || action == "change"
+          @period.update(:retained => (@period.retained + amount))
+        end
+
+        if action == "delete"
+          @period.update(:retained => (@period.retained - amount))
+        end
+
+      end
+
+
   end
 end
