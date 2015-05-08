@@ -8,70 +8,58 @@
 <!-- form column start-->
             <div class="row">
                 <%= form_for(@payment) do |f| %>
+                    <%= f.hidden_field :company_id, :value => current_user.company_id %>
                     <%= f.hidden_field :user_id, :value => current_user.id %>
                     <fieldset>
 
-                        <% if @projects %>
+                        <!-- show text line -->
+                        <label class="label_100">Reference:</label>
+                        <span><%= @payment.ref if @payment.ref %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_100">Price:</label>
+                        <span><%= pounds(@payment.price) %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_100">VAT:</label>
+                        <span><%= pounds(@payment.vat) %></span></br>
+
+                        <!-- show text line -->
+                        <label class="label_100">Total:</label>
+                        <span><%= pounds(@payment.total) %></span></br>
+
+
                         <!-- form input[select -->
-                        <div class="form_tooltip" id="invoice_ref"></div>
-                        <label class="label_120">Invoice Ref:*</label>
+                        <div class="form_tooltip" id="payexpense_paymethod"></div>
+                        <label class="label_100">Payment Method:*</label>
                         <span>
-                            <%= f.collection_select(:invoice_id, @invoices, :id, :ref, {:selected => @payment.invoice_id, :prompt => :true})%>
-                        </span></br>
-                        <% end %> 
-
-                       <!-- form input[select -->
-                        <div class="form_tooltip" id="invoice_paymethod"></div>
-                        <label class="label_120">Transfer Method:*</label>
-                        <span>
-                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {:selected => @payment.paymethod_id, :prompt => :true})%>
+                            <%= f.collection_select(:paymethod_id, @paymethods, :id, :text, {selected: @payment.paymethod_id, :prompt => :true})%>
                         </span></br>
 
-                       <!-- form input[select -->
-                        <div class="form_tooltip" id="invoice_account"></div>
-                        <label class="label_120">To Account:*</label>
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="payexpense_account"></div>
+                        <label class="label_100">Paid Into:*</label>
                         <span>
-                            <%= f.collection_select(:account_id, @companyaccounts, :id, :name, {:selected => @payment.account_id, :prompt => :true})%>
+                            <%= f.collection_select(:companyaccount_id, @companyaccounts, :id, :name, {selected: @payment.companyaccount_id, :prompt => :true})%>
                         </span></br>
 
-                        <!-- form input[text] --> 
-                        <div class="form_tooltip" id="invoice_price"></div>
-                        <label class="label_120">Total (ex VAT):*</label>
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="payexpense_date"></div>
+                        <label class="label_100">Date:*</label>
                         <span>
-                            <%= f.text_field :price, {:placeholder => "0.00", :value => number_with_precision(f.object.price, :precision => 2)} %>
+                            <%= f.date_field :date, {placeholder: 'dd/mm/yyyy'} %>
                         </span></br>
 
-                        <!-- form input[text] --> 
-                        <div class="form_tooltip" id="invoice_vat"></div>
-                        <label class="label_120">VAT Paid:*</label>
+                        <!-- form input[text] -->
+                        <div class="form_tooltip" id="payexpense_notes"></div>
+                        <label class="label_100">Notes:</label>
                         <span>
-                            <%= f.text_field :vat, {:placeholder => "0.00", :value => number_with_precision(f.object.vat, :precision => 2)} %>
-                        </span></br>
-                        
-                        <!-- form input[text] --> 
-                        <div class="form_tooltip" id="invoice_total"></div>
-                        <label class="label_120">Total (inc VAT):*</label>
-                        <span>
-                            <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.total, :precision => 2)} %>
+                            <%= f.text_field :note %>
                         </span></br>
 
-                        <!-- form input[text] --> 
-                        <div class="form_tooltip" id="invoice_date"></div>
-                        <label class="label_120">Date:*</label>
-                        <span>
-                            <%= f.date_field :date %>
-                        </span></br>
-
-                        <!-- form input[text] --> 
-                        <div class="form_tooltip" id="invoice_note"></div>
-                        <label class="label_120">Notes:</label>
-                        <span>
-                            <%= f.date_field :note %>
-                        </span></br>
-                        
                     </fieldset>
             </div>
-<!-- column footer start--> 
+<!-- column footer start-->
             <div class="row">
                 <div class="form_footer">
                     <%= f.submit "save"%>
