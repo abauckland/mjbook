@@ -3,8 +3,6 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class BalancesController < ApplicationController
 
-    before_action :set_summary, only: [:reconcile, :unreconcile]
-
       def index
         #redirect if the year_start date (and hence accounting period) have not been set
         #redirect if no company accounts have been set up for the company
@@ -13,10 +11,13 @@ module Mjbook
         unless company_setting  && account_exist
           redirect_to setups_path
         else
-          accounting_period(params[:period_name])
+
+          balance_period(params[:period_id])
           @summaries = policy_scope(Summary)
           authorize @summaries
+          @periods = policy_scope(Period)
           account_summary(@summaries, @current_period, @date_from, @date_to)
+
         end
       end
 
@@ -43,23 +44,20 @@ module Mjbook
 
 private
 
-      # Use callbacks to share common setup or constraints between actions.
-      def set_summary
-        @summary = Summary.find(params[:id])
-      end
+      def balance_period(period_id)
 
-      def accounting_period(period_name)
-
-        if period_name
-          if period_name != ""
-            @period = policy_scope(Period).where(:id => period_name).first
+        if period_id
+          if period_id != ""
+            @period = policy_scope(Period).where(:id => period_id).first
           else
             #get current period
             start_time = 1.year.ago(Time.now)
             end_time = Time.now
             @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+            @current_period = true
           end
         else
+          #get current period
           start_time = 1.year.ago(Time.now)
           end_time = Time.now
           @period = policy_scope(Period).where(:year_start => start_time..end_time).first
@@ -67,8 +65,8 @@ private
         end
 
         @date_from = @period.year_start
-        date_in_year = 1.year.from_now(@period.year_start)
-        @date_to = 1.day.ago(date_in_year)
+        date_in_one_year = 1.year.from_now(@period.year_start)
+        @date_to = 1.day.ago(date_in_one_year)
 
       end
 
@@ -97,12 +95,12 @@ private
       #INCOME SUMMARY
         @income_summary = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
-                                              ).paid.pluck(:total).sum
+                                              ).pluck(:total).sum
 
       #EXPEND SUMMARY
         @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => "transfer"
-                                             ).paid.pluck(:total).sum
+                                             ).pluck(:total).sum
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
@@ -151,11 +149,9 @@ private
 
 
       #SUMMARY BALANCE
-        @debit_total = @income_summary + @receivable_summary + @assets_cash
-        @credit_total = 0#@expend_summary + @payable_summary
+        @credit_total = @income_summary + @receivable_summary + @assets_cash
+        @debit_total = 0#@expend_summary + @payable_summary
 
-      #list of periods for select filter
-        @periods = policy_scope(Period)
 
       end
 
