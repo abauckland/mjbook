@@ -270,35 +270,34 @@ module Mjbook
       def add_account_expend_record(expend)
 
         #CHECK ACCOUNTING PERIOD
-        #returns period
         accounting_period(expend.date)
 
         #if expend date before account create date
         if expend.date < expend.companyaccount.date
           #get next expend for account in date order
-          from_date = 1.day.from_now(expend.date)
+          from_date = expend.date
           to_date = 1.day.ago(expend.companyaccount.date)
           next_record = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
-                                            ).where(:date => from_date..to_date
-                                            ).order(:date, :id).first
+                                            ).where(:date => [from_date..to_date]
+                                            ).order("date DESC").order("id DESC").first
           #if exists
           if !next_record.blank?
             #new value =  next value - subtract expend value
             new_account_balance = next_record.account_balance + expend.total
           else
-            new_account_balance = expend.companyaccount.balance + expend.total
+            new_account_balance = expend.companyaccount.balance
           end
 
           #update records before current date
-          subtract_from_prior_transactions(expend)
+          add_to_prior_transactions(expend)
 
         #if expend date after account create date 
         else
           #get last expend before
-          to_date = 1.day.ago(expend.date)
+          to_date = expend.date
           from_date = expend.companyaccount.date
           previous_record = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
-                                                ).where(:date => to_date..from_date
+                                                ).where(:date => [from_date..to_date]
                                                 ).order(:date, :id).last
 
           if !previous_record.blank?
@@ -308,7 +307,7 @@ module Mjbook
           end
 
           #update subsequent expend records
-          add_to_subsequent_transactions(expend)
+          subtract_from_subsequent_transactions(expend)
 
         end
 
@@ -320,74 +319,112 @@ module Mjbook
                                :account_balance => new_account_balance)
 
         #get applicable accounting period
-        #update retained value in period
-        update_year_end("add", expend.total, expend.date)
-
-      end
-
-
-      def update_account_expend_record(expend)
-        account_record = Summary.where(:expend_id => expend.id).first
-        variation = expend.total - account_record.amount_out
-        #if expend date before account create date
-        if expend.date < expend.companyaccount.date
-          #update records before current date
-          subtract_from_prior_transactions(expend)
+        #update retained value in period - only if payment not between year start and date of account creation
+        if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
+          unless payment.date >= @period.year_start && expend.date < expend.companyaccount.date
+              @period.update(:retained => (@period.retained - amount))
+          end
         else
-          #update subsequent expend records
-          add_to_subsequent_transactions(expend)
+          @period.update(:retained => (@period.retained - amount))
         end
 
-        record_balance = account_balance - variation
-        account_record.update(:amount_out => expend.total, :account_balance => record_balance)
-
-        #get applicable accounting period
-        #update retained value in period
-        update_year_end("change", expend.total, expend.date)
-
       end
+
+
+#      def update_account_expend_record(expend)
+#        account_record = Summary.where(:expend_id => expend.id).first
+#        variation = expend.total - account_record.amount_out
+#        #if expend date before account create date
+#        if expend.date < expend.companyaccount.date
+#          #update records before current date
+#          subtract_from_prior_transactions(expend)
+#        else
+#          #update subsequent expend records
+#          add_to_subsequent_transactions(expend)
+#        end
+
+#        record_balance = account_balance - variation
+#        account_record.update(:amount_out => expend.total, :account_balance => record_balance)
+
+#        #get applicable accounting period
+#        #update retained value in period
+#        update_year_end("change", expend.total, expend.date)
+
+#      end
 
 
       def delete_account_expend_record(expend)
 
+        accounting_period(payment.date)
+
+        account_record = Summary.where(:expend_id => expend.id).first
         #if expend date before account create date
         if expend.date < expend.companyaccount.date
           #update records before current date
           subtract_from_prior_transactions(expend)
+          subtract_from_subsequent_transactions_on_date(payment, account_record)
         else
           #update subsequent expend records
           add_to_subsequent_transactions(expend)
+          add_to_subsequent_transactions_on_date(payment, account_record)
         end
 
         #get applicable accounting period
-        #update retained value in period
-        update_year_end("delete", expend.total, expend.date)
+        #update retained value in period - only if payment not between year start and date of account creation
+        if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
+          unless payment.date >= @period.year_start && expend.date < expend.companyaccount.date
+              @period.update(:retained => (@period.retained + amount))
+          end
+        else
+          @period.update(:retained => (@period.retained + amount))
+        end
 
         #find account record to delete
-        account_record = Summary.where(:payment_id => expend.id).first
         account_record.destroy
 
       end
 
 
-      def add_to_subsequent_transactions(expend)
-          #find records to update
-        subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
-                                                        ).where('date > ?', expend.date)
-          #update prior balances
-          if !subsequent_transactions.blank?
-            add_amount_to(subsequent_transactions, expend.total)
-          end
-      end
-      
-
-      def subtract_from_prior_transactions(expend)
+      def add_to_prior_transactions(expend)
           #find records to update
           prior_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
                                                    ).where('date < ?', expend.date)
           #update prior balances
           if !prior_transactions.blank?
-            subtract_amount_from(prior_transactions, expend.total)
+            add_amount_to(prior_transactions, expend.total)
+          end
+      end
+
+
+      def subtract_from_subsequent_transactions(expend)
+          #find records to update
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
+                                                        ).where('date > ?', expend.date)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            subtract_amount_from(subsequent_transactions, expend.total)
+          end
+      end
+
+
+      def add_to_subsequent_transactions_on_date(expend, account_record)
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
+                                                   ).where(:date => expend.date
+                                                   ).where('id > ?',account_record.id)
+          if !prior_transactions.blank?
+            add_amount_to(prior_transactions, expend.total)
+          end
+      end
+
+
+      def subtract_from_subsequent_transactions_on_date(expend, account_record)
+          #find records to update
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
+                                                   ).where(:date => expend.date
+                                                   ).where('id > ?',account_record.id)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            subtract_amount_from(subsequent_transactions, expend.total)
           end
       end
 
