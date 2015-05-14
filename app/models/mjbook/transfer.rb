@@ -6,8 +6,7 @@ module Mjbook
     belongs_to :account_from, :class_name => 'Companyaccount', :foreign_key => 'account_from_id'
     belongs_to :account_to, :class_name => 'Companyaccount', :foreign_key => 'account_to_id'
     belongs_to :paymethod
-    has_many :expenditems
-    has_many :paymentitems
+    has_many :summaries
     
     aasm :column => 'state' do
 

@@ -3,7 +3,7 @@ module Mjbook
 
     belongs_to :company
 
-    validates :email_domain, :email_username, :email_password, :yearend, presence: true
+    validates :email_domain, :email_username, :email_password, :year_start, presence: true
 
     def email_domain=(text)
       super(text.downcase)
