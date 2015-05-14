@@ -3,11 +3,11 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class SummariesController < ApplicationController
 
-    before_action :company_accounts, only: [:index, :show]
     before_action :set_summary, only: [:reconcile, :unreconcile]
 
       def index
         accounting_period(params[:period_id])
+        @companyaccounts = policy_scope(Companyaccount)
 
       end
 
@@ -28,6 +28,7 @@ module Mjbook
         authorize @summaries
 
         @companyaccount = Mjbook::Companyaccount.find(params[:companyaccount_id])
+        @companyaccounts = policy_scope(Companyaccount)
 
         if params[:commit] == 'pdf'
           pdf_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
@@ -99,11 +100,6 @@ private
       def set_summary
         @summary = Summary.find(params[:id])
       end
-
-      def company_accounts
-        @company_accounts = policy_scope(Companyaccount)
-      end
-
 
       def accounting_period(period_name)
 

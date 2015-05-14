@@ -2,11 +2,7 @@ module Mjbook
   class Mjbook::ApplicationController < ActionController::Base
    layout "mjbook/books"
    include Pundit
-  def current_user
-    @current_user = User.first
-  end
-  
-  helper_method :current_user 
+
 
       def clean_text(value)
         @value = value 
@@ -69,6 +65,23 @@ module Mjbook
         end
       end
 
+
+      def next_record(account_id, date, account_date)
+          #exclude transaction on the same day
+          rom_date = 1.day.from_now(date)
+          to_date = 1.day.ago(account_date)
+          next_record = policy_scope(Summary).where(:companyaccount_id => account_id
+                                            ).where(:date => from_date..to_date
+                                            ).order(:date, :id).first
+      end
+
+      def previous_record(account_id, date, account_date)
+          to_date = 1.day.ago(date)
+          from_date = account_date
+          previous_record = policy_scope(Summary).where(:companyaccount_id => account_id
+                                                ).where(:date => to_date..from_date
+                                                ).order(:date, :id).last
+      end
 
       #add to all transaction amounts value
       def add_amount_to(transactions, value) 

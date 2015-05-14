@@ -3,8 +3,7 @@
     <% if current_user.owner? || current_user.admin? %>
 	    <li class="has_sub"><%= link_to "Reports", nil %>
 	        <ul class="sub_menu">
-                <li><%= link_to "Trial Balance", balances_path %>
-	            <li><%= link_to "Accounts Summary", summaries_path %>
+	            <li><%= link_to "Summary", summaries_path %>
 	            <li><%= link_to "Income", payments_path %> </li>
 	            <li><%= link_to "Expenditure", expends_path %> </li>
 	            <li><%= link_to "Credit Notes", creditnotes_path %> </li>
@@ -65,8 +64,7 @@
     <% if current_user.owner? || current_user.admin? %>
 	    <li><p class="mob_menu">Reports</p>
 	        <ul class="sub_menu_mob">
-                <li><%= link_to "Trial Balance", balances_path %>
-                <li><%= link_to "Accounts Summary", summaries_path %>
+	            <li><%= link_to "Summary", summaries_path %>
 	            <li><%= link_to "Income", payments_path %> </li>
 	            <li><%= link_to "Expenditure", expends_path %> </li>
 	            <li><%= link_to "Credit Notes", creditnotes_path %> </li>

@@ -11,11 +11,11 @@
         <div>
             <div>
                 <label class="select">Account:</label>
-                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@company_accounts, :id, :name, @companyaccount.id), prompt: "Select something" %>
+                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@companyaccounts, :id, :name, @companyaccount.id), prompt: "Select something" %>
             </div>
             <div>
                 <label class="date">Date From:</label>
-                <%= date_field_tag('date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
+                <%= date_field_tag('date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
                 <label class="date">Date To:</label>
                 <%= date_field_tag('date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
             </div>
