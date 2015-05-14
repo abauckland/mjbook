@@ -1,16 +1,16 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Trial Balance: <%= @period.period %></h1>
+        <h1>Trial Balance</h1>
     </div>
     <div class="title_help" id="summaries_index"></div>
 </div>
 
 <div class="row filter_band">
-    <%= form_tag balances_path, method: :get do %>
+    <%= form_tag summaries_path, method: :get do %>
         <div>
             <div>
                 <label class="select">Period:</label>
-                <%= select_tag 'period_id', options_from_collection_for_select(@periods, :id, :period, @period.id)%>
+                <%= select_tag 'period_name', options_from_collection_for_select(@periods, :id, :period, @period)%>
             </div>
             <%= submit_tag 'Select' %>
         </div> 

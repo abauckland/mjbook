@@ -23,8 +23,6 @@ module Mjbook
         if params[:date_to] !=""
           @summaries = @summaries.where('date <= ?', params[:date_to])
         end
-        
-        @summaries = @summaries.order("date DESC").order("id DESC")
 
         @summary = @summaries.first
         authorize @summaries
