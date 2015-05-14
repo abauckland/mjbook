@@ -32,11 +32,3 @@ $mob_menu: 520px;
 @media screen and (max-width: $mob_menu) {
   .transaction_balance{display: none;}
 }
-
-
-.summary_item   {@include name}
-.summary_debit  {@include pounds}
-.summary_credit {@include pounds}
-
-.reconciled{color: 000}
-.unreconciled{color: red}

@@ -103,9 +103,9 @@
                             <tr>
                                 <td class="summary_item"><%= account.name %></td> 
                                 <td class="summary_debit"></td>
-                                <%= account_reconciled_check(account, @date_to) %>
+                                <td class="summary_credit"><%= pounds(account_balance(account)) %></td>
                                 <td class="row_button no_buttons_1">
-                                    <%= link_to '', summary_path(:id => account.id, :companyaccount_id => account.id, :date_from => @date_from, :date_to => @date_to), class: 'line_show_icon_show' , title: "show transactions"  %>
+                                    <%= link_to '', summary_path(:id => account.id, :date_from => @date_from, :date_to => @date_to), class: 'line_show_icon_show' , title: "show transactions"  %>
                                 </td>
                             </tr>
                          <% end %>

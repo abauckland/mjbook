@@ -15,39 +15,39 @@
                     <div class="article-set">
 
                         <!-- show text line -->
-                        <label class="label_110">Reference:</label>
+                        <label class="label_80">Reference:</label>
                         <span><%= @payment.ref if @payment.ref %></span></br>
 
                         <!-- show text line -->
-                        <label class="label_110">Inovice:</label>
+                        <label class="label_80">Inovice:</label>
                         <span><%= @payment.invoice.ref if @payment.ref %></span></br>
-
+                     
                         <!-- show text line -->
-                        <label class="label_110">Date:</label>
+                        <label class="label_80">Date:</label>
                         <span><%= @payment.date.strftime("%d/%m/%y") %></span></br>
-
+                                
                         <!-- show text line -->
-                        <label class="label_110">Payment Method:</label>
-                        <span><%= @payment.paymethod.text.titleize %></span></br>
-
+                        <label class="label_80">Payment Method:</label>
+                        <span><%= @payment.paymethod.method.titleize %></span></br>
+    
                         <!-- show text line -->
-                        <label class="label_110">Account:</label>
+                        <label class="label_80">Account:</label>
                         <span><%= @payment.companyaccount.name.titleize %></span></br>
-
+    
                         <!-- show text line -->
-                        <label class="label_110">Price:</label>
+                        <label class="label_80">Price:</label>
                         <span><%= pounds(@payment.price) %></span></br>
-
+                                
                         <!-- show text line -->
-                        <label class="label_110">VAT:</label>
+                        <label class="label_80">VAT:</label>
                         <span><%= pounds(@payment.vat) %></span></br>
-
+    
                         <!-- show text line -->
-                        <label class="label_110">Total:</label>
+                        <label class="label_80">Total:</label>
                         <span><%= pounds(@payment.total) %></span></br>
-
+    
                         <!-- show text line -->
-                        <label class="label_110">Notes:</label>
+                        <label class="label_80">Notes:</label>
                         <span><%= @payment.note %></span></br>
 
                     </div>
@@ -59,6 +59,7 @@
                     <%= link_to "edit details", edit_payment_path(@payment) %>
                     <%= link_to "back", payments_path %>
                 </div>
+                <% end %>
             </div>
         </div>
     </div>
@@ -70,3 +71,7 @@
         <div class="border blank_column"></div>
     </div>
 </div>
+
+
+
+

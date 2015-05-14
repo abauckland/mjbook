@@ -8,7 +8,7 @@ module Mjbook
     belongs_to :company
     belongs_to :user
     has_many :paymentitems, :dependent => :destroy
-    has_one :summary
+    has_many :summaries
 
     enum inc_type: [:invoice, :transfer, :misc]
         

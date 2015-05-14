@@ -3,11 +3,7 @@ module Mjbook
    layout "mjbook/books"
    include Pundit
 
-  def current_user
-    @current_user = User.first
-  end
-  
-  helper_method :current_user 
+
             
       def clean_text(value)
         @value = value 
@@ -35,24 +31,24 @@ module Mjbook
 
 
       def accounting_period(date)
-        @period = policy_scope(Period).where("year_start <= ? AND year_start > ?", date, 1.year.ago(date)).first
+        period = policy_scope(Period).where("year_start >= ? AND year_start < ?", date, 1.year.ago(date)).first
 
         #if record does not exist create period record
-        if @period.blank?
+        if period.blank?
 
-          last_period = policy_scope(Period).order(:year_start).last
+          last_period = policy_scope(Period).order(:date).last
 
-          if date > last_period.year_start
+          if date > last_period
             difference = (date - last_period.year_start) / 1.year
             years_difference = (difference - 0.5).round
 
             start_date = years_difference.year.from_now(last_period.year_start)
           #if date < first_period
           else
-            first_period = policy_scope(Period).order(:year_start).first
+            first_period = policy_scope(Period).order(:date).first
 
             difference = (first_period.year_start - date) / 1.year
-            years_difference = (difference + 0.5).round
+            years_difference = (difference - 0.5).round
 
             start_date = years_difference.year.ago(first_period.year_start)
           end
@@ -62,10 +58,10 @@ module Mjbook
           period_name = start_year + "/" + end_year
 
           #create record for period
-          @period = Period.create(:company_id => current_user.company_id,
+          period = Period.create(:company_id => current_user.company_id,
                                  :period => period_name,
                                  :year_start => start_date,
-                                 :retained => 0
+                                 :amount => 0
                                  )
         end
       end

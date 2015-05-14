@@ -133,12 +133,19 @@ module Mjbook
         end
 
         add_account_payment_record(@payment)
-
+        update_payment_year_end("add", @payment.total, @payment.date)
+        
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
         redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
       end
 
+
+  #    if @payment.save
+  #      redirect_to @payment, notice: 'Payment was successfully created.'
+  #    else
+  #      render :new
+  #    end
     end
 
 
@@ -149,6 +156,7 @@ module Mjbook
       if @payment.update(payment_params)
         update_account_payment_record(@payment)
         new_ammount = old_amount.total - @expend.total
+        update_payment_year_end("change", new_ammount, @payment.date)
 
         redirect_to @payment, notice: 'Payment was successfully updated.'
       else
@@ -186,6 +194,7 @@ module Mjbook
       end
 
       delete_account_payment_record(@payment)
+      update_payment_year_end("delete", @payment.total, @payment.date)
 
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully deleted.'
@@ -341,11 +350,7 @@ module Mjbook
                                                 ).where(:date => to_date..from_date
                                                 ).order(:date, :id).last
 
-          if !previous_record.blank?
-            new_account_balance = previous_record.account_balance + payment.total
-          else
-            new_account_balance = payment.companyaccount.balance + payment.total
-          end
+          new_account_balance = next_record.account_balance + payment.total
 
           #update subsequent payment records
           #find records to update
@@ -356,14 +361,13 @@ module Mjbook
             add_amount_to(subsequent_transactions, payment.total)
           end
 
+          Mjbook::Summary.create(:company_id => current_user.company_id,
+                                 :date => payment.date,
+                                 :companyaccount_id => payment.companyaccount_id,
+                                 :payment_id => payment.id,
+                                 :amount_in => payment.total,
+                                 :account_balance => new_account_balance)
         end
-
-        Mjbook::Summary.create(:company_id => current_user.company_id,
-                               :date => payment.date,
-                               :companyaccount_id => payment.companyaccount_id,
-                               :payment_id => payment.id,
-                               :amount_in => payment.total,
-                               :account_balance => new_account_balance)
 
         #get applicable accounting period
         #update retained value in period
