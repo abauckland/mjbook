@@ -5,6 +5,10 @@ module Mjbook
       record.company_id == user.company_id
     end
 
+    def new?
+      user.owner? || user.admin?      
+    end
+
     def edit?
       if owned
         user.owner? || user.admin?
@@ -13,6 +17,10 @@ module Mjbook
   
     def update?
       edit?
+    end
+
+    def create?
+      new?
     end
 
   end
