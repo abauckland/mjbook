@@ -26,7 +26,13 @@ module Mjbook
       @companyaccount = Companyaccount.new(companyaccount_params)
       authorize @companyaccount
       if @companyaccount.save
-        redirect_to companyaccounts_path, notice: 'Companyaccount was successfully created.'
+        add_account_expend_record(@companyaccount)
+        add_to_payment_year_end("add", @companyaccount.balance, @companyaccount.date)
+        if policy_scope(Companyaccount).count == 1
+          redirect_to summaries_path, notice: 'Company account was successfully created.'
+        else
+          redirect_to companyaccounts_path, notice: 'Company account was successfully created.'
+        end
       else
         render :new
       end
@@ -35,8 +41,10 @@ module Mjbook
     # PATCH/PUT /companyaccounts/1
     def update
       authorize @companyaccount
+      old_settings = @companyaccount.dup
       if @companyaccount.update(companyaccount_params)
-        redirect_to companyaccounts_path, notice: 'Companyaccount was successfully updated.'
+        update_account_expend_record(old_settings, @companyaccount)
+        redirect_to companyaccounts_path, notice: 'Company account was successfully updated.'
       else
         render :edit
       end
@@ -46,7 +54,7 @@ module Mjbook
     def destroy
       authorize @companyaccount
       @companyaccount.destroy
-      redirect_to companyaccounts_url, notice: 'Companyaccount was successfully destroyed.'
+      redirect_to companyaccounts_url, notice: 'Company account was successfully destroyed.'
     end
 
     private
@@ -57,7 +65,42 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def companyaccount_params
-        params.require(:companyaccount).permit(:company_id, :name, :provider, :code, :ref)
+        params.require(:companyaccount).permit(:company_id, :name, :provider, :code, :ref, :balance, :date)
       end
+
+
+      def add_account_expend_record(account)
+        Mjbook::Summary.create(:date => account.date,
+                               :company_id => current_user.company.id,
+                               :companyaccount_id => account.id,
+                               :account_balance => account.balance)
+      end
+
+      def update_account_expend_record(old_settings, companyaccount)
+
+        #update records before account creation date
+        #update records after account creation date
+        account_transactions = policy_scope(Summary).where(:companyaccount_id => companyaccount.id)
+        balance_variation = companyaccount.balance - old_settings.balance
+        if !account_transactions.blank?
+          account_transactions.each do |transaction|
+            new_account_balance = transaction.account_balance + balance_variation
+            transaction.update(:account_balance => new_account_balance)
+          end
+        end
+      end
+
+
+      def add_to_payment_year_end(action, amount, date)
+        #on create, update or delete payment item
+        #determine year record to update based on date of transaction
+        accounting_period(date)
+
+        if action == "add" || action == "change"
+          @period.update(:retained => (@period.retained + amount))
+        end
+
+      end
+
   end
 end
