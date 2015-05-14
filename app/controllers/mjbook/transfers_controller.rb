@@ -88,7 +88,7 @@ module Mjbook
       def create_account_transfer_record(transfer)
 
         accounting_period(transfer.date)
-        account_to = Companyaccount.find(transfer.account_to)
+        account_to = Mjbook::Companyaccount.where(:id => transfer.account_to_id).first
 
         #ADD AMOUNT
         #if transfer date before account create date
@@ -101,8 +101,11 @@ module Mjbook
                                             ).order("date DESC").order("id DESC").first
           #if exists
           if !next_record.blank?
-            #new value =  next value - subtract payment value
-            new_account_balance = next_record.account_balance - transfer.total
+            if next_record.amount_out == nil
+              new_account_balance = next_record.account_balance - next_record.amount_in
+            else
+              new_account_balance = next_record.account_balance + next_record.amount_out
+            end
           else
             new_account_balance = account_to.balance
           end
@@ -139,7 +142,7 @@ module Mjbook
 
 
         #SUBTRACT AMOUNT
-        account_from = Companyaccount.find(transfer.account_from)
+        account_from = Mjbook::Companyaccount.where(:id => transfer.account_from_id).first
         #if expend date before account create date
         if transfer.date < account_from.date
           #get next expend for account in date order
@@ -151,7 +154,11 @@ module Mjbook
           #if exists
           if !next_record.blank?
             #new value =  next value - subtract transfer value
-            new_account_balance = next_record.account_balance + transfer.total
+            if next_record.amount_out == nil
+              new_account_balance = next_record.account_balance - next_record.amount_in
+            else
+              new_account_balance = next_record.account_balance + next_record.amount_out
+            end
           else
             new_account_balance = account_from.balance
           end
@@ -200,12 +207,12 @@ module Mjbook
         #if payment date before account create date
         if transfer.date < account_to.date
           #update records before current date
-          add_to_prior_transactions(payment, account_to)
-          add_to_subsequent_transactions_on_date(payment, account_record, account_to)
+          add_to_prior_transactions(transfer, account_to)
+          add_to_subsequent_transactions_on_date(transfer, account_record, account_to)
         else
           #update subsequent payment records
-          subtract_from_subsequent_transactions(payment, account_to)
-          subtract_from_subsequent_transactions_on_date(payment, account_record, account_to)
+          subtract_from_subsequent_transactions(transfer, account_to)
+          subtract_from_subsequent_transactions_on_date(transfer, account_record, account_to)
         end
 
         #delete subtract record
