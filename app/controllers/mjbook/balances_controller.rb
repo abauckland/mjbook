@@ -1,78 +1,25 @@
 require_dependency "mjbook/application_controller"
 
 module Mjbook
-  class SummariesController < ApplicationController
-
-    before_action :company_accounts, only: [:index, :show]
-    before_action :set_summary, only: [:reconcile, :unreconcile]
+  class BalancesController < ApplicationController
 
       def index
-        accounting_period(params[:period_id])
+        #redirect if the year_start date (and hence accounting period) have not been set
+        #redirect if no company accounts have been set up for the company
+        company_setting = Mjbook::Setting.where(:company_id => current_user.company_id).first
+        account_exist = Mjbook::Companyaccount.where(:company_id => current_user.company_id).first
+        unless company_setting  && account_exist
+          redirect_to setups_path
+        else
 
-      end
+          balance_period(params[:period_id])
+          @summaries = policy_scope(Summary)
+          authorize @summaries
+          @periods = policy_scope(Period)
+          account_summary(@summaries, @current_period, @date_from, @date_to)
 
-
-      def show
-
-        @summaries = policy_scope(Summary).where(:companyaccount_id => params[:companyaccount_id])
-
-        if params[:date_from] !=""
-          @summaries = @summaries.where('date >= ?', params[:date_from])
-        end
-
-        if params[:date_to] !=""
-          @summaries = @summaries.where('date <= ?', params[:date_to])
-        end
-
-        @summaries = @summaries.order("date DESC").order("id DESC")
-
-        @summary = @summaries.first
-        authorize @summaries
-
-        @companyaccount = Mjbook::Companyaccount.find(params[:companyaccount_id])
-
-        if params[:commit] == 'pdf'
-          pdf_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
-        end
-
-        if params[:commit] == 'csv'
-          csv_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
-        end
-
-      end
-
-
-      def reconcile
-
-        authorize @summary
-        if @summary.reconcile!
-          
-          if @summary.payment_id?
-            @summary.payment.reconcile!
-          end
-          
-          respond_to do |format|
-            format.js   { render :reconcile, :layout => false }
-          end
         end
       end
-
-      def unreconcile
-
-        authorize @summary
-        if @summary.unreconcile!
-
-          if @summary.payment_id?
-            @summary.payment.unreconcile!
-          end
-
-          respond_to do |format|
-            format.js   { render :unreconcile, :layout => false }
-          end
-        end
-      end
-
-
 
 
 
@@ -97,28 +44,20 @@ module Mjbook
 
 private
 
-      # Use callbacks to share common setup or constraints between actions.
-      def set_summary
-        @summary = Summary.find(params[:id])
-      end
+      def balance_period(period_id)
 
-      def company_accounts
-        @company_accounts = policy_scope(Companyaccount)
-      end
-
-
-      def accounting_period(period_name)
-
-        if period_name
-          if period_name != ""
-            @period = policy_scope(Period).where(:id => period_name).first
+        if period_id
+          if period_id != ""
+            @period = policy_scope(Period).where(:id => period_id).first
           else
             #get current period
             start_time = 1.year.ago(Time.now)
             end_time = Time.now
             @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+            @current_period = true
           end
         else
+          #get current period
           start_time = 1.year.ago(Time.now)
           end_time = Time.now
           @period = policy_scope(Period).where(:year_start => start_time..end_time).first
@@ -126,8 +65,8 @@ private
         end
 
         @date_from = @period.year_start
-        date_in_year = 1.year.from_now(@period.year_start)
-        @date_to = 1.day.ago(date_in_year)
+        date_in_one_year = 1.year.from_now(@period.year_start)
+        @date_to = 1.day.ago(date_in_one_year)
 
       end
 
@@ -156,12 +95,12 @@ private
       #INCOME SUMMARY
         @income_summary = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
-                                              ).paid.pluck(:total).sum
+                                              ).pluck(:total).sum
 
       #EXPEND SUMMARY
         @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => "transfer"
-                                             ).paid.pluck(:total).sum
+                                             ).pluck(:total).sum
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
@@ -210,40 +149,13 @@ private
 
 
       #SUMMARY BALANCE
-        @debit_total = @income_summary + @receivable_summary + @assets_cash
-        @credit_total = 0#@expend_summary + @payable_summary
+        @credit_total = @income_summary + @receivable_summary + @assets_cash
+        @debit_total = 0#@expend_summary + @payable_summary
 
-      #list of periods for select filter
-        @periods = policy_scope(Period)
 
       end
 
 
-      def pdf_account_summary(transactions, companyaccount_id, date_from, date_to)
-
-         account = Companyaccount.where(:id => companyaccount_id)
-
-         filename = "Summary_#{ account.name }_#{ date_from }_#{ date_to }.pdf"
-
-         document = Prawn::Document.new(
-          :page_size => "A4",
-          :page_layout => :landscape,
-          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|
-            table_account_summary(transactions, "accounts", account.name, date_from, date_to, filename, pdf)
-
-          end
-
-          send_data document.render, filename: filename, :type => "application/pdf"
-      end
-
-      def csv_account_summary(transactions, companyaccount_id, date_from, date_to)
-         account = Companyaccount.where(:id => companyaccount_id)
-
-         filename = "Summary_#{ account.name }_#{ date_from }_#{ date_to }.csv"
-
-         send_data transactions.to_csv, filename: filename, :type => "text/csv"
-      end
 
   end
 end
