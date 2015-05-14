@@ -6,28 +6,15 @@
 </div>
 
 <div class="row filter_band">
-    <%= form_tag summary_path, method: :get do %>
-
+    <%= form_tag summaries_path, method: :get do %>
         <div>
             <div>
-                <label class="select">Account:</label>
-                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@companyaccounts, :id, :company_name, @companyaccount.id), prompt: "Select something" %>
+                <label class="select">Period:</label>
+                <%= select_tag 'period_name', options_from_collection_for_select(@periods, :id, :period, @period)%>
             </div>
-            <div>
-                <label class="date">Date From:</label>
-                <%= date_field_tag('date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>    
-                <label class="date">Date To:</label>
-                <%= date_field_tag('date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>
-            <%= submit_tag 'Filter' %>
-        </div>
-
-        <div class="float_right">
-            <div><%= submit_tag 'pdf', :class => "table_pdf_icon"%></div>
-            <div><%= submit_tag 'csv', :class => "table_csv_icon"%></div>
-        </div>
-
-    <% end %>
+            <%= submit_tag 'Select' %>
+        </div> 
+    <% end %> 
 </div>
 
 
@@ -81,18 +68,7 @@
                                             <%= row_reconcile_link(summary, 'hidden') %> 
                                             <%= row_unreconcile_link(summary, 'show') %> 
                                         <% end %>
-
-	                                    <% if summary.expend_id? %>
-											<%= link_to '', expend_path(summary.expend_id), class: 'line_show_icon_show' , title: "show details" %>
-	                                    <% end %>
-	                                    <% if summary.payment_id? %>
-											<%= link_to '', payment_path(summary.payment_id), class: 'line_show_icon_show' , title: "show details" %>
-	                                    <% end %>
-	                                    <% if summary.transfer_id? %>
-											<%= link_to '', transfer_path(summary.transfer_id), class: 'line_show_icon_show' , title: "show details" %>	
-	                                    <% end %>
                                     </td>
-
                                <tr>
                             <% end %>
                         <% end %>
