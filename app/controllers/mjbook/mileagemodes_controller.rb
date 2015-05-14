@@ -13,12 +13,7 @@ module Mjbook
     def update
       authorize @mileagemode
       if @mileagemode.update(mileagemode_params)
-        check_mileage = Mjbook::Mileagemode.where(:company_id => 1, :rate => 0).first
-        if check_mileage
-          redirect_to summaries_path, notice: 'Mileagemode was successfully updated, not all have been completed though.'
-        else
-          redirect_to edit_mileagemode_path(current_user.company_id), notice: 'Mileagemode was successfully updated.'
-        end
+        redirect_to edit_mileagemode_path(current_user.company_id), notice: 'Mileagemode was successfully updated.'
       else
         render :edit
       end

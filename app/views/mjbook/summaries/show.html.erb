@@ -1,6 +1,6 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Account: <%= @summary.companyaccount.name %></h1>
+        <h1>Account: <%= @account.name %></h1>
     </div>
     <div class="title_help" id="summaries_index"></div>
 </div>
@@ -10,7 +10,7 @@
         <div>
             <div>
                 <label class="select">Period:</label>
-                <%= select_tag 'period_name', options_from_collection_for_select(@periods, :id, :period, @period)%>
+                <%= select_tag 'period_name', options_from_collection_for_select(@periods, :id, :name, @period)%>
             </div>
             <%= submit_tag 'Select' %>
         </div> 
@@ -38,31 +38,28 @@
                 </table>
                 <table>
                     <tbody>
-                        <% if @summaries %>
-                            <% @summaries.each do |summary| %>
+                        <% if @transactions %>
+                            <% @transactions.each do |transaction| %>
                                 <tr>
-                                    <td class="transaction_date"><%= summary.date.strftime("%d/%m/%y") %></td>
-                                    <% if summary.expend_id? %>
-	                                    <td class="transaction_ref"><%= summary.expend.ref %></td>
-	                                    <td class="transaction_type"><%= summary.expend.exp_type %></td>
-										<td class="transaction_status"><%= summary.expend.state %></td>
-
-                                    <% elsif summary.payment_id? %>
-	                                    <td class="transaction_ref"><%= summary.payment.ref %></td>
-	                                    <td class="transaction_type"><%= summary.payment.inc_type %></td>
-										<td class="transaction_status"><%= summary.payment.state %></td>
-                                    <% elsif summary.transfer_id? %>
+                                    <td class="transaction_date"><%= transaction.date.strftime("%d/%m/%y") %></td>
+                                    <% if transaction.expend_id? %>
+	                                    <td class="transaction_ref"><%= transaction.expend.ref %></td>
+	                                    <td class="transaction_type"><%= transaction.expend.exp_type %></td>
+										<td class="transaction_status"><%= transaction.expend.state %></td>
+									<% end %>
+                                    <% if transaction.payment_id? %>
+	                                    <td class="transaction_ref"><%= transaction.payment.ref %></td>
+	                                    <td class="transaction_type"><%= transaction.payment.inc_type %></td>
+										<td class="transaction_status"><%= transaction.payment.state %></td>
+									<% end %>
+                                    <% if transaction.transfer_id? %>
                                         <td class="transaction_ref"></td>
                                         <td class="transaction_type">Transfer</td>
-                                        <td class="transaction_status"><%= summary.transfer.state %></td>
-                                    <% else %>
-                                        <td class="transaction_ref"></td>
-                                        <td class="transaction_type">Opening Balance</td>
-                                        <td class="transaction_status"></td>
+                                        <td class="transaction_status"><%= transaction.transfer.state %></td>
                                     <% end %>
-                                    <td class="transaction_income"><%= summary.amount_in %></td>
-                                    <td class="transaction_expend"><%= summary.amount_out %></td>
-                                    <td class="transaction_balance"><%= pounds(summary.account_balance) %></td>
+                                    <td class="transaction_income"><%= transaction.amount_in %></td>
+                                    <td class="transaction_expend"><%= transaction.amount_out %></td>
+                                    <td class="transaction_balance"><%= transaction.balance %></td>
                                <tr>
                             <% end %>
                         <% end %>

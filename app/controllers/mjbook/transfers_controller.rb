@@ -86,12 +86,11 @@ module Mjbook
 
       def create_account_transfer_record(transfer)
         #add amount
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_to_id, transfer.date).order(:date).last
+        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_to_id, transfer.date).order('created_at').last
 
         new_account_balance = last_account_record.account_balance + transfer.total
 
-        Mjbook::Summary.create(:company_id => current_user.company_id,
-                               :date => transfer.date,
+        Mjbook::Summary.create(:date => expend.date,
                                :companyaccount_id => transfer.account_to_id,
                                :transfer_id => transfer.id,
                                :amount_in => transfer.total,
@@ -101,18 +100,17 @@ module Mjbook
         if !account_transactions.blank?
           account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance + variation
-            transaction.update(:account_balance => new_account_balance)
+            transaction.update(:balance => new_account_balance)
           end
         end
 
 
         #subtract_amount
-        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_from_id, transfer.date).order(:date).last
+        last_account_record = policy_scope(Summary).where('companyaccount_id = ? AND date <= ?', transfer.account_from_id, transfer.date).order('created_at').last
 
         new_account_balance = last_account_record.account_balance - transfer.total
 
-        Mjbook::Summary.create(:company_id => current_user.company_id,
-                               :date => transfer.date,
+        Mjbook::Summary.create(:date => expend.date,
                                :companyaccount_id => transfer.account_from_id,
                                :transfer_id => transfer.id,
                                :amount_out => transfer.total,
@@ -122,7 +120,7 @@ module Mjbook
         if !account_transactions.blank?
           account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance - variation
-            transaction.update(:account_balance => new_account_balance)
+            transaction.update(:balance => new_account_balance)
           end
         end
       end

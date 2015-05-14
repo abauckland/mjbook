@@ -4,29 +4,24 @@ module Mjbook
   class SummariesController < ApplicationController
 
       def index
-        #redirect if the year_start date (and hence accounting period) have not been set
-        #redirect if no company accounts have been set up for the company
-        company_setting = Mjbook::Setting.where(:company_id => current_user.company_id).first
-        account_exist = Mjbook::Companyaccount.where(:company_id => current_user.company_id).first
-        unless company_setting  && account_exist
-          redirect_to setups_path
-        else
-          accounting_period(params[:period_name])
-          @summaries = policy_scope(Summary)
-          authorize @summaries
-          account_summary(@summaries, @current_period, @date_from, @date_to)
-        end
+
+        accounting_period(params[:period_name])
+
+        @summaries = policy_scope(Summary)
+        authorize @summaries
+
+        account_summary(@summaries, date_from, date_to)
+
       end
+
 
       def show
 
-        @period = Period.where(:id => params[:period_id]).first
+        accounting_period(params[:period_name])
 
-        start_time = @period.year_start
-        end_time = 1.year.from_now(@period.year_start)
-        @summaries = policy_scope(Summary).where(:date => start_time..end_time).where(:companyaccount_id => params[:id]).order(:date)
+        @summaries = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).where(:companyaccount_id => params[:id]).order(:date)
         @summary = @summaries.first
-        authorize @summaries
+        authorize @summary
 
         if params[:commit] == 'pdf'
           pdf_business_index(@summaries, params[:id], date_from, date_to)
@@ -128,42 +123,27 @@ private
             @period = policy_scope(Period).where(:name => period_name).first
           else
             #get current period
-            start_time = 1.year.ago(Time.now)
-            end_time = Time.now
-            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+            @period = policy_scope(Period).where("year_start >= ? AND year_start <= ?", 1.year.from_now(Time.now),Time.now).first
           end
-        else
-          start_time = 1.year.ago(Time.now)
-          end_time = Time.now
-          @period = policy_scope(Period).where(:year_start => start_time..end_time).first
-          @current_period = true
         end
 
-        @date_from = @period.year_start
+        date_from = @period.year_start
         date_in_year = 1.year.from_now(@period.year_start)
-        @date_to = 1.day.ago(date_in_year)
+        date_to = 1.day.ago(date_in_year)
 
       end
 
 
-      def account_summary(summaries, current_period, date_from, date_to)
+      def account_summary(summaries, date_from, date_to)
 
       #ASSETS - CASH
         @assets_cash = 0
-        company_accounts = policy_scope(Companyaccount)
-        company_accounts.each do |account|
-          #filter by id to get last change to account
-          amount = summaries.where("date <= ? AND companyaccount_id = ?", date_to, account.id).order(:date, :id).last
+        @company_accounts = policy_scope(Companyaccount)
+        @company_accounts.each do |account|
+          amount = summaries.where("date <= ? AND companyaccount_id = ?", date_to, account.id).order(:date).last
           if amount
             @assets_cash = @assets_cash + amount.account_balance
           end
-        end
-
-
-      #SUMMARY OF ACCOUNTS
-      #show if select period equals current period
-        if current_period == true
-          @company_accounts = company_accounts
         end
 
 

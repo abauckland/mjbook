@@ -27,11 +27,8 @@ module Mjbook
       authorize @companyaccount
       if @companyaccount.save
         add_account_expend_record(@companyaccount)
-        if policy_scope(Companyaccount).count == 1
-          redirect_to summaries_path, notice: 'Companyaccount was successfully created.'
-        else
-          redirect_to companyaccounts_path, notice: 'Companyaccount was successfully created.'
-        end
+        
+        redirect_to companyaccounts_path, notice: 'Companyaccount was successfully created.'
       else
         render :new
       end
@@ -64,15 +61,14 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def companyaccount_params
-        params.require(:companyaccount).permit(:company_id, :name, :provider, :code, :ref, :balance, :date)
+        params.require(:companyaccount).permit(:company_id, :name, :provider, :code, :ref, :balance)
       end
       
       
       def add_account_expend_record(account)
-        Mjbook::Summary.create(:date => account.date,
-                               :company_id => current_user.company.id,
+        Mjbook::Summary.create(:date => Time.now,
                                :companyaccount_id => account.id,
-                               :account_balance => account.balance)
+                               :account_balance => 0)
       end
 
       def update_account_expend_record(old_settings, companyaccount)
@@ -82,7 +78,7 @@ module Mjbook
         if !account_transactions.blank?
           account_transactions.each do |transaction|
             new_account_balance = transaction.account_balance + balance_variation
-            transaction.update(:account_balance => new_account_balance)
+            transaction.update(:balance => new_account_balance)
           end
         end
       end
