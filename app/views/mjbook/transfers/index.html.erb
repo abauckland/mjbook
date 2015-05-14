@@ -39,26 +39,27 @@
                                     <td class="transfer_total"><%= pounds(transfer.total) %></td>
                                     <td class="transfer_status"><%= transfer.state %></td>
                                     <td id="<%= transfer.id %>_links" class="row_button no_buttons_3">
-                                        <%= row_delete_link(transfer, 'show') %>
                                         <% if transfer.transferred? %>
+                                            <%= row_delete_link(transfer, 'hidden') %>
                                             <%= row_edit_link(transfer, 'hidden') %>
                                         <% else %>
+                                            <%= row_delete_link(transfer, 'show') %>
                                             <%= row_edit_link(transfer, 'show') %>
                                         <% end %>
 										<% if current_user.owner? || current_user.admin? %>
 	                                        <% if transfer.transferred? %>
 	                                            <%= row_transfer_link(transfer, 'hidden') %>
 	                                        <% else %>
-	                                            <%= row_transfer_link(transfer, 'show') %>
+	                                            <%= row_transfer_link(transfer, 'show')  %>
 	                                        <% end %>
 										<% end %>
                                     </td>
                                 </tr>
-                            <% end %>
+                            <% end %>  
                         <% end %>
                     </tbody>
                 </table>
-
+   
             </div>
         </div>
     </div>
