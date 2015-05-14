@@ -6,7 +6,7 @@ class CreateMjbookTransfers < ActiveRecord::Migration
       t.ingeter :account_from_id
       t.integer :account_to_id
       t.integer :paymethod_id
-      t.string :total, :precision => 8, :scale => 2, default: 0.00
+      t.decimal :total, :precision => 8, :scale => 2, default: 0.00
       t.timestamp :date
       t.string :state
 
