@@ -38,7 +38,7 @@ module Mjbook
       require 'csv'
 
       CSV.generate do |csv|
-        csv << ["Ref", "Expense Category", "Expenditure Ref", "Payment Method", "Company Account", "Date", "Price", "VAT", "Total", "Receipt", "Status", "Note"]
+        csv << ["Ref", "Expenditure Type", "Expenditure Ref", "Payment Method", "Company Account", "Date", "Price", "VAT", "Total", "Receipt", "Status", "Note"]
         all.each do |set|
 
           if set.business?
@@ -61,7 +61,7 @@ module Mjbook
 
           csv << [
                   set.ref,
-                  set.expense.hmrcexpcat.category,
+                  set.exp_type,
                   expend_ref,
                   set.paymethod.text,
                   set.companyaccount.name,

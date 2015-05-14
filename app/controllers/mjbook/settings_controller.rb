@@ -19,7 +19,7 @@ module Mjbook
       @setting = Setting.new(setting_params)
       authorize @setting
       if @setting.save
-        add_period_record(@setting.year_start)
+        add_account_expend_record(@companyaccount)
         redirect_to summaries_path, notice: 'Settings were successfully created.'
       else
         render :new
@@ -49,10 +49,5 @@ module Mjbook
       def setting_params
         params.require(:setting).permit(:company_id, :email_domain, :email_username, :email_password, :year_start)
       end
-
-      def add_period_record(date)
-        
-      end
-
   end
 end

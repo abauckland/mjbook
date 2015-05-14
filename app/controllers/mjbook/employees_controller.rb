@@ -60,8 +60,8 @@ module Mjbook
      @sum_total = @expenses.pluck(:total).sum
 
      #selected parameters for filter form
-     user_id_array = policy_scope(Expense).personal.pluck(:user_id).uniq
-     @users = User.where(:id => user_id_array)
+     user_id_array = policy_scope(Expense).personal.pluck(:user_id).uniq    
+     @users = User.where(:id => user_id_array)   
      @user = params[:user_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]

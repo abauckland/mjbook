@@ -5,103 +5,86 @@ module Mjbook
 
       def index
 
-      if params[:period_name]
-        if params[:period_name] != ""
-          @period = policy_scope(Period).where(:name => params[:period_name]).first
-        else
-          #get current period
-          @period = policy_scope(Period).where("year_start >= ? AND year_start <= ?", 1.year.from_now(Time.now),Time.now).first
-        end
-      end
+#INCOME SUMMARY
 
-      date_from = @period.year_start
-      date_in_year = 1.year.from_now(@period.year_start)
-      date_to = 1.day.ago(date_in_year)
+  @income_summary = policy_scope(Payment).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                                        ).where.not(:inc_type => "transfer"
+                                        ).paid.pluck(:total).sum
 
-
-      #INCOME SUMMARY
-        @income_summary = policy_scope(Payment).where("date >= ? AND date <= ?", date_from, date_to
-                                              ).where.not(:inc_type => "transfer"
-                                              ).paid.pluck(:total).sum
-
-      #EXPEND SUMMARY
-        @expend_summary = policy_scope(Expend).where("date >= ? AND date <= ?", date_from, date_to
+        #EXPEND SUMMARY
+        @expend_summary = policy_scope(Expend).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
                                              ).where.not(:exp_type => "transfer"
                                              ).paid.pluck(:total).sum
 
       #ASSETS - CASH
-        @assets_cash = 0
-        @company_accounts = policy_scope(Companyaccount)
-        @company_accounts.each do |account|
-          amount = policy_scope(Summary).where("date <= ? AND companyaccount_id = ?", date_to, account.id).order(:date).last
-          if amount
-            @assets_cash = @assets_cash + amount.account_balance
-          end
-        end
+  @assets_cash = 0
+  @company_accounts = policy_scope(Companyaccount)
+  @company_accounts.each do |account|
+    amount = policy_scope(Summary).where(:companyaccount_id => account.id).order(:date).last
+    if amount
+      @assets_cash = @assets_cash + amount.account_balance
+    end
+  end
 
-      #ACCOUNTS: RECEIVABLE
-        #no payment items
-        invoices = policy_scope(Invoice).where("date >= ? AND date <= ?", date_from, date_to
-                                       ).submitted.pluck(:total).sum
-        
-        #part paid items
-#date range?
-        array_inlines_paid = Paymentitem.joins(:inline => [:ingroup => [:invoice => :project]]
-                                       ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
-                                       ).pluck(:inline_id)
+#ACCOUNTS: RECEIVABLE
 
-#date range?
-        part_paid = Inline.joins(:ingroup => [:invoice => :project]
-                         ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
-                         ).where.not(:id => array_inlines_paid
-                         ).pluck(:total).sum
-        
-        #miscincome
-        miscincome = policy_scope(Miscincome).where("date >= ? AND date <= ?", date_from, date_to
-                                            ).draft.pluck(:total).sum
+#no payment items
+invoices = policy_scope(Invoice).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                               ).submitted.pluck(:total).sum
 
-        @receivable_summary = invoices + miscincome + part_paid
+#part paid items
+array_inlines_paid = Paymentitem.joins(:inline => [:ingroup => [:invoice => :project]]
+                               ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
+                               ).pluck(:inline_id)
 
-      #ACCOUNTS: PAYABLE
-        #  @payable_summary = policy_scope(Expense).where("date >= ? AND date <= ?", date_from, date_to
-        #                                         ).accepted.pluck(:total).sum
+part_paid = Inline.joins(:ingroup => [:invoice => :project]
+                 ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
+                 ).where.not(:id => array_inlines_paid
+                 ).pluck(:total).sum
 
-      #OPENING BALANCE
-        #opening equity at beginning of the year
-        #@period
+#miscincome
+miscincome = policy_scope(Miscincome).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+                                    ).draft.pluck(:total).sum
 
-      #SUMMARY BALANCE
-        @debit_total = 0#@income_summary + @receivable_summary + @assets_cash
-        @credit_total = 0#@expend_summary + @payable_summary
-        
-      #list of periods for select filter
-      @periods = policy_scope(Period)
+  @receivable_summary = invoices + miscincome + part_paid
+
+#ACCOUNTS: PAYABLE
+
+#  @payable_summary = policy_scope(Expense).where("date >= ? AND date <= ?", params[:date_from], params[:date_to]
+#                                         ).accepted.pluck(:total).sum
+
+#OPENING EQUITY
+#opening equity at beginning of the year
+#initial sum for first year should be total of initial accounts
+
+
+
+#RETAINED EARNINGS
+#year end table - company_id, year, amount
+
+
+@debit_total = 0#@income_summary + @receivable_summary + @assets_cash
+@credit_total = 0#@expend_summary + @payable_summary
 
       end
 
-
       def show
-
-        #filter by date and account
-        @account = Mjbook::Companyaccount.where(:id => params[:id]).first
-
-        if params[:period_name]
-          if params[:period_name] != ""
-            @period = policy_scope(Period).where(:name => params[:period_name]).first
-          else
-            #get current period
-            @period = policy_scope(Period).where("year_start >= ? AND year_start <= ?", 1.year.from_now(Time.now),Time.now).first
-          end
+        
+         #filter by date and account
+        unless params[:date_from]
+          date_from = 1.month.ago
+        else
+          date_from = params[:date_from]
         end
 
-        date_from = @period.year_start
-        date_in_year = 1.year.from_now(@period.year_start)
-        date_to = 1.day.ago(date_in_year)
-
+        unless params[:date_to]
+          date_to = Time.now
+        else
+          date_to = params[:date_to]
+        end
+        @account = Mjbook::Companyaccount.where(:id => params[:id]).first
         @transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).where(:companyaccount_id => params[:id]).order(:date)
 
-        #list of periods for select filter
-        @periods = policy_scope(Period)
 
       end
 

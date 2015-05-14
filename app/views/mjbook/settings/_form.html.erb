@@ -34,8 +34,11 @@
                         </span></br>
 
                         <!-- form input[date] -->
-                        <label class="label_120">Start of Accounting Year:</label>
-                        <span><%= @setting.year_start %></span></br>
+                        <div class="form_tooltip" id="setting_yearend"></div>
+                        <label class="label_120">Start of Accounting Year:*</label>
+                        <span>
+                            <%= f.date_field :year_start, {placeholder: 'dd/mm/yyyy'} %>
+                        </span></br>
 
                     </fieldset>
             </div>

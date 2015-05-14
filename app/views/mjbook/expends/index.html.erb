@@ -9,8 +9,8 @@
     <%= form_tag expends_path, method: :get do %>  
         <div>
             <div>
-                <label class="select">Category:</label>
-                <%= select_tag 'hmrcexpcat_id', options_from_collection_for_select(@hmrcexpcats, :id, :category, @hmrcexpcat), :prompt => 'all accounts'%>
+                <label class="select">Account:</label>
+                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@companyaccounts, :id, :name, @companyaccount), :prompt => 'all accounts'%>
             </div>
             <div>
                 <label class="date">Date From:</label>
@@ -41,7 +41,7 @@
                     <thead>
                         <tr>
                             <th class="expend_ref">Ref</th>
-                            <th class="expend_exp_type">Category</th>
+                            <th class="expend_exp_type">Exp Type</th>
                             <th class="expend_paid">Paid to</th>
                             <th class="expend_method">Payment Method</th>
                             <th class="expend_account">Account</th>
@@ -62,7 +62,7 @@
                             <% @expends.each do |expend| %>
                                 <tr>
                                     <td class="expend_ref"><%= expend.ref %></td>
-                                    <td class="expend_exp_type"><%= expend.expense.hmrcexpcat.category.titleize %></td>
+                                    <td class="expend_exp_type"><%= expend.exp_type.titleize %></td>
                                     <% if expend.personal? %>
                                         <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
                                     <% end %>

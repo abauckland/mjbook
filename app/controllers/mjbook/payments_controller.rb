@@ -44,26 +44,25 @@ module Mjbook
             end
           end
 
+          if params[:commit] == 'pdf'
+            pdf_payment_index(@payments, params[:companyaccount_id], params[:date_from], params[:date_to])
+          end
+
+          if params[:commit] == 'csv'          
+            csv_payment_index(@payments, params[:companyaccount_id], params[:date_from], params[:date_to])
+          end
+
        else
          @payments = policy_scope(Payment)
        end
-
-       if params[:commit] == 'pdf'
-         pdf_payment_index(@payments, params[:companyaccount_id], params[:date_from], params[:date_to])
-       end
-
-       if params[:commit] == 'csv'          
-         csv_payment_index(@payments, params[:companyaccount_id])
-       end
-
 
        @sum_price = @payments.pluck(:price).sum
        @sum_vat = @payments.pluck(:vat).sum
        @sum_total = @payments.pluck(:total).sum
 
        #selected parameters for filter form
-       companyaccount_ids = policy_scope(Payment).pluck(:companyaccount_id).uniq
-       @companyaccounts = Companyaccount.where(:id => companyaccount_ids)
+       all_payments = policy_scope(Payment)
+       @companyaccounts = Companyaccount.joins(:payments).where('mjbook_payments.id' => all_payments.ids)
        @companyaccount = params[:companyaccount_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
@@ -112,7 +111,7 @@ module Mjbook
 #end
 #end 
 
-          #check if all the inlines for the invoice have been paid
+          #check if all the inlines for the invoice have been paid          
           check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id])
           if check_inlines.blank?
             invoice.pay!
@@ -128,7 +127,8 @@ module Mjbook
         end
 
         add_account_payment_record(@payment)
-        update_expend_year_end("add", @payment.total, @payment.date)
+        #update year end total
+        #update_payment_year_end("add", @payment.total, @payment.date)
         
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
@@ -143,16 +143,14 @@ module Mjbook
   #    end
     end
 
-
     # PATCH/PUT /payments/1
     def update
+      #old_amount = @payment.dup
       authorize @payment
-      old_amount = @payment.dup
       if @payment.update(payment_params)
-        update_account_payment_record(@payment)
-        new_ammount = old_amount.total - @expend.total
-        update_expend_year_end("change", new_ammount, @payment.date)
-
+        updat_account_payment_record(@payment)
+        #update year end total
+        #update_payment_year_end("change", (old_amount.total - @payment.total), @payment.date)
         redirect_to @payment, notice: 'Payment was successfully updated.'
       else
         render :edit
@@ -181,6 +179,18 @@ module Mjbook
         end
       end
 
+#      if @payment.transfer?
+#        #paymentitems are destroyed when payments is deleted
+#        item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
+#        transfer = Mjbook::Transfer.where(:id => item.transfer_id).first
+#        transfer.correct!
+
+#        #if transfer is destroyed also need to destroy record of payment
+#        expend = Mjbook::Expend.joins(:expenditems).where('mjbook_expenditems.transfer_id' => transfer.id).first
+#        expend.destroy
+#        #expenditems are destroyed when payments is deleted
+#      end
+
       if @payment.misc?
         #paymentitems are destroyed when payments is deleted
         item = Mjbook::Paymentitem.where(:payment_id => @payment.id).first
@@ -189,7 +199,8 @@ module Mjbook
       end
 
       delete_account_payment_record(@payment)
-      update_expend_year_end("delete", @payment.total, @payment.date)
+      #update year end total
+      #update_expend_year_end("delete", @payment.total, @payment.date)
 
       @payment.destroy
       redirect_to payments_url, notice: 'Payment was successfully deleted.'
@@ -234,6 +245,10 @@ module Mjbook
         end
     end
 
+    def process_misc
+      @payment = Payment.new
+      @miscincome = Mjbook::Miscincome.find(params[:id])
+    end
 
     private
       # Use callbacks to share common setup or constraints between actions.
@@ -254,23 +269,22 @@ module Mjbook
         params.require(:payment).permit(:ref, :company_id, :user_id, :paymethod_id, :companyaccount_id, :price, :vat, :total, :date, :inc_type, :notes, :state)
       end
 
+      def pdf_payment_index(payments, customer_id, date_from, date_to)
+         customer = Customer.where(:id => customer_id).first if customer_id
 
-      def pdf_payment_index(payments, companyaccount_id, date_from, date_to)
-         account = Mjbook::Companyaccount.where(:id => companyaccount_id).first if companyaccount_id
-
-         if account
-           filter_group = account.name
+         if customer
+           filter_group = customer.name
          else
-           filter_group = "All Accounts"
+           filter_group = "All Customers"
          end
 
          filename = "Payments_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
 
          document = Prawn::Document.new(
-                                        :page_size => "A4",
-                                        :page_layout => :landscape,
-                                        :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-                                        ) do |pdf|
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|
 
             table_indexes(payments, 'payment', filter_group, date_from, date_to, filename, pdf)
 
@@ -288,19 +302,19 @@ module Mjbook
            filter_group = "All Accounts"
          end
          
-         filename = "Payments_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
+         filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
 
          send_data payments.to_csv, filename: filename, :type => "text/csv"
       end
 
-      def print_receipt_document(payment)
-         @document = Prawn::Document.new(
-                                        :page_size => "A4",
-                                        :margin => [5.mm, 10.mm, 5.mm, 10.mm],
-                                        :info => {:title => payment.ref}
-                                        ) do |pdf|
-                                          print_receipt(payment, pdf)
-                                        end
+      def print_receipt_document(payment)  
+              @document = Prawn::Document.new(
+                                             :page_size => "A4",
+                                              :margin => [5.mm, 10.mm, 5.mm, 10.mm],
+                                              :info => {:title => payment.ref}
+                                            ) do |pdf|
+                                              print_receipt(payment, pdf)
+                                            end
       end
 
 
@@ -322,7 +336,7 @@ module Mjbook
 
 
       def update_account_payment_record(payment)
-
+        
         account_record = Summary.where(:payment_id => payment.id).first
 
         variation = payment.total - account_record.amount_out
@@ -354,6 +368,8 @@ module Mjbook
           end
         end
       end
+
+
 
 
     def update_payment_year_end(action, amount, date)
