@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Mjbook
-  class PeriodTest < ActiveSupport::TestCase
+  class YearendTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end

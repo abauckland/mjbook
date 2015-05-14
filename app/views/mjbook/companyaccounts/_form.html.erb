@@ -13,25 +13,18 @@
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="companyaccount_name"></div>
-                        <label class="label_110">Name:*</label>
+                        <label class="label_80">Name:*</label>
                         <span>
                             <%= f.text_field :name %>
                         </span></br>
 
                         <!-- form input[text] -->
                         <div class="form_tooltip" id="companyaccount_provider"></div>
-                        <label class="label_110">Provider:</label>
+                        <label class="label_80">Provider:</label>
                         <span>
                             <%= f.text_field :provider %>
                         </span></br>
-
-                        <!-- form input[text] -->
-                        <div class="form_tooltip" id="companyaccount_balance"></div>
-                        <label class="label_110">Opening Balance:*</label>
-                        <span>
-                            <%= f.text_field :balance, {:placeholder => "0.00", :value => number_with_precision(f.object.balance, :precision => 2)}  %>
-                        </span></br>
-
+                        
                     </fieldset>
             </div>
 <!-- column footer start--> 

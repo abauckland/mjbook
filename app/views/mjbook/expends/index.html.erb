@@ -72,6 +72,9 @@
                                     <% if expend.salary? %>
                                         <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
                                     <% end %>
+                                    <% if expend.transfer? %>
+                                        <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
+                                    <% end %>
                                     <td class="expend_method"><%= expend.paymethod.text.titleize %></td>
                                     <td class="expend_account"><%= expend.companyaccount.name.titleize %></td>
                                     <td class="expend_date"><%= expend.date.strftime("%d/%m/%y") %></td>
@@ -83,7 +86,12 @@
                                     <td id="<%= expend.id %>_links" class="row_button no_buttons_3">
                                         <% unless expend.reconciled? %>
                                             <%= row_delete_link(expend, 'show') %>
-                                            <%= row_edit_link(expend, 'show') %>
+                                            <!-- transfers cannot be edited -->
+                                            <% unless expend.transfer? %>
+                                                <%= row_edit_link(expend, 'show') %>
+                                            <% else %>
+                                                <%= row_edit_link(expend, 'hidden') %>
+                                            <% end %>
                                             <%= row_reconcile_link(expend, 'show') %> 
                                             <%= row_unreconcile_link(expend, 'hidden') %>
                                         <% else %>

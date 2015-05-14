@@ -1,14 +1,12 @@
 Mjbook::Engine.routes.draw do
   
-  resources :settings
+  resources :settings, :only => [:edit, :update]
 
   resources :participants
 
   resources :donations
 
   resources :donors
-
-  resources :periods
 
   resources :writeoffs, :only => [:index, :show, :create, :destroy]
 
@@ -119,7 +117,7 @@ Mjbook::Engine.routes.draw do
 
   resources :quotecontents, :only => [:show]
 
-  resources :summaries, :only => [:index, :show] do
+  resources :summaries, :only => [:index] do
     get :charts, :on => :member
   end
 
