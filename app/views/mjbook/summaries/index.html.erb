@@ -1,10 +1,9 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Summary</h1>
+        <h1>Summary of Company Accounts</h1>
     </div>
     <div class="title_help" id="summaries_index"></div>
 </div>
-
 
 <div class="row">
     <div class="col-1-1 column_1">
@@ -15,29 +14,26 @@
                     <thead>
                         <tr>
                             <th class="summary_item">Item</th>
-                            <th class="summary_debit">Debit</th>
-                            <th class="summary_credit">Credit</th>
+                            <th class="summary_debit"></th>
+                            <th class="summary_credit">Balance</th>
                             <th class="row_button no_buttons_1"></th>
                         </tr>
                     </thead>
                 </table>
-                
+
 				<table>
 					<tbody>
-						<%= render 'summary_item', :locals => {:item => Income:, :debit => nil, :credit => @income_summary, :model => "Payment"} %>
-						<%= render 'summary_item', :locals => {:item => Expense:, :debit => @expend_summary, :credit => nil, :model => "Expend"} %>
-						<%= render 'summary_item', :locals => {:item => Receivable:, :debit => nil, :credit => @receivable_summary, :model => "Invoice"} %>
-						<%= render 'summary_item', :locals => {:item => Payable:, :debit => @payable_summary, :credit => nil, :model => "Expense"} %>
-						<%= render 'summary_item', :locals => {:item => Assets (Cash):, :debit => nil, :credit => @assets_cash, :model => "Summary"} %>
+                      <% @company_accounts.each do |account| %>
+                          <tr>
+                              <td class="summary_item"><%= account.name %></td> 
+                              <td class="summary_debit"></td>
+                              <%= account_reconciled_check(account, @date_to) %>
+                              <td class="row_button no_buttons_1">
+                                  <%= link_to '', summary_path(:id => account.id, :companyaccount_id => account.id, :date_from => @date_from, :date_to => @date_to), class: 'line_show_icon_show' , title: "show transactions"  %>
+                              </td>
+                          </tr>
+                       <% end %>
 					</tbody>
-				</table>
-
-				<table class='summary_total_table'>
-				    <tr class='line_row'>
-				        <td class='summary_item'>Total:</td> 
-				        <td class='summary_debit'><%= @debit_total %></td>  
-				        <td class='summary_credit'><%= @credit_total %></td>          
-				     </tr>
 				</table>
 
             </div>

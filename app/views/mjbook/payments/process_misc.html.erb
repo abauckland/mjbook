@@ -35,7 +35,7 @@
     
                         <!-- show text line -->
                         <label class="label_100">Customer:</label>
-                        <span><%= @miscincome.customer.company_name %></span></br>
+                        <span><%= @miscincome.project.customer.company_name %></span></br>
     
                         <!-- show text line -->
                         <label class="label_100">Customer Ref:</label>
@@ -77,7 +77,7 @@
 
                         <!-- form input[text] -->
                         <div class="form_tooltip" id="payexpense_notes"></div>
-                        <label class="label_80">Notes:</label>
+                        <label class="label_100">Notes:</label>
                         <span>
                             <%= f.text_field :note %>
                         </span></br>
