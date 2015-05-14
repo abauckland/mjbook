@@ -18,16 +18,11 @@ module Mjbook
         transitions :from => :draft, :to => :paid
       end
 
-      event :correct do
+      event :correct_payment do
         transitions :from => :paid, :to => :draft
       end
     end
 
-    validates :project_id, presence: true
-    validates :price, presence: true, numericality: true
-    validates :vat, presence: true, numericality: true
-    validates :total, presence: true, numericality: true
-    validates :date, presence: true
 
     def self.to_csv
 

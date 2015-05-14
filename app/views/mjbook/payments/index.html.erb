@@ -74,14 +74,18 @@
                                     <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
                                         <% unless payment.reconciled? %>
                                             <%= row_delete_link(payment, 'show') %>
-                                            <%= row_edit_link(payment, 'show') %>
-                                            <%= row_email_link(payment, 'show') %>
+                                            <%= row_edit_link(payment, 'hidden') %>
+                                            <%= row_email_link(payment, 'hidden') %>
+                                            <%= row_reconcile_link(payment, 'show') %>
+                                            <%= row_unreconcile_link(payment, 'hidden') %>
                                         <% else %>
                                             <%= row_delete_link(payment, 'hidden') %>
                                             <%= row_edit_link(payment, 'hidden') %>
-                                            <%= row_email_link(payment, 'show') %>
+                                            <%= row_reconcile_link(payment, 'hidden') %> 
+                                            <%= row_unreconcile_link(payment, 'show') %> 
                                         <% end %>
-                                    </td>
+
+                                    </td)
                                 </tr>
                             <% end %>
                         <% end %>

@@ -63,20 +63,11 @@
                         </tr>
 
                         <tr>
-                            <td class="summary_item">Payable (Business)</td> 
-                            <td class="summary_debit"><%= pounds(@payable_business_summary) %></td>
+                            <td class="summary_item">Payable</td> 
+                            <td class="summary_debit"><%= pounds(@payable_summary) %></td>
                             <td class="summary_credit"></td> 
                             <td class="row_button no_buttons_1">
-                                <%= link_to '', businesses_path, class: 'line_show_icon_show' , title: "record payment"  %>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="summary_item">Payable (Employee)</td> 
-                            <td class="summary_debit"><%= pounds(@payable_employee_summary) %></td>
-                            <td class="summary_credit"></td> 
-                            <td class="row_button no_buttons_1">
-                                <%= link_to '', employees_path, class: 'line_show_icon_show' , title: "record payment"  %>
+                                <%= link_to '', nil, class: 'line_show_icon_show' , title: "record payment"  %>
                             </td>
                         </tr>
 

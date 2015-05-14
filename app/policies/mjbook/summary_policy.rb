@@ -15,14 +15,6 @@ module Mjbook
       index?
     end
 
-    def reconcile?
-      index?
-    end       
-
-    def unreconcile?
-      index?
-    end
-
     def print?
       index?
     end

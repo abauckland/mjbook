@@ -27,7 +27,6 @@ module Mjbook
       authorize @companyaccount
       if @companyaccount.save
         add_account_expend_record(@companyaccount)
-        add_to_payment_year_end("add", @companyaccount.balance, @companyaccount.date)
         if policy_scope(Companyaccount).count == 1
           redirect_to summaries_path, notice: 'Companyaccount was successfully created.'
         else
@@ -87,18 +86,6 @@ module Mjbook
           end
         end
       end
-
-
-      def add_to_payment_year_end(action, amount, date)
-        #on create, update or delete payment item
-        #determine year record to update based on date of transaction
-        accounting_period(date)
-
-        if action == "add" || action == "change"
-          @period.update(:retained => (@period.retained + amount))
-        end
-
-      end
-
+      
   end
 end

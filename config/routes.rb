@@ -118,9 +118,6 @@ Mjbook::Engine.routes.draw do
   resources :quotecontents, :only => [:show]
 
   resources :summaries, :only => [:index, :show] do
-    get :reconcile, :on => :member
-    get :unreconcile, :on => :member
-
     get :setup, :on => :member
     get :charts, :on => :member
   end
@@ -157,7 +154,6 @@ Mjbook::Engine.routes.draw do
     get :email, :on => :member
     get :reconcile, :on => :member
     get :unreconcile, :on => :member
-    get :process_misc, :on => :member
   end
 
 

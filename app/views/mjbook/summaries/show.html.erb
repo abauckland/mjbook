@@ -29,11 +29,10 @@
                             <th class="transaction_date">Date</th>
                             <th class="transaction_item">Item</th>
                             <th class="transaction_type">Type</th>
+                            <th class="transaction_status">Status</th>
                             <th class="transaction_income">Income</th>
                             <th class="transaction_expend">Expenditure</th>
                             <th class="transaction_balance">Balance</th>
-                            <th class="transaction_status">Status</th>
-                            <th class="row_button no_buttons_1"></th>
                         </tr>
                     </thead>
                 </table>
@@ -46,29 +45,24 @@
                                     <% if summary.expend_id? %>
 	                                    <td class="transaction_ref"><%= summary.expend.ref %></td>
 	                                    <td class="transaction_type"><%= summary.expend.exp_type %></td>
+										<td class="transaction_status"><%= summary.expend.state %></td>
+
                                     <% elsif summary.payment_id? %>
 	                                    <td class="transaction_ref"><%= summary.payment.ref %></td>
 	                                    <td class="transaction_type"><%= summary.payment.inc_type %></td>
+										<td class="transaction_status"><%= summary.payment.state %></td>
                                     <% elsif summary.transfer_id? %>
                                         <td class="transaction_ref"></td>
                                         <td class="transaction_type">Transfer</td>
+                                        <td class="transaction_status"><%= summary.transfer.state %></td>
                                     <% else %>
                                         <td class="transaction_ref"></td>
                                         <td class="transaction_type">Opening Balance</td>
+                                        <td class="transaction_status"></td>
                                     <% end %>
                                     <td class="transaction_income"><%= summary.amount_in %></td>
                                     <td class="transaction_expend"><%= summary.amount_out %></td>
                                     <td class="transaction_balance"><%= pounds(summary.account_balance) %></td>
-                                    <td id="<%= summary.id %>_status"  class="transaction_status"><%= summary.state %></td>
-                                    <td id="<%= summary.id %>_links" class="row_button no_buttons_1">
-                                        <% unless summary.reconciled? %>
-                                            <%= row_reconcile_link(summary, 'show') %>
-                                            <%= row_unreconcile_link(summary, 'hidden') %>
-                                        <% else %>
-                                            <%= row_reconcile_link(summary, 'hidden') %> 
-                                            <%= row_unreconcile_link(summary, 'show') %> 
-                                        <% end %>
-                                    </td>
                                <tr>
                             <% end %>
                         <% end %>

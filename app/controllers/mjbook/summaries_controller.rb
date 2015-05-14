@@ -3,8 +3,6 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class SummariesController < ApplicationController
 
-    before_action :set_summary, only: [:reconcile, :unreconcile]
-
       def index
         #redirect if the year_start date (and hence accounting period) have not been set
         #redirect if no company accounts have been set up for the company
@@ -41,26 +39,6 @@ module Mjbook
         #list of periods for select filter
         @periods = policy_scope(Period)
 
-      end
-
-      def reconcile
-        
-        authorize @summary
-        if @summary.reconcile!
-          respond_to do |format|
-            format.js   { render :reconcile, :layout => false }
-          end
-        end
-      end
-  
-      def unreconcile
-        
-        authorize @summary
-        if @summary.unreconcile!
-          respond_to do |format|
-            format.js   { render :unreconcile, :layout => false }
-          end
-        end
       end
 
 
@@ -143,11 +121,6 @@ module Mjbook
 
 private
 
-      # Use callbacks to share common setup or constraints between actions.
-      def set_summary
-        @summary = Summary.find(params[:id])
-      end
-
       def accounting_period(period_name)
 
         if period_name
@@ -228,20 +201,15 @@ private
         @receivable_summary = invoices + miscincome + part_paid
 
       #ACCOUNTS: PAYABLE
-        #  @payable_business_summary = policy_scope(Expense).where("date >= ? AND date <= ?", date_from, date_to
-        #                                                  ).where(:exp_type => "business"
-        #                                                  ).accepted.pluck(:total).sum
-
-        #  @payable_employee_summary = policy_scope(Expense).where("date >= ? AND date <= ?", date_from, date_to
-        #                                                  ).where(:exp_type => "personal"
-        #                                                  ).accepted.pluck(:total).sum
+        #  @payable_summary = policy_scope(Expense).where("date >= ? AND date <= ?", date_from, date_to
+        #                                         ).accepted.pluck(:total).sum
 
       #OPENING BALANCE
         #opening equity at beginning of the year
         #@period
 
       #SUMMARY BALANCE
-        @debit_total = @income_summary + @receivable_summary + @assets_cash
+        @debit_total = 0#@income_summary + @receivable_summary + @assets_cash
         @credit_total = 0#@expend_summary + @payable_summary
 
       #list of periods for select filter
@@ -265,7 +233,7 @@ private
 
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"
+          send_data document.render, filename: filename, :type => "application/pdf"        
       end
 
       def csv_account_summary(transactions, companyaccount_id, date_from, date_to)
