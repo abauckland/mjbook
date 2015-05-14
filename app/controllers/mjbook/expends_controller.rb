@@ -283,11 +283,7 @@ module Mjbook
           #if exists
           if !next_record.blank?
             #new value =  next value - subtract expend value
-            if next_record.amount_out == nil
-              new_account_balance = next_record.account_balance - next_record.amount_in
-            else
-              new_account_balance = next_record.account_balance + next_record.amount_out
-            end
+            new_account_balance = next_record.account_balance + expend.total
           else
             new_account_balance = expend.companyaccount.balance
           end

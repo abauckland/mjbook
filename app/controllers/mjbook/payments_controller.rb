@@ -315,11 +315,7 @@ module Mjbook
                                             ).order("date DESC").order("id DESC").first
 
           if !next_record.blank?
-            if next_record.amount_out == nil
-              new_account_balance = next_record.account_balance - next_record.amount_in
-            else
-              new_account_balance = next_record.account_balance + next_record.amount_out
-            end
+            new_account_balance = next_record.account_balance - payment.total
           else
             new_account_balance = payment.companyaccount.balance
           end
@@ -442,7 +438,7 @@ module Mjbook
       def add_to_subsequent_transactions_on_date(payment, account_record)
           prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
                                                    ).where(:date => payment.date
-                                                   ).where('id > ?', account_record.id)
+                                                   ).where('id > ?',account_record.id)
           if !prior_transactions.blank?
             add_amount_to(prior_transactions, payment.total)
           end
@@ -452,7 +448,7 @@ module Mjbook
           #find records to update
           subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
                                                    ).where(:date => payment.date
-                                                   ).where('id > ?', account_record.id)
+                                                   ).where('id > ?',account_record.id)
           #update prior balances
           if !subsequent_transactions.blank?
             subtract_amount_from(subsequent_transactions, payment.total)
