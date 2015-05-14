@@ -6,9 +6,18 @@ module Mjbook
     before_action :set_summary, only: [:reconcile, :unreconcile]
 
       def index
-        accounting_period(params[:period_id])
-        @companyaccounts = policy_scope(Companyaccount)
-
+        #redirect if the year_start date (and hence accounting period) have not been set
+        #redirect if no company accounts have been set up for the company
+        company_setting = Mjbook::Setting.where(:company_id => current_user.company_id).first
+        account_exist = Mjbook::Companyaccount.where(:company_id => current_user.company_id).first
+        unless company_setting  && account_exist
+          redirect_to setups_path
+        else
+          accounting_period(params[:period_name])
+          @summaries = policy_scope(Summary)
+          authorize @summaries
+          account_summary(@summaries, @current_period, @date_from, @date_to)
+        end
       end
 
 
@@ -72,7 +81,62 @@ module Mjbook
       end
 
 
+      def charts
 
+        past_date = [[0,-30], [-31,-60], [-61,-90]]
+        future_dates = [[1,30], [31,60], [61,90]]
+
+        @inc_due = []
+        @inc_pending = []
+
+        past_dates.each_with_index do |dates, i|
+          start_date = Time.now + dates[i][0]
+          finish_date = Time.now + dates[i][1]
+          invoices_due = policy_scope(Invoice).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          donations_due = policy_scope(Donation).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          miscs_due = policy_scope(Miscincome).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          @inc_due[i] = invoices_due + donations_due + miscs_due
+        end
+
+        future_dates.each_with_index do |dates, i|
+          start_date = Time.now + dates[i][0]
+          finish_date = Time.now + dates[i][1]
+          invoices_pending = policy_scope(Invoice).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          donations_pending = policy_scope(Donation).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          miscs_pending = policy_scope(Miscincome).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          @inc_pending[i] = invoices_pending + donations_pending + miscs_pending
+        end
+
+        past_date = [[0,-30], [-31,-60], [-61,-90]]
+        future_dates = [[1,30], [31,60], [61,90]]
+
+        @exp_due = []
+        @exp_pending = []
+
+        past_dates.each_with_index do |dates, i|
+          start_date = Time.now + dates[i][0]
+          finish_date = Time.now + dates[i][1]
+          expenses_due = policy_scope(Expense).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          @exp_due[i] = expenses_due if expenses_due
+        end
+
+        future_dates.each_with_index do |dates, i|
+          start_date = Time.now + dates[i][0]
+          finish_date = Time.now + dates[i][1]
+          expenses_pending = policy_scope(Expense).submitted.where("due_date >= ? AND due_date <= ?", start_date, finish_date).sum(:total)
+          @exp_pending[i] = expenses_pending if expenses_pending
+        end
+
+
+        #filter by date and account
+
+        date_from = 3.months.ago
+        date_to = Time.now
+
+        transactions = policy_scope(Summary).where("date >= ? AND date <= ?", date_from, date_to).order(:date)
+        @transactions_array = transactions.select([:date, :balance]).map {|e| [e.date.strftime("%d/%m/%y"), pounds(e.balance)] } 
+
+      end
 
 
     def print

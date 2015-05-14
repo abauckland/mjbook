@@ -3,10 +3,6 @@ Mjbook::Engine.routes.draw do
 
   resources :setups, :only => [:index]
 
-  resources :balances, :only => [:index] do
-    get :print, :on => :member
-  end
-
   resources :settings
 
   resources :participants

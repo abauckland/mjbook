@@ -1,0 +1,72 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Transaction Summary</h1>
+    </div>
+    <div class="title_help" id="summaries_index"></div>
+</div>
+
+<div class="row filter_band">
+    <%= form_tag summaries_path, method: :get do %>
+        <div>
+            <div>
+                <label class="date">Date From:</label>
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
+                <label class="date">Date To:</label>
+                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
+            </div>
+            <%= submit_tag 'Filter' %>
+        </div> 
+    <% end %> 
+</div>
+
+
+<div class="row">
+    <div class="col-1-1 column_1">
+        <div class="border">
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="transaction_date">Date</th>
+                            <th class="transaction_account">Account</th>
+                            <th class="transaction_item">Item</th>
+                            <th class="transaction_type">Type</th>
+                            <th class="transaction_status">Status</th>
+                            <th class="transaction_income">Income</th>
+                            <th class="transaction_expend">Expenditure</th>
+                            <th class="transaction_balance">Balance</th>
+                        </tr>
+                    </thead>
+                </table>
+                <table>
+                    <tbody>
+                        <% if @transactions %>
+                            <% @transactions.each do |transaction| %>
+                                <tr>
+                                    <td class="transaction_date"><%= transaction.date.strftime("%d/%m/%y") %></td>
+                                        <td class="transaction_account"><%= transaction.companyaccount.name %></td>
+                                    <% if transaction.expend_id? %>
+	                                    <td class="transaction_ref"><%= transaction.expend.ref %></td>
+	                                    <td class="transaction_type"><%= transaction.expend.exp_type %></td>
+										<td class="transaction_status"><%= transaction.expend.state %></td>
+									<% end %>
+                                    <% if transaction.payment_id? %>
+	                                    <td class="transaction_ref"><%= transaction.payment.ref %></td>
+	                                    <td class="transaction_type"><%= transaction.payment.inc_type %></td>
+										<td class="transaction_status"><%= transaction.payment.state %></td>
+									<% end %>
+                                    <td class="transaction_income"><%= transaction.amount_in %></td>
+                                    <td class="transaction_expend"><%= transaction.amount_out %></td>
+                                    <td class="transaction_balance"><%= transaction.balance %></td>
+                               <tr>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
