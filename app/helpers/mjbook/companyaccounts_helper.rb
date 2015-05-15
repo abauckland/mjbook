@@ -11,7 +11,7 @@ module Mjbook
     def companyaccount_cancel
       companyaccounts = policy_scope(Companyaccount).count
       if companyaccounts == 0
-        link_to "cancel", summaries_path
+        link_to "cancel", balances_path
       else
         link_to "cancel", companyaccounts_path
       end

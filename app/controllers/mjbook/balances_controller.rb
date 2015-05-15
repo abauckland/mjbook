@@ -8,7 +8,8 @@ module Mjbook
         #redirect if no company accounts have been set up for the company
         company_setting = Mjbook::Setting.where(:company_id => current_user.company_id).first
         account_exist = Mjbook::Companyaccount.where(:company_id => current_user.company_id).first
-        unless company_setting  && account_exist
+        #mileage settings
+        unless company_setting && account_exist
           redirect_to setups_path
         else
 
@@ -132,13 +133,13 @@ private
         @receivable_summary = invoices + miscincome + part_paid - creditnote - writeoff
 
       #ACCOUNTS: PAYABLE
-        #  @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
-        #                                                  ).where(:exp_type => "business"
-        #                                                  ).accepted.pluck(:total).sum
+          @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
+                                                          ).where(:exp_type => "business"
+                                                          ).accepted.pluck(:total).sum
 
-        #  @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
-        #                                                  ).where(:exp_type => "personal"
-        #                                                  ).accepted.pluck(:total).sum
+          @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
+                                                          ).where(:exp_type => "personal"
+                                                          ).accepted.pluck(:total).sum
 
       #OPENING BALANCE
         #opening equity at beginning of the year
