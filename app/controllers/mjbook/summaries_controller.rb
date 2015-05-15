@@ -4,6 +4,7 @@ module Mjbook
   class SummariesController < ApplicationController
 
     before_action :company_accounts, only: [:index, :show]
+    before_action :company_account, only: [:show]
     before_action :set_summary, only: [:reconcile, :unreconcile]
 
       def index
@@ -29,7 +30,38 @@ module Mjbook
         @summary = @summaries.first
         authorize @summaries
 
-        @companyaccount = Mjbook::Companyaccount.find(params[:companyaccount_id])
+
+#summaries_prior
+#        summaries_prior = policy_scope(Summary).joins(:companyaccounts
+#                                         ).where(:companyaccount_id => companyaccount.id
+#                                         ).where('companyaccounts.date < ?', companyaccount.date)
+
+#        if params[:date_from] !=""
+#          summaries_prior = @summaries.where('date >= ?', params[:date_from])
+#        end
+
+#        if params[:date_to] !=""
+#          summaries_prior = @summaries.where('date <= ?', params[:date_to])
+#        end
+
+#        summaries_prior = @summaries.order("date DESC").order("id DESC")
+
+#summaries_subsequent
+#        summaries_subsequent = policy_scope(Summary).joins(:companyaccounts
+#                                         ).where(:companyaccount_id => companyaccount.id
+#                                         ).where('companyaccounts.date >= ?', companyaccount.date)
+
+#        if params[:date_from] !=""
+#          summaries_subsequent = @summaries.where('date >= ?', params[:date_from])
+#        end
+
+#        if params[:date_to] !=""
+#          summaries_subsequent = @summaries.where('date <= ?', params[:date_to])
+#        end
+
+#        summaries_subsequent = @summaries.order("date DESC").order("id ASC")
+
+#        @summaries = [summaries_prior, summaries_subsequent]
 
         if params[:commit] == 'pdf'
           pdf_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
@@ -100,6 +132,10 @@ private
       # Use callbacks to share common setup or constraints between actions.
       def set_summary
         @summary = Summary.find(params[:id])
+      end
+
+      def company_account
+        @company_account = policy_scope(Companyaccount).where(:id => params[:companyaccount_id]).first
       end
 
       def company_accounts

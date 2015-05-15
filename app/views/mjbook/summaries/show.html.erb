@@ -11,7 +11,7 @@
         <div>
             <div>
                 <label class="select">Account:</label>
-                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@company_accounts, :id, :name, @companyaccount.id), prompt: "Select something" %>
+                <%= select_tag 'companyaccount_id', options_from_collection_for_select(@company_accounts, :id, :name, @company_account.id), prompt: "Select something" %>
             </div>
             <div>
                 <label class="date">Date From:</label>
