@@ -82,7 +82,13 @@ module Mjbook
           if @summary.payment_id?
             @summary.payment.reconcile!
           end
-          
+
+          if @summary.expend_id?
+            @summary.expend.reconcile!
+          end
+
+#tranfers?
+
           respond_to do |format|
             format.js   { render :reconcile, :layout => false }
           end
@@ -97,6 +103,12 @@ module Mjbook
           if @summary.payment_id?
             @summary.payment.unreconcile!
           end
+
+          if @summary.expend_id?
+            @summary.expend.unreconcile!
+          end
+
+#transfers?
 
           respond_to do |format|
             format.js   { render :unreconcile, :layout => false }
