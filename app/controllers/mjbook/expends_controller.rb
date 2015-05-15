@@ -59,7 +59,7 @@ module Mjbook
      @sum_total = @expends.pluck(:total).sum
 
      #selected parameters for filter form
-     hmrcexpcats_ids = policy_scope(Expense).joins(:expenditems => :expends).where('mjbook_expend.company_id =?', current_user.company_id).pluck(:hmrcexpcats_id).uniq
+     hmrcexpcats_ids = policy_scope(Expense).joins(:expenditems => :expend).where('mjbook_expend.company_id =?', current_user.company_id).pluck(:hmrcexpcats_id).uniq
      @hmrcexpcats = policy_scope(Hmrcexpcat).where(:id => hmrcexpcats_ids)
      @hmrcexpcat = params[:hmrcexpcat_id]
      @date_from = params[:date_from]
