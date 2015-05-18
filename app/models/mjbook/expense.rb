@@ -61,7 +61,7 @@ module Mjbook
     scope :transfer, ->() { where(:exp_type => 3).uniq }
     private
 
-    default_scope { order('date DESC') }
+#    default_scope { order('date DESC') }
 
 
     def self.to_csv
