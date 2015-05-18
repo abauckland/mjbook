@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Paymentitem:</strong>
+  <%= @journal.paymentitem_id %>
+</p>
+
+<p>
+  <strong>Expenditem:</strong>
+  <%= @journal.expenditem_id %>
+</p>
+
+<p>
+  <strong>Adjustment:</strong>
+  <%= @journal.adjustment %>
+</p>
+
+<p>
+  <strong>Period:</strong>
+  <%= @journal.period_id %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @journal.note %>
+</p>
+
+<%= link_to 'Edit', edit_journal_path(@journal) %> |
+<%= link_to 'Back', journals_path %>

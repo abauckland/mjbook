@@ -75,6 +75,7 @@ module Mjbook
     # GET /payments/1
     def show
       authorize @payment
+      @paymentitems = Mjbook::Paymentitem.where(:payment_id => @payment.id)
     end
 
     # GET /payments/new
@@ -358,10 +359,10 @@ module Mjbook
         #update retained value in period - only if payment not between year start and date of account creation
         if payment.companyaccount.date >= @period.year_start && payment.companyaccount.date < 1.year.from_now(@period.year_start)
           unless payment.date >= @period.year_start && payment.date < payment.companyaccount.date
-              @period.update(:retained => (@period.retained + amount))
+              @period.update(:retained => (@period.retained + payment.total))
           end
         else
-          @period.update(:retained => (@period.retained + amount))
+          @period.update(:retained => (@period.retained + payment.total))
         end
 
       end
@@ -388,10 +389,10 @@ module Mjbook
 #        #update retained value in period - only if payment not between year start and date of account creation
         if payment.companyaccount.date >= @period.year_start && payment.companyaccount.date < 1.year.from_now(@period.year_start)
           unless payment.date >= @period.year_start && payment.date < payment.companyaccount.date
-              @period.update(:retained => (@period.retained - amount))
+              @period.update(:retained => (@period.retained - payment.total))
           end
         else
-          @period.update(:retained => (@period.retained - amount))
+          @period.update(:retained => (@period.retained - payment.total))
         end
 
         account_record.destroy

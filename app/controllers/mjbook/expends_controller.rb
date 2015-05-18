@@ -326,10 +326,10 @@ module Mjbook
         #update retained value in period - only if payment not between year start and date of account creation
         if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
           unless payment.date >= @period.year_start && expend.date < expend.companyaccount.date
-              @period.update(:retained => (@period.retained - amount))
+              @period.update(:retained => (@period.retained - expend.total))
           end
         else
-          @period.update(:retained => (@period.retained - amount))
+          @period.update(:retained => (@period.retained - expend.total))
         end
 
       end
@@ -377,10 +377,10 @@ module Mjbook
         #update retained value in period - only if payment not between year start and date of account creation
         if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
           unless payment.date >= @period.year_start && expend.date < expend.companyaccount.date
-              @period.update(:retained => (@period.retained + amount))
+              @period.update(:retained => (@period.retained + expend.total))
           end
         else
-          @period.update(:retained => (@period.retained + amount))
+          @period.update(:retained => (@period.retained + expend.total))
         end
 
         #find account record to delete

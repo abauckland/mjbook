@@ -1,6 +1,8 @@
 Mjbook::Engine.routes.draw do
   
 
+  resources :journals
+
   resources :setups, :only => [:index]
 
   resources :balances, :only => [:index] do

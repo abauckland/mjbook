@@ -1,72 +1,124 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Payment</h1>
+        <h1>Payment Details</h1>
     </div>
+    <div class="title_help" id="quotes_index"></div>
+    <div><%= link_to "back", payments_path, class: "title_button" %> </div>
 </div>
 
+<% if @payment.invoice? %>
+    <div class="row info_band">
+        <div class="info_right">
+            <div><h3>Inv. Ref: invoice ref</h3></div>
+            <div><h3>Total: <%= pounds(@payment.total) %></h3></div>
+        </div>
+        <div class="info_left">
+            <div><h3>Payment Ref: <%= @payment.ref if @payment.ref %></h3></div>
+            <div><h3>Date: <%= @payment.date.strftime("%d/%m/%y") %></h3></div>
+        </div>
+    </div>
+<% else %>
+    <div class="row info_band">
+        <div class="info_right">
+            <div><h3>Total: <%= pounds(@payment.total) %></h3></div>
+            <div><h3>Inv. Ref: n/a</h3></div>
+        </div>
+        <div class="info_left">
+            <div><h3>Payment Ref: <%= @payment.ref if @payment.ref %></h3></div>
+            <div><h3>Date: <%= @payment.date.strftime("%d/%m/%y") %></h3></div>
+            <div><h3>Status: <%= @payment.state %></h3></div>
+        </div>
+    </div>
+<% end %>
+
+
+
+
 <div class="row">
-    <div class="col-1-3 column_1">
+
+    <div class="col-1-1 column_1">
         <div class="border">
 
             <%= render :partial => "flash_notice" %>
-<!-- column start-->
+
             <div class="row">
-                <article>
-                    <div class="article-set">
 
-                        <!-- show text line -->
-                        <label class="label_110">Reference:</label>
-                        <span><%= @payment.ref if @payment.ref %></span></br>
+<% if @payment.invoice? %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class='invoice_line_category'>Category</th>
+                            <th class='invoice_line_item'>Item</th>
+                            <th class='invoice_line_quantity'>Quantity</th>
+                            <th class='invoice_line_price'>Price</th>
+                            <th class='invoice_line_vat'>VAT</th>
+                            <th class='invoice_line_total'>Total</th>
+                            <th class="row_button no_buttons_1"></th>
+                        </tr>
+                    </thead>
+                </table>
 
-                        <!-- show text line -->
-                        <label class="label_110">Inovice:</label>
-                        <span><%= @payment.invoice.ref if @payment.ref %></span></br>
+                <table>
+                    <tbody>
+                          <% if @paymentitems %>
+                            <% @paymentitems.each do |item| %>
+                                <tr>
+                                    <td class='invoice_line_category'>Category</td>
+                                    <td class='invoice_line_item'>Item</td>
+                                    <td class='invoice_line_quantity'>Quantity</td>
+                                    <td class='invoice_line_price'>Price</td>
+                                    <td class='invoice_line_vat'>VAT</td>
+                                    <td class='invoice_line_total'>Total</td>
+                                    <td id="<%= paymentitem.id %>_links" class="row_button no_buttons_1">
+                                        <%=  link_to '', nil, class: 'line_edit_icon_show' , title: "add journal entry" %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
 
-                        <!-- show text line -->
-                        <label class="label_110">Date:</label>
-                        <span><%= @payment.date.strftime("%d/%m/%y") %></span></br>
+<% else %>
 
-                        <!-- show text line -->
-                        <label class="label_110">Payment Method:</label>
-                        <span><%= @payment.paymethod.text.titleize %></span></br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class='invoice_line_category'>Job</th>
+                            <th class='invoice_line_item'>Customer</th>
+                            <th class='invoice_line_date'>Date</th>
+                            <th class='invoice_line_price'>Price</th>
+                            <th class='invoice_line_vat'>VAT</th>
+                            <th class='invoice_line_total'>Total</th>
+                            <th class="row_button no_buttons_1"></th>
+                        </tr>
+                    </thead>
+                </table>
 
-                        <!-- show text line -->
-                        <label class="label_110">Account:</label>
-                        <span><%= @payment.companyaccount.name.titleize %></span></br>
+                <table>
+                    <tbody>
+                          <% if @paymentitems %>
+                            <% @paymentitems.each do |item| %>
+                                <tr>
+                                    <td class='invoice_line_category'><%= item.miscincome.project.ref %></td>
+                                    <td class='invoice_line_item'><%= item.miscincome.project.customer.company_name %></td>
+                                    <td class='invoice_line_date'><%= item.miscincome.date.strftime("%d/%m/%y") %></td>
+                                    <td class='invoice_line_price'><%= pounds(item.miscincome.price) %></td>
+                                    <td class='invoice_line_vat'><%= pounds(item.miscincome.vat) %></td>
+                                    <td class='invoice_line_total'><%= pounds(item.miscincome.total) %></td>
+                                    <td id="<%= item.id %>_links" class="row_button no_buttons_1">
+                                        <% if @payment.reconciled? %>
+                                            <%=  link_to '', new_journal_path(:payment_id => @payment.id), class: 'line_edit_icon_show' , title: "add journal entry" %>
+                                        <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
+<% end %>
 
-                        <!-- show text line -->
-                        <label class="label_110">Price:</label>
-                        <span><%= pounds(@payment.price) %></span></br>
-
-                        <!-- show text line -->
-                        <label class="label_110">VAT:</label>
-                        <span><%= pounds(@payment.vat) %></span></br>
-
-                        <!-- show text line -->
-                        <label class="label_110">Total:</label>
-                        <span><%= pounds(@payment.total) %></span></br>
-
-                        <!-- show text line -->
-                        <label class="label_110">Notes:</label>
-                        <span><%= @payment.note %></span></br>
-
-                    </div>
-                </div>
-            </div>
-<!-- column footer start--> 
-            <div class="row">
-                <div class="form_footer">
-                    <%= link_to "edit details", edit_payment_path(@payment) %>
-                    <%= link_to "back", payments_path %>
-                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-1-3 column_2">
-        <div class="border blank_column"></div>
-    </div>
-    <div class="col-1-3 column_3">
-        <div class="border blank_column"></div>
-    </div>
 </div>

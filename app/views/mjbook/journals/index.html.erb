@@ -1,0 +1,58 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Adjustments (Journal Entries)</h1>
+    </div>
+    <div class="title_help" id="jounrals_index"></div>
+</div>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="jounral_paymentitem">Job No</th>
+                      <th class="jounral_paymentitem">Customer/Supplier</th>
+                      <th class="jounral_paymentitem">Payment Ref</th>
+                      <th class="jounral_paymentitem">Expend Ref</th>
+                      <th class="jounral_adjustment">Adjustment</th>
+                      <th class="jounral_period">Allocated from</th>
+                      <th class="jounral_period">Allocated to</th>
+                      <th class="jounral_note">Notes</th>
+                      <th class="row_button no_buttons_3"></th>
+                    </tr>
+                  </thead>
+                
+                  <tbody>
+                    <% @journals.each do |journal| %>
+                      <tr>
+                        <% if journal.paymentitme_id? %>
+                            <td><%= journal.paymentitem_id %></td>
+                        <% else %>
+                            <td><%= journal.expenditem_id %></td>
+                        <% end %>
+                        <td><%= journal.adjustment %></td>
+                        <td><%= journal.period_id %></td>
+                        <td><%= journal.period_id %></td>
+                        <td><%= journal.note %></td>
+                        <td class="row_button no_buttons_3">
+                            <%= row_delete_link(journal, 'show') %>
+                            <%= row_email_link(journal, 'show') %>
+                            <%= row_show_link(journal, 'show') %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>

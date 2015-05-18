@@ -40,8 +40,8 @@
                     <thead>
                         <tr>
                             <th class="payment_ref">Ref</th>
-                            <th class="payment_inc_type">Payment Type</th>
                             <th class="payment_invoice">Invoice Ref</th>
+                            <th class="payment_invoice">Invoice Date</th>
                             <th class="payment_method">Payment Method</th>
                             <th class="payment_account">Account</th>
                             <th class="payment_date">Date</th>
@@ -61,8 +61,7 @@
                             <% @payments.each do |payment| %>
                                 <tr>
                                     <td class="payment_ref"><%= payment.ref %></td>
-                                    <td class="payment_inc_type"><%= payment.inc_type.titleize %></td>
-                                    <td class="payment_invoice"><%= payment_invoice(payment) %></td>
+                                    <%= payment_invoice_details(payment) %>
                                     <td class="payment_method"><%= payment.paymethod.text.titleize %></td>
                                     <td class="payment_account"><%= payment.companyaccount.name.titleize %></td>
                                     <td class="payment_date"><%= payment.date.strftime("%d/%m/%y") %></td>
@@ -72,12 +71,14 @@
                                     <td id="<%= payment.id %>_status" class="payment_status"><%= payment.state %></td>
                                     <td class="payment_note"><%= payment.note %></td> 
                                     <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
-                                        <% unless payment.reconciled? %>
-                                            <%= row_delete_link(payment, 'show') %>
-                                            <%= row_email_link(payment, 'show') %>
-                                        <% else %>
+                                        <% if payment.reconciled? %>
                                             <%= row_delete_link(payment, 'hidden') %>
                                             <%= row_email_link(payment, 'show') %>
+                                            <%= row_show_link(payment, 'show') %>
+                                        <% else %>
+                                            <%= row_delete_link(payment, 'show') %>
+                                            <%= row_email_link(payment, 'show') %>
+                                            <%= row_show_link(payment, 'show') %>
                                         <% end %>
                                     </td>
                                 </tr>

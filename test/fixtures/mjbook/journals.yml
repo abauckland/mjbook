@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paymentitem_id: 1
+  expenditem_id: 1
+  adjustment: 9.99
+  period_id: 1
+  note: MyText
+
+two:
+  paymentitem_id: 1
+  expenditem_id: 1
+  adjustment: 9.99
+  period_id: 1
+  note: MyText

@@ -7,5 +7,7 @@ module Mjbook
     belongs_to :transfer
     belongs_to :miscexpense
     
+    has_one :journal
+    
   end
 end
