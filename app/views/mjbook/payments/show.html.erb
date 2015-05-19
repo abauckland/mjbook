@@ -107,7 +107,7 @@
                                     <td class='invoice_line_total'><%= pounds(item.miscincome.total) %></td>
                                     <td id="<%= item.id %>_links" class="row_button no_buttons_1">
                                         <% if @payment.reconciled? %>
-                                            <%=  link_to '', new_journal_path(:payment_id => @payment.id), class: 'line_edit_icon_show' , title: "add journal entry" %>
+                                            <%= paymentitem_journal_entry(item) %>
                                         <% end %>
                                     </td>
                                 </tr>

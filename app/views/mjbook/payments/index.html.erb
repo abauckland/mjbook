@@ -71,6 +71,7 @@
                                     <td id="<%= payment.id %>_status" class="payment_status"><%= payment.state %></td>
                                     <td class="payment_note"><%= payment.note %></td> 
                                     <td id="<%= payment.id %>_links" class="row_button no_buttons_4">
+                                        <%= payment_journal_entries(payment) %>
                                         <% if payment.reconciled? %>
                                             <%= row_delete_link(payment, 'hidden') %>
                                             <%= row_email_link(payment, 'show') %>

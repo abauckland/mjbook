@@ -9,27 +9,52 @@
             <div class="row">
                 <%= form_for(@journal) do |f| %>
                     <%= f.hidden_field :company_id, :value => current_user.company_id %>
-                    <%= f.hidden_field :paymentitem_id, :value => nil %>
-                    <%= f.hidden_field :expenditem_id, :value => nil %>
+
                     <fieldset>
+
+                        <% if @paymentitem %>
+                            <%= f.hidden_field :paymentitem_id, :value => @paymentitem.id %>
+
+                            <!-- show text line -->
+                            <label class="label_110">Payment Total:</label>
+                            <span>
+                                <%= pounds(@paymentitem.miscincome.total) if @paymentitem.miscincome_id? %>
+                                <%= pounds(@paymentitem.inline.total) if @paymentitem.inline_id? %>
+                            </span></br>
+                        <% end %>
+
+                        <% if @expenditem %>
+                            <%= f.hidden_field :expenditem_id, :value => @expenditem.id %>
+
+                            <!-- show text line -->
+                            <label class="label_110">Payment Total:</label>
+                            <span>
+                                <%= pounds(@paymentitem.expense.total) if @paymentitem.expense_id? %>
+                            </span></br>
+                        <% end %>
+
+                        <!-- show text line -->
+                        <div class="form_tooltip" id="journal_current_period"></div>
+                        <label class="label_110">Current Period:</label>
+                        <span><%= @period.period %></span></br>
 
                         <!-- form input[text] -->
                         <div class="form_tooltip" id="journal_adjustment"></div>
-                        <label class="label_100">Adjustment:*</label>
+                        <label class="label_110">Adjustment:*</label>
                         <span>
                             <%= f.text_field :adjustment, {:placeholder => "0.00", :value => number_with_precision(f.object.adjustment, :precision => 2)} %>
                         </span></br>
 
                         <!-- form input[select -->
                         <div class="form_tooltip" id="journal_period"></div>
-                        <label class="label_100">Allocation to Period:*</label>
+                        <label class="label_110">Allocate to Period:*</label>
                         <span>
                             <%= f.collection_select(:period_id, @periods, :id, :period, {selected: @journal.period_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] -->
                         <div class="form_tooltip" id="journal_notes"></div>
-                        <label class="label_100">Notes:</label>
+                        <label class="label_110">Notes:</label>
                         <span>
                             <%= f.text_area :note, {rows: 10, maxlength: 500, class: "maxlength"} %>
                             <p class="input_note">Maximum of 500 characters</p>

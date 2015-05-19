@@ -1,29 +1,55 @@
-<p id="notice"><%= notice %></p>
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Journal Entry</h1>
+    </div>
+</div>
 
-<p>
-  <strong>Paymentitem:</strong>
-  <%= @journal.paymentitem_id %>
-</p>
+<div class="row">
+    <div class="col-1-3 column_1">
+        <div class="border">
 
-<p>
-  <strong>Expenditem:</strong>
-  <%= @journal.expenditem_id %>
-</p>
+            <%= render :partial => "flash_notice" %>
+<!-- column start-->
+            <div class="row">
+                <article>
+                    <div class="article-set">
 
-<p>
-  <strong>Adjustment:</strong>
-  <%= @journal.adjustment %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_110">Adjustment:</label>
+                        <span><%= pounds(@journal.adjustment) %></span></br>
 
-<p>
-  <strong>Period:</strong>
-  <%= @journal.period_id %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_110">Allocated from:</label>
+                        <span><%= @journal.period.period %></span></br>
 
-<p>
-  <strong>Note:</strong>
-  <%= @journal.note %>
-</p>
+                        <!-- show text line -->
+                        <label class="label_110">Allocated to:</label>
+                        <span><%= @journal.period.period %></span></br>
 
-<%= link_to 'Edit', edit_journal_path(@journal) %> |
-<%= link_to 'Back', journals_path %>
+                        <!-- show text line -->
+                        <label class="label_110">Notes:</label>
+                        <span><%= @journal.note %></span></br>
+
+                    </div>
+                </div>
+            </div>
+<!-- column footer start--> 
+            <div class="row">
+                <div class="form_footer">
+                    <%= link_to "edit details", edit_journal_path(@journal) %>
+                    <%= link_to "back", journals_path %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1-3 column_2">
+        <div class="border blank_column"></div>
+    </div>
+    <div class="col-1-3 column_3">
+        <div class="border blank_column"></div>
+    </div>
+</div>
+
+
+

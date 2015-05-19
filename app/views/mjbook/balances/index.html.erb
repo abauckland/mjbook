@@ -40,6 +40,7 @@
                             <td class="summary_debit"></td>
                             <td class="summary_credit"><%= pounds(@income_summary) %></td> 
                             <td class="row_button no_buttons_1">
+                                <%= payment_journals_link %>
                                 <%= link_to '', payments_path, class: 'line_show_icon_show' , title: "record payment"  %>
                             </td>
                         </tr>
@@ -49,6 +50,7 @@
                             <td class="summary_debit"><%= pounds(@expend_summary) %></td>
                             <td class="summary_credit"></td> 
                             <td class="row_button no_buttons_1">
+                                <%= expend_journals_link %>
                                 <%= link_to '', expends_path, class: 'line_show_icon_show' , title: "record payment"  %>
                             </td>
                         </tr>
