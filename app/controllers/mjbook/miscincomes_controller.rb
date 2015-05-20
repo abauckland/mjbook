@@ -111,11 +111,11 @@ module Mjbook
         @miscincome = Miscincome.find(params[:id])
       end
 
-      def set_projects     
+      def set_projects
         @projects = policy_scope(Project)
       end
 
-      def set_customers     
+      def set_customers
         @customers = policy_scope(Customer)
       end
 
@@ -125,9 +125,9 @@ module Mjbook
       end
 
       def pdf_miscincome_index(miscincomes, customer_id, date_from, date_to)
-         customer = Customer.where(:id => customer_id).first if customer_id
 
-         if customer
+         if customer_id
+           customer = Customer.where(:id => customer_id).first
            filter_group = customer.company_name
          else
            filter_group = "All Customers"
@@ -139,7 +139,7 @@ module Mjbook
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
+          ) do |pdf|
             table_indexes(miscincomes, 'miscincome', filter_group, date_from, date_to, filename, pdf)
           end
 
@@ -147,9 +147,9 @@ module Mjbook
       end
 
       def csv_miscincome_index(miscincomes, customer_id, date_from, date_to)
-         customer = Customer.where(:id => customer_id).first if customer_id
 
-         if customer
+         if customer_id
+           customer = Customer.where(:id => customer_id).first
            filter_group = customer.company_name
          else
            filter_group = "All Customers"
