@@ -6,6 +6,22 @@
     <div><%= link_to '+ Transfer', new_transfer_path, class: "title_button" %></div>
 </div>
 
+
+<div class="row filter_band">
+    <%= form_tag transfers_path, method: :get do %>
+        <div>
+            <div>
+                <label class="date">Date From:</label>
+                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
+                <label class="date">Date To:</label>
+                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
+            </div>
+            <%= submit_tag 'Filter'%>
+        </div>
+    <% end %>
+</div>
+
+
 <div class="row">
 
     <div class="col-1-1 column_1">

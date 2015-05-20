@@ -8,8 +8,26 @@ module Mjbook
 
     # GET /transfers
     def index
-      @transfers = policy_scope(Transfer)
+
+      if params[:date_from] != ""
+        if params[:date_to] != ""
+          @transfers = policy_scope(Transfer).where(:date => params[:date_from]..params[:date_to])
+        else
+          @transfers = policy_scope(Transfer).where('date > ?', params[:date_from])
+        end
+      else
+        if params[:date_to] != ""
+          @transfers = policy_scope(Transfer).where('date < ?', params[:date_to])
+        else
+          @transfers = policy_scope(Transfer)
+        end
+      end
+
       authorize @transfers
+
+      @date_from = params[:date_from]
+      @date_to = params[:date_to]
+
     end
 
     # GET /transfers/new
