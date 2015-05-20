@@ -62,7 +62,7 @@ module Mjbook
 
      #selected parameters for filter form
      all_quotes = policy_scope(Quote)
-     @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_quotes.ids)
+     @customers = Customer.joins(:projects => :quotes).where('mjbook_quotes.id' => all_quotes.ids).uniq
      @customer = params[:customer_id]
      @date_from = params[:date_from]
      @date_to = params[:date_to]
