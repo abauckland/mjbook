@@ -22,7 +22,7 @@
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
+        <div class="border">
 
             <%= render :partial => "flash_notice" %>
 
@@ -31,12 +31,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="writeoff_ref">Ref</th>   
+                            <th class="writeoff_ref">Ref</th>
+                            <th class="writeoff_note">Note</th>
                             <th class="writeoff_date">Date</th>
                             <th class="writeoff_price">Price</br><span>(ex VAT)</span></th>
                             <th class="writeoff_vat_due">Vat</th>
                             <th class="writeoff_total">Total</br><span>(Inc VAT)</span></th>
-                            <th class="writeoff_note">Note</th>
+
                             <th class="row_button no_buttons_3"></th>
                         </tr>
                     </thead>
@@ -48,11 +49,11 @@
                             <% @writeoffs.each do |writeoff| %>
                                 <tr>
                                     <td class="writeoff_ref"><%= writeoff.ref %></td>
+                                    <td class="writeoff_note"><%= writeoff.notes %></td> 
                                     <td class="writeoff_date"><%= writeoff.date.strftime("%d/%m/%y") %></td>
                                     <td class="writeoff_price"><%= pounds(writeoff.price) %></td>
                                     <td class="writeoff_vat_due"><%= pounds(writeoff.vat) %></td>
                                     <td class="writeoff_total"><%= pounds(writeoff.total) %></td>                      
-                                    <td class="writeoff_note"><%= writeoff.notes %></td> 
                                     <td id="<%= writeoff.id %>_links" class="row_button no_buttons_3">
                                         <%= row_delete_link(writeoff, 'show') %>              
                                     </td)
@@ -76,12 +77,13 @@
                 <table class="index_totals">
                     <tbody>
                         <tr>
-                            <td class="writeoff_index_total">Total</th>
+                            <td class="writeoff_ref">Total</td>
+                            <td class="writeoff_note"></td>
+                            <td class="writeoff_date"></td>
                             <td class="writeoff_price"><%= pounds(@sum_price) %></td>
                             <td class="writeoff_vat_due"><%= pounds(@sum_vat) %></td>
                             <td class="writeoff_total"><%= pounds(@sum_total) %></td>
-                            <td class="writeoff_status"></th>
-                            <td class="row_button no_buttons_5"></td>
+                            <td class="row_button no_buttons_3"></td>
                         </tr>
                     </tbody>
                 </table>
