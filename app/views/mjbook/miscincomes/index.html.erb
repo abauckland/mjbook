@@ -13,7 +13,7 @@
             <% if @customers %>
             <div>
                 <label class="select">Customer:</label>
-                <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), prompt: "Select something" %>
+                <%= select_tag 'customer_id', options_from_collection_for_select(@customers, :id, :name, @customer), prompt: "all customers" %>
             </div>
             <% end %>
             <div>
