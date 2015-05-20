@@ -62,7 +62,7 @@
                                         <% else %> 
                                             <%= row_email_link(creditnote, 'hidden') %>
                                             <%= row_delete_link(creditnote, 'hidden') %>
-                                        <% end %>             
+                                        <% end %>
                                     </td)
                                 </tr>
                             <% end %>
@@ -84,12 +84,14 @@
                 <table class="index_totals">
                     <tbody>
                         <tr>
-                            <td class="creditnote_index_total">Total</th>
+                            <td class="creditnote_ref">Total</td>   
+                            <td class="creditnote_date"></td>
                             <td class="creditnote_price"><%= pounds(@sum_price) %></td>
                             <td class="creditnote_vat_due"><%= pounds(@sum_vat) %></td>
                             <td class="creditnote_total"><%= pounds(@sum_total) %></td>
-                            <td class="creditnote_status"></th>
-                            <td class="row_button no_buttons_5"></td>
+                            <td class="creditnote_status"></td>
+                            <td class="creditnote_note"></td>
+                            <td class="row_button no_buttons_2"></td>
                         </tr>
                     </tbody>
                 </table>
