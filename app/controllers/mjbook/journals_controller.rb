@@ -6,15 +6,49 @@ module Mjbook
 
     # GET /journals
     def index
-      if params[:paymentitems] == true
-        @journals = policy_scope(Journal).where(:paymentitem_id => params[:paymentitem_ids])
+
+    if params[:period_id]
+      @period = Mjbook::Period.find(params[:period_id])
+    else
+      accounting_period(Time.now)
+    end
+
+    date_from = @period.year_start
+    date_to = 1.year.from_now(@period.year_start)
+
+
+      if params[:transaction_type] == 'Payments'
+        @journals = Journal.joins(:paymentitem => :payment
+                                ).where('mjbook_payments.date' => date_from..date_to
+                                ).where(:company_id => current_user.company_id
+                                ).where.not(:paymentitem_id => nil)
+      elsif params[:transaction_type] == 'Expenditures'
+        @journals = Journal.joins(:expenditem => :expend
+                                ).where('mjbook_expends.date' => date_from..date_to
+                                ).where(:company_id => current_user.company_id
+                                ).where.not(:expenditem_id => nil)
+      else
+        payment_journal_ids = Journal.joins(:paymentitem => :payment
+                                 ).where('mjbook_payments.date' => date_from..date_to
+                                 ).where(:company_id => current_user.company_id
+                                 ).ids
+        expend_journal_ids = Journal.joins(:expenditem => :expend
+                                ).where('mjbook_expends.date' => date_from..date_to
+                                ).where(:company_id => current_user.company_id
+                                ).ids
+        journal_ids = payment_journal_ids + expend_journal_ids
+        @journals = Journal.where(:id => journal_ids.sort)
       end
 
-      if params[:expenditems] == true
-        @journals = policy_scope(Journal).where(:expenditem_id => params[:expenditem_ids])
+      @transaction_types = ['All','Payments', 'Expenditures']
+      if params[:transaction_type]
+            @selected_transaction_type = params[:transaction_type]
+      else
+            @selected_transaction_type = 'All'
       end
 
-      @journals = policy_scope(Journal)
+      @periods = policy_scope(Period)
+
 
     end
 
