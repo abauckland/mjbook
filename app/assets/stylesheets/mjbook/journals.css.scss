@@ -1,0 +1,37 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+@import "table_headers";
+
+$lrg_menu: 1300px;
+$tab_lrg_menu: 940px;
+$tab_sml_menu: 780px;
+$mob_menu: 520px;
+
+
+//index table
+.journal_item_ref    {@include ref}
+.journal_item_date   {@include date}
+.journal_item_inv_ref{@include ref}
+.journal_item_total  {@include pounds}
+
+.journal_adjustment  {@include pounds}
+.journal_period      {@include date}
+.journal_note        {display: table-cell}
+
+@media screen and (max-width: $lrg_menu) {
+
+}
+
+@media screen and  (max-width: $tab_lrg_menu) {
+  .journal_item_inv_ref{display: none}
+}
+  
+@media screen and (max-width: $tab_sml_menu) {
+
+}
+
+@media screen and (max-width: $mob_menu) {
+  .journal_item_ref{display: none} 
+}

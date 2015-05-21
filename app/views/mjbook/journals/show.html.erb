@@ -14,13 +14,80 @@
                 <article>
                     <div class="article-set">
 
+                        <% if @journal.paymentitem_id? %>
+                            <!-- show text line -->
+                            <label class="label_110">Payment Ref:</label>
+                            <span><%= @journal.paymentitem.payment.ref %></span></br>
+
+                            <!-- show text line -->
+                            <label class="label_110">Payment Date:</label>
+                            <span><%= @journal.paymentitem.payment.date.strftime("%d/%m/%y") %></span></br>
+
+                            <% if @journal.paymentitem.inline_id? %>
+                                <!-- show text line -->
+                                <label class="label_110">Invoice Ref:</label>
+                                <span><%= @journal.paymentitem.inline.invoice.ref %></span></br>
+
+                                <!-- show text line -->
+                                <label class="label_110">Item Amount:</label>
+                                <span><%= pounds(@journal.paymentitem.inline.total) %></span></br>
+
+                            <% end %>
+
+                            <% if @journal.paymentitem.miscincome_id? %>
+                                <!-- show text line -->
+                                <label class="label_110">Misc. Income Ref:</label>
+                                <span><%= @journal.paymentitem.miscincome.ref %></span></br>
+
+                                <!-- show text line -->
+                                <label class="label_110">Item Amount:</label>
+                                <span><%= pounds(@journal.paymentitem.miscincome.total) %></span></br>
+
+                            <% end %>
+
+                        <% end %>
+
+
+
+
+                        <% if @journal.expenditem_id? %>
+                            <!-- show text line -->
+                            <label class="label_110">Expenditure Ref:</label>
+                            <span><%= @journal.expenditem.expend.ref %></span></br>
+
+                            <!-- show text line -->
+                            <label class="label_110">Expenditure Date:</label>
+                            <span><%= @journal.expenditem.payment.date.strftime("%d/%m/%y") %></span></br>
+
+                            <% if @journal.expenditem.inline_id? %>
+                                <!-- show text line -->
+                                <label class="label_110">Expense Ref:</label>
+                                <span><%= @journal.expenditem.inline.expense.ref %></span></br>
+
+                                <!-- show text line -->
+                                <label class="label_110">Item Amount:</label>
+                                <span><%= pounds(@journal.expenditem.expense.total) %></span></br>
+
+                            <% end %>
+
+                        <% end %>
+
+
+
+
                         <!-- show text line -->
                         <label class="label_110">Adjustment:</label>
                         <span><%= pounds(@journal.adjustment) %></span></br>
 
                         <!-- show text line -->
                         <label class="label_110">Allocated from:</label>
-                        <span><%= @journal.period.period %></span></br>
+                        <span>
+                            <% if @journal.paymentitem_id? %>
+                                <%= original_payment_period(@journal.paymentitem_id) %>
+                            <% else %>
+                                <%= original_expend_period(@journal.expenditem_id) %>
+                            <% end %>
+                        </span></br>
 
                         <!-- show text line -->
                         <label class="label_110">Allocated to:</label>

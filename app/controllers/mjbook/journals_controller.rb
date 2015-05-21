@@ -6,11 +6,11 @@ module Mjbook
 
     # GET /journals
     def index
-      if params[:paymentitem_ids] != nil
+      if params[:paymentitems] == true
         @journals = policy_scope(Journal).where(:paymentitem_id => params[:paymentitem_ids])
       end
 
-      if params[:expenditem_ids] != nil
+      if params[:expenditems] == true
         @journals = policy_scope(Journal).where(:expenditem_id => params[:expenditem_ids])
       end
 

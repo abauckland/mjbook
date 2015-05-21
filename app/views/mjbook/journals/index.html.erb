@@ -17,10 +17,13 @@
                 <table>
                   <thead>
                     <tr>
-                      <th class="journal_paymentitem">Job No</th>
-                      <th class="journal_paymentitem">Customer/Supplier</th>
-                      <th class="journal_paymentitem">Payment Ref</th>
-                      <th class="journal_paymentitem">Expend Ref</th>
+                      <th class="journal_item_ref">Ref</th>
+                      <th class="journal_item_date">Date</th>
+                      <th class="journal_item_inv_ref">Inv. Ref</th>
+                      <th class="journal_item_inv_ref">Misc. Income Ref</th>
+                      <th class="journal_item_inv_ref">Expenditure Ref</th>
+                      <th class="journal_item_total">Item Amount</th>
+
                       <th class="journal_adjustment">Adjustment</th>
                       <th class="journal_period">Allocated from</th>
                       <th class="journal_period">Allocated to</th>
@@ -30,17 +33,53 @@
                   </thead>
                 
                   <tbody>
+
                     <% @journals.each do |journal| %>
                       <tr>
+
                         <% if journal.paymentitem_id? %>
-                            <td><%= journal.paymentitem_id %></td>
-                        <% else %>
-                            <td><%= journal.expenditem_id %></td>
+                            <td class="journal_item_ref"><%= journal.paymentitem.payment.ref %></td>
+                            <td class="journal_item_date"><%= journal.paymentitem.payment.date.strftime("%d/%m/%y") %></td>
+
+                            <% if journal.paymentitem.inline_id? %>
+                                <td class="journal_item_inv_ref"><%= journal.paymentitem.inline.invoice.ref %></td>
+                                <td class="journal_item_inv_ref"></td>
+                                <td class="journal_item_inv_ref"></td>
+                                <td class="journal_item_total"><%= pounds(journal.paymentitem.inline.total) %></td>
+                            <% end %>
+
+                            <% if journal.paymentitem.miscincome_id? %>
+                                <td class="journal_item_inv_ref"></td>
+                                <td class="journal_item_inv_ref"><%= journal.paymentitem.miscincome.ref %></td>
+                                <td class="journal_item_inv_ref"></td>
+                                <td class="journal_item_total"><%= pounds(journal.paymentitem.miscincome.total) %></td>
+                            <% end %>
                         <% end %>
+
+
+                        <% if journal.expenditem_id? %>
+                            <td class="journal_item_ref"><%= journal.expenditem.expend.ref %></td>
+                            <td class="journal_item_date"><%= journal.expenditem.payment.date.strftime("%d/%m/%y") %></td>
+
+                            <% if journal.expenditem.inline_id? %>
+                                <td class="journal_item_inv_ref"></td>
+                                <td class="journal_item_inv_ref"></td>
+                                <td class="journal_item_inv_ref"><%= journal.expenditem.inline.expense.ref %></td>
+                                <td class="journal_item_total"><%= pounds(journal.expenditem.expense.total) %></td>
+                            <% end %>
+                        <% end %>
+
+
                         <td><%= pounds(journal.adjustment) %></td>
-                        <td><%= journal.period_id %></td>
-                        <td><%= journal.period_id %></td>
-                        <td><%= journal.note %></td>
+
+                        <% if journal.paymentitem_id? %>
+                            <td class="journal_period" ><%= original_payment_period(journal.paymentitem_id) %></td>
+                        <% else %>
+                            <td class="journal_period" ><%= original_expend_period(journal.expenditem_id) %></td>
+                        <% end %>
+
+                        <td class="journal_period" ><%= journal.period.period %></td>
+                        <td class="journal_note" ><%= journal.note %></td>
                         <td class="row_button no_buttons_3">
                             <%= row_delete_link(journal, 'show') %>
                             <%= row_edit_link(journal, 'show') %>

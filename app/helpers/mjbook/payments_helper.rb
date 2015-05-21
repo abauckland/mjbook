@@ -21,15 +21,17 @@ module Mjbook
     def payment_journal_entries(payment)
       journal_entries = policy_scope(Journal).joins(:paymentitem).where('mjbook_paymentitems.payment_id' => payment.id)
       if !journal_entries.blank?
-        link_to '', journals_path(:paymentitem_ids => journal_entries), method: :delete, class: ('line_edit_icon_show') , title: "show journal entry"
+        link_to '', journals_path(:paymentitem_ids => journal_entries), class: ('line_journal_icon_show') , title: "show journal entry"
       end
     end
 
 
     def paymentitem_journal_entry(item)
       journal_entry = policy_scope(Journal).where(:paymentitem_id => item.id).first
-      if !journal_entry.blank?
-        link_to '', journal_path(journal_entry), method: :delete, class: ('line_edit_icon_show') , title: "show journal entry"
+      if journal_entry.blank?
+        link_to '', new_journal_path(:paymentitem_id => item.id), class: 'line_journal_add_icon_show' , title: "add journal entry"
+      else
+        link_to '', journal_path(journal_entry), class: ('line_journal_icon_show') , title: "show journal entry"
       end
     end
 
