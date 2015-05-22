@@ -7,14 +7,14 @@ module Mjbook
     # GET /journals
     def index
 
-    if params[:period_id]
-      @period = Mjbook::Period.find(params[:period_id])
-    else
-      accounting_period(Time.now)
-    end
-
-    date_from = @period.year_start
-    date_to = 1.year.from_now(@period.year_start)
+      if params[:period_id]
+        @period = Mjbook::Period.find(params[:period_id])
+      else
+        accounting_period(Time.now)
+      end
+  
+      date_from = @period.year_start
+      date_to = 1.year.from_now(@period.year_start)
 
 
       if params[:transaction_type] == 'Payments'
@@ -39,6 +39,15 @@ module Mjbook
         journal_ids = payment_journal_ids + expend_journal_ids
         @journals = Journal.where(:id => journal_ids.sort)
       end
+
+      if params[:commit] == 'pdf'
+        pdf_journal_index(@journals, params[:transaction_type], @period)
+      end
+
+      if params[:commit] == 'csv'
+        csv_journal_index(@journals, params[:transaction_type], @period)
+      end
+
 
       @transaction_types = ['All','Payments', 'Expenditures']
       if params[:transaction_type]
@@ -169,5 +178,27 @@ module Mjbook
       def journal_params
         params.require(:journal).permit(:company_id, :paymentitem_id, :expenditem_id, :adjustment, :period_id, :note)
       end
+
+
+      def pdf_journal_index(journals, transaction_type, period)
+
+         filename = "Journal_entries_#{ transaction_type }_#{ period }.pdf"
+                 
+         document = Prawn::Document.new(
+          :page_size => "A4",
+          :page_layout => :landscape,
+          :margin => [10.mm, 10.mm, 5.mm, 10.mm]
+          ) do |pdf|
+            table_indexes(journals, 'journal', transaction_type, period.year_start, 1.year.from_now(period.year_start), filename, pdf)
+          end
+
+          send_data document.render, filename: filename, :type => "application/pdf"        
+      end
+
+      def csv_journal_index(journals, transaction_type, period)
+         filename = "Journal_entries_#{ transaction_type }_#{ period }.pdf"
+         send_data expenses.to_csv, filename: filename, :type => "text/csv"
+      end
+
   end
 end

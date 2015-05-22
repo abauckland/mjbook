@@ -97,11 +97,19 @@ private
         @income_summary = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
                                               ).pluck(:total).sum
+#add adjustments allocated to period
+#substract adjustments from selected period
+#Journal payments period_to +adjustments
+#Journal where payment_id current date - adjustment
+
+
 
       #EXPEND SUMMARY
         @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => "transfer"
                                              ).pluck(:total).sum
+
+
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
