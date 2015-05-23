@@ -97,6 +97,7 @@ private
         income = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
                                               ).pluck(:total).sum
+<<<<<<< HEAD
         #calculate adjustments from journal entries
         
         #find journal entries that adjust sums in selected year
@@ -113,6 +114,14 @@ private
                             ).pluck(:adjustment).sum
 
         @income_summary = income - subtract_adjustments + add_adjustments
+=======
+#add adjustments allocated to period
+#substract adjustments from selected period
+#Journal payments period_to +adjustments
+#Journal where payment_id current date - adjustment
+
+
+>>>>>>> origin/master
 
       #EXPEND SUMMARY
         @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
@@ -121,6 +130,8 @@ private
         #calculate adjustments from journal entries
         #subtract sums attributed to selected period
         #add sums attributed from selected period
+
+
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
