@@ -17,7 +17,7 @@ module Mjbook
           @summaries = policy_scope(Summary)
           authorize @summaries
           @periods = policy_scope(Period)
-          account_summary(@summaries, @current_period, @date_from, @date_to)
+          account_summary(@summaries, @period, @current_period, @date_from, @date_to)
 
         end
       end
@@ -72,7 +72,7 @@ private
       end
 
 
-      def account_summary(summaries, current_period, date_from, date_to)
+      def account_summary(summaries, period, current_period, date_from, date_to)
 
       #ASSETS - CASH
         @assets_cash = 0
@@ -94,14 +94,33 @@ private
 
 
       #INCOME SUMMARY
-        @income_summary = policy_scope(Payment).where(:date => date_from..date_to
+        income = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
                                               ).pluck(:total).sum
+        #calculate adjustments from journal entries
+        
+        #find journal entries that adjust sums in selected year
+        subtract_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
+                            ).where.not(:paymentitem_id => nil
+                            ).where('mjbook_payments.date' => date_from..date_to
+                            ).pluck(:adjustment).sum
+        #subtract sums attributed from selected period
+
+        #add sums attributed to selected period
+        add_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
+                            ).where.not(:paymentitem_id => nil
+                            ).where(:period_id => period.id
+                            ).pluck(:adjustment).sum
+
+        @income_summary = income - subtract_adjustments + add_adjustments
 
       #EXPEND SUMMARY
         @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => "transfer"
                                              ).pluck(:total).sum
+        #calculate adjustments from journal entries
+        #subtract sums attributed to selected period
+        #add sums attributed from selected period
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
@@ -133,13 +152,13 @@ private
         @receivable_summary = invoices + miscincome + part_paid - creditnote - writeoff
 
       #ACCOUNTS: PAYABLE
-          @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
-                                                          ).where(:exp_type => "business"
-                                                          ).accepted.pluck(:total).sum
+#          @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
+#                                                          ).where(:exp_type => "business"
+#                                                          ).accepted.pluck(:total).sum
 
-          @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
-                                                          ).where(:exp_type => "personal"
-                                                          ).accepted.pluck(:total).sum
+#          @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
+#                                                          ).where(:exp_type => "personal"
+#                                                          ).accepted.pluck(:total).sum
 
       #OPENING BALANCE
         #opening equity at beginning of the year
