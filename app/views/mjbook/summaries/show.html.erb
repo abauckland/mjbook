@@ -57,20 +57,20 @@
                                 <tr>
                                     <td class="transaction_date"><%= summary.date.strftime("%d/%m/%y") %></td>
                                     <% if summary.expend_id? %>
-	                                    <td class="transaction_ref"><%= summary.expend.ref %></td>
+	                                    <td class="transaction_item"><%= summary.expend.ref %></td>
 	                                    <td class="transaction_type"><%= summary.expend.exp_type %></td>
                                     <% elsif summary.payment_id? %>
-	                                    <td class="transaction_ref"><%= summary.payment.ref %></td>
+	                                    <td class="transaction_item"><%= summary.payment.ref %></td>
 	                                    <td class="transaction_type"><%= summary.payment.inc_type %></td>
                                     <% elsif summary.transfer_id? %>
-                                        <td class="transaction_ref"></td>
+                                        <td class="transaction_item"></td>
                                         <td class="transaction_type">Transfer</td>
                                     <% else %>
-                                        <td class="transaction_ref"></td>
+                                        <td class="transaction_item"></td>
                                         <td class="transaction_type">Opening Balance</td>
                                     <% end %>
-                                    <td class="transaction_income"><%= summary.amount_in %></td>
-                                    <td class="transaction_expend"><%= summary.amount_out %></td>
+                                    <td class="transaction_income"><%= pounds(summary.amount_in) %></td>
+                                    <td class="transaction_expend"><%= pounds(summary.amount_out) %></td>
                                     <td class="transaction_balance"><%= pounds(summary.account_balance) %></td>
                                     <td id="<%= summary.id %>_status"  class="transaction_status"><%= summary.state %></td>
                                     <td id="<%= summary.id %>_links" class="row_button no_buttons_2">

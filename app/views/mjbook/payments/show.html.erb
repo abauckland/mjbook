@@ -9,7 +9,7 @@
 <% if @payment.invoice? %>
     <div class="row info_band">
         <div class="info_right">
-            <div><h3>Inv. Ref: invoice ref</h3></div>
+            <div><h3>Inv. Ref: payment ref</h3></div>
             <div><h3>Total: <%= pounds(@payment.total) %></h3></div>
         </div>
         <div class="info_left">
@@ -47,12 +47,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class='invoice_line_category'>Category</th>
-                            <th class='invoice_line_item'>Item</th>
-                            <th class='invoice_line_quantity'>Quantity</th>
-                            <th class='invoice_line_price'>Price</th>
-                            <th class='invoice_line_vat'>VAT</th>
-                            <th class='invoice_line_total'>Total</th>
+                            <th class='payment_ref'>Item No.</th>
+                            <th class='payment_category'>Category</th>
+                            <th class='payment_item'>Item</th>
+                            <th class='payment_quantity'>Quantity</th>
+                            <th class='payment_price'>Price</th>
+                            <th class='payment_vat_due'>VAT</th>
+                            <th class='payment_total'>Total</th>
                             <th class="row_button no_buttons_1"></th>
                         </tr>
                     </thead>
@@ -61,14 +62,15 @@
                 <table>
                     <tbody>
                           <% if @paymentitems %>
-                            <% @paymentitems.each do |item| %>
+                            <% @paymentitems.each_with_index do |item, i| %>
                                 <tr>
-                                    <td class='invoice_line_category'>Category</td>
-                                    <td class='invoice_line_item'>Item</td>
-                                    <td class='invoice_line_quantity'>Quantity</td>
-                                    <td class='invoice_line_price'>Price</td>
-                                    <td class='invoice_line_vat'>VAT</td>
-                                    <td class='invoice_line_total'>Total</td>
+                                    <td class='payment_ref'><%= (i + 1) %></td>
+                                    <td class='payment_category'><%= item.inline.project.ref %></td>
+                                    <td class='payment_item'><%= item.inline.ingroup.invoice.project.customer.company_name %></td>
+                                    <td class='payment_date'><%= item.inline.ingroup.invoice.date.strftime("%d/%m/%y") %></td>
+                                    <td class='payment_price'><%= pounds(item.inline.price) %></td>
+                                    <td class='payment_vat_due'><%= pounds(item.inline.vat) %></td>
+                                    <td class='payment_total'><%= pounds(item.inline.total) %></td>
                                     <td id="<%= item.id %>_links" class="row_button no_buttons_1">
                                         <% if @payment.reconciled? %>
                                             <%= paymentitem_journal_entry(item) %>
@@ -85,12 +87,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class='invoice_line_category'>Job</th>
-                            <th class='invoice_line_item'>Customer</th>
-                            <th class='invoice_line_date'>Date</th>
-                            <th class='invoice_line_price'>Price</th>
-                            <th class='invoice_line_vat'>VAT</th>
-                            <th class='invoice_line_total'>Total</th>
+                            <th class='payment_ref'>Item No.</th>
+                            <th class='payment_category'>Job</th>
+                            <th class='payment_item'>Customer</th>
+                            <th class='payment_date'>Date</th>
+                            <th class='payment_price'>Price</th>
+                            <th class='payment_vat_due'>VAT</th>
+                            <th class='payment_total'>Total</th>
                             <th class="row_button no_buttons_1"></th>
                         </tr>
                     </thead>
@@ -99,14 +102,15 @@
                 <table>
                     <tbody>
                           <% if @paymentitems %>
-                            <% @paymentitems.each do |item| %>
+                            <% @paymentitems.each_with_index do |item, i| %>
                                 <tr>
-                                    <td class='invoice_line_category'><%= item.miscincome.project.ref %></td>
-                                    <td class='invoice_line_item'><%= item.miscincome.project.customer.company_name %></td>
-                                    <td class='invoice_line_date'><%= item.miscincome.date.strftime("%d/%m/%y") %></td>
-                                    <td class='invoice_line_price'><%= pounds(item.miscincome.price) %></td>
-                                    <td class='invoice_line_vat'><%= pounds(item.miscincome.vat) %></td>
-                                    <td class='invoice_line_total'><%= pounds(item.miscincome.total) %></td>
+                                    <td class='payment_ref'><%= (i + 1) %></td>
+                                    <td class='payment_category'><%= item.miscincome.project.ref %></td>
+                                    <td class='payment_item'><%= item.miscincome.project.customer.company_name %></td>
+                                    <td class='payment_date'><%= item.miscincome.date.strftime("%d/%m/%y") %></td>
+                                    <td class='payment_price'><%= pounds(item.miscincome.price) %></td>
+                                    <td class='payment_vat_due'><%= pounds(item.miscincome.vat) %></td>
+                                    <td class='payment_total'><%= pounds(item.miscincome.total) %></td>
                                     <td id="<%= item.id %>_links" class="row_button no_buttons_1">
                                         <% if @payment.reconciled? %>
                                             <%= paymentitem_journal_entry(item) %>
