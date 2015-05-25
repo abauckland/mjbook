@@ -69,8 +69,10 @@
                                     <td class='invoice_line_price'>Price</td>
                                     <td class='invoice_line_vat'>VAT</td>
                                     <td class='invoice_line_total'>Total</td>
-                                    <td id="<%= paymentitem.id %>_links" class="row_button no_buttons_1">
-                                        <%=  link_to '', nil, class: 'line_jounral_add_icon_show' , title: "add journal entry" %>
+                                    <td id="<%= item.id %>_links" class="row_button no_buttons_1">
+                                        <% if @payment.reconciled? %>
+                                            <%= paymentitem_journal_entry(item) %>
+                                        <% end %>
                                     </td>
                                 </tr>
                             <% end %>
