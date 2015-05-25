@@ -123,9 +123,9 @@ module Mjbook
     def update
 
       old_journal = @journal.dup
-      variation = @journal.adjustment - old_journal.adjustment
 
       if @journal.update(journal_params)
+        variation = @journal.adjustment - old_journal.adjustment
 
         #update adjustment for original year
         if @journal.paymentitem_id != nil
@@ -133,11 +133,11 @@ module Mjbook
         else
           current_period = accounting_period(@journal.expenditem.expend.date)
         end
-        new_retained_amount = @journal.retained + variation
-        current_period.update(:retained => new_retained_amount)
+        new_retained_amount = @period.retained + variation
+        @period.update(:retained => new_retained_amount)
 
         #adjust year sum allocated to
-        new_period = @journal.period_id
+        new_period = Mjbook::Period.find(@journal.period_id)
         new_retained_amount = new_period.retained - variation
         new_period.update(:retained => new_retained_amount)
 
@@ -150,17 +150,17 @@ module Mjbook
     # DELETE /journals/1
     def destroy
 
-      #take adjustment away from  original year
+      #add adjustment to original year
       if @journal.paymentitem_id != nil
         current_period = accounting_period(@journal.paymentitem.payment.date)
       else
         current_period = accounting_period(@journal.expenditem.expend.date)
       end
-      new_retained_amount = current_period.retained + @journal.adjustment
-      current_period.update(:retained => new_retained_amount)
+      new_retained_amount = @period.retained + @journal.adjustment
+      @period.update(:retained => new_retained_amount)
 
-      #adjust year sum allocated to
-      new_period = @journal.period_id
+      #take adjustment from year allocated to
+      new_period = Mjbook::Period.find(@journal.period_id)
       new_retained_amount = new_period.retained - @journal.adjustment
       new_period.update(:retained => new_retained_amount)
 
@@ -183,7 +183,7 @@ module Mjbook
       def pdf_journal_index(journals, transaction_type, period)
 
          filename = "Journal_entries_#{ transaction_type }_#{ period }.pdf"
-                 
+
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
@@ -192,7 +192,7 @@ module Mjbook
             table_indexes(journals, 'journal', transaction_type, period.year_start, 1.year.from_now(period.year_start), filename, pdf)
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"        
+          send_data document.render, filename: filename, :type => "application/pdf"
       end
 
       def csv_journal_index(journals, transaction_type, period)
