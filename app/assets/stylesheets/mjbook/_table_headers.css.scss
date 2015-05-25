@@ -9,7 +9,7 @@
 @mixin vat {width: 90px; display: table-cell; text-align: left}
 @mixin reg {width: 90px; display: table-cell; text-align: left}
 
-
+@mixin item_no {width: 40px; display: table-cell; text-align: left}
 @mixin ref {width: 60px; display: table-cell; text-align: left}
 
 @mixin quantity {width: 40px; display: table-cell; text-align: right}

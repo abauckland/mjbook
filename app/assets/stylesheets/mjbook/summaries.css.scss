@@ -6,14 +6,14 @@ $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 
-.transaction_date   {display: table-cell; vertical-align: top;}
+.transaction_date   {@include date}
 .transaction_item   {@include name}
 .transaction_account{@include account}
 .transaction_type   {@include name}
-.transaction_status {@include state}
 .transaction_income {@include pounds}
 .transaction_expend {@include pounds}
 .transaction_balance{@include pounds}
+.transaction_status {display: table-cell; vertical-align: top;}
 
 @media screen and (max-width: $lrg_menu) {
 
@@ -21,7 +21,6 @@ $mob_menu: 520px;
 
 @media screen and (max-width: $tab_lrg_menu) {
 .transaction_type   {display: none;}
-.transaction_status {display: none;}
 }
 
 @media screen and (max-width: $tab_sml_menu) {
@@ -31,6 +30,7 @@ $mob_menu: 520px;
 
 @media screen and (max-width: $mob_menu) {
   .transaction_balance{display: none;}
+  .transaction_status{display: none;}
 }
 
 

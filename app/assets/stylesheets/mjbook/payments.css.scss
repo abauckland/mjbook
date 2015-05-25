@@ -6,9 +6,10 @@ $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table
-.payment_ref     {@include ref}
+.payment_ref     {@include item_no}
 .payment_inc_type{@include method}
 .payment_invoice {@include ref}
+.payment_invoice_date {@include date}
 .payment_method  {@include method}
 .payment_account {@include account}
 .payment_date    {@include date}
@@ -17,6 +18,12 @@ $mob_menu: 520px;
 .payment_total   {@include pounds}
 .payment_status  {@include state}
 .payment_note    {display: table-cell}
+
+.payment_category{@include name}
+.payment_item    {@include name}
+.payment_quantity{@include quantity}
+
+
 
 @media screen and (max-width: $lrg_menu) {
 
