@@ -198,7 +198,7 @@ module Mjbook
       end
 
       def csv_journal_index(journals, transaction_type, period)
-         filename = "Journal_entries_#{ transaction_type }_#{ period }.pdf"
+         filename = "Journal_entries_#{ transaction_type }_#{ period }.csv"
          send_data journals.to_csv, filename: filename, :type => "text/csv"
       end
 

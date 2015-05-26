@@ -6,7 +6,7 @@ module Mjbook
     end
 
     def expend_category(expend_id)
-      expense = Mjbook::Expense.where('mjbook_expenditems.expend_id' => expend_id).first
+      expense = Mjbook::Expense.joins(:expenditems).where('mjbook_expenditems.expend_id' => expend_id).first
       return expense.hmrcexpcat.category.titleize
     end
 

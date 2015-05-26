@@ -8,7 +8,9 @@ module Mjbook
     has_many :summaries
 
     validates :name, presence: true,
-      uniqueness: {:scope => [:company_id]}    
+      uniqueness: {:scope => [:company_id]}
+    validates :balance, presence: true, numericality: true
+    validates :date, presence: true
 
     def name=(text)
       super(text.downcase)
