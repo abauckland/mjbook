@@ -5,15 +5,15 @@ $tab_lrg_menu: 940px;
 $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
-//index table 
-.personal_due_data    {@include date}
+//index table
+.personal_due_date    {@include date}
 .personal_job         {@include name}
 .personal_category    {@include name}
 .personal_ref         {@include ref}
 .personal_supplier    {display: table-cell;}
-.personal_supplier_ref{@include ref}        
-.personal_issue_date  {@include date}  
-.personal_distance    {@include distance}    
+.personal_supplier_ref{@include ref}
+.personal_issue_date  {@include date}
+.personal_distance    {@include distance}
 .personal_price        {@include pounds}
 .personal_vat_due      {@include pounds}
 .personal_total        {@include pounds}
