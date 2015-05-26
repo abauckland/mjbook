@@ -5,6 +5,12 @@ module Mjbook
       return expense.supplier.company_name
     end
 
+    def expend_category(expend_id)
+      expense = Mjbook::Expense.where('mjbook_expenditems.expend_id' => expend_id).first
+      return expense.hmrcexpcat.category.titleize
+    end
+
+
 
     def expend_journal_entries(expend)
       journal_entries = policy_scope(Journal).joins(:expenditem).where('mjbook_expenditems.expend_id' => expend.id)

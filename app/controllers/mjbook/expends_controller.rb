@@ -325,7 +325,7 @@ module Mjbook
         #get applicable accounting period
         #update retained value in period - only if payment not between year start and date of account creation
         if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
-          unless payment.date >= @period.year_start && expend.date < expend.companyaccount.date
+          unless expend.date >= @period.year_start && expend.date < expend.companyaccount.date
               @period.update(:retained => (@period.retained - expend.total))
           end
         else
@@ -359,24 +359,24 @@ module Mjbook
 
       def delete_account_expend_record(expend)
 
-        accounting_period(payment.date)
+        accounting_period(expend.date)
 
         account_record = Summary.where(:expend_id => expend.id).first
         #if expend date before account create date
         if expend.date < expend.companyaccount.date
           #update records before current date
           subtract_from_prior_transactions(expend)
-          subtract_from_subsequent_transactions_on_date(payment, account_record)
+          subtract_from_subsequent_transactions_on_date(expend, account_record)
         else
           #update subsequent expend records
           add_to_subsequent_transactions(expend)
-          add_to_subsequent_transactions_on_date(payment, account_record)
+          add_to_subsequent_transactions_on_date(expend, account_record)
         end
 
         #get applicable accounting period
         #update retained value in period - only if payment not between year start and date of account creation
         if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
-          unless payment.date >= @period.year_start && expend.date < expend.companyaccount.date
+          unless expend.date >= @period.year_start && expend.date < expend.companyaccount.date
               @period.update(:retained => (@period.retained + expend.total))
           end
         else

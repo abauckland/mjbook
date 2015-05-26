@@ -64,11 +64,11 @@ module Mjbook
 #        @summaries = [summaries_prior, summaries_subsequent]
 
         if params[:commit] == 'pdf'
-          pdf_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
+          pdf_account_summary(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
         end
 
         if params[:commit] == 'csv'
-          csv_business_index(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
+          csv_account_summary(@summaries, params[:companyaccount_id], params[:date_from], params[:date_to])
         end
 
       end

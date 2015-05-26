@@ -58,7 +58,7 @@
                             <% @expends.each do |expend| %>
                                 <tr>
                                     <td class="expend_ref"><%= expend.ref %></td>
-                                    <td class="expend_exp_type"><%= expend.expense.hmrcexpcat.category.titleize %></td>
+                                    <td class="expend_exp_type"><%= expend_category(expend.id) %></td>
                                     <% if expend.personal? %>
                                         <td class="expend_paid"><%= expend.user.name.titleize if expend.user_id? %></td>
                                     <% end %>

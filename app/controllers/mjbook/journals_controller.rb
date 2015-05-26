@@ -4,6 +4,8 @@ module Mjbook
   class JournalsController < ApplicationController
     before_action :set_journal, only: [:show, :edit, :update, :destroy]
 
+    include PrintIndexes
+
     # GET /journals
     def index
 
@@ -197,7 +199,7 @@ module Mjbook
 
       def csv_journal_index(journals, transaction_type, period)
          filename = "Journal_entries_#{ transaction_type }_#{ period }.pdf"
-         send_data expenses.to_csv, filename: filename, :type => "text/csv"
+         send_data journals.to_csv, filename: filename, :type => "text/csv"
       end
 
   end
