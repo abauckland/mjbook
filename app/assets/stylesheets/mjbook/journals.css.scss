@@ -17,7 +17,7 @@ $mob_menu: 520px;
 .journal_item_total  {@include pounds}
 
 .journal_adjustment  {@include pounds}
-.journal_period      {@include date}
+.journal_period      {@include period}
 .journal_note        {display: table-cell}
 
 @media screen and (max-width: $lrg_menu) {

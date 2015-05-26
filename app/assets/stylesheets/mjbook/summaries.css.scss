@@ -13,7 +13,7 @@ $mob_menu: 520px;
 .transaction_income {@include pounds}
 .transaction_expend {@include pounds}
 .transaction_balance{@include pounds}
-.transaction_status {display: table-cell; vertical-align: top;}
+.transaction_status {display: table-cell; vertical-align: left;}
 
 @media screen and (max-width: $lrg_menu) {
 
