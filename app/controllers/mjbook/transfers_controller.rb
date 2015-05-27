@@ -3,24 +3,27 @@ require_dependency "mjbook/application_controller"
 module Mjbook
   class TransfersController < ApplicationController
     before_action :set_transfer, only: [:show, :edit, :update, :destroy, :process_transfer, :rescind_transfer]
-    before_action :set_companyaccounts, only: [:new, :edit]
-    before_action :set_paymethods, only: [:new, :edit]
+    before_action :set_companyaccounts, only: [:new, :create, :edit]
+    before_action :set_paymethods, only: [:new, :create, :edit]
 
     # GET /transfers
     def index
-
-      if params[:date_from] != ""
-        if params[:date_to] != ""
-          @transfers = policy_scope(Transfer).where(:date => params[:date_from]..params[:date_to])
+      if params[:date_from]
+        if params[:date_from] != ""
+          if params[:date_to] != ""
+            @transfers = policy_scope(Transfer).where(:date => params[:date_from]..params[:date_to])
+          else
+            @transfers = policy_scope(Transfer).where('date > ?', params[:date_from])
+          end
         else
-          @transfers = policy_scope(Transfer).where('date > ?', params[:date_from])
+          if params[:date_to] != ""
+            @transfers = policy_scope(Transfer).where('date < ?', params[:date_to])
+          else
+            @transfers = policy_scope(Transfer)
+          end
         end
       else
-        if params[:date_to] != ""
-          @transfers = policy_scope(Transfer).where('date < ?', params[:date_to])
-        else
-          @transfers = policy_scope(Transfer)
-        end
+        @transfers = policy_scope(Transfer)
       end
 
       authorize @transfers

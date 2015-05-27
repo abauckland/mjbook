@@ -7,6 +7,7 @@ module Mjbook
     # GET /writeoffs
     def index
 
+        if params[:date_from]
           if params[:date_from] != ""
             if params[:date_to] != ""
               @writeoffs = policy_scope(Writeoff).where(:date => params[:date_from]..params[:date_to])
@@ -20,14 +21,17 @@ module Mjbook
               @writeoffs = policy_scope(Writeoff)
             end
           end
+        else
+          @writeoffs = policy_scope(Writeoff)
+        end
 
-          if params[:commit] == 'pdf'
-            pdf_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
-          end
+        if params[:commit] == 'pdf'
+          pdf_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
+        end
 
-          if params[:commit] == 'csv'          
-            csv_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
-          end
+        if params[:commit] == 'csv'
+          csv_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
+        end
 
 
        @sum_price = @writeoffs.pluck(:price).sum

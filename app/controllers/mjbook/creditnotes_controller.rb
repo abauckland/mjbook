@@ -11,28 +11,31 @@ module Mjbook
     # GET /creditnotes
     def index
 
-       if params[:date_from] != ""
-         if params[:date_to] != ""
-           @creditnotes = policy_scope(Creditnote).where(:date => params[:date_from]..params[:date_to])
+       if params[:date_from]
+         if params[:date_from] != ""
+           if params[:date_to] != ""
+             @creditnotes = policy_scope(Creditnote).where(:date => params[:date_from]..params[:date_to])
+           else
+             @creditnotes = policy_scope(Creditnote).where('date > ?', params[:date_from])
+           end
          else
-           @creditnotes = policy_scope(Creditnote).where('date > ?', params[:date_from])
+           if params[:date_to] != ""
+             @creditnotes = policy_scope(Creditnote).where('date < ?', params[:date_to])
+           else
+             @creditnotes = policy_scope(Creditnote) 
+           end
          end
        else
-         if params[:date_to] != ""
-           @creditnotes = policy_scope(Creditnote).where('date < ?', params[:date_to])
-         else
-           @creditnotes = policy_scope(Creditnote) 
-         end
+         @creditnotes = policy_scope(Creditnote) 
        end
-
 
        if params[:commit] == 'pdf'
          pdf_creditnote_index(@creditnotes, params[:date_from], params[:date_to])
        end
 
-        if params[:commit] == 'csv'          
+       if params[:commit] == 'csv'
           csv_creditnote_index(@creditnotes, params[:date_from], params[:date_to])
-        end
+       end
 
        @sum_price = @creditnotes.pluck(:price).sum
        @sum_vat = @creditnotes.pluck(:vat).sum

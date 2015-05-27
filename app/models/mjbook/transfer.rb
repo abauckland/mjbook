@@ -22,6 +22,7 @@ module Mjbook
       end
     end  
 
+    before_validation :custom_validation_1
     validates :account_from_id, :account_to_id, :paymethod_id, presence: true
     validates :total, presence: true, numericality: true
     validates :date,
@@ -31,6 +32,13 @@ module Mjbook
     private
 
     default_scope { order('date DESC') }
+
+    def custom_validation_1
+        if @account_from_id == @account_to_id
+          errors.add(:account_to_id, ": you cannot transfer money into the same account")
+        end 
+    end
+
 
   end
 end
