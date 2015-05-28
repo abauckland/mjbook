@@ -1,6 +1,6 @@
 module Mjbook
   class MileagemodePolicy < Struct.new(:user, :record)
-  
+
     class Scope < Struct.new(:user, :scope)
       def resolve
         if user.owner? || user.admin?
@@ -18,7 +18,7 @@ module Mjbook
         user.owner? || user.admin?
       end
     end
-  
+
     def update?
       edit?
     end

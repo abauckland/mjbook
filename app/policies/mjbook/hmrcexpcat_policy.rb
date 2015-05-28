@@ -1,14 +1,14 @@
 module Mjbook
   class HmrcexpcatPolicy < Struct.new(:user, :record)
-  
+
     class Scope < Struct.new(:user, :scope)
       def resolve
         if user.owner? || user.admin?   
           scope.where(:company_id => user.company_id)
-        end   
+        end
       end
     end
-            
+
     def index?
       user.owner? || user.admin?
     end

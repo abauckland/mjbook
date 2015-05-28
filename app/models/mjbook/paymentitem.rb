@@ -6,8 +6,8 @@ module Mjbook
     belongs_to :transfer
 #    belongs_to :donation
     belongs_to :miscincome
-    
+
     has_one :journal
-    
+
   end
 end

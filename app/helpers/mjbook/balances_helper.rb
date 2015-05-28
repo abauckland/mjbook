@@ -1,6 +1,6 @@
 module Mjbook
   module BalancesHelper
-    
+
     def payment_journals_link(period)
 
       journal_entries = Journal.joins(:paymentitem => :payment

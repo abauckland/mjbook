@@ -1,6 +1,6 @@
 module Mjbook
   class SummaryPolicy < Struct.new(:user, :record)
-  
+
     class Scope < Struct.new(:user, :scope)
       def resolve
           scope.where(:company_id => user.company_id) 
@@ -17,7 +17,7 @@ module Mjbook
 
     def reconcile?
       index?
-    end       
+    end
 
     def unreconcile?
       index?

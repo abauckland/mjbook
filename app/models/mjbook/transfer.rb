@@ -1,13 +1,13 @@
 module Mjbook
   class Transfer < ActiveRecord::Base
-    
+
     include AASM
-        
+
     belongs_to :account_from, :class_name => 'Companyaccount', :foreign_key => 'account_from_id'
     belongs_to :account_to, :class_name => 'Companyaccount', :foreign_key => 'account_to_id'
     belongs_to :paymethod
     has_many :summaries
-    
+
     aasm :column => 'state' do
 
       state :drafted, :initial => true 
@@ -16,11 +16,11 @@ module Mjbook
       event :transfer do
         transitions :from => :drafted, :to => :transferred
       end
-  
+
       event :correct do
         transitions :from => :transferred, :to => :drafted
       end
-    end  
+    end
 
     before_validation :custom_validation_1
     validates :account_from_id, :account_to_id, :paymethod_id, presence: true
@@ -36,7 +36,7 @@ module Mjbook
     def custom_validation_1
         if @account_from_id == @account_to_id
           errors.add(:account_to_id, ": you cannot transfer money into the same account")
-        end 
+        end
     end
 
 

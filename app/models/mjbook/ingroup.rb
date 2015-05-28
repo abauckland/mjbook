@@ -5,13 +5,13 @@ module Mjbook
 
     accepts_nested_attributes_for :inlines
 
-#    after_create :create_nested_records    
+#    after_create :create_nested_records
 
 
     default_scope { order('group_order ASC') }
-    
+
     private
-    
+
 #    def create_nested_records
 #      line = Mjbook::Inline.create(:ingroup_id => self.id)
 #    end

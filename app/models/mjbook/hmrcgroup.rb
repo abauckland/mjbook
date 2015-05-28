@@ -1,5 +1,5 @@
 module Mjbook
-  class Hmrcgroup < ActiveRecord::Base    
+  class Hmrcgroup < ActiveRecord::Base
 
     has_many :hmrcexpcats
 

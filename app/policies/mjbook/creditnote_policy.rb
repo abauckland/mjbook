@@ -1,32 +1,32 @@
 module Mjbook
   class CreditnotePolicy < Struct.new(:user, :record)
-  
+
     class Scope < Struct.new(:user, :scope)
       def resolve
           scope.where(:company_id => user.company_id)
       end
     end
-   
+
       def index?
         user.owner? || user.admin?
       end
-      
+
       def show?
         index?
       end
 
       def new?
         index?
-      end    
+      end
 
       def create?
         index?
-      end 
-      
+      end
+
       def destroy?
         index?
       end
-      
+
       def email?
         index?
       end

@@ -17,19 +17,19 @@
                         <!-- show text line -->
                         <label class="label_80">Reference:</label>
                         <span><%= @expense.ref if @expense.ref %></span></br>
-                                
+
                         <!-- show text line -->
                         <label class="label_80">Due Date:</label>
                         <span><%= @expense.due_date.strftime("%d/%m/%y") %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Issue date:</label>
                         <span><%= @expense.date.strftime("%d/%m/%y") %></span></br>
-                                
+ 
                         <!-- show text line -->
                         <label class="label_80">Job:</label>
                         <span><%= @expense.project.name %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Supplier:</label>
                         <span><%= @expense.supplier.company_name %></span></br>
@@ -43,19 +43,19 @@
                         <label class="label_80">Receipt:</label>
                         <span><%=link_to image_tag(@expense.receipt_url(:thumb), class: 'fancybox' )%></span></br>
                         <% end %>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Price:</label>
                         <span><%= pounds(@expense.price) %></span></br>
-                                
+
                         <!-- show text line -->
                         <label class="label_80">VAT:</label>
                         <span><%= pounds(@expense.vat) %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Total:</label>
                         <span><%= pounds(@expense.total) %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Status:</label>
                         <span><%= @expense.state %></span></br>
@@ -63,7 +63,7 @@
                     </div>
                 </article>
             </div>
-<!-- column footer start--> 
+<!-- column footer start-->
             <div class="row">
                 <div class="form_footer">
                     <%= link_to "back", businesses_path %>

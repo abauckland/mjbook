@@ -1,6 +1,6 @@
 // update category
     $('.inline_cat').mouseover(function(){
-    var line_id = $(this).attr('id');   
+    var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_cat', {
             id: line_id, width: ($(this).width() +10)+'px',
             loadurl : 'https://www.myhq.org.uk/productcategories/'+line_id+'/cat_options',
@@ -10,10 +10,10 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });          
+        });
     });
 
-// update item  
+// update item
     $('.inline_item').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_item', {
@@ -25,10 +25,10 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        }); 
+        });
     });
 
-// update item  
+// update item
     $('.inline_cat_item').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_cat_item', {
@@ -40,13 +40,13 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        }); 
+        });
     });
 
 
-// update quantity  
+// update quantity
     $('.inline_quantity').mouseover(function(){
-    var line_id = $(this).attr('id');   
+    var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_quantity', {
             id: line_id, width: ($(this).width() +10)+'px',
             type: 'text',
@@ -55,10 +55,10 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        }); 
+        });
     });
 
-// update unit  
+// update unit
     $('.inline_unit').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_unit', {
@@ -69,12 +69,12 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });     
+        });
     });
 
 // update price 
     $('.inline_price').mouseover(function(){
-    var line_id = $(this).attr('id');   
+    var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_price', {
             id: line_id, width: ($(this).width() +10)+'px',
             type: 'text',
@@ -83,10 +83,10 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        }); 
+        });
     });
 
-// update rate  
+// update rate
     $('.inline_rate').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_rate', {
@@ -97,10 +97,10 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });     
+        });
     });
 
-// update vat rate  
+// update vat rate
     $('.inline_vat_rate').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_vat_rate', {
@@ -112,10 +112,10 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });     
+        });
     });
 
-// update vat due   
+// update vat due
     $('.inline_vat_due').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_vat_due', {
@@ -125,11 +125,11 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });     
+        });
     });
 
 
-// update text  
+// update text
     $('.inline_text').mouseover(function(){
     var line_id = $(this).attr('id');
         $(this).editable('https://www.myhq.org.uk/inlines/'+line_id+'/update_text', {
@@ -139,6 +139,6 @@
             method: 'PUT',
             indicator: 'Saving..',
             submitdata: {_method: 'put', 'id': '<%= @line.id%>', authenticity_token: AUTH_TOKEN}
-        });     
+        });
     });
 

@@ -2,9 +2,9 @@ module Mjbook
   class Creditnote < ActiveRecord::Base
 
     include AASM
-    
+
     has_many :creditnoteitems, :dependent => :destroy
-    belongs_to :company    
+    belongs_to :company
 
     aasm :column => 'state' do
 
@@ -14,7 +14,7 @@ module Mjbook
       event :confirm do
         transitions :from => :draft, :to => :confirmed
       end
-  
+
     end
 
     def self.to_csv

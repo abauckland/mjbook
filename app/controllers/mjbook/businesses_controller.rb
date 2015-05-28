@@ -125,11 +125,11 @@ module Mjbook
         @expense = Expense.find(params[:id])
       end
 
-      def set_projects     
+      def set_projects
         @projects = policy_scope(Project)
       end
-      
-      def set_suppliers     
+
+      def set_suppliers
         @suppliers = policy_scope(Supplier)
       end
 
@@ -137,12 +137,12 @@ module Mjbook
         @hmrcexpcats = policy_scope(Hmrcexpcat)#.where(:hmrcgroup_id => 1) #pesonal
       end
 
-      
+
       # Only allow a trusted parameter "white list" through.
       def expense_params
         params.require(:expense).permit(:company_id, :user_id, :exp_type, :state, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :price, :vat, :total, :receipt, :recurrence, :ref, :supplier_ref)
       end
-      
+
       def pdf_business_index(expenses, supplier_id, date_from, date_to)
          supplier = Supplier.where(:id => supplier_id).first if supplier_id
 
@@ -151,18 +151,18 @@ module Mjbook
          else
            filter_group = "All Suppliers"
          end
-         
+
          filename = "Business_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
                  
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
-            table_indexes(expenses, 'business', filter_group, date_from, date_to, filename, pdf)      
+          ) do |pdf|
+            table_indexes(expenses, 'business', filter_group, date_from, date_to, filename, pdf)
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"        
+          send_data document.render, filename: filename, :type => "application/pdf"
       end
 
       def csv_business_index(expenses, supplier_id, date_from, date_to)
@@ -179,6 +179,6 @@ module Mjbook
          send_data expenses.to_csv, filename: filename, :type => "text/csv"
       end
 
-      
+
   end
 end

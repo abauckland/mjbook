@@ -1,6 +1,6 @@
 module Mjbook
   module PaymentsHelper
-    
+
     def payment_invoice_details(payment)
       invoice = Invoice.joins(:ingroups => [:inlines => :paymentitems]).where('mjbook_paymentitems.payment_id' => payment.id).first
       if invoice

@@ -28,12 +28,12 @@ module Mjbook
         transitions :from => :submitted, :to => :part_paid
         transitions :from => :part_paid, :to => :part_paid
       end
-  
+
       event :pay do
         transitions :from => :submitted, :to => :paid
         transitions :from => :part_paid, :to => :paid
       end
-  
+
       event :correct_payment do
         transitions :from => :paid, :to => :submitted
         transitions :from => :part_paid, :to => :submitted
@@ -79,7 +79,7 @@ module Mjbook
     private
 
     default_scope { order('date DESC') }
-    
+
 #    def create_nested_records
 #      Mjbook::Ingroup.create(:invoice_id => self.id)
 #    end

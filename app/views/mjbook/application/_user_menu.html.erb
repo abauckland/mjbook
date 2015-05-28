@@ -10,7 +10,7 @@
         <% if current_user.admin? %>
             <li><%= link_to 'Manage Accounts', main_app.companies_path %></li>
             <li><%= link_to 'MyHQ Plans', nil %></li>
-        <% end %>           
+        <% end %>
         <li><%= link_to "logout", main_app.destroy_user_session_path, method: :delete %></li>
-    </ul>        
+    </ul>
 </nav>

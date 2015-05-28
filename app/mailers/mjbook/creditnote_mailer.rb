@@ -1,8 +1,8 @@
 module Mjbook
 class CreditnoteMailer < ActionMailer::Base
-  
+
   def creditnote(creditnote, document, current_user, settings)
-    
+
     @creditnote = creditnote
     @user = current_user
 
@@ -10,10 +10,10 @@ class CreditnoteMailer < ActionMailer::Base
     #add default email so that if customer doees not have an email address this action can complete and state of quote updated
     if @customer
       email_address = @customer.email
-    else  
+    else
       email_address = current_user.email
     end
-    
+
     email_subject = "Credit Note" + "_" + @creditnote.ref + "_" + @creditnote.date.strftime("%d-%m-%y")
     file_name = current_user.company.name + "_" + @creditnote.ref + "_" + @creditnote.date.strftime("%d-%m-%y") + ".pdf"
     

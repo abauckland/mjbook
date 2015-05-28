@@ -13,21 +13,21 @@ module Mjbook
       state :rejected
       state :accepted
       state :paid
-  
+
       event :accept do
         transitions :from => :submitted, :to => :accepted
         transitions :from => :rejected, :to => :accepted
       end
-  
+
       event :reject do
         transitions :from => :submitted, :to => :rejected
         transitions :from => :accepted, :to => :rejected
       end
-  
+
       event :pay do
         transitions :from => :accepted, :to => :paid
       end
-  
+
       event :correct do
         transitions :from => :paid, :to => :accepted
       end

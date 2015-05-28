@@ -59,6 +59,7 @@ module Mjbook
     scope :personal, ->() { where(:exp_type => 1).uniq }
     scope :salary, ->() { where(:exp_type => 2).uniq }
     scope :transfer, ->() { where(:exp_type => 3).uniq }
+
     private
 
 #    default_scope { order('date DESC') }
@@ -77,7 +78,7 @@ module Mjbook
           else
             receipt_confirm = ""
           end
-          
+
           if !set.mileage.blank?
             mileage_distance = set.mileage.distance.to_s
           else

@@ -11,7 +11,7 @@ module Mjbook
     has_one :summary
 
     enum inc_type: [:invoice, :transfer, :misc]
-        
+
     aasm :column => 'state' do
 
       state :paid, :initial => true
@@ -24,7 +24,7 @@ module Mjbook
       event :unreconcile do
         transitions :from => :reconciled, :to => :paid
       end
-  
+
     end
 
     def self.to_csv

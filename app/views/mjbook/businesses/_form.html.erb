@@ -20,14 +20,14 @@
                             <span>
                                 <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true})%>
                             </span></br>
-    
+
                             <!-- link button -->
                             <label class="label_100"></label>
                         <% end %>
                         <span>
                             <%= link_to "add new project", new_project_path, class: "form_button" %>
                         </span></br>
-                        
+
                         <!-- form input[select -->
                         <div class="form_tooltip" id="personalexpense_supplier"></div>
                         <label class="label_100">Supplier:*</label>
@@ -35,7 +35,7 @@
                             <span>
                                 <%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true})%>
                             </span></br>
-    
+
                             <!-- link button -->
                             <label class="label_100"></label>
                         <% end %>
@@ -71,14 +71,14 @@
                             <span>
                                 <%= image_tag(@expense.receipt_url, {:height => "50px"}) %>
                             </span></br>
-    
+
                             <!-- link button -->
                             <label class="label_100"></label>
                         <% end %>
                         <span>
                             <%= f.file_field :receipt %>
                         </span></br>
-                        
+
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="personalexpense_price"></div>
                         <label class="label_100">Total (ex VAT):*</label>
@@ -92,7 +92,7 @@
                         <span>
                             <%= f.text_field :vat, {:placeholder => "0.00", :value => number_with_precision(f.object.vat, :precision => 2)} %>
                         </span></br>
-                        
+
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="personalexpense_total"></div>
                         <label class="label_100">Total (inc VAT):*</label>
@@ -114,7 +114,7 @@
                             <%= f.date_field :due_date %>
                         </span></br>
 
-                        
+
                     </fieldset>
             </div>
 <!-- column footer start--> 

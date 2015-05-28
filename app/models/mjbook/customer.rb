@@ -2,9 +2,9 @@ module Mjbook
   class Customer < ActiveRecord::Base
 
    #relationship with model in main app
-    belongs_to :company    
+    belongs_to :company
     has_many :projects
-    
+
 
     validates :company_name,
       presence: true,

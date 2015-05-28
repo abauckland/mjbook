@@ -2,17 +2,17 @@ module Mjbook
 class InvoiceMailer < ActionMailer::Base
 
   def invoice(invoice, document, current_user, settings)
-    
+
     @invoice = invoice
-    @customer = Mjbook::Customer.joins(:projects => :invoices).where('mjbook_invoices.id' => invoice.id).first    
+    @customer = Mjbook::Customer.joins(:projects => :invoices).where('mjbook_invoices.id' => invoice.id).first
     @user = current_user
         
     if @customer
       email_address = @customer.email
-    else  
+    else
       email_address = current_user.email
     end
-    
+
     email_subject = "Invoice" + "_" + @invoice.ref + "_" + @invoice.date.strftime("%d-%m-%y")
     file_name = current_user.company.name + "_" + @invoice.ref + "_" + @invoice.date.strftime("%d-%m-%y") + ".pdf"
     

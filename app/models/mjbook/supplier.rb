@@ -2,7 +2,7 @@ module Mjbook
   class Supplier < ActiveRecord::Base
    
     #relationship with model in main app
-    belongs_to :company        
+    belongs_to :company
     has_many :expenses
 
     validates :company_name,

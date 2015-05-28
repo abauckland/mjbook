@@ -17,6 +17,6 @@ module Mjbook
       super(text.downcase)
     end
 
-    
+
   end
 end

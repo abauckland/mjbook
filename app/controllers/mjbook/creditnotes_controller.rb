@@ -66,13 +66,13 @@ module Mjbook
           item.pay!
         end
 
-        #check if all the inlines for the invoice have been paid          
+        #check if all the inlines for the invoice have been paid
         check_inlines = Mjbook::Inline.paid.join(:ingroup).where('mjbooks_invoice_id' => invoice.id)
         if check_inlines.blank?
           invoice.pay!
-        else  
+        else
           invoice.part_pay!
-        end     
+        end
         
         redirect_to creditnotes_path, notice: 'Creditnote was successfully created.'
       else
@@ -94,7 +94,7 @@ module Mjbook
 
         settings = Mjbook::Setting.where(:company_id => current_user.company_id).first
 
-        msg = CreditnoteMailer.creditnote(@creditnote, @document, current_user, settings)        
+        msg = CreditnoteMailer.creditnote(@creditnote, @document, current_user, settings)
         if !settings.blank?
           user_mail_setting = {:domain => settings.email_domain, :user_name => settings.email_username, :password => settings.email_password}
           msg.delivery_method.settings.merge!(user_mail_setting)
@@ -144,7 +144,7 @@ module Mjbook
       end
 
 
-      def print_creditnote_document(creditnote)  
+      def print_creditnote_document(creditnote)
        @document = Prawn::Document.new(
                                              :page_size => "A4",
                                               :margin => [5.mm, 10.mm, 5.mm, 10.mm],
