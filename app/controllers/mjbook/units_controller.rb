@@ -6,14 +6,14 @@ module Mjbook
 
      #create hash of options
     @unit_options = {}
-    
+
     @units.each do |u|
       key = u.id
       value = u.text
       @unit_options[key] = value
     end
     #render as json for jeditable
-    render :json => @unit_options       
+    render :json => @unit_options
   end
     
   end

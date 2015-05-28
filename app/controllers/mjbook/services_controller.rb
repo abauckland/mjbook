@@ -11,16 +11,16 @@ module Mjbook
     # GET /products
     def index
     end
-    
+
     def item_options
 
-# HACK unclear why nessting does not work here!     
+# HACK unclear why nessting does not work here!
       @line = Qline.find(params[:id])
       @services = Product.joins(:productcategory).where('mjbook_productcategories.text' => @line.cat)
-  
+
       #create hash of options
       @service_options = {}
-      
+
       @services.each do |p|
         key = p.id
         value = p.item
@@ -31,12 +31,12 @@ module Mjbook
     end
 
     def cat_item_options
-    
+
       @services = policy_scope(Product).where(:linetype => 1).order(:item)
-  
+
       #create hash of options
       @service_options = {}
-      
+
       @services.each do |p|
         key = p.id
         value = p.item
@@ -65,7 +65,7 @@ module Mjbook
       vat_rate = vat.rate
       vat_due = price*(vat_rate/100)
       total = price+vat_due
-      
+
       @service.vat_due = vat_due           
       @service.total = total
 
@@ -77,7 +77,7 @@ module Mjbook
     end
 
     # PATCH/PUT /products/1
-    def update      
+    def update
       if @service.update(service_params)
 
         #calculate cost field for product and update
@@ -86,9 +86,9 @@ module Mjbook
         vat_rate = vat.rate
         vat_due = price*(vat_rate/100)
         total = price+vat_due
-        
-        @service.update(:vat_due => vat_due, :total => total)     
-        
+
+        @service.update(:vat_due => vat_due, :total => total)
+
         redirect_to services_path, notice: 'Service was successfully updated.'
       else
         render :edit
@@ -102,17 +102,17 @@ module Mjbook
     end
 
     def print
-        
+
       services = Product.where(:company_id => current_user.company_id).order(:item)
-         
+
       filename = "Services (lump sum).pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
-        table_indexes(services, 'service', nil, nil, nil, filename, pdf)      
+      ) do |pdf|
+        table_indexes(services, 'service', nil, nil, nil, filename, pdf)
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -128,7 +128,7 @@ module Mjbook
       def set_service
         @service = Product.find(params[:id])
       end
-      
+
       def set_categories
         @servicecategories = policy_scope(Productcategory).order(:text)
       end

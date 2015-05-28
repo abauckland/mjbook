@@ -79,7 +79,7 @@ module Mjbook
           invoice.pay!
         else  
           invoice.part_pay!
-        end     
+        end
         
         redirect_to writeoffs_path, notice: 'Write off was successfully record.'
       else
@@ -125,8 +125,8 @@ module Mjbook
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
-            table_indexes(data, 'writeoff', filter_group, date_from, date_to, filename, pdf)      
+          ) do |pdf|
+            table_indexes(data, 'writeoff', filter_group, date_from, date_to, filename, pdf)
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"        

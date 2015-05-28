@@ -84,7 +84,7 @@ module Mjbook
     def create
 
       if params[:invoice_content] == 'clone_quote'
-        
+
        clone_quote = Quote.where(:id => params[:clone_quote]).first
 
        new_invoice_hash = {
@@ -201,15 +201,15 @@ module Mjbook
       def set_quotes
         @quotes = policy_scope(Quote).accepted.order('ref')
       end
-      
+
       def set_invoices
         @invoices = policy_scope(Invoice)
-      end      
-      
+      end
+
       def set_projects
         @projects = policy_scope(Project).order('ref')
       end
-      
+
       def set_invoiceterms
         @invoiceterms = policy_scope(Invoiceterm)
       end
@@ -227,7 +227,7 @@ module Mjbook
          else
            filter_group = "All Customers"
          end
-         
+
          filename = "Invoices_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
                  
          document = Prawn::Document.new(
@@ -275,7 +275,7 @@ module Mjbook
           new_ingroup = ingroup.dup
           new_ingroup.save
           new_ingroup.update(:invoice_id => invoice.id)
-          
+
           clone_line = Mjbook::Inline.where(:ingroup_id => ingroup.id)
           clone_line.each do |inline|
             new_inline = inline.dup

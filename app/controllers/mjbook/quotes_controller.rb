@@ -2,12 +2,12 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class QuotesController < ApplicationController
-        
+
     before_action :set_quote, only: [:show, :edit, :update, :destroy, :print, :reject, :accept, :email, :print]
     before_action :set_quotes, only: [:new, :create]
     before_action :set_quoteterms, only: [:new, :edit, :create, :update]
     before_action :set_projects, only: [:new, :edit, :create, :update]
-        
+
     include PrintIndexes
     include PrintQuote
 
@@ -105,13 +105,13 @@ module Mjbook
         @quote = Quote.new(new_quote_hash)
 
       authorize @quote
-        if @quote.save          
+        if @quote.save
           create_quote_content(@quote, clone_quote)
           redirect_to quotecontent_path(:id => @quote.id), notice: 'Quote was successfully created.'
         else
           render :new
         end
-      end 
+      end
 
       if params[:quote_content] == 'blank'
         @quote = Quote.new(quote_params)
@@ -142,15 +142,15 @@ module Mjbook
       @quote.destroy
       redirect_to quotes_url, notice: 'Quote was successfully destroyed.'
     end
-    
+
     def accept
       authorize @quote
       #mark expense ready for payment
       if @quote.accept!       
         respond_to do |format|
           format.js   { render :accept, :layout => false }
-        end  
-      end      
+        end
+      end
     end 
 
     def reject
@@ -159,10 +159,10 @@ module Mjbook
       if @quote.reject!
         respond_to do |format|
           format.js   { render :reject, :layout => false }
-        end 
-      end    
+        end
+      end
     end
-    
+
     def print
       authorize @quote
         print_quote_document(@quote)
@@ -200,20 +200,20 @@ module Mjbook
       def set_quotes
         @quotes = policy_scope(Quote).order('ref')
       end
-      
+
       def set_projects
         @projects = policy_scope(Project).order('ref')
       end
-      
+
       def set_quoteterms
-        @quoteterms = policy_scope(Quoteterm)      
+        @quoteterms = policy_scope(Quoteterm)
       end
 
       # Only allow a trusted parameter "white list" through.
       def quote_params
         params.require(:quote).permit(:project_id, :ref, :title, :customer_ref, :date, :state, :price, :vat_due, :total, :quoteterm_id)
       end
-      
+
       def pdf_quote_index(quotes, customer_id, date_from, date_to)
          customer = Customer.where(:id => customer_id).first if customer_id
 
@@ -222,17 +222,17 @@ module Mjbook
          else
            filter_group = "All Customers"
          end
-         
+
          filename = "Quotes_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
-                 
+
          document = Prawn::Document.new(
             :page_size => "A4",
             :page_layout => :landscape,
             :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
-      
+
             table_indexes(quotes, 'quote', filter_group, date_from, date_to, filename, pdf)
-      
+
           end
 
           send_data document.render, filename: filename, :type => "application/pdf"
@@ -246,7 +246,7 @@ module Mjbook
          else
            filter_group = "All Customers"
          end
-         
+
          filename = "Quotes_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
 
          send_data quotes.to_csv, filename: filename, :type => "text/csv"
@@ -265,19 +265,19 @@ module Mjbook
 
         clone_group = Mjbook::Qgroup.where(:quote_id => clone_quote.id)
         clone_group.each do |qgroup|
-          
+
           new_qgroup = qgroup.dup
           new_qgroup.save
           new_qgroup.update(:quote_id => quote.id)
-          
+
           clone_line = Mjbook::Qline.where(:qgroup_id => new_qgroup.id)
           clone_line.each do |qline|
             new_qline = qline.dup
             new_qline.save
-            new_qline.update(:qgroup_id => new_qgroup.id)           
+            new_qline.update(:qgroup_id => new_qgroup.id)
           end
-        end        
+        end
       end
-      
+
   end
 end

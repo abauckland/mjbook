@@ -5,9 +5,9 @@ module Mjbook
     before_action :set_ingroup
 
     def new_group
-      
+
       update_group_order(@group, 'new')
-  
+
       @new_group = @group.dup
       @new_group.group_order = @group.group_order + 1
       @new_group.save
@@ -15,7 +15,7 @@ module Mjbook
       inline = Mjbook::Inline.create(:ingroup_id => @new_group.id)
 
       respond_to do |format|
-        format.js {render :new_group, :layout => false }  
+        format.js {render :new_group, :layout => false }
       end 
     end
 
@@ -30,21 +30,21 @@ module Mjbook
       @group.destroy      
 
       update_group_order(group_dup, 'delete')
-      update_totals(group_dup.invoice_id)     
-      
+      update_totals(group_dup.invoice_id)
+
       respond_to do |format|
-        format.js {render :delete_group, :layout => false }  
-      end       
+        format.js {render :delete_group, :layout => false }
+      end
     end
-    
-    
+
+
     def update_text
       #removes white space and punctuation from end of text
-      clean_text(params[:value])         
+      clean_text(params[:value])
       #save changes
-      @group.update(:text => @value)     
-      #render text only      
-      render :text=> params[:value]          
+      @group.update(:text => @value)
+      #render text only
+      render :text=> params[:value]
     end
 
 
@@ -64,7 +64,7 @@ module Mjbook
         subsequent_groups = Ingroup.where('invoice_id = ? AND group_order > ?', selected_group.invoice_id, selected_group.group_order).order('group_order')
 
         @subsequent_prefix = []
-        
+
         subsequent_groups.each_with_index do |group, i|
           if action == 'new'
             group.update(:group_order => selected_group.group_order + 2 + i)
@@ -74,20 +74,20 @@ module Mjbook
             group.update(:group_order => selected_group.group_order + i)
             @subsequent_prefix[i] = [group.id, selected_group.group_order + i]
           end
-        end       
+        end
         @subsequent_prefix.compact!
       end
 
 
-      def update_totals(invoice_id)        
+      def update_totals(invoice_id)
         @invoice = Invoice.where(:id => invoice_id).first
-       #invoice totals           
+       #invoice totals
         price = Inline.joins(:ingroup).where('mjbook_ingroups.invoice_id' => invoice_id).sum(:price)
         total = Inline.joins(:ingroup).where('mjbook_ingroups.invoice_id' => invoice_id).sum(:total)
         vat_due = Inline.joins(:ingroup).where('mjbook_ingroups.invoice_id' => invoice_id).sum(:vat_due)
-        #update invoice        
-        @invoice.update(:vat_due => vat_due, :total => total, :price => price)                   
-      end  
+        #update invoice
+        @invoice.update(:vat_due => vat_due, :total => total, :price => price)
+      end
 
   end
 end

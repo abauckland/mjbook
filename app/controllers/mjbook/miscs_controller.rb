@@ -7,20 +7,20 @@ module Mjbook
     before_action :set_categories, only: [:new, :edit]
 
     include PrintIndexes
-    
+
     # GET /products
     def index
     end
-    
+
     def item_options
 
-# HACK unclear why nessting does not work here!     
+# HACK unclear why nessting does not work here!
       @line = Qline.find(params[:id])
       @pmiscs = Product.joins(:productcategory).where('mjbook_productcategories.text' => @line.cat)
   
       #create hash of options
       @misc_options = {}
-      
+
       @miscs.each do |p|
         key = p.id
         value = p.item
@@ -31,12 +31,12 @@ module Mjbook
     end
 
     def cat_item_options
-    
+
       @miscs = policy_scope(Product).order(:item)
-  
+
       #create hash of options
       @misc_options = {}
-      
+
       @miscs.each do |p|
         key = p.id
         value = p.item
@@ -68,8 +68,8 @@ module Mjbook
     end
 
     # PATCH/PUT /products/1
-    def update      
-      if @misc.update(misc_params)        
+    def update
+      if @misc.update(misc_params)
         redirect_to miscs_path, notice: 'Product was successfully updated.'
       else
         render :edit
@@ -83,20 +83,20 @@ module Mjbook
     end
 
     def print
-        
+
       miscs = Product.where(:company_id => current_user.company_id, :linetype => 2).order(:item)
-         
+
       filename = "Miscellaneous Products/Services.pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
-        table_indexes(miscs, 'misc', nil, nil, nil, filename, pdf)      
+      ) do |pdf|
+        table_indexes(miscs, 'misc', nil, nil, nil, filename, pdf)
       end
 
-      send_data document.render, filename: filename, :type => "application/pdf"        
+      send_data document.render, filename: filename, :type => "application/pdf"
     end
 
 
@@ -109,7 +109,7 @@ module Mjbook
       def set_misc
         @misc = Product.find(params[:id])
       end
-      
+
       def set_categories
         @misccategories = policy_scope(Productcategory).order(:text)
       end

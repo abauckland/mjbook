@@ -7,7 +7,7 @@ module Mjbook
     before_action :set_customers, only: [:new, :edit, :update, :create]
 
     include PrintIndexes
-    
+
     # GET /projects
     def index
       authorize @projects
@@ -60,18 +60,18 @@ module Mjbook
     def print
 
       filename = "Projects.pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
-        table_indexes(@projects, 'project', nil, nil, nil, filename, pdf)      
+      ) do |pdf|
+        table_indexes(@projects, 'project', nil, nil, nil, filename, pdf)
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
     end
-    
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_project
@@ -82,10 +82,10 @@ module Mjbook
         @projects = policy_scope(Project)
       end
 
-      def set_customers      
+      def set_customers
         @customers = policy_scope(Customer)
       end
-      
+
       # Only allow a trusted parameter "white list" through.
       def project_params
         params.require(:project).permit(:company_id, :ref, :title, :customer_id, :description, :invoicemethod_id, :customer_ref)

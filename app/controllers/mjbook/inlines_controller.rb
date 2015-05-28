@@ -33,7 +33,7 @@ module Mjbook
 
 
     def update
-      # changes format of line by inserting new line then delete old line 
+      # changes format of line by inserting new line then delete old line
       @old_line = Inline.find(params[:id])
       @old_line_id = @old_line.id
 
@@ -224,33 +224,33 @@ module Mjbook
 
       vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
       rate = @value-vat_due
-      #update line, group and invoice totals      
+      #update line, group and invoice totals
       @line.update(:price => @value, :vat_due => vat_due, :rate => rate)
-      
+
       update_totals(@line.ingroup_id)
 
       render :update_line, :layout => false 
     end
 
     def update_total
- 
+
 #      clean_number(params[:value])
-            
-#      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
+
+#      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate
 #      rate = (@value-vat_due)/@line.quantity
 #      price = @value-vat_due
-      #update line, group and invoice totals      
-#      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)            
-      
+      #update line, group and invoice totals
+#      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)
+
 #      update_totals(@line.ingroup_id)
-    
-#      render :update_inline, :layout => false 
+
+#      render :update_inline, :layout => false
     end
 
-    def update_unit  
+    def update_unit
       #save changes
       @line.update(:unit_id => params[:value])
-      #render text only      
+      #render text only
       render :text=> @line.unit.text
     end
 
@@ -259,7 +259,7 @@ module Mjbook
       clean_text(params[:value])
       #save changes
       @line.update(:text => @value)
-      #render text only      
+      #render text only
       render :text=> params[:value]
     end
 
@@ -285,7 +285,7 @@ module Mjbook
         @ingroup = Ingroup.where(:id => ingroup_id).first
         @ingroup.update(:vat_due => vat_due, :total => total, :price => price)
 
-       #invoice totals              
+       #invoice totals
         group_ids = Ingroup.where(:invoice_id => @ingroup.invoice_id)
         price = Inline.where(:ingroup_id => group_ids).sum(:price)
         total = Inline.where(:ingroup_id => group_ids).sum(:total)

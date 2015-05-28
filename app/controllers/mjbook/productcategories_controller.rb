@@ -9,13 +9,13 @@ module Mjbook
     def index
       authorize @productcategories
     end
-    
+
     def cat_options
       @productcats = policy_scope(Productcategory).order(:text)
-  
+
       #create hash of options
       @productcat_options = {}
-      
+
       @productcats.each do |p|
         key = p.id
         value = p.text
@@ -69,7 +69,7 @@ module Mjbook
       def set_productcategories
         @productcategories = policy_scope(Productcategory).order(:text)
       end
-      
+
       def set_productcategory
         @productcategory = Productcategory.find(params[:id])
       end

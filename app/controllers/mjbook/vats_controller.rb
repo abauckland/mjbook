@@ -6,7 +6,7 @@ module Mjbook
   
       #create hash of options
       @vat_options = {}
-      
+
       @vats.each do |u|
         key = u.id
         value = u.cat
@@ -15,6 +15,6 @@ module Mjbook
       #render as json for jeditable
       render :json => @vat_options
     end
-    
+
   end
 end

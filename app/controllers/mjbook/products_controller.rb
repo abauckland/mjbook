@@ -7,21 +7,21 @@ module Mjbook
     before_action :set_categories, only: [:new, :edit]
 
     include PrintIndexes
-    
+
     # GET /products
     def index
       authorize @products
     end
-    
+
     def quote_item_options
 
-# HACK unclear why nessting does not work here!     
+# HACK unclear why nessting does not work here!
       @line = Qline.find(params[:id])
       @products = Product.joins(:productcategory).where('mjbook_productcategories.text' => @line.cat)
-  
+
       #create hash of options
       @product_options = {}
-      
+
       @products.each do |p|
         key = p.id
         value = p.item
@@ -34,13 +34,13 @@ module Mjbook
 
     def invoice_item_options
 
-# HACK unclear why nessting does not work here!     
+# HACK unclear why nessting does not work here!
       @line = Inline.find(params[:id])
       @products = Product.joins(:productcategory).where('mjbook_productcategories.text' => @line.cat)
-  
+
       #create hash of options
       @product_options = {}
-      
+
       @products.each do |p|
         key = p.id
         value = p.item
@@ -52,12 +52,12 @@ module Mjbook
 
 
     def cat_item_options
-    
+
       @products = policy_scope(Product).where(:linetype => 0).order(:item)
-  
+
       #create hash of options
       @product_options = {}
-      
+
       @products.each do |p|
         key = p.id
         value = p.item
@@ -90,9 +90,9 @@ module Mjbook
       vat_rate = vat.rate
       vat_due = price*(vat_rate/100)
       total = price+vat_due
-      
+
       @product.price = price
-      @product.vat_due = vat_due           
+      @product.vat_due = vat_due
       @product.total = total
 
       if @product.save
@@ -103,7 +103,7 @@ module Mjbook
     end
 
     # PATCH/PUT /products/1
-    def update      
+    def update
       authorize @product
       if @product.update(product_params)
 
@@ -115,9 +115,9 @@ module Mjbook
         vat_rate = vat.rate
         vat_due = price*(vat_rate/100)
         total = price+vat_due
-        
-        @product.update(:price => price, :vat_due => vat_due, :total => total)     
-        
+
+        @product.update(:price => price, :vat_due => vat_due, :total => total)
+
         redirect_to products_path, notice: 'Product was successfully updated.'
       else
         render :edit
@@ -132,9 +132,9 @@ module Mjbook
     end
 
     def print
-        
+
       products = Product.where(:company_id => current_user.company_id, :linetype => 0).order(:item)
-         
+
       filename = "Products (variable sum).pdf"
                  
       document = Prawn::Document.new(
@@ -142,7 +142,7 @@ module Mjbook
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
       ) do |pdf|      
-        table_indexes(products, 'product', nil, nil, nil, filename, pdf)      
+        table_indexes(products, 'product', nil, nil, nil, filename, pdf)
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        
@@ -158,7 +158,7 @@ module Mjbook
       def set_product
         @product = Product.find(params[:id])
       end
-      
+
       def set_categories
         @productcategories = policy_scope(Productcategory).order(:text)
       end

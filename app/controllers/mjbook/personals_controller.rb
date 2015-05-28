@@ -98,7 +98,7 @@ module Mjbook
 #      authorize @expense
 #      authorize(:personal, :create?)
       if @expense.save
-          redirect_to personals_path, notice: 'Expense was successfully created.'            
+          redirect_to personals_path, notice: 'Expense was successfully created.'
       else
        # render :new
       end
@@ -129,11 +129,11 @@ module Mjbook
         @expense = Expense.find(params[:id])
       end
 
-      def set_projects     
+      def set_projects
         @projects = policy_scope(Project)
       end
-      
-      def set_suppliers     
+
+      def set_suppliers
         @suppliers = Supplier.where(:company_id => current_user.company_id)
       end
 
@@ -155,14 +155,14 @@ module Mjbook
          else
            filter_group = "All Employees"
          end
-         
+
          filename = "Personal_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.pdf"
                  
          document = Prawn::Document.new(
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
+          ) do |pdf|
             table_indexes(expenses, 'personal', filter_group, date_from, date_to, filename, pdf)      
           end
 
@@ -177,7 +177,7 @@ module Mjbook
          else
            filter_group = "All Employees"
          end
-         
+
          filename = "Personal_expenses_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
 
          send_data expenses.to_csv, filename: filename, :type => "text/csv"

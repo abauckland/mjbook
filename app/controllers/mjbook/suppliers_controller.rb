@@ -63,11 +63,11 @@ module Mjbook
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
+      ) do |pdf|
         table_indexes(@suppliers, 'supplier', nil, nil, nil, filename, pdf)
       end
 
-      send_data document.render, filename: filename, :type => "application/pdf"        
+      send_data document.render, filename: filename, :type => "application/pdf"
     end
 
 

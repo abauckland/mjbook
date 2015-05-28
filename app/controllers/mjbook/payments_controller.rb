@@ -241,7 +241,7 @@ module Mjbook
       def set_accounts
         @companyaccounts = policy_scope(Companyaccount)
       end
-      
+
       def set_paymethods
         @paymethods = Mjbook::Paymethod.all
       end
@@ -284,7 +284,7 @@ module Mjbook
          else
            filter_group = "All Accounts"
          end
-         
+
          filename = "Payments_#{ filter_group }_#{ date_from }_#{ date_to }.csv"
 
          send_data payments.to_csv, filename: filename, :type => "text/csv"

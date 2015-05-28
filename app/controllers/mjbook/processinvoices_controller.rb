@@ -10,17 +10,17 @@ module Mjbook
     before_action :set_invoice_total, except: [:index] 
     before_action :set_accounts, except: [:index]
     before_action :set_paymethods, except: [:index]
-        
+
     def index
       inline_ids = params[:checked_ids].split(",").map { |s| s.to_i }
-      
+
       #group subtotal
       price = Inline.where(:id => inline_ids).sum(:price)
       vat_due = Inline.where(:id => inline_ids).sum(:vat_due)
       total = Inline.where(:id => inline_ids).sum(:total)
-           
+
       render json: {:invoice_price => price, :invoice_vat_due => vat_due, :invoice_total => total, :inline_ids => inline_ids}
-      
+
     end
 
     def payment
@@ -32,7 +32,7 @@ module Mjbook
     end
 
     def writeoff
-      @writeoff = Mjbook::Writeoff.new      
+      @writeoff = Mjbook::Writeoff.new
     end
 
     private
@@ -64,7 +64,7 @@ module Mjbook
       def set_accounts
         @companyaccounts = policy_scope(Companyaccount)
       end
-      
+
       def set_paymethods
         @paymethods = Mjbook::Paymethod.all        
       end

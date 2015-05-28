@@ -5,7 +5,7 @@ module Mjbook
     before_action :set_quoteterm, only: [:edit, :update, :destroy]
 
     include PrintIndexes
-    
+
     # GET /quoteterms
     def index
       @quoteterms = policy_scope(Quoteterm)
@@ -53,18 +53,18 @@ module Mjbook
       @quoteterm = Quoteterm.where(:company_id => params[:id]).first
       authorize @quoteterm 
       quoteterms = Quoteterm.where(:company_id => params[:id])
-         
+
       filename = "Quote Terms.pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
-        table_indexes(quoteterms, 'term', nil, nil, nil, filename, pdf)      
+      ) do |pdf|
+        table_indexes(quoteterms, 'term', nil, nil, nil, filename, pdf)
       end
 
-      send_data document.render, filename: filename, :type => "application/pdf"        
+      send_data document.render, filename: filename, :type => "application/pdf"
     end
 
     private

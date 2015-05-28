@@ -5,7 +5,7 @@ module Mjbook
     before_action :set_invoiceterm, only: [:edit, :update, :destroy]
 
     include PrintIndexes
-    
+
     # GET /invoiceterms
     def index
       @invoiceterms = policy_scope(Invoiceterm)
@@ -51,17 +51,17 @@ module Mjbook
 
     def print
       @invoiceterm = Invoiceterm.where(:company_id => params[:id]).first
-      authorize @invoiceterm        
+      authorize @invoiceterm
       invoiceterms = Invoiceterm.where(:company_id => params[:id])
-         
+
       filename = "Inovice Terms.pdf"
-                 
+
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
-        table_indexes(invoiceterms, 'term', nil, nil, nil, filename, pdf)      
+      ) do |pdf|
+        table_indexes(invoiceterms, 'term', nil, nil, nil, filename, pdf)
       end
 
       send_data document.render, filename: filename, :type => "application/pdf"        

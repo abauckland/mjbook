@@ -133,11 +133,11 @@ module Mjbook
         @miscexpense = Miscexpense.find(params[:id])
       end
 
-      def set_projects     
+      def set_projects
         @projects = policy_scope(Project)
       end
-      
-      def set_suppliers     
+
+      def set_suppliers
         @suppliers = policy_scope(Supplier)
       end
 
@@ -165,11 +165,11 @@ module Mjbook
           :page_size => "A4",
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-          ) do |pdf|      
+          ) do |pdf|
             table_indexes(expenses, 'misc', filter_group, date_from, date_to, filename, pdf)
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"        
+          send_data document.render, filename: filename, :type => "application/pdf"
       end
 
   end

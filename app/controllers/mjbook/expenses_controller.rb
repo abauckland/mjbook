@@ -8,12 +8,12 @@ module Mjbook
     def accept
       authorize @expense
       #mark expense ready for payment
-      if @expense.accept!     
+      if @expense.accept!
         respond_to do |format|
           format.js   { render :accept, :layout => false }
-        end  
-      end      
-    end 
+        end
+      end
+    end
 
     def reject
       authorize @expense
@@ -21,8 +21,8 @@ module Mjbook
       if @expense.reject!
         respond_to do |format|
           format.js   { render :reject, :layout => false }
-        end 
-      end    
+        end
+      end
     end
 
     private

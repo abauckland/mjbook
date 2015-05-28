@@ -7,7 +7,7 @@ module Mjbook
     before_action :set_mileagemodes, only: [:new, :edit]
 
     include PrintIndexes
-    
+
     # GET /mileages
     def index
       @mileages = policy_scope(Mileage)
@@ -29,7 +29,7 @@ module Mjbook
     # POST /mileages
     def create
       @mileage = Mileage.new(mileage_params)
-            
+
       if @mileage.save
         add_to_expenses(@mileage)
 
@@ -49,20 +49,20 @@ module Mjbook
     end
 
     def print
-        
+
       mileages = Mileage.where(:user_id => current_user.user_id)
-         
+
       filename = "Mileage_expenses.pdf"
                  
       document = Prawn::Document.new(
         :page_size => "A4",
         :page_layout => :landscape,
         :margin => [10.mm, 10.mm, 5.mm, 10.mm]
-      ) do |pdf|      
-        table_indexes(mileages, 'mileage', nil, nil, nil, filename, pdf)      
+      ) do |pdf|
+        table_indexes(mileages, 'mileage', nil, nil, nil, filename, pdf)
       end
 
-      send_data document.render, filename: filename, :type => "application/pdf"        
+      send_data document.render, filename: filename, :type => "application/pdf"
     end
 
     # DELETE /mileages/1
@@ -70,8 +70,8 @@ module Mjbook
       @mileage.destroy
       redirect_to mileages_url, notice: 'Mileage was successfully destroyed.'
     end
-    
-    
+
+
 
 
     private
@@ -80,7 +80,7 @@ module Mjbook
         @mileage = Mileage.find(params[:id])
       end
 
-      def set_projects     
+      def set_projects
         @projects = policy_scope(Project)
       end
 
@@ -94,19 +94,19 @@ module Mjbook
       end
 
       def add_to_expenses(mileage)
-        
-    #   distance = mileage.distance 
-    #   mileage_rate = mileage.mileagemode.rate
-     #  amount = distance*mileage_rate 
 
-        distance = mileage.distance.to_d        
+    #   distance = mileage.distance
+    #   mileage_rate = mileage.mileagemode.rate
+     #  amount = distance*mileage_rate
+
+        distance = mileage.distance.to_d
         mode = Mjbook::Mileagemode.where(:id => mileage.mileagemode_id, :company_id => current_user.company_id).first
         rate= mode.rate.to_d
-        
+
         expense = Mjbook::Expense.new(
                     :company_id => current_user.company_id,
                     :user_id => current_user.id,
-                    :mileage_id => mileage.id,    
+                    :mileage_id => mileage.id,
                     :project_id => mileage.project_id,
                     :hmrcexpcat_id => mileage.hmrcexpcat_id,
                     :date => Time.now,
@@ -117,7 +117,7 @@ module Mjbook
                     :total => distance*rate,
                      )
         expense.save 
-                     
+
       end
 
 

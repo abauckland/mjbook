@@ -17,17 +17,17 @@ module Mjbook
 
       respond_to do |format|
         format.js {render :new_line, :layout => false }
-      end      
+      end
     end
 
 
     def edit_line
-      
+
       @linetypes = [['1','product item'],['2','service item (fixed price)'],['3','misc item']]
-      
+
       respond_to do |format|
-        format.js {render :edit_line, :layout => false }  
-      end            
+        format.js {render :edit_line, :layout => false }
+      end
     end
 
 
@@ -42,7 +42,7 @@ module Mjbook
 
       @old_line.destroy
       update_totals(@line.qgroup_id)
-                
+
       respond_to do |format|
         format.js {render :update_line, :layout => false }
       end
@@ -52,28 +52,28 @@ module Mjbook
     def delete_line
 
       @deleted_line_id = @line.id
-      line_dup = @line.dup 
-         
+      line_dup = @line.dup
+
       @line.destroy
-      
+
       update_line_order(line_dup, 'delete') 
       update_totals(line_dup.qgroup_id)
-                   
+
       respond_to do |format|
         format.js {render :delete_line, :layout => false }  
-      end          
+      end
     end
 
 
 #differnt versions depending on linetype
     def update_cat
-      
+
       if params[:value] == "Add new..."
-        #render option for inputting new category      
-        respond_to do |format|      
-          format.js {render :change_cat_input, :layout => false }        
-        end        
-      else  
+        #render option for inputting new category
+        respond_to do |format|
+          format.js {render :change_cat_input, :layout => false }
+        end
+      else
 
         old_line = Qline.find(params[:id])
         @old_line_id = old_line.id
@@ -83,9 +83,9 @@ module Mjbook
 #        const_name =  @model_name.camelize
 #        category_klass = Mjbook.const_get(const_name)
 #        cat = category_klass.where(:id => params[:value]).first
-        
-        cat = Mjbook::Productcategory.where(:id => params[:value]).first         
-        
+
+        cat = Mjbook::Productcategory.where(:id => params[:value]).first
+
         @line = Qline.create(:cat => cat.text,
                              :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
@@ -94,28 +94,28 @@ module Mjbook
         old_line.destroy
         update_totals(@line.qgroup_id)
 
-        respond_to do |format|      
-          format.js {render :update_line, :layout => false }        
+        respond_to do |format|
+          format.js {render :update_line, :layout => false }
         end
-      end         
+      end
     end
 
 
     def update_item
-      
+
       if params[:value] == "Add new..."
-        
+
          @line = Qline.find(params[:id])
-        #render option for inputting new category      
-        respond_to do |format|      
-          format.js {render :change_product_input, :layout => false }        
-        end         
-      else  
+        #render option for inputting new category
+        respond_to do |format|
+          format.js {render :change_product_input, :layout => false }
+        end
+      else
         #set model names for each type of item, determined by linetype
         #case line.linetype
         #  when 1 ; @model_name = "Product"
-        #  when 2 ; @model_name = "Service "         
-        #  when 3 ; @model_name = "Rate"          
+        #  when 2 ; @model_name = "Service "
+        #  when 3 ; @model_name = "Rate"
         #  when 4 ; @model_name = "Misc"
         #end
         old_line = Qline.find(params[:id])
@@ -123,11 +123,11 @@ module Mjbook
         
 #        const_name =  @model_name.camelize
 #        item_klass = Mjbook.const_get(const_name)
-#        item = item_klass.where(:id => params[:value]).first        
-        
-        item = Product.where(:id => params[:value]).first        
+#        item = item_klass.where(:id => params[:value]).first
+
+        item = Product.where(:id => params[:value]).first
         cat = Productcategory.where(:id => item.productcategory_id).first
-        
+
         if old_line.linetype == 1
         @line = Qline.create(:cat => cat.text,
                              :item => item.item,
@@ -155,7 +155,7 @@ module Mjbook
                              :total=> item.price,     
                              :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)          
+                             :linetype => old_line.linetype)
         end
 
         if old_line.linetype == 3
@@ -170,8 +170,8 @@ module Mjbook
                              :total=> 0,     
                              :qgroup_id => old_line.qgroup_id,
                              :line_order => old_line.line_order,
-                             :linetype => old_line.linetype)          
-        end         
+                             :linetype => old_line.linetype)
+        end
 
         @old_line_id = old_line.id 
         old_line.destroy
@@ -179,27 +179,27 @@ module Mjbook
         update_totals(@line.qgroup_id)
 
         respond_to do |format|      
-          format.js {render :update_line, :layout => false }        
+          format.js {render :update_line, :layout => false }
         end
-      end         
+      end
     end
 
-      
+
     def update_quantity
 
       clean_number(params[:value])
 
-      price = (@line.rate*@value)             
+      price = (@line.rate*@value)
       vat_due = (@line.rate*@value*(@line.vat.rate/100))
       total = (@line.rate*@value)+(@line.rate*@value*(@line.vat.rate/100))
-    
-      @line.update(:quantity => @value, :price => price, :vat_due => vat_due, :total => total)            
+
+      @line.update(:quantity => @value, :price => price, :vat_due => vat_due, :total => total)
 
       update_totals(@line.qgroup_id)
-      
-      respond_to do |format|      
-        format.js {render :update_quantity, :layout => false }        
-      end  
+
+      respond_to do |format|
+        format.js {render :update_quantity, :layout => false }
+      end
     end
 
 
@@ -207,79 +207,79 @@ module Mjbook
 
       clean_number(params[:value])
 
-      price = (@line.quantity*@value)            
+      price = (@line.quantity*@value)
       vat_due = (@line.quantity*@value*(@line.vat.rate/100))
-      total = (@line.quantity*@value*(@line.vat.rate/100))+(@line.quantity*@value)   
-      
-      @line.update(:rate => @value, :price => price, :vat_due => vat_due, :total => total)            
-      
+      total = (@line.quantity*@value*(@line.vat.rate/100))+(@line.quantity*@value)
+
+      @line.update(:rate => @value, :price => price, :vat_due => vat_due, :total => total)
+
       update_totals(@line.qgroup_id)
-      
-      respond_to do |format|      
-        format.js {render :update_rate, :layout => false }        
+
+      respond_to do |format|
+        format.js {render :update_rate, :layout => false }
       end
     end
 
-      
+
     def update_vat_rate
 
-      vat = Vat.where(:id => params[:value]).first 
-      
-      vat_due = (@line.rate*(vat.rate/100))*@line.quantity  
-      total = (@line.rate + vat_due)*@line.quantity   
+      vat = Vat.where(:id => params[:value]).first
+
+      vat_due = (@line.rate*(vat.rate/100))*@line.quantity
+      total = (@line.rate + vat_due)*@line.quantity
       #update line, group and quote totals
-      @line.update(:total =>total, :vat_id => params[:value], :vat_due => vat_due)            
-      
+      @line.update(:total =>total, :vat_id => params[:value], :vat_due => vat_due)
+
       update_totals(@line.qgroup_id)
-    
-      respond_to do |format|      
-        format.js {render :update_vat_rate, :layout => false }        
+
+      respond_to do |format|
+        format.js {render :update_vat_rate, :layout => false }
       end
     end
 
     def update_price
- 
+
       clean_number(params[:value])
-            
-      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
+
+      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate
       rate = @value-vat_due
-      #update line, group and quote totals      
-      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)            
-      
+      #update line, group and quote totals
+      @line.update(:price => @value, :vat_due => vat_due, :rate => rate)
+
       update_totals(@line.qgroup_id)
-    
-      render :update_line, :layout => false 
+
+      render :update_line, :layout => false
     end
 
     def update_total
- 
+
 #      clean_number(params[:value])
-            
+
 #      vat_due = (@value/(1+@line.vat_rate.rate))*@line.vat_rate.rate 
 #      rate = (@value-vat_due)/@line.quantity
 #      price = @value-vat_due
-      #update line, group and quote totals      
-#      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)            
-      
+      #update line, group and quote totals
+#      @line.update(:total => @value, :vat_due => vat_due, :rate => rate)
+
 #      update_totals(@line.qgroup_id)
-    
-#      render :update_qline, :layout => false 
+
+#      render :update_qline, :layout => false
     end
 
-    def update_unit  
+    def update_unit
       #save changes
-      @line.update(:unit_id => params[:value])     
-      #render text only      
-      render :text=> @line.unit.text         
+      @line.update(:unit_id => params[:value])
+      #render text only
+      render :text=> @line.unit.text
     end
 
     def update_text
       #removes white space and punctuation from end of text
-      clean_text(params[:value])         
+      clean_text(params[:value])
       #save changes
-      @line.update(:text => @value)     
-      #render text only      
-      render :text=> params[:value]          
+      @line.update(:text => @value)
+      #render text only
+      render :text=> params[:value]
     end
 
 
@@ -304,7 +304,7 @@ module Mjbook
         @qgroup = Qgroup.where(:id => qgroup_id).first
         @qgroup.update(:vat_due => vat_due, :total => total, :price => price)
 
-       #quote totals              
+       #quote totals
         group_ids = Qgroup.where(:quote_id => @qgroup.quote_id)
         price = Qline.where(:qgroup_id => group_ids).sum(:price)
         total = Qline.where(:qgroup_id => group_ids).sum(:total)
@@ -312,12 +312,12 @@ module Mjbook
         #update quote
         @quote = Quote.where(:id => @qgroup.quote_id).first
         @quote.update(:vat_due => vat_due, :total => total, :price => price)
-                   
-      end       
-     
+
+      end
+
       def update_line_order(selected_line, action) 
         subsequent_lines = Qline.where('qgroup_id = ? AND line_order > ?', selected_line.qgroup_id, selected_line.line_order)
-        
+
         subsequent_lines.each_with_index do |line, i|
           if action == 'new'
             line.update(:line_order => selected_line.line_order + 2 + i)
@@ -325,8 +325,8 @@ module Mjbook
           if action == 'delete'
             line.update(:line_order => selected_line.line_order + i)
           end
-        end       
+        end
       end
-      
+
   end
 end

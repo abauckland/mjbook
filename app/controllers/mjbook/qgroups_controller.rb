@@ -5,18 +5,18 @@ module Mjbook
     before_action :set_qgroup
 
     def new_group
-      
+
       update_group_order(@group, 'new')
-  
+
       @new_group = @group.dup
       @new_group.group_order = @group.group_order + 1
       @new_group.save
-      
+
       qline = Mjbook::Qline.create(:qgroup_id => @new_group.id)
 
       respond_to do |format|
-        format.js {render :new_group, :layout => false }  
-      end 
+        format.js {render :new_group, :layout => false }
+      end
     end
 
 
@@ -26,25 +26,25 @@ module Mjbook
 
       @deleted_group_id = @group.id
       group_dup = @group.dup 
-         
+
       @group.destroy
-      
-      update_group_order(group_dup, 'delete') 
+
+      update_group_order(group_dup, 'delete')
       update_totals(group_dup.quote_id)
-      
+
       respond_to do |format|
-        format.js {render :delete_group, :layout => false }  
-      end       
+        format.js {render :delete_group, :layout => false }
+      end
     end
-    
-    
+
+
     def update_text
       #removes white space and punctuation from end of text
-      clean_text(params[:value])         
+      clean_text(params[:value])
       #save changes
-      @group.update(:text => @value)     
-      #render text only      
-      render :text=> params[:value]          
+      @group.update(:text => @value)
+      #render text only
+      render :text=> params[:value]
     end
 
 
@@ -62,9 +62,9 @@ module Mjbook
 
       def update_group_order(selected_group, action) 
         subsequent_groups = Qgroup.where('quote_id = ? AND group_order > ?', selected_group.quote_id, selected_group.group_order).order('group_order')
-        
+
         @subsequent_prefix = []
-        
+
         subsequent_groups.each_with_index do |group, i|
           if action == 'new'
             group.update(:group_order => selected_group.group_order + 2 + i)
@@ -75,19 +75,19 @@ module Mjbook
             @subsequent_prefix[i] = [group.id, selected_group.group_order + i]
           end
         end
-        @subsequent_prefix.compact!       
+        @subsequent_prefix.compact!
       end
 
- 
-      def update_totals(quote_id)        
+
+      def update_totals(quote_id)
         @quote = Quote.where(:id => quote_id).first
-       #quote totals           
+       #quote totals
         price = Qline.joins(:qgroup).where('mjbook_qgroups.quote_id' => quote_id).sum(:price)
         total = Qline.joins(:qgroup).where('mjbook_qgroups.quote_id' => quote_id).sum(:total)
         vat_due = Qline.joins(:qgroup).where('mjbook_qgroups.quote_id' => quote_id).sum(:vat_due)
-        #update quote        
-        @quote.update(:vat_due => vat_due, :total => total, :price => price)                   
-      end  
+        #update quote
+        @quote.update(:vat_due => vat_due, :total => total, :price => price)
+      end
 
   end
 end
