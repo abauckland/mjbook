@@ -5,24 +5,25 @@
     <div class="title_help" id="expends_index"></div>
 </div>
 
-<div class="row filter_band">
-    <%= form_tag expends_path, method: :get do %>  
-        <div>
-            <div>
-                <label class="select">Category:</label>
-                <%= select_tag 'hmrcexpcat_id', options_from_collection_for_select(@hmrcexpcats, :id, :category, @hmrcexpcat), :prompt => 'all accounts'%>
-            </div>
-            <div>
-                <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
-                <label class="date">Date To:</label>
-                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>
-            <%= submit_tag 'Filter' %>
-        </div>
-    <% end %>
-</div>
-
+<% if @check_expend_exist %>
+	<div class="row filter_band">
+	    <%= form_tag expends_path, method: :get do %>  
+	        <div>
+	            <div>
+	                <label class="select">Category:</label>
+	                <%= select_tag 'hmrcexpcat_id', options_from_collection_for_select(@hmrcexpcats, :id, :category, @hmrcexpcat), :prompt => 'all accounts'%>
+	            </div>
+	            <div>
+	                <label class="date">Date From:</label>
+	                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
+	                <label class="date">Date To:</label>
+	                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
+	            </div>
+	            <%= submit_tag 'Filter' %>
+	        </div>
+	    <% end %>
+	</div>
+<% end %>
 
 <div class="row">
 

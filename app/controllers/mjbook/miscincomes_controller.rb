@@ -63,6 +63,8 @@ module Mjbook
        @customer = params[:customer_id]
        @date_from = params[:date_from]
        @date_to = params[:date_to]
+
+       @check_miscincome_exist = all_miscincomes.first
     end
 
     # GET /miscincomes/1

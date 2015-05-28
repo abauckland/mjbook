@@ -5,19 +5,21 @@
     <div class="title_help" id="creditnotes_index"></div>
 </div>
 
-<div class="row filter_band">
-    <%= form_tag creditnotes_path, method: :get do %>
-        <div>
-            <div>
-                <label class="date">Date From:</label>
-                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
-                <label class="date">Date To:</label>
-                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
-            </div>
-            <%= submit_tag 'Filter'%>
-        </div>
-    <% end %>
-</div>
+
+	<div class="row filter_band">
+	    <%= form_tag creditnotes_path, method: :get do %>
+	        <div>
+	            <div>
+	                <label class="date">Date From:</label>
+	                <%= date_field_tag( 'date_from', value = @date_from, {placeholder: 'dd/mm/yyyy'}) %>
+	                <label class="date">Date To:</label>
+	                <%= date_field_tag( 'date_to', value = @date_to, {placeholder: 'dd/mm/yyyy'}) %>
+	            </div>
+	            <%= submit_tag 'Filter'%>
+	        </div>
+	    <% end %>
+	</div>
+
 
 <div class="row">
 

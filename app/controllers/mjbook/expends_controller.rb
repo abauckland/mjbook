@@ -65,6 +65,8 @@ module Mjbook
      @date_from = params[:date_from]
      @date_to = params[:date_to]
 
+     @check_expend_exist = policy_scope(Expend).first
+
      authorize @expends
     end
 

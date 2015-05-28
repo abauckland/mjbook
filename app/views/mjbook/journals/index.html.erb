@@ -6,27 +6,27 @@
 </div>
 
 
-<div class="row filter_band">
-    <%= form_tag journals_path, method: :get do %>
-        <div>
-            <div>
-                <label class="select">Transaction:</label>
-                <%= select_tag 'transaction_type', options_for_select(@transaction_types, @selected_transaction_type) %>
-            </div>
-            <div>
-                <label class="select">Period:</label>
-                <%= select_tag 'period_id', options_from_collection_for_select(@periods, :id, :period, @period.id) %>
-            </div>
-            <%= submit_tag 'Filter'%>
-        </div>
-
-        <div class="float_right">
-            <div><%= submit_tag 'pdf', :class => "table_pdf_icon"%></div>
-            <div><%= submit_tag 'csv', :class => "table_csv_icon"%></div>
-        </div>
-
-    <% end %>
-</div>
+	<div class="row filter_band">
+	    <%= form_tag journals_path, method: :get do %>
+	        <div>
+	            <div>
+	                <label class="select">Transaction:</label>
+	                <%= select_tag 'transaction_type', options_for_select(@transaction_types, @selected_transaction_type) %>
+	            </div>
+	            <div>
+	                <label class="select">Period:</label>
+	                <%= select_tag 'period_id', options_from_collection_for_select(@periods, :id, :period, @period.id) %>
+	            </div>
+	            <%= submit_tag 'Filter'%>
+	        </div>
+	
+	        <div class="float_right">
+	            <div><%= submit_tag 'pdf', :class => "table_pdf_icon"%></div>
+	            <div><%= submit_tag 'csv', :class => "table_csv_icon"%></div>
+	        </div>
+	
+	    <% end %>
+	</div>
 
 
 

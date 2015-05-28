@@ -6,6 +6,7 @@
     <div><%= link_to "+ income", new_miscincome_path, class: "title_button" %> </div>
 </div>
 
+<% if @check_miscincome_exist %> 
 <div class="row filter_band">
     <%= form_tag miscincomes_path, method: :get do %>
 
@@ -30,8 +31,9 @@
             <div><%= submit_tag 'csv', :class => "table_csv_icon"%></div>
         </div>
 
-    <% end %> 
+    <% end %>
 </div>
+<% end %> 
 
 <div class="row">
 
