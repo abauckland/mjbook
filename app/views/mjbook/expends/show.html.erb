@@ -1,81 +1,75 @@
 <div class="row title_band">
     <div class="page_title">
-        <h1>Expenditure Item</h1>
+        <h1>Expenditure Details</h1>
+    </div>
+    <div class="title_help" id="expend_show"></div>
+    <div><%= link_to "back", expends_path, class: "title_button" %> </div>
+</div>
+
+<div class="row info_band">
+    <div class="info_right">
+        <div><h3>Total: <%= pounds(@expend.total) %></h3></div>
+    </div>
+    <div class="info_left">
+        <div><h3>Payment Ref: <%= @expend.ref if @expend.ref %></h3></div>
+        <div><h3>Date: <%= @expend.date.strftime("%d/%m/%y") %></h3></div>
+        <div><h3>Status: <%= @expend.state %></h3></div>
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-1-3 column_1">
+
+    <div class="col-1-1 column_1">
         <div class="border">
 
             <%= render :partial => "flash_notice" %>
-<!-- column start-->
+
             <div class="row">
-                <article>
-                    <div class="article-set">
 
-                        <!-- show text line -->
-                        <label class="label_80">Reference:</label>
-                        <span><%= @expend.ref if @expend.ref %></span></br>
-                                
-                        <!-- show text line -->
-                        <label class="label_80">Date:</label>
-                        <span><%= @expend.date.strftime("%d/%m/%y") %></span></br>
-                                
-                        <!-- show text line -->
-                        <label class="label_80">Payment Method:</label>
-                        <span><%= @expend.paymethod.method.titleize %></span></br>
-    
-                        <!-- show text line -->
-                        <label class="label_80">Account:</label>
-                        <span><%= @expend.companyaccount.name.titleize %></span></br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class='expend_ref'>Item No.</th>
+                            <th class='expend_category'>Reference</th>
+                            <th class='expend_item'>Supplier</th>
+                            <th class='expend_quantity'>Date</th>
+                            <th class='expend_price'>Price</th>
+                            <th class='expend_vat_due'>VAT</th>
+                            <th class='expend_total'>Total</th>
+                            <th class="row_button no_buttons_1"></th>
+                        </tr>
+                    </thead>
+                </table>
 
-                        <!-- show text line -->
-                        <label class="label_80">Expense Cat:</label>
-                        <span><%= @expend.hmrcexpcat.category.titleize %></span></br>
+                <table>
+                    <tbody>
 
-                        <% if @expend.receipt %>
-                        <!-- show text line -->
-                        <label class="label_80">Receipt:</label>
-                        <span><%= image_tag(@expend.receipt, width: "140px") %></span></br>
-                        <% end %>
-    
-                        <!-- show text line -->
-                        <label class="label_80">Price:</label>
-                        <span><%= pounds(@expend.price) %></span></br>
-                                
-                        <!-- show text line -->
-                        <label class="label_80">VAT:</label>
-                        <span><%= pounds(@expend.vat) %></span></br>
-    
-                        <!-- show text line -->
-                        <label class="label_80">Total:</label>
-                        <span><%= pounds(@expend.total) %></span></br>
-    
-                        <!-- show text line -->
-                        <label class="label_80">Notes:</label>
-                        <span><%= @expend.note %></span></br>
+                            <% @expenditems.each_with_index do |item, i| %>
+                                <tr>
+                                    <td class='expend_ref'><%= (i + 1) %></td>
+                                    <td class='expend_category'><%= item.expense.ref %></td>
+                                    <td class='expend_item'><%= item.expense.project.supplier.company_name %></td>
+                                    <td class='expend_date'><%= item.expense.date.strftime("%d/%m/%y") %></td>
+                                    <td class='expend_price'><%= pounds(item.expense.price) %></td>
+                                    <td class='expend_vat_due'><%= pounds(item.expense.vat) %></td>
+                                    <td class='expend_total'><%= pounds(item.expense.total) %></td>
+                                    <td id="<%= item.id %>_links" class="row_button no_buttons_1">
+                                        <% if @expend.reconciled? %>
+                                            <%= expenditem_journal_entry(item) %>
+                                        <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>
 
-                    </div>
-                </div>
-            </div>
-<!-- column footer start--> 
-            <div class="row">
-                <div class="form_footer">
-                    <%= link_to "edit details", edit_expend_path(@expend) %>
-                    <%= link_to "back", expends_path %>
-                </div>
-                <% end %>
+                    </tbody>
+                </table>
+
+
             </div>
         </div>
     </div>
 
-    <div class="col-1-3 column_2">
-        <div class="border blank_column"></div>
-    </div>
-    <div class="col-1-3 column_3">
-        <div class="border blank_column"></div>
-    </div>
 </div>
 
 

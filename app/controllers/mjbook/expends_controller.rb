@@ -71,6 +71,7 @@ module Mjbook
     # GET /expends/1
     def show
       authorize @expend
+      @expenditems = Mjbook::Expenditem.where(:expend_id => @expend.id)
     end
 
     # GET /expends/new
