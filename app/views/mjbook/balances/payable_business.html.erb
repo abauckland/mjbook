@@ -1,0 +1,96 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Business Expenses</h1>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="business_due_data">Due Date</th>
+                            <th class="business_job">Job</th>
+                            <th class="business_category">Category</th>
+                            <th class="business_ref">Reference</th>
+                            <th class="business_supplier">Supplier</th>
+                            <th class="business_supplier_ref">Supplier Ref</th>
+                            <th class="business_issue_date">Issue Date</th>
+                            <th width="20px" class="row_button">Bill Image</th>
+                            <th class="business_price">Price</br><span>(ex VAT)</span></th>
+                            <th class="business_vat_due">Vat</th>
+                            <th class="business_total">Total</br><span>(Inc VAT)</span></th>
+                            <th class="business_status">Status</th>
+                            <th class="row_button no_buttons_5"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                        <% if @expenses %>
+                            <% @expenses.each do |expense| %>
+                                <tr>
+                                        <td class="business_due_data"><%= expense.due_date.strftime("%d/%m/%y") %></td>
+                                        <td class="business_job"><%= expense.project.ref %></td>
+                                        <td class="business_category"><%= expense.hmrcexpcat.category.titleize %></td>
+                                        <td class="business_ref"><%= expense.ref %></td>
+                                        <td class="business_supplier"><%= expense.supplier.company_name.titleize %></td>
+                                        <td class="business_supplier_ref"><%= expense.supplier_ref %></td>
+                                        <td class="business_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
+                                        <td width="20px">
+                                            <% if expense.receipt? %>
+                                                <%= link_to "", expense.receipt_url, class: 'line_view_icon fancybox', title: "view receipt" %>
+                                            <% end %>
+                                        </td>
+                                        <td class="business_price"><%= pounds(expense.price) %></td>
+                                        <td class="business_vat_due"><%= pounds(expense.vat) %></td>
+                                        <td class="business_total"><%= pounds(expense.total) %></td>
+                                        <td id="<%= expense.id %>_status" class="business_status"><%= expense.state %></td>
+                                        <td id="<%= expense.id %>_links" class="row_button no_buttons_5">
+                                            <% if expense.submitted? || expense.rejected? %>
+                                                <%= link_to '', business_path(expense), method: :delete, class: 'line_delete_icon_show' , title: "delete" %>                 
+                                                <%= link_to "", edit_business_path(expense), class: 'line_edit_icon_show', title: "edit" %>
+                                            <% else %>
+                                                <%= link_to '', business_path(expense), method: :delete, class: 'line_delete_icon_hidden' , title: "delete" %>               
+                                                <%= link_to "", edit_business_path(expense), class: 'line_edit_icon_hidden', title: "edit" %>
+                                            <% end %>
+											<% if current_user.owner? || current_user.admin? %>
+	                                            <% if expense.submitted? || expense.rejected? %>
+	                                                <%= row_accept_link(expense, 'show') %>
+	                                            <% else %>
+	                                                <%= row_accept_link(expense, 'hidden') %>
+	                                            <% end %>
+	                                            <% if expense.submitted? || expense.accepted? %>
+	                                                <%= row_reject_link(expense, 'show') %>
+	                                            <% else %>
+	                                                <%= row_reject_link(expense, 'hidden') %>
+	                                            <% end %>
+	                                            <% if expense.accepted? %>
+	                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_show' , title: "record payment"  %>
+	                                            <% else %>
+	                                                <%= link_to '', pay_business_expend_path(expense.id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
+	                                            <% end %>
+											<% end %>
+                                            <%= link_to '', business_path(expense), class: 'line_show_icon_show' , title: "show full details"  %>
+                                        </td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+

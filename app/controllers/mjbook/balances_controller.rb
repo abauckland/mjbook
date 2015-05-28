@@ -22,7 +22,13 @@ module Mjbook
         end
       end
 
+      def payable_business
+        @expenses = policy_scope(Expense).business.where(:state => ['submitted','accepted'])
+      end
 
+      def payable_employee
+        @expenses = policy_scope(Expense).employee.where(:state => ['submitted','accepted'])
+      end
 
     def print
 

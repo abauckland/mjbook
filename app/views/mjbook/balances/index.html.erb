@@ -69,7 +69,7 @@
                             <td class="summary_debit"><%= pounds(@payable_business_summary) %></td>
                             <td class="summary_credit"></td> 
                             <td class="row_button no_buttons_1">
-                                <%= link_to '', businesses_path, class: 'line_show_icon_show' , title: "record payment"  %>
+                                <%= link_to '', payable_business_balances_path, class: 'line_show_icon_show' , title: "show payable business expenses"  %>
                             </td>
                         </tr>
 
@@ -78,7 +78,7 @@
                             <td class="summary_debit"><%= pounds(@payable_employee_summary) %></td>
                             <td class="summary_credit"></td> 
                             <td class="row_button no_buttons_1">
-                                <%= link_to '', employees_path, class: 'line_show_icon_show' , title: "record payment"  %>
+                                <%= link_to '', payable_employees_balances_path, class: 'line_show_icon_show' , title: "show payable employee expenses"  %>
                             </td>
                         </tr>
 

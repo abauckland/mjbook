@@ -7,6 +7,8 @@ Mjbook::Engine.routes.draw do
 
   resources :balances, :only => [:index] do
     get :print, :on => :member
+    get payable_business, :on => :collection
+    get payable_employee, :on => :collection
   end
 
   resources :settings
