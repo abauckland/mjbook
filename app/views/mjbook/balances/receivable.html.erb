@@ -1,0 +1,84 @@
+<div class="row title_band">
+    <div class="page_title">
+        <h1>Invoices</h1>
+    </div>
+    <div class="title_help" id="invoices_index"></div>
+    <div><%= link_to "all invoices", invoices_path, class: "title_button" %> </div>
+</div>
+
+<div class="row">
+
+    <div class="col-1-1 column_1">
+        <div class="border">
+
+            <%= render :partial => "flash_notice" %>
+
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="invoice_ref">Ref</th>
+                            <th class="invoice_title">Type</th>
+                            <th class="invoice_project_ref">Job Ref</th>
+                            <th class="invoice_customer_ref">Cust. Ref</th>
+                            <th class="invoice_customer">Cust. Name</th>
+                            <th class="invoice_company_name">Cust. Company</th>
+                            <th class="invoice_date">Date</th>
+                            <th class="invoice_price">Price</br><spa>(ex VAT)</span></th>
+                            <th class="invoice_vat_due">Vat</th>
+                            <th class="invoice_total">Total</br><span>(Inc VAT)</span></th>
+                            <th class="invoice_status">Status</th>
+                            <th class="row_button no_buttons_4"></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <table>
+                    <tbody>
+                          <% if @invoices %>
+                            <% @invoices.each do |invoice| %>
+                                <tr>
+                                    <td class="invoice_ref"><%= invoice.ref %></td>
+                                    <td class="invoice_title"><%= invoice.invoicetype.text.titleize %></td>
+                                    <td class="invoice_project_ref"><%= invoice.project.ref %></td>
+                                    <td class="invoice_customer_ref"><%= invoice.customer_ref %></td>
+                                    <td class="invoice_customer"><%= invoice.project.customer.name.titleize %></td>
+                                    <td class="invoice_company_name"><%= invoice.project.customer.company_name.titleize %></td>
+                                    <td class="invoice_date"><%= invoice.date.strftime("%d/%m/%y") %></td>
+                                    <td class="invoice_price"><%= pounds(invoice.price) %></td>
+                                    <td class="invoice_vat_due"><%= pounds(invoice.vat_due) %></td> 
+                                    <td class="invoice_total"><%= pounds(invoice.total) %></td>
+                                    <td id="<%= invoice.id %>_status"class="invoice_status"><%= invoice.state %></td>
+                                    <td id="<%= invoice.id %>_links" class="row_button no_buttons_4">
+                                        <% if invoice.draft? %>
+                                            <%= row_delete_link(invoice, 'show') %>
+                                            <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_show', title: "edit" %>
+                                            <%= row_print_link(invoice, 'show') %>
+                                            <%= row_email_link(invoice, 'show') %>
+                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+                                        <% else %>
+                                            <%= row_delete_link(invoice, 'hidden') %>
+                                            <%= link_to "", invoicecontent_path(invoice), class: 'line_edit_icon_hidden', title: "edit" %>
+                                            <%= row_print_link(invoice, 'show') %>
+                                            <%= row_email_link(invoice, 'hidden') %>
+    										<% if current_user.owner? || current_user.admin? %>
+    	                                        <% if invoice.part_paid? || invoice.submitted? %>
+    	                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_show', title: "record payment" %>
+    	                                        <% else %>
+    	                                            <%= link_to "", payment_processinvoice_path(invoice.id), class: 'line_payment_icon_hidden', title: "record payment" %>
+    	                                        <% end %>
+                                            <% end %>
+                                        <% end %>
+                                    </td)
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>

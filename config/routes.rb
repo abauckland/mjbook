@@ -9,6 +9,7 @@ Mjbook::Engine.routes.draw do
     get :print, :on => :member
     get payable_business, :on => :collection
     get payable_employee, :on => :collection
+    get receivable, :on => :collection
   end
 
   resources :settings

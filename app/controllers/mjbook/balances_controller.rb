@@ -30,6 +30,10 @@ module Mjbook
         @expenses = policy_scope(Expense).employee.where(:state => ['submitted','accepted'])
       end
 
+      def receivable
+        @invoices = policy_scope(Invoice).where(:state => ['submitted'])
+      end
+
     def print
 
       accounting_period(params[:period_name])
