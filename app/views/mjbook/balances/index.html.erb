@@ -14,7 +14,7 @@
             </div>
             <%= submit_tag 'Select' %>
         </div> 
-    <% end %> 
+    <% end %>
 </div>
 
 <div class="row">
@@ -32,7 +32,7 @@
                         </tr>
                     </thead>
                 </table>
-                
+
 				<table>
 					<tbody>
                         <tr>
@@ -41,7 +41,7 @@
                             <td class="summary_credit"><%= pounds(@income_summary) %></td> 
                             <td class="row_button no_buttons_1">
                                 <%= payment_journals_link(@period) %>
-                                <%= link_to '', payments_path, class: 'line_show_icon_show' , title: "record payment"  %>
+                                <%= link_to '', payments_path(:date_from => @period.year_start, :date_to => 1.year.from_now(@period.year_start)), class: 'line_show_icon_show' , title: "record payment"  %>
                             </td>
                         </tr>
 
@@ -51,7 +51,7 @@
                             <td class="summary_credit"></td> 
                             <td class="row_button no_buttons_1">
                                 <%= expend_journals_link(@period) %>
-                                <%= link_to '', expends_path, class: 'line_show_icon_show' , title: "record payment"  %>
+                                <%= link_to '', expends_path(:date_from => @period.year_start, :date_to => 1.year.from_now(@period.year_start)), class: 'line_show_icon_show' , title: "record payment"  %>
                             </td>
                         </tr>
 
