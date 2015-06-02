@@ -5,7 +5,7 @@
     <div class="title_help" id="journals_index"></div>
 </div>
 
-
+<% if @check_journal_exist %>
 	<div class="row filter_band">
 	    <%= form_tag journals_path, method: :get do %>
 	        <div>
@@ -27,7 +27,7 @@
 	
 	    <% end %>
 	</div>
-
+<% end %>
 
 
 <div class="row">

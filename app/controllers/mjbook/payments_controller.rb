@@ -68,6 +68,7 @@ module Mjbook
        @date_from = params[:date_from]
        @date_to = params[:date_to]
 
+       @check_payment_exist = policy_scope(Payment).first
 
       authorize @payments
     end

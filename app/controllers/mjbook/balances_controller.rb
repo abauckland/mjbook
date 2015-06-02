@@ -27,7 +27,7 @@ module Mjbook
       end
 
       def payable_employee
-        @expenses = policy_scope(Expense).employee.where(:state => ['submitted','accepted'])
+        @expenses = policy_scope(Expense).personal.where(:state => ['submitted','accepted'])
       end
 
       def receivable

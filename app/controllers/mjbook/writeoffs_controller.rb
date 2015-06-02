@@ -33,6 +33,7 @@ module Mjbook
           csv_writeoff_index(@writeoffs, params[:date_from], params[:date_to])
         end
 
+       @check_writeoff_exist = policy_scope(Writeoff).first
 
        @sum_price = @writeoffs.pluck(:price).sum
        @sum_vat = @writeoffs.pluck(:vat).sum

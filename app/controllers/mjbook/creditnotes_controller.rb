@@ -37,6 +37,8 @@ module Mjbook
           csv_creditnote_index(@creditnotes, params[:date_from], params[:date_to])
        end
 
+       @check_creditnote_exist = policy_scope(Creditnote).first
+
        @sum_price = @creditnotes.pluck(:price).sum
        @sum_vat = @creditnotes.pluck(:vat).sum
        @sum_total = @creditnotes.pluck(:total).sum

@@ -60,6 +60,7 @@ module Mjbook
 
       @periods = policy_scope(Period)
 
+      @check_journal_exist = policy_scope(Journal).first
 
     end
 
