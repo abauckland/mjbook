@@ -60,7 +60,7 @@
 	                                    <td class="transaction_item"><%= summary.expend.ref if summary.expend.ref? %></td>
 	                                    <td class="transaction_type"><%= summary.expend.exp_type %></td>
                                     <% elsif summary.payment_id? %>
-	                                    <td class="transaction_item"><%= summary.payment.ref if summary.payment.ref != nil %></td>
+	                                    <td class="transaction_item"><%= summary.payment.ref if summary.payment.ref? %></td>
 	                                    <td class="transaction_type"><%= summary.payment.inc_type %></td>
                                     <% elsif summary.transfer_id? %>
                                         <td class="transaction_item"></td>

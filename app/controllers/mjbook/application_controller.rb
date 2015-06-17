@@ -4,6 +4,8 @@ module Mjbook
    include Pundit
 
 
+
+
       def clean_text(value)
         @value = value 
         @value.strip
@@ -52,6 +54,14 @@ module Mjbook
             start_date = years_difference.year.ago(first_period.year_start)
           end
 
+          create_period(start_date)
+
+        end
+      end
+
+
+      def create_period(start_date)
+
           start_year = start_date.strftime("%Y")
           end_year = 1.year.from_now(start_date).strftime("%Y")
           period_name = start_year + "/" + end_year
@@ -62,7 +72,7 @@ module Mjbook
                                  :year_start => start_date,
                                  :retained => 0
                                  )
-        end
+
       end
 
 

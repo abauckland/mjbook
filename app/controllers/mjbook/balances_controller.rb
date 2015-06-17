@@ -72,7 +72,21 @@ private
           start_time = 1.year.ago(Time.now)
           end_time = Time.now
           @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+
+          #create new period if no records created since end of last period
+          #loop until record for current date is created
+          until !@period.blank?
+            #get last period where year end is less than current time
+            last_period = policy_scope(Period).where('year_start < ?', 1.year.ago(Time.now)).last
+            last_period_year_end = 1.year.from_now(last_period)
+
+            create_period(last_period_year_end)
+
+            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+
+          end
           @current_period = true
+
         end
 
         @date_from = @period.year_start

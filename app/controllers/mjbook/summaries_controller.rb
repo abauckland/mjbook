@@ -155,16 +155,17 @@ private
       end
 
 
-      def accounting_period(period_name)
+      def accounting_period(period_id)
 
-        if period_name
-          if period_name != ""
-            @period = policy_scope(Period).where(:id => period_name).first
+        if period_id
+          if period_id != ""
+            @period = Period.find(period_id)
           else
             #get current period
             start_time = 1.year.ago(Time.now)
             end_time = Time.now
             @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+            @current_period = true
           end
         else
           start_time = 1.year.ago(Time.now)
