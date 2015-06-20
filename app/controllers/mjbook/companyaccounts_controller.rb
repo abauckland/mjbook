@@ -94,7 +94,7 @@ module Mjbook
       end
 
 
-      def delete_account_expend_record(old_settings, companyaccount)
+      def delete_account_expend_record(companyaccount)
 
         #update records before account creation date
         #update records after account creation date
