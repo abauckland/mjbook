@@ -78,7 +78,7 @@ private
           until !@period.blank?
             #get last period where year end is less than current time
             last_period = policy_scope(Period).where('year_start < ?', 1.year.ago(Time.now)).last
-            last_period_year_end = 1.year.from_now(last_period)
+            last_period_year_end = 1.year.from_now(last_period.year_start)
 
             create_period(last_period_year_end)
 
