@@ -33,7 +33,8 @@
                                     <td class="accounts_provider"><%= account.provider.titleize %></td>
                                     <td class="row_button no_buttons_2">
                                         <% if companyaccount_in_use(account) %>
-                                            <%= link_to "", edit_companyaccount_path(account), class: 'line_edit_icon', title: "edit" %>
+                                            <%= link_to "", edit_companyaccount_path(account), class: 'line_edit_icon_show', title: "edit" %>
+                                            <%= link_to "", companyaccount_path(account), method: :delete, class: 'line_delete_icon_show', title: "delete" %>
                                         <% end %>
                                     </td>
                                 </tr>
