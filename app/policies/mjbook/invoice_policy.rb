@@ -7,12 +7,8 @@ module Mjbook
       end
     end
 
-      def owned
-        record.company_id == user.company_id
-      end
-
       def index?
-        true
+        user.admin? || user.owner? || user.employee?
       end
 
       def show?

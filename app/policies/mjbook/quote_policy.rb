@@ -8,7 +8,7 @@ module Mjbook
     end
 
       def index?
-        true
+        user.admin? || user.owner? || user.employee?
       end
 
       def show?
