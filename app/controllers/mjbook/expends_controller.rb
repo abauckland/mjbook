@@ -321,12 +321,12 @@ module Mjbook
         Mjbook::Summary.create(:company_id => current_user.company_id,
                                :date => expend.date,
                                :companyaccount_id => expend.companyaccount_id,
-                               :payment_id => expend.id,
+                               :expend_id => expend.id,
                                :amount_in => expend.total,
                                :account_balance => new_account_balance)
 
         #get applicable accounting period
-        #update retained value in period - only if payment not between year start and date of account creation
+        #update retained value in period - only if expend not between year start and date of account creation
         if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
           unless expend.date >= @period.year_start && expend.date < expend.companyaccount.date
               @period.update(:retained => (@period.retained - expend.total))
@@ -377,7 +377,7 @@ module Mjbook
         end
 
         #get applicable accounting period
-        #update retained value in period - only if payment not between year start and date of account creation
+        #update retained value in period - only if  not between year start and date of account creation
         if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
           unless expend.date >= @period.year_start && expend.date < expend.companyaccount.date
               @period.update(:retained => (@period.retained + expend.total))
@@ -392,23 +392,23 @@ module Mjbook
       end
 
 
-      def subtract_from_prior_transactions(payment)
+      def subtract_from_prior_transactions(expend)
           #find records to update
-          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                   ).where('date < ?', payment.date)
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
+                                                   ).where('date < ?', expend.date)
           #update prior balances
           if !prior_transactions.blank?
-            subtract_amount_from(prior_transactions, payment.total)
+            subtract_amount_from(prior_transactions, expend.total)
           end
       end
 
-      def add_to_subsequent_transactions(payment)
+      def add_to_subsequent_transactions(expend)
           #find records to update
-          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
-                                                        ).where('date > ?', payment.date)
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
+                                                        ).where('date > ?', expend.date)
           #update prior balances
           if !subsequent_transactions.blank?
-            add_amount_to(subsequent_transactions, payment.total)
+            add_amount_to(subsequent_transactions, expend.total)
           end
       end
 
