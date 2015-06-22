@@ -5,7 +5,6 @@ module Mjbook
 
 
 
-
       def clean_text(value)
         @value = value 
         @value.strip
@@ -61,16 +60,25 @@ module Mjbook
 
 
       def create_period(start_date)
-
           start_year = start_date.strftime("%Y")
           end_year = 1.year.from_now(start_date).strftime("%Y")
           period_name = start_year + "/" + end_year
+
+          #retained amount is the same as year after
+          last_period = policy_scope(Period).order(:year_start).first
+          #less income, add expenditure for last period
+          last_period_payments = policy_scope(Payment).where("date <= ? AND date > ?", last_period.year_start, 1.year.ago(last_period.year_start)
+                                                     ).pluck(:total).sum
+          last_period_expends = policy_scope(Expend).where("date <= ? AND date > ?", last_period.year_start, 1.year.ago(last_period.year_start)
+                                                   ).pluck(:total).sum
+
+          amount_retained = last_period.retained - last_period_payments + last_period_expends
 
           #create record for period
           @period = Period.create(:company_id => current_user.company_id,
                                  :period => period_name,
                                  :year_start => start_date,
-                                 :retained => 0
+                                 :retained => amount_retained
                                  )
 
       end
