@@ -179,13 +179,13 @@ private
         @receivable_summary = invoices + miscincome + part_paid - creditnote - writeoff
 
       #ACCOUNTS: PAYABLE
-#          @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
-#                                                          ).where(:exp_type => "business"
-#                                                          ).accepted.pluck(:total).sum
+          @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
+                                                          ).where(:exp_type => "business"
+                                                          ).accepted.pluck(:total).sum
 
-#          @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
-#                                                          ).where(:exp_type => "personal"
-#                                                          ).accepted.pluck(:total).sum
+          @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
+                                                          ).where(:exp_type => "personal"
+                                                          ).accepted.pluck(:total).sum
 
       #OPENING BALANCE
         #opening equity at beginning of the year
@@ -197,7 +197,7 @@ private
 
       #SUMMARY BALANCE
         @credit_total = @income_summary + @receivable_summary + @assets_cash
-        @debit_total = 0#@expend_summary + @payable_summary
+        @debit_total = @expend_summary + @payable_summary
 
 
       end
