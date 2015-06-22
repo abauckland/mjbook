@@ -392,6 +392,27 @@ module Mjbook
       end
 
 
+      def subtract_from_prior_transactions(payment)
+          #find records to update
+          prior_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                   ).where('date < ?', payment.date)
+          #update prior balances
+          if !prior_transactions.blank?
+            subtract_amount_from(prior_transactions, payment.total)
+          end
+      end
+
+      def add_to_subsequent_transactions(payment)
+          #find records to update
+          subsequent_transactions = policy_scope(Summary).where(:companyaccount_id => payment.companyaccount_id
+                                                        ).where('date > ?', payment.date)
+          #update prior balances
+          if !subsequent_transactions.blank?
+            add_amount_to(subsequent_transactions, payment.total)
+          end
+      end
+
+
       def add_to_prior_transactions(expend)
           #find records to update
           prior_transactions = policy_scope(Summary).where(:companyaccount_id => expend.companyaccount_id
