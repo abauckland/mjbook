@@ -156,7 +156,7 @@ private
 
       #EXPEND SUMMARY
         expend_totals = policy_scope(Expend).where(:date => date_from..date_to
-                                             ).where.not(:exp_type => "transfer"
+                                             ).where.not(:exp_type => 2
                                              ).pluck(:total)
         #calculate adjustments from journal entries
         #subtract sums attributed to selected period
@@ -199,11 +199,11 @@ private
 
       #ACCOUNTS: PAYABLE
           @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
-                                                          ).where(:exp_type => "business"
+                                                          ).where(:exp_type => 0
                                                           ).accepted.pluck(:total).sum
 
           @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
-                                                          ).where(:exp_type => "personal"
+                                                          ).where(:exp_type => 1
                                                           ).accepted.pluck(:total).sum
 
        @payable_summary = @payable_business_summary + @payable_employee_summary
