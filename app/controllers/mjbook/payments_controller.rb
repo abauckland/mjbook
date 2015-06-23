@@ -332,7 +332,7 @@ module Mjbook
 
           #update retained total for previous accounting periods
           #subtract payment to previous periods
-          previous_periods = policy_scope(Period).where(:year_start <= 1.year.ago(payment.date))
+          previous_periods = policy_scope(Period).where('year_start <= ?', 1.year.ago(payment.date))
           previous_periods.each do |period|
             period.update(:retained => (@period.retained - payment.total))
           end
@@ -360,7 +360,7 @@ module Mjbook
           #add payment to period retained amount
           @period.update(:retained => (@period.retained + payment.total))
           #update_subsequent_periods(payment)
-          subsequent_periods = policy_scope(Period).where(:year_start >= 1.year.from_now(payment.date))
+          subsequent_periods = policy_scope(Period).where('year_start >= ?', 1.year.from_now(payment.date))
           subsequent_periods.each do |period|
             period.update(:retained => (@period.retained + payment.total))
           end
@@ -392,7 +392,7 @@ module Mjbook
 
           #update retained total for previous accounting periods
           #subtract payment to previous periods
-          previous_periods = policy_scope(Period).where(:year_start <= 1.year.ago(payment.date))
+          previous_periods = policy_scope(Period).where('year_start <= ?', 1.year.ago(payment.date))
           previous_periods.each do |period|
             period.update(:retained => (@period.retained + payment.total))
           end
@@ -407,7 +407,7 @@ module Mjbook
           #add payment to period retained amount
           @period.update(:retained => (@period.retained - payment.total))
           #update_subsequent_periods(payment)
-          subsequent_periods = policy_scope(Period).where(:year_start >= 1.year.from_now(payment.date))
+          subsequent_periods = policy_scope(Period).where('year_start >= ?', 1.year.from_now(payment.date))
           subsequent_periods.each do |period|
             period.update(:retained => (@period.retained - payment.total))
           end
