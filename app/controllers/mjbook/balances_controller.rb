@@ -118,35 +118,54 @@ private
 
 
       #INCOME SUMMARY
-        income = policy_scope(Payment).where(:date => date_from..date_to
+        income_totals = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
-                                              ).pluck(:total).sum
+                                              ).pluck(:total)
+        if !income.blank?
+          income = income_totals.sum
+        else
+          income = 0
+        end
 
         #calculate adjustments from journal entries
         #find journal entries that adjust sums in selected year
-        subtract_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
+        subtract_adjustments_totals = policy_scope(Journal).joins(:paymentitem => :payment
                             ).where.not(:paymentitem_id => nil
                             ).where('mjbook_payments.date' => date_from..date_to
-                            ).pluck(:adjustment).sum
+                            ).pluck(:adjustment)
+        if !subtract_adjustments_totals.blank?
+          subtract_adjustments = subtract__adjustments_totals.sum
+        else
+          subtract_adjustments = 0
+        end
         #subtract sums attributed from selected period
 
         #add sums attributed to selected period
-        add_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
+        add_adjustments_totals = policy_scope(Journal).joins(:paymentitem => :payment
                             ).where.not(:paymentitem_id => nil
                             ).where(:period_id => period.id
-                            ).pluck(:adjustment).sum
+                            ).pluck(:adjustment)
+        if !add_adjustments_totals.blank?
+          add_adjustments = add_adjustments_totals.sum
+        else
+          add_adjustments = 0
+        end
 
         @income_summary = income - subtract_adjustments + add_adjustments
 
 
       #EXPEND SUMMARY
-        @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
+        expend_totals = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => "transfer"
-                                             ).pluck(:total).sum
+                                             ).pluck(:total)
         #calculate adjustments from journal entries
         #subtract sums attributed to selected period
         #add sums attributed from selected period
-
+        if !expend.blank?
+          @expend_summary = expend_totals.sum
+        else
+          @expend_summary = 0
+        end
 
 
       #ACCOUNTS: RECEIVABLE
