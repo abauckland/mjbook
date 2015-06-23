@@ -301,8 +301,10 @@ module Mjbook
           #update retained total for previous accounting periods
           #subtract payment to previous periods
           previous_periods = policy_scope(Period).where('year_start <= ?', 1.year.ago(expend.date))
-          previous_periods.each do |period|
-            period.update(:retained => (@period.retained + expend.total))
+          if !previous_periods.blank?
+            previous_periods.each do |period|
+              period.update(:retained => (period.retained + expend.total))
+            end
           end
 
 
@@ -329,8 +331,10 @@ module Mjbook
           @period.update(:retained => (@period.retained - expend.total))
           #update_subsequent_periods(payment)
           subsequent_periods = policy_scope(Period).where('year_start >= ?', 1.year.from_now(expend.date))
-          subsequent_periods.each do |period|
-            period.update(:retained => (@period.retained - expend.total))
+          if !subsequent_periods.blank?
+            subsequent_periods.each do |period|
+              period.update(:retained => (period.retained - expend.total))
+            end
           end
 
 
@@ -382,8 +386,10 @@ module Mjbook
           #update retained total for previous accounting periods
           #subtract payment to previous periods
           previous_periods = policy_scope(Period).where('year_start <= ?', 1.year.ago(expend.date))
-          previous_periods.each do |period|
-            period.update(:retained => (@period.retained - expend.total))
+          if !previous_periods.blank?
+            previous_periods.each do |period|
+              period.update(:retained => (period.retained - expend.total))
+            end
           end
 
         else
@@ -397,10 +403,11 @@ module Mjbook
           @period.update(:retained => (@period.retained + expend.total))
           #update_subsequent_periods(payment)
           subsequent_periods = policy_scope(Period).where('year_start >= ?', 1.year.from_now(expend.date))
-          subsequent_periods.each do |period|
-            period.update(:retained => (@period.retained + expend.total))
+          if !subsequent_periods.blank?
+            subsequent_periods.each do |period|
+              period.update(:retained => (period.retained + expend.total))
+            end
           end
-
         end
 
         #find account record to delete
