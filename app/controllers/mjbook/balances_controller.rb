@@ -206,6 +206,8 @@ private
                                                           ).where(:exp_type => "personal"
                                                           ).accepted.pluck(:total).sum
 
+       @payable_summary = @payable_business_summary + @payable_employee_summary
+
       #OPENING BALANCE
         #opening equity at beginning of the year
         #@period
