@@ -121,7 +121,7 @@ private
         income_totals = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
                                               ).pluck(:total)
-        if !income.blank?
+        if !income_totals.blank?
           income = income_totals.sum
         else
           income = 0
@@ -161,7 +161,7 @@ private
         #calculate adjustments from journal entries
         #subtract sums attributed to selected period
         #add sums attributed from selected period
-        if !expend.blank?
+        if !expend_totals.blank?
           @expend_summary = expend_totals.sum
         else
           @expend_summary = 0
