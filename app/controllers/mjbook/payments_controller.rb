@@ -52,7 +52,7 @@ module Mjbook
          pdf_payment_index(@payments, params[:companyaccount_id], params[:date_from], params[:date_to])
        end
 
-       if params[:commit] == 'csv'          
+       if params[:commit] == 'csv'
          csv_payment_index(@payments, params[:companyaccount_id])
        end
 
@@ -304,6 +304,7 @@ module Mjbook
 
       def add_account_payment_record(payment)
 
+        #get period for date of payme
         accounting_period(payment.date)
 
         #if payment date before account create date
@@ -329,6 +330,14 @@ module Mjbook
           #update subsequent payment records
           subtract_from_prior_transactions(payment)
 
+          #update retained total for previous accounting periods
+          #subtract payment to previous periods
+          previous_periods = policy_scope(Period).where(:year_start <= 1.year.ago(payment.date))
+          previous_periods.each do |period|
+            period.update(:retained => (@period.retained - payment.total))
+          end
+
+
         #if payment date after account create date 
         else
           #get last payment before
@@ -347,6 +356,15 @@ module Mjbook
           #update subsequent payment records
           add_to_subsequent_transactions(payment)
 
+          #update retained total for subsequent accounting periods
+          #add payment to period retained amount
+          @period.update(:retained => (@period.retained + payment.total))
+          #update_subsequent_periods(payment)
+          subsequent_periods = policy_scope(Period).where(:year_start >= 1.year.from_now(payment.date))
+          subsequent_periods.each do |period|
+            period.update(:retained => (@period.retained + payment.total))
+          end
+
         end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
@@ -356,21 +374,12 @@ module Mjbook
                                :amount_in => payment.total,
                                :account_balance => new_account_balance)
 
-        #get applicable accounting period
-        #update retained value in period - only if payment not between year start and date of account creation
-        if payment.companyaccount.date >= @period.year_start && payment.companyaccount.date < 1.year.from_now(@period.year_start)
-          unless payment.date >= @period.year_start && payment.date < payment.companyaccount.date
-              @period.update(:retained => (@period.retained + payment.total))
-          end
-        else
-          @period.update(:retained => (@period.retained + payment.total))
-        end
-
       end
 
 
       def delete_account_payment_record(payment)
 
+        #get period for date of payment
         accounting_period(payment.date)
 
         account_record = Summary.where(:payment_id => payment.id).first
@@ -379,21 +388,30 @@ module Mjbook
           #update records before current date
           add_to_prior_transactions(payment)
           add_to_subsequent_transactions_on_date(payment, account_record)
+          #update retained amount for 
+
+          #update retained total for previous accounting periods
+          #subtract payment to previous periods
+          previous_periods = policy_scope(Period).where(:year_start <= 1.year.ago(payment.date))
+          previous_periods.each do |period|
+            period.update(:retained => (@period.retained + payment.total))
+          end
+
         else
           #update subsequent payment records
           subtract_from_subsequent_transactions(payment)
           subtract_from_subsequent_transactions_on_date(payment, account_record)
-        end
 
-        #update retained value in period
-
-#        #update retained value in period - only if payment not between year start and date of account creation
-        if payment.companyaccount.date >= @period.year_start && payment.companyaccount.date < 1.year.from_now(@period.year_start)
-          unless payment.date >= @period.year_start && payment.date < payment.companyaccount.date
-              @period.update(:retained => (@period.retained - payment.total))
-          end
-        else
+          #update retained amount for
+          #update retained total for subsequent accounting periods
+          #add payment to period retained amount
           @period.update(:retained => (@period.retained - payment.total))
+          #update_subsequent_periods(payment)
+          subsequent_periods = policy_scope(Period).where(:year_start >= 1.year.from_now(payment.date))
+          subsequent_periods.each do |period|
+            period.update(:retained => (@period.retained - payment.total))
+          end
+
         end
 
         account_record.destroy

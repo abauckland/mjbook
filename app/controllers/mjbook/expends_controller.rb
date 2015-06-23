@@ -298,6 +298,14 @@ module Mjbook
           #update records before current date
           add_to_prior_transactions(expend)
 
+          #update retained total for previous accounting periods
+          #subtract payment to previous periods
+          previous_periods = policy_scope(Period).where(:year_start <= 1.year.ago(expend.date))
+          previous_periods.each do |period|
+            period.update(:retained => (@period.retained + expend.total))
+          end
+
+
         #if expend date after account create date 
         else
           #get last expend before
@@ -316,6 +324,16 @@ module Mjbook
           #update subsequent expend records
           subtract_from_subsequent_transactions(expend)
 
+          #update retained total for subsequent accounting periods
+          #add payment to period retained amount
+          @period.update(:retained => (@period.retained - expend.total))
+          #update_subsequent_periods(payment)
+          subsequent_periods = policy_scope(Period).where(:year_start >= 1.year.from_now(expend.date))
+          subsequent_periods.each do |period|
+            period.update(:retained => (@period.retained - expend.total))
+          end
+
+
         end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
@@ -324,16 +342,6 @@ module Mjbook
                                :expend_id => expend.id,
                                :amount_in => expend.total,
                                :account_balance => new_account_balance)
-
-        #get applicable accounting period
-        #update retained value in period - only if expend not between year start and date of account creation
-        if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
-          unless expend.date >= @period.year_start && expend.date < expend.companyaccount.date
-              @period.update(:retained => (@period.retained - expend.total))
-          end
-        else
-          @period.update(:retained => (@period.retained - expend.total))
-        end
 
       end
 
@@ -370,20 +378,29 @@ module Mjbook
           #update records before current date
           subtract_from_prior_transactions(expend)
           subtract_from_subsequent_transactions_on_date(expend, account_record)
+
+          #update retained total for previous accounting periods
+          #subtract payment to previous periods
+          previous_periods = policy_scope(Period).where(:year_start <= 1.year.ago(expend.date))
+          previous_periods.each do |period|
+            period.update(:retained => (@period.retained - expend.total))
+          end
+
         else
           #update subsequent expend records
           add_to_subsequent_transactions(expend)
           add_to_subsequent_transactions_on_date(expend, account_record)
-        end
 
-        #get applicable accounting period
-        #update retained value in period - only if  not between year start and date of account creation
-        if expend.companyaccount.date >= @period.year_start && expend.companyaccount.date < 1.year.from_now(@period.year_start)
-          unless expend.date >= @period.year_start && expend.date < expend.companyaccount.date
-              @period.update(:retained => (@period.retained + expend.total))
-          end
-        else
+          #update retained amount for
+          #update retained total for subsequent accounting periods
+          #add payment to period retained amount
           @period.update(:retained => (@period.retained + expend.total))
+          #update_subsequent_periods(payment)
+          subsequent_periods = policy_scope(Period).where(:year_start >= 1.year.from_now(expend.date))
+          subsequent_periods.each do |period|
+            period.update(:retained => (@period.retained + expend.total))
+          end
+
         end
 
         #find account record to delete
