@@ -54,9 +54,9 @@ module Mjbook
 
 
 
-     @sum_price = @expends.pluck(:price).sum
-     @sum_vat = @expends.pluck(:vat).sum
-     @sum_total = @expends.pluck(:total).sum
+     @sum_price = @expends.sum(:price)
+     @sum_vat = @expends.sum(:vat)
+     @sum_total = @expends.sum(:total)
 
      #selected parameters for filter form
      hmrcexpcats_ids = policy_scope(Expense).joins(:expenditems => :expend).where('mjbook_expends.company_id =?', current_user.company_id).pluck(:hmrcexpcat_id).uniq

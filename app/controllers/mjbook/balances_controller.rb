@@ -118,60 +118,38 @@ private
 
 
       #INCOME SUMMARY
-        income_totals = policy_scope(Payment).where(:date => date_from..date_to
+        income = policy_scope(Payment).where(:date => date_from..date_to
                                               ).where.not(:inc_type => "transfer"
-                                              ).pluck(:total)
-        if !income_totals.blank?
-          income = income_totals.sum
-        else
-          income = 0
-        end
+                                              ).sum(:total)
 
         #calculate adjustments from journal entries
         #find journal entries that adjust sums in selected year
-        subtract_adjustments_totals = policy_scope(Journal).joins(:paymentitem => :payment
+        subtract_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
                             ).where.not(:paymentitem_id => nil
                             ).where('mjbook_payments.date' => date_from..date_to
-                            ).pluck(:adjustment)
-        if !subtract_adjustments_totals.blank?
-          subtract_adjustments = subtract__adjustments_totals.sum
-        else
-          subtract_adjustments = 0
-        end
+                            ).sum(:adjustment)
+
         #subtract sums attributed from selected period
 
         #add sums attributed to selected period
-        add_adjustments_totals = policy_scope(Journal).joins(:paymentitem => :payment
+        add_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
                             ).where.not(:paymentitem_id => nil
                             ).where(:period_id => period.id
-                            ).pluck(:adjustment)
-        if !add_adjustments_totals.blank?
-          add_adjustments = add_adjustments_totals.sum
-        else
-          add_adjustments = 0
-        end
+                            ).sum(:adjustment)
 
         @income_summary = income - subtract_adjustments + add_adjustments
 
 
       #EXPEND SUMMARY
-        expend_totals = policy_scope(Expend).where(:date => date_from..date_to
+        @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
                                              ).where.not(:exp_type => 2
-                                             ).pluck(:total)
-        #calculate adjustments from journal entries
-        #subtract sums attributed to selected period
-        #add sums attributed from selected period
-        if !expend_totals.blank?
-          @expend_summary = expend_totals.sum
-        else
-          @expend_summary = 0
-        end
+                                             ).sum(:total)
 
 
       #ACCOUNTS: RECEIVABLE
         #no payment items
         invoices = policy_scope(Invoice).where(:date => date_from..date_to
-                                       ).submitted.pluck(:total).sum
+                                       ).submitted.sum(:total)
 
         #part paid items
         array_inlines_paid = Paymentitem.joins(:inline => [:ingroup => [:invoice => :project]]
@@ -182,29 +160,29 @@ private
                          ).where("mjbook_invoices.state" => :partpaid, "mjbook_projects.company_id" => current_user.company_id
                          ).where("mjbook_invoices.date" => date_from..date_to
                          ).where.not(:id => array_inlines_paid
-                         ).pluck(:total).sum
+                         ).sum(:total)
 
         #miscincome
         miscincome = policy_scope(Miscincome).where(:date => date_from..date_to
-                                            ).draft.pluck(:total).sum
+                                            ).draft.sum(:total)
 
         #creditnote
         creditnote = policy_scope(Creditnote).where(:date => date_from..date_to
-                                            ).confirmed.pluck(:total).sum
+                                            ).confirmed.sum(:total)
         #writeoff
         writeoff = policy_scope(Writeoff).where(:date => date_from..date_to
-                                        ).pluck(:total).sum
+                                        ).sum(:total)
                                             
         @receivable_summary = invoices + miscincome + part_paid - creditnote - writeoff
 
       #ACCOUNTS: PAYABLE
           @payable_business_summary = policy_scope(Expense).where(:date=> date_from..date_to
                                                           ).where(:exp_type => 0
-                                                          ).accepted.pluck(:total).sum
+                                                          ).accepted.sum(:total)
 
           @payable_employee_summary = policy_scope(Expense).where(:date=> date_from..date_to
                                                           ).where(:exp_type => 1
-                                                          ).accepted.pluck(:total).sum
+                                                          ).accepted.sum(:total)
 
        @payable_summary = @payable_business_summary + @payable_employee_summary
 

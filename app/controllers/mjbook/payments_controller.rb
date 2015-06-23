@@ -57,9 +57,9 @@ module Mjbook
        end
 
 
-       @sum_price = @payments.pluck(:price).sum
-       @sum_vat = @payments.pluck(:vat).sum
-       @sum_total = @payments.pluck(:total).sum
+       @sum_price = @payments.sum(:price)
+       @sum_vat = @payments.sum(:vat)
+       @sum_total = @payments.sum(:total)
 
        #selected parameters for filter form
        companyaccount_ids = policy_scope(Payment).pluck(:companyaccount_id).uniq

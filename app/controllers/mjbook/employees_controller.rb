@@ -47,7 +47,7 @@ module Mjbook
           pdf_employee_index(@expenses, params[:user_id], params[:date_from], params[:date_to])
         end
 
-        if params[:commit] == 'csv'          
+        if params[:commit] == 'csv'
           csv_employee_index(@expenses, params[:user_id], params[:date_from], params[:date_to])
         end
 
@@ -55,9 +55,9 @@ module Mjbook
        @expenses = policy_scope(Expense).personal
      end
 
-     @sum_price = @expenses.pluck(:price).sum
-     @sum_vat = @expenses.pluck(:vat).sum
-     @sum_total = @expenses.pluck(:total).sum
+     @sum_price = @expenses.sum(:price)
+     @sum_vat = @expenses.sum(:vat)
+     @sum_total = @expenses.sum(:total)
 
      #selected parameters for filter form
      user_id_array = policy_scope(Expense).personal.pluck(:user_id).uniq
