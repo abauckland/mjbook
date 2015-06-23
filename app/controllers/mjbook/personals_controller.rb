@@ -58,9 +58,9 @@ module Mjbook
        @expenses = Expense.user(current_user).personal
      end
 
-     @sum_price = @expenses.pluck(:price).sum
-     @sum_vat = @expenses.pluck(:vat).sum
-     @sum_total = @expenses.pluck(:total).sum
+     @sum_price = @expenses.sum(:price)
+     @sum_vat = @expenses.sum(:vat)
+     @sum_total = @expenses.sum(:total)
 
      #selected parameters for filter form
      all_expenses = Expense.user(current_user).personal

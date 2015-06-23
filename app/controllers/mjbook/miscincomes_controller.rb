@@ -53,9 +53,9 @@ module Mjbook
          @miscincomes = policy_scope(Miscincome)
        end
 
-     @sum_price = @miscincomes.pluck(:price).sum
-     @sum_vat = @miscincomes.pluck(:vat).sum
-     @sum_total = @miscincomes.pluck(:total).sum
+     @sum_price = @miscincomes.sum(:price)
+     @sum_vat = @miscincomes.sum(:vat)
+     @sum_total = @miscincomes.sum(:total)
 
        #selected parameters for filter form
        all_miscincomes = policy_scope(Miscincome)

@@ -35,9 +35,9 @@ module Mjbook
 
        @check_writeoff_exist = policy_scope(Writeoff).first
 
-       @sum_price = @writeoffs.pluck(:price).sum
-       @sum_vat = @writeoffs.pluck(:vat).sum
-       @sum_total = @writeoffs.pluck(:total).sum
+       @sum_price = @writeoffs.sum(:price)
+       @sum_vat = @writeoffs.sum(:vat)
+       @sum_total = @writeoffs.sum(:total)
 
        @date_from = params[:date_from]
        @date_to = params[:date_to]

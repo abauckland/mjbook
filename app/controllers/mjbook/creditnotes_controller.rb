@@ -39,9 +39,9 @@ module Mjbook
 
        @check_creditnote_exist = policy_scope(Creditnote).first
 
-       @sum_price = @creditnotes.pluck(:price).sum
-       @sum_vat = @creditnotes.pluck(:vat).sum
-       @sum_total = @creditnotes.pluck(:total).sum
+       @sum_price = @creditnotes.sum(:price)
+       @sum_vat = @creditnotes.sum(:vat)
+       @sum_total = @creditnotes.sum(:total)
 
        @date_from = params[:date_from]
        @date_to = params[:date_to]

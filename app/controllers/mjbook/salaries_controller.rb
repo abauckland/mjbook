@@ -54,7 +54,7 @@ module Mjbook
          @salaries = policy_scope(Salary)
        end
 
-       @sum_total = @salaries.pluck(:total).sum
+       @sum_total = @salaries.sum(:total)
 
        #selected parameters for filter form
        user_id_array = policy_scope(Salary).pluck(:user_id).uniq    
