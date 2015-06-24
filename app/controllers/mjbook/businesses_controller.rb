@@ -96,7 +96,7 @@ module Mjbook
       if @expense.save
           redirect_to businesses_path, notice: 'Expense was successfully created.'            
       else
-       # render :new
+        render :new
       end
     end
 
@@ -107,7 +107,7 @@ module Mjbook
       if @expense.update(expense_params)
         redirect_to businesses_path, notice: 'Expense was successfully updated.'
       else
-       # render :edit
+        render :edit
       end
     end
 
@@ -122,7 +122,7 @@ module Mjbook
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_expense
-        @expense = Expense.find(params[:id])
+        @expense = policy_scope(Expense).where(:id => params[:id]).first
       end
 
       def set_projects

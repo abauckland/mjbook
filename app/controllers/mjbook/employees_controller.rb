@@ -77,7 +77,7 @@ module Mjbook
 
     private
       def set_expense
-        @expense = Expense.find(params[:id])
+        @expense = policy_scope(Expense).where(:id => params[:id]).first
       end
 
       def pdf_employee_index(expenses, user_id, date_from, date_to)
