@@ -86,12 +86,11 @@
                             <td class="journal_item_ref"><%= journal.expenditem.expend.ref %></td>
                             <td class="journal_item_date"><%= journal.expenditem.expense.date.strftime("%d/%m/%y") %></td>
 
-                            <% if journal.expenditem.inline_id? %>
-                                <td class="journal_item_inv_ref"></td>
-                                <td class="journal_item_inv_ref"></td>
-                                <td class="journal_item_inv_ref"><%= journal.expenditem.inline.expense.ref %></td>
-                                <td class="journal_item_total"><%= pounds(journal.expenditem.expense.total) %></td>
-                            <% end %>
+                            <td class="journal_item_inv_ref"></td>
+                            <td class="journal_item_inv_ref"></td>
+                            <td class="journal_item_inv_ref"><%= journal.expenditem.expense.ref %></td>
+                            <td class="journal_item_total"><%= pounds(journal.expenditem.expense.total) %></td>
+
                         <% end %>
 
 
