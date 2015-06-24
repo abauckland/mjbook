@@ -38,6 +38,10 @@ module Mjbook
         transitions :from => :accepted, :to => :paid
       end
 
+      event :resubmit do
+        transitions :from => :rejected, :to => :submitted
+      end
+
       event :correct do
         transitions :from => :paid, :to => :accepted
       end

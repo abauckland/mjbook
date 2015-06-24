@@ -109,6 +109,7 @@ module Mjbook
 #      authorize @expense
 #      authorize(:personal, :update?)
       if @expense.update(expense_params)
+        @expense.resubmit!
         redirect_to personals_path, notice: 'Expense was successfully updated.'
       else
         render :edit
