@@ -49,7 +49,7 @@
                                 <tr>
                                     <td class='expend_ref'><%= (i + 1) %></td>
                                     <td class='expend_category'><%= item.expense.ref %></td>
-                                    <td class='expend_item'><%= item.expense.project.supplier.company_name %></td>
+                                    <td class='expend_item'><%= item.expense.supplier.company_name %></td>
                                     <td class='expend_date'><%= item.expense.date.strftime("%d/%m/%y") %></td>
                                     <td class='expend_price'><%= pounds(item.expense.price) %></td>
                                     <td class='expend_vat_due'><%= pounds(item.expense.vat) %></td>
