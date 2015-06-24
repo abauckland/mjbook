@@ -58,7 +58,7 @@
 
                             <!-- show text line -->
                             <label class="label_110">Expenditure Date:</label>
-                            <span><%= @journal.expenditem.payment.date.strftime("%d/%m/%y") %></span></br>
+                            <span><%= @journal.expenditem.expense.date.strftime("%d/%m/%y") %></span></br>
 
                             <% if @journal.expenditem.inline_id? %>
                                 <!-- show text line -->

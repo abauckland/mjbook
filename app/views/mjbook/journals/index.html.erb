@@ -84,7 +84,7 @@
 
                         <% if journal.expenditem_id? %>
                             <td class="journal_item_ref"><%= journal.expenditem.expend.ref %></td>
-                            <td class="journal_item_date"><%= journal.expenditem.payment.date.strftime("%d/%m/%y") %></td>
+                            <td class="journal_item_date"><%= journal.expenditem.expense.date.strftime("%d/%m/%y") %></td>
 
                             <% if journal.expenditem.inline_id? %>
                                 <td class="journal_item_inv_ref"></td>
