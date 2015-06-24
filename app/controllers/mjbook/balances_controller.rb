@@ -118,32 +118,48 @@ private
 
 
       #INCOME SUMMARY
-        income = policy_scope(Payment).where(:date => date_from..date_to
-                                              ).where.not(:inc_type => "transfer"
-                                              ).sum(:total)
 
         #calculate adjustments from journal entries
         #find journal entries that adjust sums in selected year
-        subtract_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
-                            ).where.not(:paymentitem_id => nil
-                            ).where('mjbook_payments.date' => date_from..date_to
-                            ).sum(:adjustment)
-
         #subtract sums attributed from selected period
+        subtract_income_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
+                                                          ).where.not(:paymentitem_id => nil
+                                                          ).where('mjbook_payments.date' => date_from..date_to
+                                                          ).sum(:adjustment)
 
         #add sums attributed to selected period
-        add_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
-                            ).where.not(:paymentitem_id => nil
-                            ).where(:period_id => period.id
-                            ).sum(:adjustment)
+        add_income_adjustments = policy_scope(Journal).joins(:paymentitem => :payment
+                                                     ).where.not(:paymentitem_id => nil
+                                                     ).where(:period_id => period.id
+                                                     ).sum(:adjustment)
 
-        @income_summary = income - subtract_adjustments + add_adjustments
+        income = policy_scope(Payment).where(:date => date_from..date_to
+                                              ).where.not(:inc_type => 2
+                                              ).sum(:total)
+
+        @income_summary = income - subtract_income_adjustments + add_income_adjustments
 
 
       #EXPEND SUMMARY
-        @expend_summary = policy_scope(Expend).where(:date => date_from..date_to
-                                             ).where.not(:exp_type => 2
-                                             ).sum(:total)
+        #calculate adjustments from journal entries
+        #find journal entries that adjust sums in selected year
+        #subtract sums attributed from selected period
+        subtract_expend_adjustments = policy_scope(Journal).joins(:expenditem => :expend
+                                                          ).where.not(:expenditem_id => nil
+                                                          ).where('mjbook_expends.date' => date_from..date_to
+                                                          ).sum(:adjustment)
+
+        #add sums attributed to selected period
+        add_expend_adjustments = policy_scope(Journal).joins(:expenditem => :expend
+                                                     ).where.not(:expenditem_id => nil
+                                                     ).where(:period_id => period.id
+                                                     ).sum(:adjustment)
+
+        expend = policy_scope(Expend).where(:date => date_from..date_to
+                                    ).where.not(:exp_type => 2
+                                    ).sum(:total)
+
+        @expend_summary = expend - subtract_expend_adjustments + add_expend_adjustments
 
 
       #ACCOUNTS: RECEIVABLE
