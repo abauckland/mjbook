@@ -92,7 +92,7 @@ module Mjbook
 
     # GET /journals/1/edit
     def edit
-      @periods = policy_scope(Period).where.not()
+      @periods = policy_scope(Period).where.not(:id => @period.id)
     end
 
     # POST /journals
