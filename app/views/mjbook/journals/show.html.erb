@@ -60,16 +60,13 @@
                             <label class="label_110">Expenditure Date:</label>
                             <span><%= @journal.expenditem.expense.date.strftime("%d/%m/%y") %></span></br>
 
-                            <% if @journal.expenditem.inline_id? %>
-                                <!-- show text line -->
-                                <label class="label_110">Expense Ref:</label>
-                                <span><%= @journal.expenditem.inline.expense.ref %></span></br>
+                            <!-- show text line -->
+                            <label class="label_110">Expense Ref:</label>
+                            <span><%= @journal.expenditem.expense.ref %></span></br>
 
-                                <!-- show text line -->
-                                <label class="label_110">Item Amount:</label>
-                                <span><%= pounds(@journal.expenditem.expense.total) %></span></br>
-
-                            <% end %>
+                            <!-- show text line -->
+                            <label class="label_110">Item Amount:</label>
+                            <span><%= pounds(@journal.expenditem.expense.total) %></span></br>
 
                         <% end %>
 
