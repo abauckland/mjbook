@@ -29,17 +29,21 @@
                         <span><%= @expense.project.name %></span></br>
 
                         <!-- show text line -->
-                        <label class="label_120">Reference:</label>
-                        <span><%= @expense.ref if @expense.ref %></span></br>
-    
+                        <% if @expense.ref %>
+                            <label class="label_120">Reference:</label>
+                            <span><%= @expense.ref %></span></br>
+                        <% end %>
+
                         <!-- show text line -->
                         <label class="label_120">Supplier:</label>
                         <span><%= @expense.supplier.company_name %></span></br>
-    
+
                         <!-- show text line -->
-                        <label class="label_120">Supplier Ref:</label>
-                        <span><%= @expense.supplier_ref %></span></br>
-                            
+                        <% if @expense.supplier_ref %>
+                            <label class="label_120">Supplier Ref:</label>
+                            <span><%= @expense.supplier_ref %></span></br>
+                        <% end %>
+
                         <!-- show text line -->
                         <label class="label_120">Price:</label>
                         <span><%= pounds(@expense.price) %></span></br>
