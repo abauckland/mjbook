@@ -344,7 +344,7 @@ module Mjbook
                                :date => expend.date,
                                :companyaccount_id => expend.companyaccount_id,
                                :expend_id => expend.id,
-                               :amount_in => expend.total,
+                               :amount_out => expend.total,
                                :account_balance => new_account_balance)
 
       end
