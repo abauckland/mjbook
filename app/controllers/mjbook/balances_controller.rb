@@ -134,7 +134,7 @@ private
                                                      ).sum(:adjustment)
 
         income = policy_scope(Payment).where(:date => date_from..date_to
-                                              ).where.not(:inc_type => 2
+                                              ).where.not(:inc_type => 1
                                               ).sum(:total)
 
         @income_summary = income - subtract_income_adjustments + add_income_adjustments
@@ -156,7 +156,7 @@ private
                                                      ).sum(:adjustment)
 
         expend = policy_scope(Expend).where(:date => date_from..date_to
-                                    ).where.not(:exp_type => 2
+                                    ).where.not(:exp_type => 3
                                     ).sum(:total)
 
         @expend_summary = expend - subtract_expend_adjustments + add_expend_adjustments
