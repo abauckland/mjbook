@@ -21,5 +21,28 @@ module Mjbook
       end
     end
 
+
+    def journal_check(summary)
+
+      if summary.payment_id?
+        journal_entry = Journal.joins(:paymentitem => [:payment => :summary]
+                              ).where('mjbook_summaries.id' => summary.id
+                              ).first
+        if journal_entry
+          link_to '', payment_path(summary.payment_id), class: 'line_journal_icon_show' , title: "show journal entry"
+        end
+      end
+
+      if summary.expend_id?
+        journal_entry = Journal.joins(:expenditem => [:expend => :summary]
+                              ).where('mjbook_summaries.id' => summary.id
+                              ).first
+        if journal_entry
+          link_to '', expend_path(summary.expend_id), class: 'line_journal_icon_show' , title: "show journal entry"
+        end
+      end
+
+    end
+
   end
 end

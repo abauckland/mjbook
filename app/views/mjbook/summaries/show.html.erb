@@ -91,6 +91,8 @@
 	                                    <% if summary.transfer_id? %>
 											<%= link_to '', transfer_path(summary.transfer_id), class: 'line_show_icon_show' , title: "show details" %>	
 	                                    <% end %>
+	                                    
+	                                    <%= journal_check(summary) %>
                                     </td>
 
                                <tr>
