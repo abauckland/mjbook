@@ -62,7 +62,7 @@ module Mjbook
 
     private
 
-#    default_scope { order('date DESC') }
+    default_scope { order(:due_date) }
 
 
     def self.to_csv
@@ -105,6 +105,8 @@ module Mjbook
         end
       end
     end
+
+
 
   end
 end
