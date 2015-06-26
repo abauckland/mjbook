@@ -22,38 +22,72 @@
                         <!-- form input[select -->
                         <div class="form_tooltip" id="personalexpense_project"></div>
                         <label class="label_100">Job Reference:*</label>
-                        <% if @projects %>
-                            <span>
-                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @expense.project_id, :prompt => :true})%>
-                            </span></br>
-    
-                            <!-- link button -->
-                            <label class="label_100"></label>
-                        <% end %>
                         <span>
-                            <%= link_to "add new job", new_project_path, class: "form_button" %>
+                            <%= f.collection_select(:project_id, policy_scope(Mjbook::Project), :id, :name, {:selected => @expense.project_id, :prompt => :true})%>
+                        </span></br>
+
+                        <!-- link button -->
+                        <label class="label_100"></label>
+
+                        <span>
+                            <%= link_to "add new project", new_project_path, class: "form_button" %>
                         </span></br>
                         
-                        <!-- form input[select -->
-                        <div class="form_tooltip" id="personalexpense_supplier"></div>
-                        <label class="label_100">Supplier:*</label>
-                        <% if @suppliers %>
-                            <span>
-                                <%= f.collection_select(:supplier_id, @suppliers, :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true})%>
-                            </span></br>
-    
-                            <!-- link button -->
-                            <label class="label_100"></label>
-                        <% end %>
-                        <span>
-                            <%= link_to "add new supplier", new_supplier_path, class: "form_button" %>
-                        </span></br>
 
                         <!-- form input[select -->
                         <div class="form_tooltip" id="personalexpense_hmrcexpcat"></div>
-                        <label class="label_100">Expense Type:*</label>
+                        <label class="label_100">Expense Cat:*</label>
                         <span>
-                            <%= f.collection_select(:hmrcexpcat_id, @hmrcexpcats, :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true})%>
+                            <%= f.collection_select(:hmrcexpcat_id, policy_scope(Mjbook::Hmrcexpcat), :id, :category, {:selected => @expense.hmrcexpcat_id, :prompt => :true})%>
+                        </span></br>
+
+
+                <div class="row">
+                    <div class="column_line"></div>
+                </div>
+
+                        <%= f.fields_for :mileage do |ff| %>
+
+                            <!-- form input[select] -->
+                            <div class="form_tooltip" id="mileage_mileagemethod"></div>
+                            <label class="label_100">Mode:*</label>
+                            <span>
+                                <%= ff.collection_select(:mileagemode_id, policy_scope(Mjbook::Mileagemode), :id, :mode, {:selected => @expense.mileage.mileagemode_id, :prompt => :true}, disabled: :true)%>
+                            </span></br>
+
+
+                            <!-- form input[text] -->
+                            <div class="form_tooltip"id="mileage_start"></div>
+                            <label class="label_100">Start:*</label>
+                            <span>
+                                <%= ff.text_field :start, disabled: :true %>
+                            </span></br>
+
+                            <!-- form input[text] -->
+                            <div class="form_tooltip" id="mileage_finish"></div>
+                            <label class="label_100">Destination:*</label>
+                            <span>
+                                <%= ff.text_field :finish, disabled: :true %>
+                            </span></br>
+
+                            <!-- form input[text] -->
+                            <div class="form_tooltip" id="mileage_distance"></div>
+                            <label class="label_100">Distance (miles):*</label>
+                            <span>
+                                <%= ff.text_field :distance, disabled: :true %>
+                            </span></br>
+    
+                        <% end %>
+
+                <div class="row">
+                    <div class="column_line"></div>
+                </div>
+
+                        <!-- form input[select -->
+                        <div class="form_tooltip" id="personalexpense_supplier"></div>
+                        <label class="label_100">Supplier:*</label>
+                        <span>
+                            <%= f.collection_select(:supplier_id, policy_scope(Mjbook::Supplier), :id, :company_name, {:selected => @expense.supplier_id, :prompt => :true})%>
                         </span></br>
 
                         <!-- form input[text] --> 
@@ -98,6 +132,10 @@
                         <span>
                             <%= f.text_field :total, {:placeholder => "0.00", :value => number_with_precision(f.object.total, :precision => 2)} %>
                         </span></br>
+
+                <div class="row">
+                    <div class="column_line"></div>
+                </div>
 
                         <!-- form input[text] --> 
                         <div class="form_tooltip" id="personalexpense_issue_date"></div>

@@ -4,9 +4,6 @@ module Mjbook
   class PersonalsController < ApplicationController
 
     before_action :set_expense, only: [:show, :edit, :update, :destroy]
-    before_action :set_suppliers, only: [:new, :edit]
-    before_action :set_projects, only: [:new, :edit]
-    before_action :set_hmrcexpcats, only: [:new, :edit]
 
     include PrintIndexes
 
@@ -82,6 +79,7 @@ module Mjbook
     # GET /new_personal
     def new
       @expense = Expense.new
+      mileage = @expense.build_mileage
     end
 
     # GET /expenses/1/edit
@@ -94,7 +92,6 @@ module Mjbook
     # POST /expenses
     def create
       @expense = Expense.new(expense_params)
-      @expense.due_date = Time.now.utc.end_of_month
 #      authorize @expense
 #      authorize(:personal, :create?)
       if @expense.save
@@ -131,21 +128,9 @@ module Mjbook
         @expense = policy_scope(Expense).where(:id => params[:id]).first
       end
 
-      def set_projects
-        @projects = policy_scope(Project)
-      end
-
-      def set_suppliers
-        @suppliers = Supplier.where(:company_id => current_user.company_id)
-      end
-
-      def set_hmrcexpcats
-        @hmrcexpcats = policy_scope(Hmrcexpcat)#.where(:hmrcgroup_id => 2) #pesonal
-      end
-
       # Only allow a trusted parameter "white list" through.
       def expense_params
-        params.require(:expense).permit(:company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :price, :vat, :total, :receipt, :recurrence, :ref, :supplier_ref)
+        params.require(:expense).permit({:mileage_attributes => [:mileagemode_id, :start, :finish, :return, :distance]}, :company_id, :user_id, :exp_type, :status, :project_id, :supplier_id, :hmrcexpcat_id, :mileage_id, :date, :due_date, :price, :vat, :total, :receipt, :recurrence, :ref, :supplier_ref)
       end
 
 
@@ -165,10 +150,10 @@ module Mjbook
           :page_layout => :landscape,
           :margin => [10.mm, 10.mm, 5.mm, 10.mm]
           ) do |pdf|
-            table_indexes(expenses, 'personal', filter_group, date_from, date_to, filename, pdf)      
+            table_indexes(expenses, 'personal', filter_group, date_from, date_to, filename, pdf)
           end
 
-          send_data document.render, filename: filename, :type => "application/pdf"        
+          send_data document.render, filename: filename, :type => "application/pdf"
       end
 
       def csv_personal_index(expenses, project_id, date_from, date_to)
