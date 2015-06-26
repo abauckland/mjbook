@@ -91,8 +91,7 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def mileage_params
-        params.require(:mileage).permit(:mileagemode_id, :start, :finish, :return, :distance, :travel_date,
-        {:expense_attributes => [:company_id, :user_id, :project_id, :hmrcexpcat_id, :exp_type]})
+        params.require(:mileage).permit({:expense_attributes => [:company_id, :user_id, :project_id, :hmrcexpcat_id, :exp_type]}, :mileagemode_id, :start, :finish, :return, :distance, :travel_date)
 
       end
 
