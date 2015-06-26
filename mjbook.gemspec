@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency  'prawn-table'
 
   s.add_dependency  'aasm'
-  s.add_dependency  'rmagick', "= 2.13.3"  
+#  s.add_dependency  'rmagick', "= 2.13.3"  
   #s.add_dependency  'gruff'  
   s.add_development_dependency  'sass-rails', '~> 4.0.3'
   s.add_development_dependency  'coffee-rails', '~> 4.0.0'
