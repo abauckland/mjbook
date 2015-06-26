@@ -103,19 +103,50 @@ module Mjbook
       if @journal.save
         #adjust period retained amounts
 
+
+        amount_from_periods = policy_scope(Period).where("year_start >= ?", date)
+        selected_period = Mjbook::Period.find(@journal.period_id)
+        amount_to_periods = policy_scope(Period).where("year_start >= ?", selected_period.year_start)
+
         #take adjustment away from  original year
         if @journal.paymentitem_id != nil
           accounting_period(@journal.paymentitem.payment.date)
+
+          #substract adjustment: adjust subsequent periods
+          amount_from_periods.each do |period|
+            new_amount = period.retained - @journal.adjustment
+            period.update(:retained => new_amount)
+          end
+
+          #add adjustment: adjust subsequent periods
+          amount_to_periods.each do |period|
+            new_amount = period.retained + @journal.adjustment
+            period.update(:retained => new_amount)
+          end
+
         else
           accounting_period(@journal.expenditem.expend.date)
-        end
-        new_retained_amount = @period.retained - @journal.adjustment
-        @period.update(:retained => new_retained_amount)
 
-        #adjust year sum allocated to
-        new_period = Mjbook::Period.find(@journal.period_id)
-        new_retained_amount = new_period.retained + @journal.adjustment
-        new_period.update(:retained => new_retained_amount)
+          #substract adjustment: adjust subsequent periods
+          amount_from_periods.each do |period|
+            new_amount = period.retained + @journal.adjustment
+            period.update(:retained => new_amount)
+          end
+  
+          #add adjustment: adjust subsequent periods
+          amount_to_periods.each do |period|
+            new_amount = period.retained - @journal.adjustment
+            period.update(:retained => new_amount)
+          end
+
+        end
+#        new_retained_amount = @period.retained - @journal.adjustment
+#        @period.update(:retained => new_retained_amount)
+
+#        #adjust year sum allocated to
+#        new_period = Mjbook::Period.find(@journal.period_id)
+#        new_retained_amount = new_period.retained + @journal.adjustment
+#        new_period.update(:retained => new_retained_amount)
 
         redirect_to @journal, notice: 'Journal was successfully created.'
       else
