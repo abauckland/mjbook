@@ -6,7 +6,7 @@ $tab_sml_menu: 780px;
 $mob_menu: 520px;
 
 //index table
-.personal_due_date    {@include date}
+.personal_date        {@include date}
 .personal_job         {@include name}
 .personal_category    {@include name}
 .personal_ref         {@include ref}
