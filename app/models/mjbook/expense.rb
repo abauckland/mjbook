@@ -8,9 +8,12 @@ module Mjbook
     belongs_to :supplier
     belongs_to :user
     belongs_to :company
-    belongs_to :mileage, :dependent => :destroy
 
+    has_one :mileage, :dependent => :destroy
     has_many :expenditems
+
+    accepts_nested_attributes_for :mileage
+
 
     mount_uploader :receipt, ReceiptUploader
 
@@ -47,15 +50,20 @@ module Mjbook
       end
     end
 
+    before_validation :set_totals, on: [:create, :update], if: :mileage_record?
+
 
     validates :project_id, presence: true
-    validates :supplier_id, presence: true
     validates :hmrcexpcat_id, presence: true
+    validates :supplier_id, presence: true, unless: :mileage_record?
     validates :price, presence: true, numericality: true
     validates :vat, presence: true, numericality: true
     validates :total, presence: true, numericality: true
-    validates :date, presence: true
+    validates :date,
+      presence: true,
+      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }
 
+    validate :total_sum
 
     scope :user, ->(current_user) {  joins(:project).where(:user_id => current_user.id, 'mjbook_projects.company_id' => current_user.company_id)}
 
@@ -64,9 +72,28 @@ module Mjbook
     scope :salary, ->() { where(:exp_type => 2).uniq }
     scope :transfer, ->() { where(:exp_type => 3).uniq }
 
+
     private
 
-    default_scope { order(:due_date) }
+    def mileage_record?
+      hmrcexpcat_id == 3 #business mileage
+    end
+
+    def set_totals
+      mode = Mjbook::Mileagemode.find(mileage.mileagemode_id)
+      self.price = mode.rate * self.mileage.distance
+      self.vat = 0
+      self.total = mode.rate * self.mileage.distance
+    end
+
+    def total_sum
+      unless self.total == self.price + self.vat
+        self.errors[:total_sum] << 'Price plus VAT does not equal total entered'
+      end
+    end
+
+
+    default_scope { order(:date) }
 
 
     def self.to_csv
@@ -109,8 +136,6 @@ module Mjbook
         end
       end
     end
-
-
 
   end
 end
