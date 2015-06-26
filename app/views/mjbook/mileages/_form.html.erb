@@ -11,7 +11,7 @@
 
                     <%= f.fields_for :expense do |builder| %>
                         <%= builder.hidden_field :hmrcexpcat_id, :value => 1 %>
-                        <%= builder.hidden_field :company_id => current_user.company_id %>
+
                         <%= builder.hidden_field :user_id => current_user.id %>
                         <%= builder.hidden_field :exp_type => "personal" %>
 
