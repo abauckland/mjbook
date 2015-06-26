@@ -1,4 +1,4 @@
-class AnmendMjbookMileages < ActiveRecord::Migration
+class AmendMjbookMileages < ActiveRecord::Migration
   def change
     remove_column :mjbook_mileages, :travel_date
     remove_column :mjbook_mileages, :user_id
