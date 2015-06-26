@@ -27,29 +27,45 @@
                         <label class="label_80">Employee:</label>
                         <span><%= @expense.user.name %></span></br>
                         <% end %>
-                                
+
                         <!-- show text line -->
                         <label class="label_80">Project:</label>
                         <span><%= @expense.project.name %></span></br>
+
+                        <% if @expense.hmrcexpcat_id == 3 %>
+                            <!-- show text line --> 
+                            <label class="label_80">Mode:</label>
+                            <span><%= @expense.mileage.mileagemode.mode.titleize %></span></br>
+
+                            <!-- show text line --> 
+                            <label class="label_80">Start:</label>
+                            <span><%= @expense.mileage.start.titleize %></span></br>
+
+                            <!-- show text line --> 
+                            <label class="label_80">Destination:</label>
+                            <span><%= @expense.mileage.finish.titleize %></span></br>
+
+                            <!-- show text line --> 
+                            <label class="label_80">Total Mileage:</label>
+                            <span><%= @expense.mileage.distance %></span></br>
+
+                        <% else %>
+                            <!-- show text line -->
+                            <label class="label_80">Supplier:</label>
+                            <span><%= @expense.supplier.company_name  if @expense.supplier_id? %></span></br>
     
-                        <!-- show text line -->
-                        <label class="label_80">Supplier:</label>
-                        <span><%= @expense.supplier.company_name %></span></br>
+                            <!-- show text line -->
+                            <label class="label_80">Expense Cat:</label>
+                            <span><%= @expense.hmrcexpcat.category %></span></br>
+    
+                            <% if @expense.receipt %>
+                                <!-- show text line -->
+                                <label class="label_80">Receipt:</label>
+                                <span><%=link_to image_tag(@expense.receipt_url(:thumb))%></span></br>
+                            <% end %>
 
-                        <!-- show text line -->
-                        <label class="label_80">Expense Cat:</label>
-                        <span><%= @expense.hmrcexpcat.category %></span></br>
-
-                        <% if @expense.receipt %>
-                        <!-- show text line -->
-                        <label class="label_80">Receipt:</label>
-                        <span><%=link_to image_tag(@expense.receipt_url(:thumb))%></span></br>
                         <% end %>
-                                
-                        <!-- show text line -->
-                        <label class="label_80">Due Date:</label>
-                        <span><%= @expense.due_date.strftime("%d/%m/%y") %></span></br>
-    
+
                         <!-- show text line -->
                         <label class="label_80">Price:</label>
                         <span><%= pounds(@expense.price) %></span></br>

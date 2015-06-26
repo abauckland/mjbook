@@ -60,30 +60,21 @@
 
                 <table>
                     <tbody>
-                        <% if @expenses %>            
+                        <% if @expenses %>
                             <% @expenses.each do |expense| %>
                                 <tr>
                                     <td class="employee_employee"><%= expense.user.name.titleize %></td>
-                                    <td class="employee_due_date"><%= expense.due_date.strftime("%d/%m/%y") %></td>
+                                    <td class="employee_due_date"></td>
                                     <td class="employee_job"><%= expense.project.ref %></td>
                                     <td class="employee_category"><%= expense.hmrcexpcat.category.titleize %></td>
-                                    <% if expense.hmrcexpcat_id == 1 %>
-                                        <td class="employee_ref"></td>
-                                        <td class="employee_supplier"></td>
-                                        <td class="employee_supplier_ref"></td>
-                                        <td class="employee_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
-                                        <td width="20px" class="row_button"></td>
-                                        <td class="employee_distance"><%= expense.mileage.distance %></td>
-                                     <% else %>
                                         <td class="employee_ref"><%= expense.ref %></td>
-                                        <td class="employee_supplier"><%= expense.supplier.company_name.titleize %></td>
+                                        <td class="employee_supplier"><%= expense.supplier.company_name.titleize if expense.supplier_id?%></td>
                                         <td class="employee_supplier_ref"><%= expense.supplier_ref %></td>
                                         <td class="employee_issue_date"><%= expense.date.strftime("%d/%m/%y") %></td>
                                         <td width="20px" class="row_button">
                                             <%= "Yes".html_safe if expense.receipt? %>
                                         </td>
-                                        <td class="employee_distance"></td>
-                                     <% end %>    
+                                        <td class="employee_distance"><%= expense.mileage.distance if expense.mileage %></td>
                                         <td class="employee_price"><%= pounds(expense.price) %></td>
                                         <td class="employee_vat_due"><%= pounds(expense.vat) %></td>
                                         <td class="employee_total"><%= pounds(expense.total) %></td>
@@ -107,11 +98,8 @@
                                                 <%= link_to '', pay_employee_expend_path(expense.user_id), class: 'line_payment_icon_hidden' , title: "record payment"  %>
                                             <% end %>
 
-                                            <% if expense.hmrcexpcat_id == 1 %>
-                                                <%= link_to '', mileage_path(expense.mileage_id), class: 'line_show_icon_show' , title: "show full details"  %>
-                                            <% else %>
-                                                <%= link_to '', employee_path(expense), class: 'line_show_icon_show' , title: "show full details"  %>
-                                            <% end %> 
+                                            <%= link_to '', employee_path(expense), class: 'line_show_icon_show' , title: "show full details"  %>
+
                                         </td>
                                 </tr>
                             <% end %>
