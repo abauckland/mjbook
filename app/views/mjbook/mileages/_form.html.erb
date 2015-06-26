@@ -8,8 +8,13 @@
 <!-- form column start-->
             <div class="row">
                 <%= form_for(@mileage) do |f| %>
-                    <%= f.hidden_field :user_id, :value => current_user.id %>
-                    <%= f.hidden_field :hmrcexpcat_id, :value => 1 %>   
+
+                    <%= f.fields_for :expense do |builder| %>
+                        <%= builder.hidden_field :hmrcexpcat_id, :value => 1 %>
+                        <%= builder.hidden_field :company_id => current_user.company_id %>
+                        <%= builder.hidden_field :user_id => current_user.id %>
+                        <%= builder.hidden_field :exp_type => "personal" %>
+
                     <fieldset>
 
                         <!-- form input[select -->
@@ -17,15 +22,20 @@
                         <label class="label_100">Job Reference:*</label>
                         <% if @projects %>
                             <span>
-                                <%= f.collection_select(:project_id, @projects, :id, :name, {:selected => @mileage.project_id, :prompt => :true})%>
+                                <%= builder.collection_select(:project_id, @projects, :id, :name, {:selected => @mileage.project_id, :prompt => :true})%>
                             </span></br>
-    
+
                             <!-- link button -->
                             <label class="label_100"></label>
                         <% end %>
                         <span>
                             <%= link_to "add new job", new_project_path, class: "form_button" %>
                         </span></br>
+
+
+                    <% end %>
+
+
 
                         <!-- form input[date] -->
                         <div class="form_tooltip" id="mileage_date"></div>

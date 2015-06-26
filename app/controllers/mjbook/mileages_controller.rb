@@ -20,6 +20,7 @@ module Mjbook
     # GET /mileages/new
     def new
       @mileage = Mileage.new 
+      expense = @mileage.build_expense
     end
 
     # GET /mileages/1/edit
@@ -31,7 +32,7 @@ module Mjbook
       @mileage = Mileage.new(mileage_params)
 
       if @mileage.save
-        add_to_expenses(@mileage)
+#        add_to_expenses(@mileage)
 
         redirect_to personals_path, notice: 'Mileage was successfully created.'
       else
@@ -90,7 +91,9 @@ module Mjbook
 
       # Only allow a trusted parameter "white list" through.
       def mileage_params
-        params.require(:mileage).permit(:project_id, :mileagemode_id, :user_id, :hmrcexpcat_id, :start, :finish, :return, :distance, :date)
+        params.require(:mileage).permit(:mileagemode_id, :start, :finish, :return, :distance, :travel_date,
+        {:expense_attributes => [:company_id, :user_id, :project_id, :hmrcexpcat_id, :exp_type]})
+
       end
 
       def add_to_expenses(mileage)
