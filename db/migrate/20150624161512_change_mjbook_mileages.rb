@@ -1,4 +1,4 @@
-class ChangeMjbookCompanyaccounts < ActiveRecord::Migration
+class ChangeMjbookMileages < ActiveRecord::Migration
   def change
     remove_column :mjbook_mileages, :date
     remove_column :mjbook_mileages, :hmrcexpcat_id
