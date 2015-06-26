@@ -29,6 +29,8 @@ module Mjbook
     validates :total, presence: true, numericality: true
     validates :date, presence: true
 
+    validate :total_sum
+
     def self.to_csv
 
       require 'csv'
@@ -54,6 +56,12 @@ module Mjbook
     private
 
     default_scope { order('date DESC') }
+
+    def total_sum
+      unless self.total == self.price + self.vat
+        self.errors[:total_sum] << 'Price plus VAT does not equal total entered'
+      end
+    end
 
   end
 end
