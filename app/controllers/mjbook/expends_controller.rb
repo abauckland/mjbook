@@ -13,15 +13,15 @@ module Mjbook
         if params[:hmrcexpcat_id] != ""
           if params[:date_from] != ""
             if params[:date_to] != ""
-              @expends = policy_scope(Expend).joins(:expenseitems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where(:date => params[:date_from]..params[:date_to])
+              @expends = policy_scope(Expend).joins(:expenditems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where(:date => params[:date_from]..params[:date_to])
             else
-              @expends = policy_scope(Expend).joins(:expenseitems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where('date > ?', params[:date_from])
+              @expends = policy_scope(Expend).joins(:expenditems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where('date > ?', params[:date_from])
             end
           else
             if params[:date_to] != ""
-              @expends = policy_scope(Expend).joins(:expenseitems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where('date < ?', params[:date_to])
+              @expends = policy_scope(Expend).joins(:expenditems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id]).where('date < ?', params[:date_to])
             else
-              @expends = policy_scope(Expend).joins(:expenseitems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id])
+              @expends = policy_scope(Expend).joins(:expenditems => :expense).where('mjbook_expenses.hmrcexpcat_id =?', params[:hmrcexpcat_id])
             end
           end
         else
