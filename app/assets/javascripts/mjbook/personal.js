@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	$('select#expense_hmrcexpcat_id').change(function (){
 
-		if($('select#expense_hmrcexpcat_id').val() == '3'){
+		if($('select#expense_hmrcexpcat_id option:selected').text() == 'business mileage'){
 
 			$('select#expense_mileage_attributes_mileagemode_id').removeAttr('disabled');
 			$('input#expense_mileage_attributes_start').removeAttr('disabled');
