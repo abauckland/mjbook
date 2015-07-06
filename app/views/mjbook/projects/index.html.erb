@@ -9,8 +9,8 @@
 <div class="row">
 
     <div class="col-1-1 column_1">
-        <div class="border">                
-                
+        <div class="border">
+
             <%= render :partial => "flash_notice" %>
 
             <div class="row">
@@ -34,7 +34,7 @@
 
                 <table>
                     <tbody>
-                        <% if @projects %>            
+                        <% if @projects %>
                             <% @projects.each do |project| %>
                                 <tr>
                                     <td class="project_ref"><%= project.ref %></td>
@@ -43,18 +43,18 @@
                                     <td class="project_customer_ref"><%= project.customer_ref %></td>
                                     <td class="project_description"><%= project.description %></td>
                                     <td class="row_button no_buttons_3">
-                                        <% unless project_in_use(project) %>                
+                                        <% unless project_in_use(project) %>
                                             <%= row_delete_link(project, 'show') %>
                                         <% end %>   
-                                        <%= row_edit_link(project, 'show') %>          
-                                        <%= row_show_link(project, 'show') %>                                        
+                                        <%= row_edit_link(project, 'show') %>
+                                        <%= row_show_link(project, 'show') %>
                                     </td>
                                 </tr>
                             <% end %>  
                         <% end %>
                     </tbody>
                 </table>
-   
+
             </div>
         </div>
     </div>
