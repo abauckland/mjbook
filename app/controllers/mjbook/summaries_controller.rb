@@ -16,15 +16,8 @@ module Mjbook
       def show
 
         @summaries = policy_scope(Summary).where(:companyaccount_id => params[:companyaccount_id])
-
-        if params[:date_from] !=""
-          @summaries = @summaries.where('date >= ?', params[:date_from])
-        end
-
-        if params[:date_to] !=""
-          @summaries = @summaries.where('date <= ?', params[:date_to])
-        end
-
+        @summaries = @summaries.where('date >= ?', params[:date_from]) if params[:date_from] !=""
+        @summaries = @summaries.where('date <= ?', params[:date_to]) if params[:date_to] !=""
         @summaries = @summaries.order("date DESC").order("id DESC")
 
         @summary = @summaries.first
@@ -78,14 +71,8 @@ module Mjbook
 
         authorize @summary
         if @summary.reconcile!
-          
-          if @summary.payment_id?
-            @summary.payment.reconcile!
-          end
-
-          if @summary.expend_id?
-            @summary.expend.reconcile!
-          end
+          @summary.payment.reconcile! if @summary.payment_id?
+          @summary.expend.reconcile! if @summary.expend_id?
 
 #tranfers?
 
@@ -99,14 +86,8 @@ module Mjbook
 
         authorize @summary
         if @summary.unreconcile!
-
-          if @summary.payment_id?
-            @summary.payment.unreconcile!
-          end
-
-          if @summary.expend_id?
-            @summary.expend.unreconcile!
-          end
+          @summary.payment.unreconcile! if @summary.payment_id?
+          @summary.expend.unreconcile! if @summary.expend_id?
 
 #transfers?
 
