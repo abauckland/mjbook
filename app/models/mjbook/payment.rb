@@ -27,6 +27,13 @@ module Mjbook
 
     end
 
+    validates :paymethod_id, :companyaccount_id, presence: true
+    validates :date,
+      presence: true,
+      format: { with: DATE_REGEXP, message: "please enter a valid date in the format dd/mm/yyyy" }
+
+
+
     def self.to_csv
 
       require 'csv'
