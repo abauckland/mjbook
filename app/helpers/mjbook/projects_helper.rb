@@ -6,7 +6,7 @@ module Mjbook
       invoice = Invoice.where(:project_id => project.id).first
       quote = Quote.where(:project_id => project.id).first
       
-      if expense.blank? && mileage.blank? && invoice.blank? && quote.blank?
+      if expense.blank? && invoice.blank? && quote.blank?
         false
       end
     end
