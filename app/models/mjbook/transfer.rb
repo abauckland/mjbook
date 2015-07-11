@@ -34,7 +34,7 @@ module Mjbook
     default_scope { order('date DESC') }
 
     def custom_validation_1
-        if @account_from_id == @account_to_id
+        if self.account_from_id == self.account_to_id
           errors.add(:account_to_id, ": you cannot transfer money into the same account")
         end
     end
