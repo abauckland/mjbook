@@ -307,7 +307,6 @@ module Mjbook
             end
           end
 
-
         #if expend date after account create date 
         else
           #get last expend before
@@ -337,7 +336,6 @@ module Mjbook
             end
           end
 
-
         end
 
         Mjbook::Summary.create(:company_id => current_user.company_id,
@@ -346,7 +344,6 @@ module Mjbook
                                :expend_id => expend.id,
                                :amount_out => expend.total,
                                :account_balance => new_account_balance)
-
       end
 
 
