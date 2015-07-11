@@ -138,7 +138,7 @@ module Mjbook
 
         redirect_to payments_path, notice: 'Payment was successfully recorded.'
       else
-        redirect_to new_paymentscope_path(:invoice_id => params[:invoice_id])
+        redirect_to new_payment_path(:invoice_id => params[:invoice_id])
       end
 
     end
