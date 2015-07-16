@@ -87,7 +87,7 @@ module Mjbook
     end
 
     def total_sum
-      if @price.valid? && @vat.valid? && @total.valid
+      if self.errors.empty?
         total = self.price + self.vat
         unless self.total == total
           self.errors[:total_sum] << 'Price plus VAT does not equal total entered'
