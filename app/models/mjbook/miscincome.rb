@@ -57,10 +57,12 @@ module Mjbook
 
     default_scope { order('date DESC') }
 
-    def total_sum     
-      total = self.price + self.vat
-      unless self.total == total
-        self.errors[:total_sum] << 'Price plus VAT does not equal total entered'
+    def total_sum
+      if @price.valid? && @vat.valid? && @total.valid
+        total = self.price + self.vat
+        unless self.total == total
+          self.errors[:total_sum] << 'Price plus VAT does not equal total entered'
+        end
       end
     end
 
