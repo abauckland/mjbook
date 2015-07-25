@@ -20,7 +20,10 @@
         company_header(pdf)
         receipt_header(pdf)
         ##QUOTE DETAILS
-        customer_details(payment.project.customer, pdf)
+        customer = Mjbook::Customer.joins(:projects => [:invoices => [:inlines => :paymentitems]]
+                                  ).where('mjbook_paymentitems.payment_id' => payment.id
+                                  ).first
+        customer_details(customer, pdf)
         receipt_details(payment, pdf)
         
         pdf.y = 192.mm
