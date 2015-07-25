@@ -31,9 +31,9 @@ module Mjbook
       @setting = Setting.where(:id => params[:id]).first
       authorize @setting
       if @setting.update(setting_params)
-        redirect_to edit_setting_path(@setting), notice: 'Setting was successfully updated.'
+        redirect_to edit_setting_path(@setting, :id => @setting.company_id), notice: 'Setting was successfully updated.'
       else
-        render :edit
+        render :edit, :id => @setting.company_id
       end
     end
 
