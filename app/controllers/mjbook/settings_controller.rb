@@ -2,8 +2,6 @@ require_dependency "mjbook/application_controller"
 
 module Mjbook
   class SettingsController < ApplicationController
-    before_action :set_setting, only: [:edit, :update] 
-
 
     def new
       @setting = Setting.new
@@ -11,6 +9,7 @@ module Mjbook
 
     # GET /settings/1/edit
     def edit
+      @setting = Setting.where(:company_id => params[:id]).first
       authorize @setting
     end
 
@@ -29,6 +28,7 @@ module Mjbook
 
     # PATCH/PUT /settings/1
     def update
+      @setting = Setting.where(:id => params[:id]).first
       authorize @setting
       if @setting.update(setting_params)
         redirect_to edit_setting_path(@setting), notice: 'Setting was successfully updated.'
@@ -39,11 +39,6 @@ module Mjbook
 
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_setting
-        @setting = Setting.where(:company_id => params[:id]).first
-      end
-
       # Only allow a trusted parameter "white list" through.
       def setting_params
         params.require(:setting).permit(:company_id, :email_domain, :email_username, :email_password, :year_start)
