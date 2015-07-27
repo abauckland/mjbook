@@ -152,7 +152,7 @@ module Mjbook
                                               :margin => [5.mm, 10.mm, 5.mm, 10.mm],
                                               :info => {:title => creditnote.ref}
                                             ) do |pdf|
-                                              print_creditnote(creditnote, pdf)
+                                              print_credit(creditnote, pdf)
                                             end
       end
 
