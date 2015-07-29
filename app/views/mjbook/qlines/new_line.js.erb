@@ -1,12 +1,12 @@
 $('table#<%=@line.id%>').after('<%= escape_javascript(render :partial => 'line_row', locals: { line: @new_line }) %>');
 
-$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= pounds(@qgroup.price) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= pounds(@qgroup.vat_due) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_total').html('<%= pounds(@qgroup.total) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= @qgroup.price %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= @qgroup.vat_due %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_total').html('<%= @qgroup.total %>');
   
-$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_price').html('<%= pounds(@quote.price) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_vat').html('<%= pounds(@quote.vat_due) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_total').html('<%= pounds(@quote.total) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_price').html('<%= @quote.price %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_vat').html('<%= @quote.vat_due %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_total').html('<%= @quote.total %>');
 
 
 // show/hide menu and mob menu link

@@ -1,15 +1,15 @@
 
-$('span#<%= @line.id %>.qline_rate').html('<%= pounds(@line.rate) %>'); 
+$('span#<%= @line.id %>.qline_rate').html('<%= @line.rate %>'); 
 
-$('span#<%= @line.id %>.qline_price').html('<%= pounds(@line.price) %>');
-$('span#<%= @line.id %>.auto_qline_price').html('<%= pounds(@line.price) %>');
-$('span#<%= @line.id %>.auto_qline_vat').html('<%= pounds(@line.vat_due) %>');    
-$('span#<%= @line.id %>.auto_qline_total').html('<%= pounds(@line.total) %>');
+$('span#<%= @line.id %>.qline_price').html('<%= @line.price %>');
+$('span#<%= @line.id %>.auto_qline_price').html('<%= @line.price %>');
+$('span#<%= @line.id %>.auto_qline_vat').html('<%= @line.vat_due %>');
+$('span#<%= @line.id %>.auto_qline_total').html('<%= @line.total %>');
 
-$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= pounds(@qgroup.price) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= pounds(@qgroup.vat_due) %>');
-$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_total').html('<%= pounds(@qgroup.total) %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_price').html('<%= @qgroup.price %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_vat').html('<%= @qgroup.vat_due %>');
+$('table#group_sub_<%= @line.qgroup_id %>').find('.quote_sub_total').html('<%= @qgroup.total %>');
   
-$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_price').html('<%= pounds(@quote.price) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_vat').html('<%= pounds(@quote.vat_due) %>');
-$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_total').html('<%= pounds(@quote.total) %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_price').html('<%= @quote.price %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_vat').html('<%= @quote.vat_due %>');
+$('table#total_<%= @line.qgroup.quote_id %>').find('.quote_total_total').html('<%= @quote.total %>');

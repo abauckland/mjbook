@@ -1,12 +1,12 @@
 $('table#<%= @old_line_id %>').replaceWith('<%= escape_javascript(render :partial => 'inline_row', locals: { line: @line }) %>');
 
-$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_price').html('<%= pounds(@ingroup.price) %>');
-$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_vat').html('<%= pounds(@ingroup.vat_due) %>');
-$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_total').html('<%= pounds(@ingroup.total) %>');
+$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_price').html('<%= @ingroup.price %>');
+$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_vat').html('<%= @ingroup.vat_due %>');
+$('table#group_sub_<%= @line.ingroup_id %>').find('.invoice_sub_total').html('<%= @ingroup.total %>');
   
-$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_price').html('<%= pounds(@invoice.price) %>');
-$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_vat').html('<%= pounds(@invoice.vat_due) %>');
-$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_total').html('<%= pounds(@invoice.total) %>');
+$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_price').html('<%= @invoice.price %>');
+$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_vat').html('<%= @invoice.vat_due %>');
+$('table#total_<%= @line.ingroup.invoice_id %>').find('.invoice_total_total').html('<%= @invoice.total %>');
 
 
 // show/hide menu and mob menu link

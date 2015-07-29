@@ -3,33 +3,33 @@ module Mjbook
 
   def invoice_price(groups)
     price = Inline.where(:ingroup_id => groups.ids).sum(:price)
-    return "#{ pounds(price) }".html_safe 
+    return "#{ price }".html_safe 
   end
 
   def invoice_vat(groups)
     vat_due = Inline.where(:ingroup_id => groups.ids).sum(:vat_due)
-    return "#{ pounds(vat_due) }".html_safe 
+    return "#{ vat_due }".html_safe 
   end
 
   def invoice_total(groups)
    total = Inline.where(:ingroup_id => groups.ids).sum(:total)
-    return "#{ pounds(total) }".html_safe 
+    return "#{ total }".html_safe 
   end
 
 
   def ingroup_price(group)
     price = Inline.where(:ingroup_id => group.id).sum(:price)
-    return "#{ pounds(price) }".html_safe 
+    return "#{ price }".html_safe 
   end
 
   def ingroup_vat(group)
     vat_due = Inline.where(:ingroup_id => group.id).sum(:vat_due)
-    return "#{ pounds(vat_due) }".html_safe 
+    return "#{ vat_due }".html_safe 
   end
 
   def ingroup_total(group)
     total = Inline.where(:ingroup_id => group.id).sum(:total)
-    return "#{ pounds(total) }".html_safe 
+    return "#{ total }".html_safe 
   end
   ##specline table formatting
 
@@ -83,7 +83,7 @@ module Mjbook
     end
 
     def inline_price(line)
-        "<span id='#{ line.id }' class='inline_price'>#{ pounds(line.price) }".html_safe      
+        "<span id='#{ line.id }' class='inline_price'>#{ line.price }".html_safe
     end
 
     def inline_vat_rate(line)
@@ -96,15 +96,15 @@ module Mjbook
 
 
     def auto_inline_price(line)
-        "<span id='#{ line.id }' class='auto_inline_price'>#{ pounds(line.price) }".html_safe      
+        "<span id='#{ line.id }' class='auto_inline_price'>#{ line.price }".html_safe
     end
 
     def auto_inline_vat(line)
-        "<span id='#{ line.id }' class='auto_inline_vat'>#{ pounds(line.vat_due) }</span>".html_safe
+        "<span id='#{ line.id }' class='auto_inline_vat'>#{ line.vat_due }</span>".html_safe
     end
 
     def auto_inline_total(line)  
-        "<span id='#{ line.id }' class='auto_inline_total'>#{ pounds(line.total) }".html_safe      
+        "<span id='#{ line.id }' class='auto_inline_total'>#{ line.total }".html_safe
     end
 
 
