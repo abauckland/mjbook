@@ -120,7 +120,7 @@ module Mjbook
 #end 
 
           #check if all the inlines for the invoice have been paid
-          check_inlines = Mjbook::Inline.due.join(:ingroup).where(:invoice_id => params[:invoice_id])
+          check_inlines = Mjbook::Inline.join(:ingroup).where(:invoice_id => params[:invoice_id], :state => 'due')
           if check_inlines.blank?
             invoice.pay!
           else
@@ -172,7 +172,7 @@ module Mjbook
         end
 
         invoice = Mjbook::Invoice.joins(:ingroup => [:inline => :paymentitems]).where('mjbooks_paymentitems.payment_id' => @payment.id).first
-        check_inlines = Mjbook::Inline.paid.join(:ingroup).where('mjbooks_invoice_id' => invoice.id)
+        check_inlines = Mjbook::Inline.join(:ingroup).where('mjbooks_invoice_id' => invoice.id, :state => 'paid')
         if check_inlines.blank?
           invoice.correct_payment!
         else
