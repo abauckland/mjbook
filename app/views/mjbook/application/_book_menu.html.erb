@@ -4,15 +4,18 @@
 	    <li class="has_sub"><%= link_to "Reports", nil %>
 	        <ul class="sub_menu">
                 <li><%= link_to "Trial Balance", balances_path %>
+                <% if menu_filter %>
 	            <li><%= link_to "Accounts Summary", summaries_path %>
 	            <li><%= link_to "Income", payments_path %> </li>
 	            <li><%= link_to "Expenditure", expends_path %> </li>
 	            <li><%= link_to "Credit Notes", creditnotes_path %> </li>
 	            <li><%= link_to "Written Off Debt", writeoffs_path %> </li>
                 <li><%= link_to "Journal Entries", journals_path %> </li>
+                <% end %>
 	        </ul>
 	    </li>
     <% end %>
+    <% if menu_filter %>
     <li class="has_sub"><%= link_to "Income", nil %>
         <ul class="sub_menu">
             <li><%= link_to "Quotes", quotes_path %> </li>
@@ -51,6 +54,7 @@
                 <% end %>
         </ul>
     </li>
+    <% end %>
 </ul>
 
 <!-- mob menu select -->

@@ -1,6 +1,20 @@
 module Mjbook
   module ApplicationHelper
 
+    def menu_filter
+        #redirect if the year_start date (and hence accounting period) have not been set
+        #redirect if no company accounts have been set up for the company
+        company_setting = Mjbook::Setting.where(:company_id => current_user.company_id).first
+        account_exist = Mjbook::Companyaccount.where(:company_id => current_user.company_id).first
+        #mileage settings
+        unless company_setting && account_exist
+          false
+        else
+          true
+        end
+    end
+
+
     def error_check(object, key)
        if !object.errors[key].blank?
        "<t style='color: #ff0000'>#{object.errors[key][0]}</t>".html_safe
