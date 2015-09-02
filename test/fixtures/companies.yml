@@ -1,0 +1,40 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+myhq:
+  id: 1
+  name: myhq
+  domain: myhq.org.uk
+  subdomain: company-one
+  retail_subdomain: company-one-shop
+  address_1: MyString
+  address_2: MyString
+  city: MyString
+  county: MyString
+  postcode: MyString
+  latitude: MyString
+  longitude: MyString
+  tel: 01612742800
+  email: MyString
+  reg_no: MyString
+  vat_no: MyString
+  logo: MyString
+  plan: 1
+
+two:
+  id: 2
+  name: Company2
+  domain: myhq.org.uk
+  subdomain: company-two
+  address_1: MyString
+  address_2: MyString
+  city: MyString
+  county: MyString
+  postcode: MyString
+  latitude: MyString
+  longitude: MyString
+  tel: MyString
+  email: MyString
+  reg_no: MyString
+  vat_no: MyString
+  logo: MyString
+  plan: 1

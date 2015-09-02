@@ -1,9 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+thirty_days:
+  id: 1
   company_id: 1
-  terms: MyText
+  ref: 30 days
+  period: 30
+  terms: Invoice terms text two
 
-two:
+ninety_days:
+  id: 2
   company_id: 1
-  terms: MyText
+  ref: 90 days
+  period: 90
+  terms: Invoice terms text two
