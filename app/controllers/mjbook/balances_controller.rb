@@ -62,29 +62,30 @@ private
             @period = policy_scope(Period).where(:id => period_id).first
           else
             #get current period
-            start_time = 1.year.ago(Time.now)
-            end_time = Time.now
-            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+#            start_time = 1.year.ago(Time.now)
+#            end_time = Time.now
+#            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+          @period = policy_scope(Period).where(:year_start => start_time..end_time).order(:year_start).last
             @current_period = true
           end
         else
-          #get current period
-          start_time = 1.year.ago(Time.now)
-          end_time = Time.now
-          @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+          #get latest period
+#          start_time = 1.year.ago(Time.now)
+#          end_time = Time.now
+          @period = policy_scope(Period).where(:year_start => start_time..end_time).order(:year_start).last
 
-          #create new period if no records created since end of last period
-          #loop until record for current date is created
-          until !@period.blank?
-            #get last period where year end is less than current time
-            last_period = policy_scope(Period).where('year_start < ?', 1.year.ago(Time.now)).last
-            last_period_year_end = 1.year.from_now(last_period.year_start)
+#          #create new period if no records created since end of last period
+#          #loop until record for current date is created
+#          until !@period.blank?
+#            #get last period where year end is less than current time
+#            last_period = policy_scope(Period).where('year_start < ?', 1.year.ago(Time.now)).last
+#            last_period_year_end = 1.year.from_now(last_period.year_start)
 
-            create_period(last_period_year_end)
+#            create_period(last_period_year_end)
 
-            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
+#            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
 
-          end
+#          end
           @current_period = true
 
         end
@@ -158,6 +159,11 @@ private
         expend = policy_scope(Expend).where(:date => date_from..date_to
                                     ).where.not(:exp_type => 3
                                     ).sum(:total)
+
+#Expenseitem.joins(:expend, :expense
+#          ).where('mjbook_expense.date' => date_from..date_to
+#          ).where.not(:expend_id => nil)
+#          ).sum(:total)
 
         @expend_summary = expend - subtract_expend_adjustments + add_expend_adjustments
 
