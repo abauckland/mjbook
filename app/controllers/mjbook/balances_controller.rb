@@ -65,14 +65,14 @@ private
 #            start_time = 1.year.ago(Time.now)
 #            end_time = Time.now
 #            @period = policy_scope(Period).where(:year_start => start_time..end_time).first
-          @period = policy_scope(Period).where(:year_start => start_time..end_time).order(:year_start).last
+          @period = policy_scope(Period).order(:year_start).last
             @current_period = true
           end
         else
           #get latest period
 #          start_time = 1.year.ago(Time.now)
 #          end_time = Time.now
-          @period = policy_scope(Period).where(:year_start => start_time..end_time).order(:year_start).last
+          @period = policy_scope(Period).order(:year_start).last
 
 #          #create new period if no records created since end of last period
 #          #loop until record for current date is created
